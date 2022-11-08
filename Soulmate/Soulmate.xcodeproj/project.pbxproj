@@ -56,8 +56,9 @@
 		6A8C888E2919031A009EDBBB /* Soulmate */ = {
 			isa = PBXGroup;
 			children = (
-				6A8C888F2919031A009EDBBB /* AppDelegate.swift */,
-				6A8C88912919031A009EDBBB /* SceneDelegate.swift */,
+				6A8C88A52919E3B6009EDBBB /* Data */,
+				6A8C88A42919E3B1009EDBBB /* Domain */,
+				6A8C88A32919E3AB009EDBBB /* Presentation */,
 				6A8C88932919031A009EDBBB /* ViewController.swift */,
 				6A8C88952919031A009EDBBB /* Main.storyboard */,
 				6A8C88982919031D009EDBBB /* Assets.xcassets */,
@@ -65,6 +66,101 @@
 				6A8C889D2919031D009EDBBB /* Info.plist */,
 			);
 			path = Soulmate;
+			sourceTree = "<group>";
+		};
+		6A8C88A32919E3AB009EDBBB /* Presentation */ = {
+			isa = PBXGroup;
+			children = (
+				6A8C88AE2919E504009EDBBB /* AppScene */,
+				6A8C88A62919E3D3009EDBBB /* AuthScene */,
+			);
+			path = Presentation;
+			sourceTree = "<group>";
+		};
+		6A8C88A42919E3B1009EDBBB /* Domain */ = {
+			isa = PBXGroup;
+			children = (
+				6A8C88AD2919E4F4009EDBBB /* Entity */,
+				6A8C88AB2919E4CF009EDBBB /* Interface */,
+				6A8C88AA2919E4CA009EDBBB /* UseCase */,
+			);
+			path = Domain;
+			sourceTree = "<group>";
+		};
+		6A8C88A52919E3B6009EDBBB /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				6A8C88AC2919E4E6009EDBBB /* Repository */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		6A8C88A62919E3D3009EDBBB /* AuthScene */ = {
+			isa = PBXGroup;
+			children = (
+				6A8C88A92919E424009EDBBB /* Coordinator */,
+				6A8C88A82919E41D009EDBBB /* ViewModel */,
+				6A8C88A72919E417009EDBBB /* ViewController */,
+			);
+			path = AuthScene;
+			sourceTree = "<group>";
+		};
+		6A8C88A72919E417009EDBBB /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		6A8C88A82919E41D009EDBBB /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		6A8C88A92919E424009EDBBB /* Coordinator */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Coordinator;
+			sourceTree = "<group>";
+		};
+		6A8C88AA2919E4CA009EDBBB /* UseCase */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = UseCase;
+			sourceTree = "<group>";
+		};
+		6A8C88AB2919E4CF009EDBBB /* Interface */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Interface;
+			sourceTree = "<group>";
+		};
+		6A8C88AC2919E4E6009EDBBB /* Repository */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Repository;
+			sourceTree = "<group>";
+		};
+		6A8C88AD2919E4F4009EDBBB /* Entity */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Entity;
+			sourceTree = "<group>";
+		};
+		6A8C88AE2919E504009EDBBB /* AppScene */ = {
+			isa = PBXGroup;
+			children = (
+				6A8C888F2919031A009EDBBB /* AppDelegate.swift */,
+				6A8C88912919031A009EDBBB /* SceneDelegate.swift */,
+			);
+			path = AppScene;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
