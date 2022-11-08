@@ -7,6 +7,22 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6A0041D72919E68D0042E02F /* MainTabCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A0041D62919E68C0042E02F /* MainTabCoordinator.swift */; };
+		6A0041D92919E6B60042E02F /* CoordinatorInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A0041D82919E6B60042E02F /* CoordinatorInterface.swift */; };
+		6A0041DB2919E9420042E02F /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A0041DA2919E9420042E02F /* AppCoordinator.swift */; };
+		6A0041DD2919EADC0042E02F /* HomeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A0041DC2919EADC0042E02F /* HomeCoordinator.swift */; };
+		6A0041E02919EB230042E02F /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A0041DF2919EB230042E02F /* LoginViewController.swift */; };
+		6A0041E22919EB780042E02F /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A0041E12919EB780042E02F /* RegisterViewController.swift */; };
+		6A0041E42919EBA40042E02F /* AuthCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A0041E32919EBA40042E02F /* AuthCoordinator.swift */; };
+		6A0041EB2919ED5F0042E02F /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A0041EA2919ED5F0042E02F /* HomeViewController.swift */; };
+		6A0041EE2919ED7F0042E02F /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A0041ED2919ED7F0042E02F /* DetailViewController.swift */; };
+		6A0041F42919EDC20042E02F /* ChatListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A0041F32919EDC20042E02F /* ChatListViewController.swift */; };
+		6A0041F62919EE010042E02F /* ChattingRoomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A0041F52919EE010042E02F /* ChattingRoomViewController.swift */; };
+		6A0041FB2919EE600042E02F /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A0041FA2919EE600042E02F /* MyPageViewController.swift */; };
+		6A0041FD2919EE7B0042E02F /* ServiceTermViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A0041FC2919EE7B0042E02F /* ServiceTermViewController.swift */; };
+		6A0041FF2919EE920042E02F /* ModificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A0041FE2919EE920042E02F /* ModificationViewController.swift */; };
+		6A0042032919EEED0042E02F /* ChatCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A0042022919EEED0042E02F /* ChatCoordinator.swift */; };
+		6A0042062919EF220042E02F /* MyPageCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A0042052919EF220042E02F /* MyPageCoordinator.swift */; };
 		6A8C88902919031A009EDBBB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A8C888F2919031A009EDBBB /* AppDelegate.swift */; };
 		6A8C88922919031A009EDBBB /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A8C88912919031A009EDBBB /* SceneDelegate.swift */; };
 		6A8C88942919031A009EDBBB /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A8C88932919031A009EDBBB /* ViewController.swift */; };
@@ -16,6 +32,22 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		6A0041D62919E68C0042E02F /* MainTabCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabCoordinator.swift; sourceTree = "<group>"; };
+		6A0041D82919E6B60042E02F /* CoordinatorInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinatorInterface.swift; sourceTree = "<group>"; };
+		6A0041DA2919E9420042E02F /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
+		6A0041DC2919EADC0042E02F /* HomeCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCoordinator.swift; sourceTree = "<group>"; };
+		6A0041DF2919EB230042E02F /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		6A0041E12919EB780042E02F /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
+		6A0041E32919EBA40042E02F /* AuthCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthCoordinator.swift; sourceTree = "<group>"; };
+		6A0041EA2919ED5F0042E02F /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		6A0041ED2919ED7F0042E02F /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		6A0041F32919EDC20042E02F /* ChatListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatListViewController.swift; sourceTree = "<group>"; };
+		6A0041F52919EE010042E02F /* ChattingRoomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChattingRoomViewController.swift; sourceTree = "<group>"; };
+		6A0041FA2919EE600042E02F /* MyPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
+		6A0041FC2919EE7B0042E02F /* ServiceTermViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceTermViewController.swift; sourceTree = "<group>"; };
+		6A0041FE2919EE920042E02F /* ModificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModificationViewController.swift; sourceTree = "<group>"; };
+		6A0042022919EEED0042E02F /* ChatCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatCoordinator.swift; sourceTree = "<group>"; };
+		6A0042052919EF220042E02F /* MyPageCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageCoordinator.swift; sourceTree = "<group>"; };
 		6A8C888C2919031A009EDBBB /* Soulmate.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Soulmate.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6A8C888F2919031A009EDBBB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6A8C88912919031A009EDBBB /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -37,6 +69,153 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6A0041D32919E6490042E02F /* AuthScene */ = {
+			isa = PBXGroup;
+			children = (
+				6A0041E62919ED290042E02F /* Coordinator */,
+				6A0041DE2919EB120042E02F /* ViewController */,
+			);
+			path = AuthScene;
+			sourceTree = "<group>";
+		};
+		6A0041D42919E6710042E02F /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				6A0041D52919E67C0042E02F /* Coordinator */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		6A0041D52919E67C0042E02F /* Coordinator */ = {
+			isa = PBXGroup;
+			children = (
+				6A0041D62919E68C0042E02F /* MainTabCoordinator.swift */,
+				6A0041D82919E6B60042E02F /* CoordinatorInterface.swift */,
+				6A0041DA2919E9420042E02F /* AppCoordinator.swift */,
+			);
+			path = Coordinator;
+			sourceTree = "<group>";
+		};
+		6A0041DE2919EB120042E02F /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				6A0041DF2919EB230042E02F /* LoginViewController.swift */,
+				6A0041E12919EB780042E02F /* RegisterViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		6A0041E62919ED290042E02F /* Coordinator */ = {
+			isa = PBXGroup;
+			children = (
+				6A0041E32919EBA40042E02F /* AuthCoordinator.swift */,
+			);
+			path = Coordinator;
+			sourceTree = "<group>";
+		};
+		6A0041E72919ED410042E02F /* HomeScene */ = {
+			isa = PBXGroup;
+			children = (
+				6A0042002919EEB20042E02F /* Coordinator */,
+				6A0041E92919ED500042E02F /* ViewModel */,
+				6A0041E82919ED480042E02F /* ViewController */,
+			);
+			path = HomeScene;
+			sourceTree = "<group>";
+		};
+		6A0041E82919ED480042E02F /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				6A0041EA2919ED5F0042E02F /* HomeViewController.swift */,
+				6A0041ED2919ED7F0042E02F /* DetailViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		6A0041E92919ED500042E02F /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		6A0041EF2919ED9D0042E02F /* ChatScene */ = {
+			isa = PBXGroup;
+			children = (
+				6A0042012919EEE20042E02F /* Coordinator */,
+				6A0041F12919EDA90042E02F /* ViewModel */,
+				6A0041F02919EDA30042E02F /* ViewController */,
+			);
+			path = ChatScene;
+			sourceTree = "<group>";
+		};
+		6A0041F02919EDA30042E02F /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				6A0041F32919EDC20042E02F /* ChatListViewController.swift */,
+				6A0041F52919EE010042E02F /* ChattingRoomViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		6A0041F12919EDA90042E02F /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		6A0041F72919EE180042E02F /* MyPageScene */ = {
+			isa = PBXGroup;
+			children = (
+				6A0042042919EF130042E02F /* Coordinator */,
+				6A0041F92919EE250042E02F /* ViewModel */,
+				6A0041F82919EE1E0042E02F /* ViewController */,
+			);
+			path = MyPageScene;
+			sourceTree = "<group>";
+		};
+		6A0041F82919EE1E0042E02F /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				6A0041FA2919EE600042E02F /* MyPageViewController.swift */,
+				6A0041FC2919EE7B0042E02F /* ServiceTermViewController.swift */,
+				6A0041FE2919EE920042E02F /* ModificationViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		6A0041F92919EE250042E02F /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		6A0042002919EEB20042E02F /* Coordinator */ = {
+			isa = PBXGroup;
+			children = (
+				6A0041DC2919EADC0042E02F /* HomeCoordinator.swift */,
+			);
+			path = Coordinator;
+			sourceTree = "<group>";
+		};
+		6A0042012919EEE20042E02F /* Coordinator */ = {
+			isa = PBXGroup;
+			children = (
+				6A0042022919EEED0042E02F /* ChatCoordinator.swift */,
+			);
+			path = Coordinator;
+			sourceTree = "<group>";
+		};
+		6A0042042919EF130042E02F /* Coordinator */ = {
+			isa = PBXGroup;
+			children = (
+				6A0042052919EF220042E02F /* MyPageCoordinator.swift */,
+			);
+			path = Coordinator;
+			sourceTree = "<group>";
+		};
 		6A8C88832919031A009EDBBB = {
 			isa = PBXGroup;
 			children = (
@@ -71,8 +250,12 @@
 		6A8C88A32919E3AB009EDBBB /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
+				6A0041F72919EE180042E02F /* MyPageScene */,
+				6A0041EF2919ED9D0042E02F /* ChatScene */,
+				6A0041E72919ED410042E02F /* HomeScene */,
+				6A0041D42919E6710042E02F /* Common */,
+				6A0041D32919E6490042E02F /* AuthScene */,
 				6A8C88AE2919E504009EDBBB /* AppScene */,
-				6A8C88A62919E3D3009EDBBB /* AuthScene */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";
@@ -93,37 +276,6 @@
 				6A8C88AC2919E4E6009EDBBB /* Repository */,
 			);
 			path = Data;
-			sourceTree = "<group>";
-		};
-		6A8C88A62919E3D3009EDBBB /* AuthScene */ = {
-			isa = PBXGroup;
-			children = (
-				6A8C88A92919E424009EDBBB /* Coordinator */,
-				6A8C88A82919E41D009EDBBB /* ViewModel */,
-				6A8C88A72919E417009EDBBB /* ViewController */,
-			);
-			path = AuthScene;
-			sourceTree = "<group>";
-		};
-		6A8C88A72919E417009EDBBB /* ViewController */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = ViewController;
-			sourceTree = "<group>";
-		};
-		6A8C88A82919E41D009EDBBB /* ViewModel */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = ViewModel;
-			sourceTree = "<group>";
-		};
-		6A8C88A92919E424009EDBBB /* Coordinator */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Coordinator;
 			sourceTree = "<group>";
 		};
 		6A8C88AA2919E4CA009EDBBB /* UseCase */ = {
@@ -234,9 +386,25 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6A0041E42919EBA40042E02F /* AuthCoordinator.swift in Sources */,
+				6A0041E22919EB780042E02F /* RegisterViewController.swift in Sources */,
+				6A0041FD2919EE7B0042E02F /* ServiceTermViewController.swift in Sources */,
+				6A0041DB2919E9420042E02F /* AppCoordinator.swift in Sources */,
+				6A0041EE2919ED7F0042E02F /* DetailViewController.swift in Sources */,
 				6A8C88942919031A009EDBBB /* ViewController.swift in Sources */,
 				6A8C88902919031A009EDBBB /* AppDelegate.swift in Sources */,
+				6A0041D92919E6B60042E02F /* CoordinatorInterface.swift in Sources */,
+				6A0042032919EEED0042E02F /* ChatCoordinator.swift in Sources */,
+				6A0041E02919EB230042E02F /* LoginViewController.swift in Sources */,
+				6A0041EB2919ED5F0042E02F /* HomeViewController.swift in Sources */,
+				6A0042062919EF220042E02F /* MyPageCoordinator.swift in Sources */,
 				6A8C88922919031A009EDBBB /* SceneDelegate.swift in Sources */,
+				6A0041FB2919EE600042E02F /* MyPageViewController.swift in Sources */,
+				6A0041DD2919EADC0042E02F /* HomeCoordinator.swift in Sources */,
+				6A0041FF2919EE920042E02F /* ModificationViewController.swift in Sources */,
+				6A0041F42919EDC20042E02F /* ChatListViewController.swift in Sources */,
+				6A0041F62919EE010042E02F /* ChattingRoomViewController.swift in Sources */,
+				6A0041D72919E68D0042E02F /* MainTabCoordinator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
