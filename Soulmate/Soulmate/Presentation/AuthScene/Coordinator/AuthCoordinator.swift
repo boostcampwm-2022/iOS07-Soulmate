@@ -21,7 +21,23 @@ class AuthCoordinator: Coordinator {
     }
     
     func start() {
-        let vc = LoginViewController()
-        navigationController.pushViewController(vc, animated: true)
+        showLoginPage()
     }
+    
+    lazy var showLoginPage: () -> Void = { [weak self] in
+        let viewModel = LoginViewModel()
+        viewModel.setActions(
+            actions: LoginViewModelActions(
+                showAppleLoginSheet: self?.showAppleLoginSheet,
+                showPhoneLoginPage: self?.showPhoneLoginPage
+            )
+        )
+        
+        let vc = LoginViewController(viewModel: viewModel)
+        self?.navigationController.pushViewController(vc, animated: true)
+    }
+    
+    lazy var showAppleLoginSheet: () -> Void = {}
+    
+    lazy var showPhoneLoginPage: () -> Void = {}
 }
