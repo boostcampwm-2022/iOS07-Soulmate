@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>775299959781-jsqrejf9cnsmg185f0fltuo08pbg4bhc.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.775299959781-jsqrejf9cnsmg185f0fltuo08pbg4bhc</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBj7nDE-HaupPcVhCZO5MmRpy5Nzn_jQps</string>
+	<key>GCM_SENDER_ID</key>
+	<string>775299959781</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.ghdps.Soulmate</string>
+	<key>PROJECT_ID</key>
+	<string>soulmate-b9713</string>
+	<key>STORAGE_BUCKET</key>
+	<string>soulmate-b9713.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:775299959781:ios:3d091775111263471e7d0c</string>
+</dict>
+</plist>
