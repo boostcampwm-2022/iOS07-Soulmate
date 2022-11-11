@@ -41,8 +41,6 @@
 		B31A68272919F5D2001D35E9 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = B31A68262919F5D2001D35E9 /* .swiftlint.yml */; };
 		B31A682A291A4257001D35E9 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = B31A6829291A4257001D35E9 /* Then */; };
 		B31A682D291A42BC001D35E9 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = B31A682C291A42BC001D35E9 /* SnapKit */; };
-		B3E029A4291CEC6300931FA2 /* GradientButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3E029A3291CEC6300931FA2 /* GradientButton.swift */; };
-		B3E029A6291CF41B00931FA2 /* SelectionCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3E029A5291CF41B00931FA2 /* SelectionCollectionViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -76,8 +74,6 @@
 		B30A8F0E291CB4AC00ED4906 /* PhoneNumberViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneNumberViewController.swift; sourceTree = "<group>"; };
 		B30A8F10291CB4F100ED4906 /* CertificationNumberViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CertificationNumberViewController.swift; sourceTree = "<group>"; };
 		B31A68262919F5D2001D35E9 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
-		B3E029A3291CEC6300931FA2 /* GradientButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientButton.swift; sourceTree = "<group>"; };
-		B3E029A5291CF41B00931FA2 /* SelectionCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionCollectionViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -110,7 +106,6 @@
 		6A0041D42919E6710042E02F /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				B3E029A2291CEC2100931FA2 /* Components */,
 				6A0041D52919E67C0042E02F /* Coordinator */,
 			);
 			path = Common;
@@ -350,13 +345,6 @@
 			path = AppScene;
 			sourceTree = "<group>";
 		};
-		B3E029A2291CEC2100931FA2 /* Components */ = {
-			isa = PBXGroup;
-			children = (
-				B3E029A3291CEC6300931FA2 /* GradientButton.swift */,
-				B3E029A5291CF41B00931FA2 /* SelectionCollectionViewCell.swift */,
-			);
-			path = Components;
 		6A97FE61291CE0A4006F6DD9 /* Util */ = {
 			isa = PBXGroup;
 			children = (
@@ -490,7 +478,6 @@
 				6A0041EE2919ED7F0042E02F /* DetailViewController.swift in Sources */,
 				6A8C88942919031A009EDBBB /* ViewController.swift in Sources */,
 				6A8C88902919031A009EDBBB /* AppDelegate.swift in Sources */,
-				B3E029A6291CF41B00931FA2 /* SelectionCollectionViewCell.swift in Sources */,
 				6A0041D92919E6B60042E02F /* CoordinatorInterface.swift in Sources */,
 				6A0042032919EEED0042E02F /* ChatCoordinator.swift in Sources */,
 				6A0041E02919EB230042E02F /* LoginViewController.swift in Sources */,
@@ -499,7 +486,6 @@
 				B30A8F0F291CB4AC00ED4906 /* PhoneNumberViewController.swift in Sources */,
 				6A8C88922919031A009EDBBB /* SceneDelegate.swift in Sources */,
 				6A0041FB2919EE600042E02F /* MyPageViewController.swift in Sources */,
-				B3E029A4291CEC6300931FA2 /* GradientButton.swift in Sources */,
 				B30A8F11291CB4F100ED4906 /* CertificationNumberViewController.swift in Sources */,
 				6A0041DD2919EADC0042E02F /* HomeCoordinator.swift in Sources */,
 				6A0041FF2919EE920042E02F /* ModificationViewController.swift in Sources */,
