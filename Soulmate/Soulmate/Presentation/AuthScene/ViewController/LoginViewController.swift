@@ -8,11 +8,11 @@
 import UIKit
 import SnapKit
 
-class LoginViewController: UIViewController {
+final class LoginViewController: UIViewController {
     
-    var viewModel: LoginViewModel?
+    private var viewModel: LoginViewModel?
     
-    var titleLogoImageView: UIImageView = {
+    private lazy var titleLogoImageView: UIImageView = {
         let imageView = UIImageView(frame: .zero)
         imageView.image = UIImage(named: "logo")?.withShadow(
             blur: 3,
@@ -20,17 +20,19 @@ class LoginViewController: UIViewController {
             color: .black
         )
         imageView.contentMode = .scaleAspectFit
+        self.view.addSubview(imageView)
         return imageView
     }()
     
-    var emojiImageView: UIImageView = {
+    private lazy var emojiImageView: UIImageView = {
         let imageView = UIImageView(frame: .zero)
         imageView.image = UIImage(named: "emoji")
         imageView.contentMode = .scaleAspectFit
+        self.view.addSubview(imageView)
         return imageView
     }()
     
-    var welcomeGreetingLabel: UILabel = {
+    private lazy var welcomeGreetingLabel: UILabel = {
         let label = UILabel(frame: .zero)
         label.numberOfLines = 0
         label.textColor = .gray
@@ -45,10 +47,11 @@ class LoginViewController: UIViewController {
             string: "소울메이트에 오신것을 환영합니다!\n아래 버튼을 눌러 시작해주세요.", attributes: [NSAttributedString.Key.paragraphStyle: paragraphStyle]
         )
         
+        self.view.addSubview(label)
         return label
     }()
     
-    var appleLoginButton: UIButton = {
+    private lazy var appleLoginButton: UIButton = {
         let button = UIButton(frame: .zero)
         button.layer.borderColor = UIColor.black.cgColor
         button.backgroundColor = .black
@@ -59,10 +62,12 @@ class LoginViewController: UIViewController {
         button.setImage(UIImage(named: "logoApple"), for: .normal)
         button.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 150)
         button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 20)
+        
+        self.view.addSubview(button)
         return button
     }()
     
-    var phoneLoginButton: UIButton = {
+    private lazy var phoneLoginButton: UIButton = {
         let button = UIButton(frame: .zero)
         button.layer.borderWidth = 1
         button.layer.borderColor = UIColor.brand200.cgColor
@@ -73,6 +78,8 @@ class LoginViewController: UIViewController {
         button.setImage(UIImage(named: "Phone"), for: .normal)
         button.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 135)
         button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 24)
+        
+        self.view.addSubview(button)
         return button
     }()
     
@@ -88,29 +95,30 @@ class LoginViewController: UIViewController {
         self.init(nibName: nil, bundle: nil)
         self.viewModel = viewModel
     }
-
-    func bind() {
-        
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        bind()
         configureView()
         configureLayout()
+    }
+}
+
+// MARK: - View Generators
+
+private extension LoginViewController {
+    
+    func bind() {
+        
     }
     
     func configureView() {
         self.view.backgroundColor = .systemBackground
-        
-        self.view.addSubview(titleLogoImageView)
-        self.view.addSubview(emojiImageView)
-        self.view.addSubview(welcomeGreetingLabel)
-        self.view.addSubview(appleLoginButton)
-        self.view.addSubview(phoneLoginButton)
     }
     
     func configureLayout() {
+
         titleLogoImageView.snp.makeConstraints {
             $0.centerX.equalToSuperview()
             $0.top.equalTo(self.view.safeAreaLayoutGuide.snp.top).offset(117)

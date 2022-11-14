@@ -26,7 +26,7 @@ extension UIFont {
     }
 }
 
-class CertificationNumberViewController: UIViewController {
+final class CertificationNumberViewController: UIViewController {
     
     private lazy var guideLabel: UILabel = {
         let label = UILabel()
