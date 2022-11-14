@@ -32,6 +32,9 @@
 		6A8C889C2919031D009EDBBB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6A8C889A2919031D009EDBBB /* LaunchScreen.storyboard */; };
 		6A97FE63291CE0C2006F6DD9 /* UIImage+shadow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A97FE62291CE0C2006F6DD9 /* UIImage+shadow.swift */; };
 		6A97FE66291CE29E006F6DD9 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A97FE65291CE29E006F6DD9 /* LoginViewModel.swift */; };
+		6ADEE4E72922198200AD328B /* UIControl+Publisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ADEE4E62922198200AD328B /* UIControl+Publisher.swift */; };
+		6ADEE4EA29221CB800AD328B /* UIButton+Publisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ADEE4E929221CB800AD328B /* UIButton+Publisher.swift */; };
+		6ADEE4EC29221CD900AD328B /* UITextField+Publisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ADEE4EB29221CD900AD328B /* UITextField+Publisher.swift */; };
 		6AE21021291DE06600A32280 /* SelectableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AE21020291DE06600A32280 /* SelectableCell.swift */; };
 		B30A8ECB291C940A00ED4906 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B30A8ECA291C940A00ED4906 /* GoogleService-Info.plist */; };
 		B30A8ECE291C953F00ED4906 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = B30A8ECD291C953F00ED4906 /* FirebaseAnalytics */; };
@@ -74,6 +77,9 @@
 		6A8C889D2919031D009EDBBB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6A97FE62291CE0C2006F6DD9 /* UIImage+shadow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+shadow.swift"; sourceTree = "<group>"; };
 		6A97FE65291CE29E006F6DD9 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
+		6ADEE4E62922198200AD328B /* UIControl+Publisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIControl+Publisher.swift"; sourceTree = "<group>"; };
+		6ADEE4E929221CB800AD328B /* UIButton+Publisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Publisher.swift"; sourceTree = "<group>"; };
+		6ADEE4EB29221CD900AD328B /* UITextField+Publisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Publisher.swift"; sourceTree = "<group>"; };
 		6AE21020291DE06600A32280 /* SelectableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectableCell.swift; sourceTree = "<group>"; };
 		B30A8ECA291C940A00ED4906 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B30A8F0E291CB4AC00ED4906 /* PhoneNumberViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneNumberViewController.swift; sourceTree = "<group>"; };
@@ -253,6 +259,7 @@
 		6A444531291EA22D009AE2E5 /* Extension */ = {
 			isa = PBXGroup;
 			children = (
+				6ADEE4E829221C6600AD328B /* Combine */,
 				6A97FE62291CE0C2006F6DD9 /* UIImage+shadow.swift */,
 				6A444532291EA23F009AE2E5 /* UIColor.swift */,
 			);
@@ -377,6 +384,16 @@
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
+		6ADEE4E829221C6600AD328B /* Combine */ = {
+			isa = PBXGroup;
+			children = (
+				6ADEE4E62922198200AD328B /* UIControl+Publisher.swift */,
+				6ADEE4E929221CB800AD328B /* UIButton+Publisher.swift */,
+				6ADEE4EB29221CD900AD328B /* UITextField+Publisher.swift */,
+			);
+			path = Combine;
+			sourceTree = "<group>";
+		};
 		B3E029A7291DDBF200931FA2 /* Components */ = {
 			isa = PBXGroup;
 			children = (
@@ -496,6 +513,7 @@
 			files = (
 				6A97FE66291CE29E006F6DD9 /* LoginViewModel.swift in Sources */,
 				B3E029A9291DDC1500931FA2 /* GradientButton.swift in Sources */,
+				6ADEE4EC29221CD900AD328B /* UITextField+Publisher.swift in Sources */,
 				6A0041E42919EBA40042E02F /* AuthCoordinator.swift in Sources */,
 				6A0041E22919EB780042E02F /* RegisterViewController.swift in Sources */,
 				6A0041FD2919EE7B0042E02F /* ServiceTermViewController.swift in Sources */,
@@ -505,7 +523,9 @@
 				6A0041EE2919ED7F0042E02F /* DetailViewController.swift in Sources */,
 				6A444533291EA23F009AE2E5 /* UIColor.swift in Sources */,
 				6A8C88942919031A009EDBBB /* ViewController.swift in Sources */,
+				6ADEE4EA29221CB800AD328B /* UIButton+Publisher.swift in Sources */,
 				6A8C88902919031A009EDBBB /* AppDelegate.swift in Sources */,
+				6ADEE4E72922198200AD328B /* UIControl+Publisher.swift in Sources */,
 				6A0041D92919E6B60042E02F /* CoordinatorInterface.swift in Sources */,
 				6A0042032919EEED0042E02F /* ChatCoordinator.swift in Sources */,
 				6A0041E02919EB230042E02F /* LoginViewController.swift in Sources */,

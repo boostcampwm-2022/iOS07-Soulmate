@@ -7,6 +7,7 @@
 
 import UIKit
 import SnapKit
+import Combine
 
 final class LoginViewController: UIViewController {
     
@@ -110,7 +111,12 @@ final class LoginViewController: UIViewController {
 private extension LoginViewController {
     
     func bind() {
-        
+        let _ = viewModel?.transform(
+            input: LoginViewModel.Input(
+                didTappedAppleLoginButton: appleLoginButton.tapPublisher(),
+                didTappedPhoneLoginButton: phoneLoginButton.tapPublisher()
+            )
+        )
     }
     
     func configureView() {
