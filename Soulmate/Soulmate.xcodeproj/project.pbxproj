@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		074F3B0B292261EA00D36C89 /* CandidatesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074F3B0A292261EA00D36C89 /* CandidatesCell.swift */; };
 		6A0041D72919E68D0042E02F /* MainTabCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A0041D62919E68C0042E02F /* MainTabCoordinator.swift */; };
 		6A0041D92919E6B60042E02F /* CoordinatorInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A0041D82919E6B60042E02F /* CoordinatorInterface.swift */; };
 		6A0041DB2919E9420042E02F /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A0041DA2919E9420042E02F /* AppCoordinator.swift */; };
@@ -50,6 +51,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		074F3B0A292261EA00D36C89 /* CandidatesCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CandidatesCell.swift; sourceTree = "<group>"; };
 		6A0041D62919E68C0042E02F /* MainTabCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabCoordinator.swift; sourceTree = "<group>"; };
 		6A0041D82919E6B60042E02F /* CoordinatorInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinatorInterface.swift; sourceTree = "<group>"; };
 		6A0041DA2919E9420042E02F /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
@@ -105,6 +107,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		074F3B072922610900D36C89 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				074F3B0A292261EA00D36C89 /* CandidatesCell.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		6A0041D32919E6490042E02F /* AuthScene */ = {
 			isa = PBXGroup;
 			children = (
@@ -157,6 +167,7 @@
 			isa = PBXGroup;
 			children = (
 				6A0042002919EEB20042E02F /* Coordinator */,
+				074F3B072922610900D36C89 /* View */,
 				6A0041E92919ED500042E02F /* ViewModel */,
 				6A0041E82919ED480042E02F /* ViewController */,
 			);
@@ -538,6 +549,7 @@
 				6A0041DD2919EADC0042E02F /* HomeCoordinator.swift in Sources */,
 				6A0041FF2919EE920042E02F /* ModificationViewController.swift in Sources */,
 				6A0041F42919EDC20042E02F /* ChatListViewController.swift in Sources */,
+				074F3B0B292261EA00D36C89 /* CandidatesCell.swift in Sources */,
 				6A0041F62919EE010042E02F /* ChattingRoomViewController.swift in Sources */,
 				6A0041D72919E68D0042E02F /* MainTabCoordinator.swift in Sources */,
 			);

@@ -40,110 +40,23 @@ final class HomeViewController: UIViewController {
         return label
     }()
     
-    // MARK: - 후보1 UI
-    private lazy var candidateUpperName: UILabel = {
-        let label = UILabel()
-        label.text = "초록잎"
-        label.frame = CGRect(x: 0, y: 0, width: 58, height: 26)
-        label.textColor = UIColor.white
-        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 22)
-        candidateUpperView.addSubview(label)
-        return label
-    }()
-    
-    private lazy var candidateUpperAge: UILabel = {
-        let label = UILabel()
-        label.text = "25"
-        label.frame = CGRect(x: 0, y: 0, width: 23, height: 26)
-        label.textColor = UIColor.white
-        label.font = UIFont(name: "AppleSDGothicNeo-Light", size: 22)
-        candidateUpperView.addSubview(label)
-        return label
-    }()
-    
-    private lazy var candidateUpperMapImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.image = UIImage(named: "mapGrey")
-        imageView.frame = CGRect(x: 0, y: 0, width: 13.04, height: 18)
-        imageView.contentMode = .scaleAspectFit
-        candidateUpperView.addSubview(imageView)
-        return imageView
-    }()
-    
-    private lazy var candidateUpperDistance: UILabel = {
-        let label = UILabel()
-        label.text = "3 km"
-        label.frame = CGRect(x: 0, y: 0, width: 32, height: 20)
-        label.textColor = UIColor.white
-        label.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 15)
-        candidateUpperView.addSubview(label)
-        return label
-    }()
-    
-    private lazy var candidateUpperView: UIView = {
-        let view = UIView()
-        view.layer.cornerRadius = 14
-        view.backgroundColor = UIColor.backgroundGrey
-        candidateStackView.addArrangedSubview(view)
-        return view
-    }()
-    
-    // MARK: - 후보2 UI
-    private lazy var candidateLowerName: UILabel = {
-        let label = UILabel()
-        label.text = "파란잎"
-        label.frame = CGRect(x: 0, y: 0, width: 58, height: 26)
-        label.textColor = UIColor.white
-        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 22)
-        candidateLowerView.addSubview(label)
-        return label
-    }()
-    
-    private lazy var candidateLowerAge: UILabel = {
-        let label = UILabel()
-        label.text = "21"
-        label.frame = CGRect(x: 0, y: 0, width: 23, height: 26)
-        label.textColor = UIColor.white
-        label.font = UIFont(name: "AppleSDGothicNeo-Light", size: 22)
-        candidateLowerView.addSubview(label)
-        return label
-    }()
-    
-    private lazy var candidateLowerMapImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.image = UIImage(named: "mapGrey")
-        imageView.frame = CGRect(x: 0, y: 0, width: 13.04, height: 18)
-        imageView.contentMode = .scaleAspectFit
-        candidateLowerView.addSubview(imageView)
-        return imageView
-    }()
-    
-    private lazy var candidateLowerDistance: UILabel = {
-        let label = UILabel()
-        label.text = "21 km"
-        label.frame = CGRect(x: 0, y: 0, width: 32, height: 20)
-        label.textColor = UIColor.white
-        label.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 15)
-        candidateLowerView.addSubview(label)
-        return label
-    }()
-    
-    private lazy var candidateLowerView: UIView = {
-        let view = UIView()
-        view.layer.cornerRadius = 14
-        view.backgroundColor = UIColor.backgroundGrey
-        candidateStackView.addArrangedSubview(view)
-        return view
-    }()
-    
-    private lazy var candidateStackView: UIStackView = {
-        let stack = UIStackView()
-        stack.spacing = 16
-        stack.axis = .vertical
-        stack.alignment = .fill
-        stack.distribution = .fillEqually
-        self.view.addSubview(stack)
-        return stack
+    // MARK: - 컬렉션뷰
+    private lazy var collectionView: UICollectionView = {
+        var layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .vertical
+        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        layout.itemSize = CGSize(width: view.frame.size.width - 40, height: view.frame.size.width - 40)
+        
+        let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        cv.register(CandidatesCell.self, forCellWithReuseIdentifier: "CandidatesCell")
+        cv.contentInset = UIEdgeInsets(top: -64, left: 0, bottom: 0, right: 0)
+        cv.showsVerticalScrollIndicator = false
+        cv.bounces = true
+        cv.isPagingEnabled = false
+        cv.backgroundColor = .clear
+        
+        self.view.addSubview(cv)
+        return cv
     }()
     
     // MARK: - 다시 추천 버튼
@@ -168,14 +81,15 @@ final class HomeViewController: UIViewController {
         configureView()
         configureLayout()
     }
-    
 }
 
 // MARK: - View Generators
 
-private extension HomeViewController {
+extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func configureView() {
         view.backgroundColor = .white
+        collectionView.delegate = self
+        collectionView.dataSource = self
     }
     
     func configureLayout() {
@@ -188,14 +102,14 @@ private extension HomeViewController {
         
         heart.snp.makeConstraints {
             $0.right.equalToSuperview().offset(-45.46)
-            $0.top.equalTo(view.snp.top).offset(72.97)
+            $0.top.equalTo(view.snp.top).offset(65.97)
             $0.width.equalTo(17.07)
             $0.height.equalTo(14.06)
         }
         
         numOfHeartLabel.snp.makeConstraints {
             $0.right.equalToSuperview().offset(-20)
-            $0.top.equalTo(view.snp.top).offset(71)
+            $0.top.equalTo(view.snp.top).offset(64)
         }
         
         recommendAgainButton.snp.makeConstraints {
@@ -204,46 +118,25 @@ private extension HomeViewController {
             $0.height.equalTo(54)
         }
         
-        [candidateUpperName, candidateLowerName].forEach {
-            $0.snp.makeConstraints {
-                $0.left.equalToSuperview().inset(20)
-                $0.bottom.equalToSuperview().inset(50)
-            }
-        }
-        
-        [candidateUpperAge, candidateLowerAge].forEach {
-            $0.snp.makeConstraints {
-                $0.left.equalToSuperview().inset(84)
-                $0.bottom.equalToSuperview().inset(50)
-            }
-        }
-        
-        [candidateUpperMapImageView, candidateLowerMapImageView].forEach {
-            $0.snp.makeConstraints {
-                $0.left.equalToSuperview().inset(22.48)
-                $0.bottom.equalToSuperview().inset(25)
-            }
-        }
-        
-        [candidateUpperDistance, candidateLowerDistance].forEach {
-            $0.snp.makeConstraints {
-                $0.left.equalToSuperview().inset(44)
-                $0.bottom.equalToSuperview().inset(24)
-            }
-        }
-        
-        [candidateUpperView, candidateLowerView].forEach {
-            $0.snp.makeConstraints {
-                $0.width.equalTo(candidateUpperView.snp.height)
-            }
-        }
-        
-        candidateStackView.snp.makeConstraints {
+        collectionView.snp.makeConstraints {
             $0.top.equalTo(logo.snp.bottom).offset(29)
             $0.bottom.equalTo(recommendAgainButton.snp.top).offset(-36)
             $0.centerX.equalToSuperview()
-            $0.left.greaterThanOrEqualToSuperview().inset(20)
+            $0.width.equalToSuperview().inset(20)
         }
-        
     }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        // TODO: 추천 인원수 전달하기
+        return 2
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CandidatesCell", for: indexPath) as? CandidatesCell else {
+            return UICollectionViewCell()
+        }
+        return cell
+    }
+    
 }
