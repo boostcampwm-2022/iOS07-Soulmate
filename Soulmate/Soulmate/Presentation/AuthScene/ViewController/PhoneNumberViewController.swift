@@ -37,7 +37,6 @@ final class PhoneNumberViewController: UIViewController {
         let textField = UITextField()
         textField.placeholder = "US +1"
         textField.font = UIFont.systemFont(ofSize: 20)
-        textField.isEnabled = false
         self.view.addSubview(textField)
         return textField
     }()
@@ -46,6 +45,7 @@ final class PhoneNumberViewController: UIViewController {
         textField.placeholder = "01012345678"
         textField.font = UIFont.systemFont(ofSize: 20)
         textField.delegate = self
+        textField.keyboardType = .numberPad
         self.view.addSubview(textField)
         return textField
     }()
@@ -93,6 +93,7 @@ private extension PhoneNumberViewController {
         
         let output = viewModel.transform(
             input: PhoneNumberViewModel.Input(
+                didChangedNationCode: nationCodeDropDown.textPublisher(),
                 didChangedPhoneNumber: phoneNumberTextField.textPublisher(),
                 didTouchedNextButton: nextButton.tapPublisher()
             )
@@ -107,6 +108,8 @@ private extension PhoneNumberViewController {
     
     func configureView() {
         self.view.backgroundColor = .systemBackground
+        
+        configurePickerView()
     }
     
     func configureLayout() {
@@ -138,15 +141,56 @@ private extension PhoneNumberViewController {
     }
 }
 
-// MARK: 전화번호 글자 수 제한
-
 extension PhoneNumberViewController: UITextFieldDelegate {
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        guard let text = textField.text else { return false }
-        let newString = (text as NSString).replacingCharacters(in: range, with: string)
-        
-        return newString.count <= 11
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        view.endEditing(true)
     }
+}
+
+extension PhoneNumberViewController: UIPickerViewDelegate, UIPickerViewDataSource {
+    
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return GlobalPhonePrefix.allCases.count
+    }
+    
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return GlobalPhonePrefix.allCases[row].rawValue
+    }
+    
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        nationCodeDropDown.text = row != 0 ? GlobalPhonePrefix.allCases[row].rawValue : ""
+    }
+    
+    func configurePickerView() {
+        let pickerView = UIPickerView()
+        pickerView.delegate = self
+        nationCodeDropDown.inputView = pickerView
+        
+        let toolBar = UIToolbar()
+        toolBar.sizeToFit()
+        let button = UIBarButtonItem(title: "선택", style: .plain, target: self, action: #selector(self.didFinishedPicker))
+        toolBar.setItems([button], animated: true)
+        toolBar.isUserInteractionEnabled = true
+        nationCodeDropDown.inputAccessoryView = toolBar
+    }
+    
+    @objc func didFinishedPicker() {
+        view.endEditing(true)
+    }
+    
+}
+
+enum GlobalPhonePrefix: String, CaseIterable {
+    case mock = "국가 선택"
+    case korea = "+82"
+    case japen = "+81"
+    case usa = "+1"
 }
 
 extension UITextField {

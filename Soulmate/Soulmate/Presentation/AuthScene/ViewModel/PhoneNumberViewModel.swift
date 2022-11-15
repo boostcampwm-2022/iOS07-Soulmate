@@ -20,9 +20,11 @@ class PhoneNumberViewModel {
     
     var actions: PhoneNumberViewModelActions?
     
+    @Published var nationCode: String?
     @Published var phoneNumber: String?
     
     struct Input {
+        var didChangedNationCode: AnyPublisher<String?, Never>
         var didChangedPhoneNumber: AnyPublisher<String?, Never>
         var didTouchedNextButton: AnyPublisher<Void, Never>
     }
@@ -39,6 +41,11 @@ class PhoneNumberViewModel {
     }
     
     func transform(input: Input) -> Output {
+        
+        input.didChangedNationCode
+            .assign(to: \.nationCode, on: self)
+            .store(in: &bag)
+        
         input.didChangedPhoneNumber
             .assign(to: \.phoneNumber, on: self)
             .store(in: &bag)
@@ -49,10 +56,13 @@ class PhoneNumberViewModel {
             }
             .store(in: &bag)
         
-        let isNextButtonEnabled = $phoneNumber
-            .compactMap { $0 }
-            .map { value in
-                return value.count == 11
+        let isNextButtonEnabled = Publishers.CombineLatest($nationCode, $phoneNumber)
+            .map { (value1, value2) in
+                guard let value1 = value1,
+                      let value2 = value2,
+                      !value1.isEmpty,
+                      !value2.isEmpty else { return false }
+                return true
             }
             .eraseToAnyPublisher()
         

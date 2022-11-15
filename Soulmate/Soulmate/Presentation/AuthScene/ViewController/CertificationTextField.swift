@@ -18,12 +18,21 @@ class CertificationTextField: UITextField {
         fatalError("init(coder:) has not been implemented")
     }
     
+    convenience init() {
+        self.init(frame: .zero)
+        configureView()
+    }
+    
     override func deleteBackward() {
         if text?.isEmpty ?? false {
             certificationTextFieldDelegate?.textFieldDidEnterBackspace(self)
         }
         
         super.deleteBackward()
+    }
+    
+    func configureView() {
+        self.keyboardType = .numberPad
     }
 }
 

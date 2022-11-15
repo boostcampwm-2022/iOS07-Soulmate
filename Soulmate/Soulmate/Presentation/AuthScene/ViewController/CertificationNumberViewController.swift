@@ -277,6 +277,10 @@ private extension CertificationNumberViewController {
 }
 
 extension CertificationNumberViewController: UITextFieldDelegate, CertificationTextFieldDelegate {
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        view.endEditing(true)
+    }
 
     func textFieldDidEnterBackspace(_ textField: CertificationTextField) {
         let index = textField.tag
