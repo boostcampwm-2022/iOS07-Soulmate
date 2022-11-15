@@ -10,7 +10,7 @@ import Combine
 
 extension UITextField {
     func textPublisher() -> AnyPublisher<String?, Never> {
-        return UIControl.ControlEvent(control: self, event: .valueChanged)
+        return UIControl.ControlEvent(control: self, event: [.allEditingEvents, .valueChanged])
             .map { _ in
                 return self.text
             }
