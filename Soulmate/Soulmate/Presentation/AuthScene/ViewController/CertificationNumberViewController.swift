@@ -303,7 +303,7 @@ extension CertificationNumberViewController: UITextFieldDelegate, CertificationT
         let nextTag: Int = textField.tag + 1
         
         textField.text = newString
-        if nextTag == 6 {
+        if nextTag == certificationFields.count {
             textField.resignFirstResponder()
         }
         else {

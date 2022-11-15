@@ -23,7 +23,14 @@ final class AppCoordinator: Coordinator {
     }
     
     func start() {
-        showMainTabFlow()
+        showAuthFlow()
+    }
+    
+    private func showAuthFlow() {
+        let authCoordinator = AuthCoordinator(navigationController: navigationController)
+        authCoordinator.finishDelegate = self
+        authCoordinator.start()
+        childCoordinators.append(authCoordinator)
     }
     
     private func showMainTabFlow() {

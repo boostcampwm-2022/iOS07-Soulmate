@@ -51,7 +51,21 @@ class AuthCoordinator: Coordinator {
         self?.navigationController.pushViewController(vc, animated: true)
     }
     
-    lazy var showCerfiticationPage: (String) -> Void = { phoneNumber in
+    lazy var showCerfiticationPage: (String) -> Void = { [weak self] phoneNumber in
+        let viewModel = CertificationViewModel()
+        viewModel.phoneNumber = phoneNumber // 수정
+        
+        viewModel.setActions(
+            actions: CertificationViewModelActions(
+                doneCertification: self?.doneCertificationPage
+            )
+        )
+        
+        let vc = CertificationNumberViewController(viewModel: viewModel)
+        self?.navigationController.pushViewController(vc, animated: true)
+    }
+    
+    lazy var doneCertificationPage: (Bool) -> Void = { bool in
         
     }
 }
