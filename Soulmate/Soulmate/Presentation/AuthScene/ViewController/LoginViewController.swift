@@ -24,7 +24,7 @@ final class LoginViewController: UIViewController, ASAuthorizationControllerPres
     private lazy var titleLogoImageView: UIImageView = {
         let imageView = UIImageView(frame: .zero)
         imageView.image = UIImage(named: "logo")?.withShadow(
-            blur: 3,
+            blur: 4,
             offset: CGSize(width: 0, height: 2),
             color: .black
         )
@@ -70,12 +70,12 @@ final class LoginViewController: UIViewController, ASAuthorizationControllerPres
         button.layer.cornerRadius = 10
         button.layer.cornerCurve = .continuous
         button.setImage(UIImage(named: "logoApple"), for: .normal)
-        
-         button.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 150)
-         button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 20)
+        button.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 150)
+        button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 20)
         
         button.addAction(UIAction { [weak self] _ in
-            self?.startSignInWithAppleFlow() }, for: .touchUpInside)
+            self?.startSignInWithAppleFlow()
+        }, for: .touchUpInside)
         
         self.view.addSubview(button)
         return button
@@ -247,9 +247,11 @@ extension LoginViewController: ASAuthorizationControllerDelegate {
                 return
             }
             // Initialize a Firebase credential.
-            let credential = OAuthProvider.credential(withProviderID: "apple.com",
-                                                      idToken: idTokenString,
-                                                      rawNonce: nonce)
+            let credential = OAuthProvider.credential(
+                withProviderID: "apple.com",
+                idToken: idTokenString,
+                rawNonce: nonce
+            )
             // Sign in with Firebase.
             Auth.auth().signIn(with: credential) { _, error in
                 if let error {
