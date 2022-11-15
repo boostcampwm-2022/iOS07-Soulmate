@@ -21,11 +21,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let navigationController = UINavigationController()
 
-        window?.rootViewController = navigationController
+        // window?.rootViewController = navigationController
+        
+        let viewModel = LoginViewModel()
+        let loginViewController = LoginViewController(viewModel: viewModel)
+        window?.rootViewController = loginViewController
         window?.makeKeyAndVisible()
         
-        let appCoordinator = AppCoordinator.init(navigationController: navigationController)
-        appCoordinator.start()
+//        let appCoordinator = AppCoordinator.init(navigationController: navigationController)
+//        appCoordinator.start()
         
         guard let _ = (scene as? UIWindowScene) else { return }
     }

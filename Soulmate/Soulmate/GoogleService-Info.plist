@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>775299959781-jsqrejf9cnsmg185f0fltuo08pbg4bhc.apps.googleusercontent.com</string>
+	<string>775299959781-rn6k0ers52k0pg5i4b2p6jpco5cdp3gf.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.775299959781-jsqrejf9cnsmg185f0fltuo08pbg4bhc</string>
+	<string>com.googleusercontent.apps.775299959781-rn6k0ers52k0pg5i4b2p6jpco5cdp3gf</string>
 	<key>API_KEY</key>
 	<string>AIzaSyBj7nDE-HaupPcVhCZO5MmRpy5Nzn_jQps</string>
 	<key>GCM_SENDER_ID</key>
@@ -13,7 +13,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.ghdps.Soulmate</string>
+	<string>CU5DL5JJWC.com.soulmate</string>
 	<key>PROJECT_ID</key>
 	<string>soulmate-b9713</string>
 	<key>STORAGE_BUCKET</key>
@@ -29,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:775299959781:ios:3d091775111263471e7d0c</string>
+	<string>1:775299959781:ios:53081ca7463f3ae11e7d0c</string>
 </dict>
 </plist>

@@ -5,18 +5,26 @@
 //  Created by Sangmin Lee on 2022/11/08.
 //
 
-import UIKit
-import SnapKit
+import AuthenticationServices
 import Combine
+import CryptoKit
+import FirebaseAuth
+import SnapKit
+import UIKit
 
-final class LoginViewController: UIViewController {
+final class LoginViewController: UIViewController, ASAuthorizationControllerPresentationContextProviding {
+    func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
+        return self.view.window!
+    }
+    
     
     private var viewModel: LoginViewModel?
+    private var currentNonce: String?
     
     private lazy var titleLogoImageView: UIImageView = {
         let imageView = UIImageView(frame: .zero)
         imageView.image = UIImage(named: "logo")?.withShadow(
-            blur: 3,
+            blur: 4,
             offset: CGSize(width: 0, height: 2),
             color: .black
         )
@@ -60,9 +68,14 @@ final class LoginViewController: UIViewController {
         button.setTitle("Apple로 시작하기", for: .normal)
         button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-SemiBold", size: 16)
         button.layer.cornerRadius = 10
+        button.layer.cornerCurve = .continuous
         button.setImage(UIImage(named: "logoApple"), for: .normal)
         button.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 150)
         button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 20)
+        
+        button.addAction(UIAction { [weak self] _ in
+            self?.startSignInWithAppleFlow()
+        }, for: .touchUpInside)
         
         self.view.addSubview(button)
         return button
@@ -71,11 +84,12 @@ final class LoginViewController: UIViewController {
     private lazy var phoneLoginButton: UIButton = {
         let button = UIButton(frame: .zero)
         button.layer.borderWidth = 1
-        button.layer.borderColor = UIColor.brand200.cgColor
+        button.layer.borderColor = UIColor.borderPurple?.cgColor ?? UIColor.black.cgColor
         button.setTitle("전화번호로 시작하기", for: .normal)
-        button.setTitleColor(.brand300, for: .normal)
+        button.setTitleColor(UIColor.mainPurple, for: .normal)
         button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-SemiBold", size: 16)
         button.layer.cornerRadius = 10
+        button.layer.cornerCurve = .continuous
         button.setImage(UIImage(named: "Phone"), for: .normal)
         button.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 135)
         button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 24)
@@ -156,8 +170,105 @@ private extension LoginViewController {
     }
 }
 
-// TODO: Color asset 만들고 지울것
-extension UIColor {
-    static let brand200 = UIColor(red: 198.0/255.0, green: 160.0/255.0, blue: 255.0/255.0, alpha: 1)
-    static let brand300 = UIColor(red: 139.0/255.0, green: 70.0/255.0, blue: 242.0/255.0, alpha: 1)
+private extension LoginViewController {
+    
+    func randomNonceString(length: Int = 32) -> String {
+        precondition(length > 0)
+        let charset: [Character] =
+        Array("0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._")
+        var result = ""
+        var remainingLength = length
+        
+        while remainingLength > 0 {
+            let randoms: [UInt8] = (0 ..< 16).map { _ in
+                var random: UInt8 = 0
+                let errorCode = SecRandomCopyBytes(kSecRandomDefault, 1, &random)
+                if errorCode != errSecSuccess {
+                    fatalError(
+                        "Unable to generate nonce. SecRandomCopyBytes failed with OSStatus \(errorCode)"
+                    )
+                }
+                return random
+            }
+            
+            randoms.forEach { random in
+                if remainingLength == 0 {
+                    return
+                }
+                
+                if random < charset.count {
+                    result.append(charset[Int(random)])
+                    remainingLength -= 1
+                }
+            }
+        }
+        
+        return result
+    }
+    
+    @available(iOS 13, *)
+    private func sha256(_ input: String) -> String {
+        let inputData = Data(input.utf8)
+        let hashedData = SHA256.hash(data: inputData)
+        let hashString = hashedData.compactMap { String(format: "%02x", $0) }.joined()
+        
+        return hashString
+    }
+    
+    @available(iOS 13, *)
+    func startSignInWithAppleFlow() {
+        let nonce = randomNonceString()
+        currentNonce = nonce
+        let appleIDProvider = ASAuthorizationAppleIDProvider()
+        let request = appleIDProvider.createRequest()
+        request.requestedScopes = [.fullName, .email]
+        request.nonce = sha256(nonce)
+        
+        let authorizationController = ASAuthorizationController(authorizationRequests: [request])
+        authorizationController.delegate = self
+        authorizationController.presentationContextProvider = self
+        authorizationController.performRequests()
+    }
+}
+
+extension LoginViewController: ASAuthorizationControllerDelegate {
+    
+    func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
+        if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
+            guard let nonce = currentNonce else {
+                fatalError("Invalid state: A login callback was received, but no login request was sent.")
+            }
+            guard let appleIDToken = appleIDCredential.identityToken else {
+                print("Unable to fetch identity token")
+                return
+            }
+            guard let idTokenString = String(data: appleIDToken, encoding: .utf8) else {
+                print("Unable to serialize token string from data: \(appleIDToken.debugDescription)")
+                return
+            }
+            // Initialize a Firebase credential.
+            let credential = OAuthProvider.credential(
+                withProviderID: "apple.com",
+                idToken: idTokenString,
+                rawNonce: nonce
+            )
+            // Sign in with Firebase.
+            Auth.auth().signIn(with: credential) { _, error in
+                if let error {
+                    // Error. If error.code == .MissingOrInvalidNonce, make sure
+                    // you're sending the SHA256-hashed nonce as a hex string with
+                    // your request to Apple.
+                    print(error.localizedDescription)
+                    return
+                }
+                // User is signed in to Firebase with Apple.
+                // ...
+            }
+        }
+    }
+    
+    func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
+        // Handle error.
+        print("Sign in with Apple errored: \(error)")
+    }
 }
