@@ -39,5 +39,19 @@ class AuthCoordinator: Coordinator {
     
     lazy var showAppleLoginSheet: () -> Void = {}
     
-    lazy var showPhoneLoginPage: () -> Void = {}
+    lazy var showPhoneLoginPage: () -> Void = { [weak self] in
+        let viewModel = PhoneNumberViewModel()
+        viewModel.setActions(
+            actions: PhoneNumberViewModelActions(
+                showCertificationPage: self?.showCerfiticationPage
+            )
+        )
+        
+        let vc = PhoneNumberViewController(viewModel: viewModel)
+        self?.navigationController.pushViewController(vc, animated: true)
+    }
+    
+    lazy var showCerfiticationPage: (String) -> Void = { phoneNumber in
+        
+    }
 }
