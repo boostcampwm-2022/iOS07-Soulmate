@@ -40,7 +40,8 @@ class AuthCoordinator: Coordinator {
     lazy var showAppleLoginSheet: () -> Void = {}
     
     lazy var showPhoneLoginPage: () -> Void = { [weak self] in
-        let viewModel = PhoneNumberViewModel()
+        let authUseCase = DefaultAuthUseCase()
+        let viewModel = PhoneNumberViewModel(authUseCase: authUseCase)
         viewModel.setActions(
             actions: PhoneNumberViewModelActions(
                 showCertificationPage: self?.showCerfiticationPage
@@ -52,7 +53,8 @@ class AuthCoordinator: Coordinator {
     }
     
     lazy var showCerfiticationPage: (String) -> Void = { [weak self] phoneNumber in
-        let viewModel = CertificationViewModel()
+        let authUseCase = DefaultAuthUseCase()
+        let viewModel = CertificationViewModel(authUseCase: authUseCase)
         viewModel.phoneNumber = phoneNumber // 수정
         
         viewModel.setActions(

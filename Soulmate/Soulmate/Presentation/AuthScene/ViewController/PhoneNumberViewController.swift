@@ -100,7 +100,6 @@ private extension PhoneNumberViewController {
         
         output.isNextButtonEnabled
             .sink { [weak self] value in
-                print(value)
                 self?.nextButton.isEnabled = value
             }
             .store(in: &bag)

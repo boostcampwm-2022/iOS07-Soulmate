@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import FirebaseAuth
 
 struct PhoneNumberViewModelActions {
     var showCertificationPage: ((String) -> Void)?
@@ -14,6 +15,8 @@ struct PhoneNumberViewModelActions {
 
 class PhoneNumberViewModel {
     var bag = Set<AnyCancellable>()
+    
+    var authUseCase: AuthUseCase
     
     var actions: PhoneNumberViewModelActions?
     
@@ -25,6 +28,10 @@ class PhoneNumberViewModel {
     }
     struct Output {
         var isNextButtonEnabled: AnyPublisher<Bool, Never>
+    }
+    
+    init(authUseCase: AuthUseCase) {
+        self.authUseCase = authUseCase
     }
     
     func setActions(actions: PhoneNumberViewModelActions) {
@@ -45,7 +52,6 @@ class PhoneNumberViewModel {
         let isNextButtonEnabled = $phoneNumber
             .compactMap { $0 }
             .map { value in
-                print(value)
                 return value.count == 11
             }
             .eraseToAnyPublisher()
@@ -54,10 +60,23 @@ class PhoneNumberViewModel {
     }
     
     func nextButtonTouched() {
-        guard let phoneNumber = phoneNumber else { return }
+        guard var phoneNumber = phoneNumber else { return }
         
-        // TODO: verify phone number
+        // 국가코드 부분은 추후 수정
+        phoneNumber.removeFirst()
+        phoneNumber = "+82" + phoneNumber
         
-        actions?.showCertificationPage?(phoneNumber)
+        Task { [phoneNumber, weak self] in
+            do {
+                let verificationID = try await authUseCase.verifyPhoneNumber(phoneNumber: phoneNumber)
+                await MainActor.run { [self] in
+                    self?.actions?.showCertificationPage?(phoneNumber)
+                }
+            }
+            catch {
+                print(error)
+            }
+        }
+        
     }
 }

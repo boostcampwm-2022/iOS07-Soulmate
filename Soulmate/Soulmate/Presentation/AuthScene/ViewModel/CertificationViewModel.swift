@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import FirebaseAuth
 
 struct CertificationViewModelActions {
     var doneCertification: ((Bool) -> Void)?
@@ -15,6 +16,8 @@ struct CertificationViewModelActions {
 class CertificationViewModel {
     
     var bag = Set<AnyCancellable>()
+    
+    var authUseCase: AuthUseCase
     
     var actions: CertificationViewModelActions?
     
@@ -28,6 +31,10 @@ class CertificationViewModel {
     
     struct Output {
         var nextButtonEnabled: AnyPublisher<Bool, Never>
+    }
+    
+    init(authUseCase: AuthUseCase) {
+        self.authUseCase = authUseCase
     }
     
     func setActions(actions: CertificationViewModelActions) {
@@ -57,9 +64,21 @@ class CertificationViewModel {
     }
     
     func nextButtonTouched() {
+    
+        Task { [weak self] in
+            do {
+                guard let self else { return }
+                try await authUseCase.certifyWithSMSCode(certificationCode: self.certificationNumber)
+                
+                //여기서 한번더 디비를 확인해 개인정보설정을 모두 마친 사람이면 true, 아니면 false 전달해서 회원가입 코디네이터 실행
+                await MainActor.run {
+                    self.actions?.doneCertification?(true)
+                }
+            }
+            catch {
+                print(error)
+            }
+        }
         
-        // TODO: signIn 수행해야함
-        
-        actions?.doneCertification?(true)
     }
 }
