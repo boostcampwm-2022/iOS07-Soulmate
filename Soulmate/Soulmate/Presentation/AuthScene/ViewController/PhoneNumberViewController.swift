@@ -7,8 +7,14 @@
 
 import UIKit
 import SnapKit
+import Combine
 
 final class PhoneNumberViewController: UIViewController {
+    
+    var bag = Set<AnyCancellable>()
+    
+    var viewModel: PhoneNumberViewModel?
+    
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.text = "회원님의 휴대폰번호를\n입력해주세요"
@@ -39,6 +45,7 @@ final class PhoneNumberViewController: UIViewController {
         let textField = UITextField()
         textField.placeholder = "01012345678"
         textField.font = UIFont.systemFont(ofSize: 20)
+        textField.delegate = self
         self.view.addSubview(textField)
         return textField
     }()
@@ -57,14 +64,18 @@ final class PhoneNumberViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
         
-//    convenience init(viewModel: ViewModel) {
-//        self.init(nibName: nil, bundle: nil)
-//        self.viewModel = viewModel
-//    }
+    convenience init(viewModel: PhoneNumberViewModel) {
+        self.init(nibName: nil, bundle: nil)
+        self.viewModel = viewModel
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        configureView()
         configureLayout()
+        
+        bind()
     }
     
     override func viewDidLayoutSubviews() {
@@ -76,6 +87,29 @@ final class PhoneNumberViewController: UIViewController {
 // MARK: - View Generators
 
 private extension PhoneNumberViewController {
+    
+    func bind() {
+        guard let viewModel = viewModel else { return }
+        
+        let output = viewModel.transform(
+            input: PhoneNumberViewModel.Input(
+                didChangedPhoneNumber: phoneNumberTextField.textPublisher(),
+                didTouchedNextButton: nextButton.tapPublisher()
+            )
+        )
+        
+        output.isNextButtonEnabled
+            .sink { [weak self] value in
+                print(value)
+                self?.nextButton.isEnabled = value
+            }
+            .store(in: &bag)
+    }
+    
+    func configureView() {
+        self.view.backgroundColor = .systemBackground
+    }
+    
     func configureLayout() {
 
         titleLabel.snp.makeConstraints {
@@ -102,6 +136,17 @@ private extension PhoneNumberViewController {
             $0.height.equalTo(54)
             $0.centerX.equalTo(view.safeAreaLayoutGuide.snp.centerX)
         }
+    }
+}
+
+// MARK: 전화번호 글자 수 제한
+
+extension PhoneNumberViewController: UITextFieldDelegate {
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        guard let text = textField.text else { return false }
+        let newString = (text as NSString).replacingCharacters(in: range, with: string)
+        
+        return newString.count <= 11
     }
 }
 
