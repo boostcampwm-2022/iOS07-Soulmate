@@ -24,6 +24,7 @@
 		6A0041FF2919EE920042E02F /* ModificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A0041FE2919EE920042E02F /* ModificationViewController.swift */; };
 		6A0042032919EEED0042E02F /* ChatCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A0042022919EEED0042E02F /* ChatCoordinator.swift */; };
 		6A0042062919EF220042E02F /* MyPageCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A0042052919EF220042E02F /* MyPageCoordinator.swift */; };
+		6A03B6EC2923BD8C00AC15A6 /* PhoneNumberViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A03B6EB2923BD8C00AC15A6 /* PhoneNumberViewModel.swift */; };
 		6A444533291EA23F009AE2E5 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A444532291EA23F009AE2E5 /* UIColor.swift */; };
 		6A8B0724292330D100492123 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6A8B0723292330D100492123 /* GoogleService-Info.plist */; };
 		6A8C88902919031A009EDBBB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A8C888F2919031A009EDBBB /* AppDelegate.swift */; };
@@ -68,6 +69,7 @@
 		6A0041FE2919EE920042E02F /* ModificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModificationViewController.swift; sourceTree = "<group>"; };
 		6A0042022919EEED0042E02F /* ChatCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatCoordinator.swift; sourceTree = "<group>"; };
 		6A0042052919EF220042E02F /* MyPageCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageCoordinator.swift; sourceTree = "<group>"; };
+		6A03B6EB2923BD8C00AC15A6 /* PhoneNumberViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneNumberViewModel.swift; sourceTree = "<group>"; };
 		6A444532291EA23F009AE2E5 /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		6A8B07222923274400492123 /* Soulmate.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Soulmate.entitlements; sourceTree = "<group>"; };
 		6A8B0723292330D100492123 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -393,6 +395,7 @@
 			isa = PBXGroup;
 			children = (
 				6A97FE65291CE29E006F6DD9 /* LoginViewModel.swift */,
+				6A03B6EB2923BD8C00AC15A6 /* PhoneNumberViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -533,6 +536,7 @@
 				6A97FE63291CE0C2006F6DD9 /* UIImage+shadow.swift in Sources */,
 				6AE21021291DE06600A32280 /* SelectableCell.swift in Sources */,
 				6A0041DB2919E9420042E02F /* AppCoordinator.swift in Sources */,
+				6A03B6EC2923BD8C00AC15A6 /* PhoneNumberViewModel.swift in Sources */,
 				6A0041EE2919ED7F0042E02F /* DetailViewController.swift in Sources */,
 				6A444533291EA23F009AE2E5 /* UIColor.swift in Sources */,
 				6A8C88942919031A009EDBBB /* ViewController.swift in Sources */,
