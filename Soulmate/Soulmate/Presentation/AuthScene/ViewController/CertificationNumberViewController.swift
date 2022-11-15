@@ -6,27 +6,14 @@
 //
 
 import UIKit
-
-// TODO: Font Extension 나중에 분리해야 함
-extension UIFont {
-    
-    func withWeight(_ weight: CGFloat) -> UIFont {
-        var attributes = fontDescriptor.fontAttributes
-        var traits = (attributes[.traits] as? [UIFontDescriptor.TraitKey: Any]) ?? [:]
-        
-        traits[.weight] = Weight(weight)
-        
-        attributes[.name] = nil
-        attributes[.traits] = traits
-        attributes[.family] = familyName
-        
-        let descriptor = UIFontDescriptor(fontAttributes: attributes)
-        
-        return UIFont(descriptor: descriptor, size: pointSize)
-    }
-}
+import SnapKit
+import Combine
 
 final class CertificationNumberViewController: UIViewController {
+    
+    var viewModel: CertificationViewModel?
+    
+    var bag = Set<AnyCancellable>()
     
     private lazy var guideLabel: UILabel = {
         let label = UILabel()
@@ -112,60 +99,157 @@ final class CertificationNumberViewController: UIViewController {
         return stackView
     }()
     
-    private lazy var firstNum: UIStackView = {
-        numberView()
-    }()
-    private lazy var secondNum: UIStackView = {
-        numberView()
-    }()
-    private lazy var thirdNum: UIStackView = {
-        numberView()
-    }()
-    private lazy var fourthNum: UIStackView = {
-        numberView()
-    }()
-    private lazy var fifthNum: UIStackView = {
-        numberView()
-    }()
-    private lazy var sixthNum: UIStackView = {
-        numberView()
+    private var certificationFields = [
+        CertificationTextField(),
+        CertificationTextField(),
+        CertificationTextField(),
+        CertificationTextField(),
+        CertificationTextField(),
+        CertificationTextField()
+    ]
+    
+    private lazy var certificationFieldClearTouchView: UIButton = {
+        let view = UIButton(frame: .zero)
+        view.backgroundColor = .clear
+
+        view.addTarget(self, action: #selector(viewTapped), for: .touchUpInside)
+        return view
     }()
     
     // TODO: 크기 기기 사이즈에 맞춰서 조절 되어야 함.
     private lazy var numStackView: UIStackView = {
         let stackView = UIStackView()
         view.addSubview(stackView)
+        view.addSubview(certificationFieldClearTouchView)
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
         stackView.spacing = 3
-        [firstNum, secondNum, thirdNum, fourthNum, fifthNum, sixthNum].forEach { subView in
-            
-            stackView.addArrangedSubview(subView)
+        
+        certificationFields.forEach { certificationField in
+            let underLinedView = self.underLinedView(textField: certificationField)
+            stackView.addArrangedSubview(underLinedView)
         }
                 
         return stackView
     }()
+    
+    private lazy var nextButton: GradientButton = {
+        let button = GradientButton(title: "다음")
+        view.addSubview(button)
+        return button
+    }()
+    
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    convenience init(viewModel: CertificationViewModel) {
+        self.init(nibName: nil, bundle: nil)
+        self.viewModel = viewModel
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        configureUI()
+        configureLayout()
+        configureView()
+        
+        bind()
     }
-
+    
+    @objc func viewTapped(tapGestureRecognizer: UITapGestureRecognizer) {
+        for field in certificationFields {
+            guard let text = field.text,
+                  !text.isEmpty else {
+                field.becomeFirstResponder()
+                return
+            }
+        }
+        
+        guard let lastField = certificationFields.last else { return }
+        lastField.becomeFirstResponder()
+    }
 }
 
 // MARK: - Private functions
 
 private extension CertificationNumberViewController {
     
-    func configureUI() {
+    func bind() {
+        guard let viewModel = viewModel else { return }
+
+        userPhoneNumberLabel.text = viewModel.phoneNumber
         
-        NSLayoutConstraint.activate([
-            self.guideLabelAndPhoneNumberStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 50),
-            self.guideLabelAndPhoneNumberStackView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 20),
-            self.numStackView.topAnchor.constraint(equalTo: self.guideLabelAndPhoneNumberStackView.bottomAnchor, constant: 81),
-            self.numStackView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 32)
-        ])
+        var certificationFieldPublisher = certificationFields[0]
+            .textPublisher()
+            .compactMap { $0 }
+            .eraseToAnyPublisher()
+        
+        for i in 1..<certificationFields.count {
+            certificationFieldPublisher = certificationFieldPublisher
+                .combineLatest(
+                    certificationFields[i]
+                    .textPublisher()
+                    .compactMap { $0 }
+                    .eraseToAnyPublisher()
+                )
+                .map { (value1, value2) in
+                    return value1 + value2
+                }
+                .eraseToAnyPublisher()
+        }
+        
+        let output = viewModel.transform(
+            input: CertificationViewModel.Input(
+                didCertificationNumberChanged: certificationFieldPublisher, didTouchedNextButton: nextButton.tapPublisher()
+            )
+        )
+        
+        output.nextButtonEnabled
+            .sink { [weak self] value in
+                self?.nextButton.isEnabled = value
+            }
+            .store(in: &bag)
+    }
+    
+    func configureLayout() {
+        guideLabelAndPhoneNumberStackView.snp.makeConstraints {
+            $0.top.equalTo(self.view.safeAreaLayoutGuide.snp.top).offset(50)
+            $0.leading.equalTo(self.view.safeAreaLayoutGuide.snp.leading).offset(20)
+        }
+        
+        numStackView.snp.makeConstraints {
+            $0.top.equalTo(guideLabelAndPhoneNumberStackView.snp.bottom).offset(81)
+            $0.centerX.equalToSuperview()
+        }
+        
+        certificationFieldClearTouchView.snp.makeConstraints {
+            $0.edges.equalTo(numStackView)
+        }
+        
+        nextButton.snp.makeConstraints {
+            $0.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom).offset(-30)
+            $0.height.equalTo(54)
+            $0.leading.equalToSuperview().offset(20)
+            $0.trailing.equalToSuperview().offset(-20)
+        }
+    }
+    
+    func configureView() {
+        
+        self.view.backgroundColor = .systemBackground
+        
+        var i = 0
+        certificationFields.forEach {
+            $0.certificationTextFieldDelegate = self
+            $0.tag =  i
+            i += 1
+            $0.delegate = self
+        }
     }
 }
 
@@ -173,15 +257,14 @@ private extension CertificationNumberViewController {
 
 private extension CertificationNumberViewController {
     
-    func numberView() -> UIStackView {
+    func underLinedView(textField: UITextField) -> UIStackView {
         let stackView = UIStackView()
-        let numTextField = UITextField()
+        let numTextField = textField
         let underBar = UIView()
         stackView.axis = .vertical
         stackView.spacing = 14
         stackView.alignment = .center
         numTextField.font = UIFont.systemFont(ofSize: 30, weight: .regular)
-        numTextField.text = "0"
         numTextField.textAlignment = .center
         underBar.widthAnchor.constraint(equalToConstant: 52).isActive = true
         underBar.heightAnchor.constraint(equalToConstant: 2).isActive = true
@@ -191,6 +274,44 @@ private extension CertificationNumberViewController {
         
         return stackView
     }
+}
+
+extension CertificationNumberViewController: UITextFieldDelegate, CertificationTextFieldDelegate {
+
+    func textFieldDidEnterBackspace(_ textField: CertificationTextField) {
+        let index = textField.tag
+        if index > 0 {
+            certificationFields[index - 1].becomeFirstResponder()
+            certificationFields[index - 1].text = ""
+        } else {
+            view.endEditing(true)
+        }
+    }
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        guard let text = textField.text else { return false }
+
+        let newString = (text as NSString).replacingCharacters(in: range, with: string)
+        
+        if newString.count == 1 {
+            textFieldShouldReturnSingle(textField, newString: newString)
+        }
+        
+        return newString.count < 2
+    }
+
+    func textFieldShouldReturnSingle(_ textField: UITextField, newString: String) {
+        let nextTag: Int = textField.tag + 1
+        
+        textField.text = newString
+        if nextTag == 6 {
+            textField.resignFirstResponder()
+        }
+        else {
+            let nextResponder = certificationFields[nextTag]
+            nextResponder.becomeFirstResponder()
+        }
+    }
+
 }
 
 #if DEBUG
