@@ -68,11 +68,14 @@ final class LoginViewController: UIViewController, ASAuthorizationControllerPres
         button.setTitle("Apple로 시작하기", for: .normal)
         button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-SemiBold", size: 16)
         button.layer.cornerRadius = 10
+        button.layer.cornerCurve = .continuous
         button.setImage(UIImage(named: "logoApple"), for: .normal)
-        button.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 150)
-        button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 20)
         
-        button.addAction(UIAction { [weak self] _ in self?.startSignInWithAppleFlow() }, for: .touchUpInside)
+         button.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 150)
+         button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 20)
+        
+        button.addAction(UIAction { [weak self] _ in
+            self?.startSignInWithAppleFlow() }, for: .touchUpInside)
         
         self.view.addSubview(button)
         return button
@@ -81,11 +84,12 @@ final class LoginViewController: UIViewController, ASAuthorizationControllerPres
     private lazy var phoneLoginButton: UIButton = {
         let button = UIButton(frame: .zero)
         button.layer.borderWidth = 1
-        button.layer.borderColor = UIColor.brand200.cgColor
+        button.layer.borderColor = UIColor.borderPurple?.cgColor ?? UIColor.black.cgColor
         button.setTitle("전화번호로 시작하기", for: .normal)
-        button.setTitleColor(.brand300, for: .normal)
+        button.setTitleColor(UIColor.mainPurple, for: .normal)
         button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-SemiBold", size: 16)
         button.layer.cornerRadius = 10
+        button.layer.cornerCurve = .continuous
         button.setImage(UIImage(named: "Phone"), for: .normal)
         button.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 135)
         button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 24)
@@ -166,13 +170,6 @@ private extension LoginViewController {
     }
 }
 
-// TODO: Color asset 만들고 지울것
-extension UIColor {
-    static let brand200 = UIColor(red: 198.0/255.0, green: 160.0/255.0, blue: 255.0/255.0, alpha: 1)
-    static let brand300 = UIColor(red: 139.0/255.0, green: 70.0/255.0, blue: 242.0/255.0, alpha: 1)
-}
-
-
 private extension LoginViewController {
     
     func randomNonceString(length: Int = 32) -> String {
@@ -213,8 +210,7 @@ private extension LoginViewController {
     private func sha256(_ input: String) -> String {
         let inputData = Data(input.utf8)
         let hashedData = SHA256.hash(data: inputData)
-        let hashString = hashedData.compactMap {
-            String(format: "%02x", $0) }.joined()
+        let hashString = hashedData.compactMap { String(format: "%02x", $0) }.joined()
         
         return hashString
     }
@@ -255,12 +251,12 @@ extension LoginViewController: ASAuthorizationControllerDelegate {
                                                       idToken: idTokenString,
                                                       rawNonce: nonce)
             // Sign in with Firebase.
-            Auth.auth().signIn(with: credential) { (authResult, error) in
-                if (error != nil) {
+            Auth.auth().signIn(with: credential) { _, error in
+                if let error {
                     // Error. If error.code == .MissingOrInvalidNonce, make sure
                     // you're sending the SHA256-hashed nonce as a hex string with
                     // your request to Apple.
-                    print(error?.localizedDescription)
+                    print(error.localizedDescription)
                     return
                 }
                 // User is signed in to Firebase with Apple.
