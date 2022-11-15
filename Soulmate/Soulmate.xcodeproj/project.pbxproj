@@ -24,6 +24,7 @@
 		6A0042032919EEED0042E02F /* ChatCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A0042022919EEED0042E02F /* ChatCoordinator.swift */; };
 		6A0042062919EF220042E02F /* MyPageCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A0042052919EF220042E02F /* MyPageCoordinator.swift */; };
 		6A444533291EA23F009AE2E5 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A444532291EA23F009AE2E5 /* UIColor.swift */; };
+		6A8B0724292330D100492123 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6A8B0723292330D100492123 /* GoogleService-Info.plist */; };
 		6A8C88902919031A009EDBBB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A8C888F2919031A009EDBBB /* AppDelegate.swift */; };
 		6A8C88922919031A009EDBBB /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A8C88912919031A009EDBBB /* SceneDelegate.swift */; };
 		6A8C88942919031A009EDBBB /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A8C88932919031A009EDBBB /* ViewController.swift */; };
@@ -36,7 +37,6 @@
 		6ADEE4EA29221CB800AD328B /* UIButton+Publisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ADEE4E929221CB800AD328B /* UIButton+Publisher.swift */; };
 		6ADEE4EC29221CD900AD328B /* UITextField+Publisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ADEE4EB29221CD900AD328B /* UITextField+Publisher.swift */; };
 		6AE21021291DE06600A32280 /* SelectableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AE21020291DE06600A32280 /* SelectableCell.swift */; };
-		B30A8ECB291C940A00ED4906 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B30A8ECA291C940A00ED4906 /* GoogleService-Info.plist */; };
 		B30A8ECE291C953F00ED4906 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = B30A8ECD291C953F00ED4906 /* FirebaseAnalytics */; };
 		B30A8ED0291C953F00ED4906 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = B30A8ECF291C953F00ED4906 /* FirebaseAuth */; };
 		B30A8ED2291C953F00ED4906 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = B30A8ED1291C953F00ED4906 /* FirebaseFirestore */; };
@@ -67,6 +67,8 @@
 		6A0042022919EEED0042E02F /* ChatCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatCoordinator.swift; sourceTree = "<group>"; };
 		6A0042052919EF220042E02F /* MyPageCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageCoordinator.swift; sourceTree = "<group>"; };
 		6A444532291EA23F009AE2E5 /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
+		6A8B07222923274400492123 /* Soulmate.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Soulmate.entitlements; sourceTree = "<group>"; };
+		6A8B0723292330D100492123 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		6A8C888C2919031A009EDBBB /* Soulmate.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Soulmate.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6A8C888F2919031A009EDBBB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6A8C88912919031A009EDBBB /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -81,7 +83,6 @@
 		6ADEE4E929221CB800AD328B /* UIButton+Publisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Publisher.swift"; sourceTree = "<group>"; };
 		6ADEE4EB29221CD900AD328B /* UITextField+Publisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Publisher.swift"; sourceTree = "<group>"; };
 		6AE21020291DE06600A32280 /* SelectableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectableCell.swift; sourceTree = "<group>"; };
-		B30A8ECA291C940A00ED4906 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B30A8F0E291CB4AC00ED4906 /* PhoneNumberViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneNumberViewController.swift; sourceTree = "<group>"; };
 		B30A8F10291CB4F100ED4906 /* CertificationNumberViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CertificationNumberViewController.swift; sourceTree = "<group>"; };
 		B31A68262919F5D2001D35E9 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
@@ -285,6 +286,7 @@
 		6A8C888E2919031A009EDBBB /* Soulmate */ = {
 			isa = PBXGroup;
 			children = (
+				6A8B07222923274400492123 /* Soulmate.entitlements */,
 				6A97FE61291CE0A4006F6DD9 /* Util */,
 				6A8C88A52919E3B6009EDBBB /* Data */,
 				6A8C88A42919E3B1009EDBBB /* Domain */,
@@ -294,8 +296,8 @@
 				6A8C88982919031D009EDBBB /* Assets.xcassets */,
 				6A8C889A2919031D009EDBBB /* LaunchScreen.storyboard */,
 				6A8C889D2919031D009EDBBB /* Info.plist */,
+				6A8B0723292330D100492123 /* GoogleService-Info.plist */,
 				B31A68262919F5D2001D35E9 /* .swiftlint.yml */,
-				B30A8ECA291C940A00ED4906 /* GoogleService-Info.plist */,
 			);
 			path = Soulmate;
 			sourceTree = "<group>";
@@ -477,7 +479,7 @@
 			files = (
 				B31A68272919F5D2001D35E9 /* .swiftlint.yml in Resources */,
 				6A8C889C2919031D009EDBBB /* LaunchScreen.storyboard in Resources */,
-				B30A8ECB291C940A00ED4906 /* GoogleService-Info.plist in Resources */,
+				6A8B0724292330D100492123 /* GoogleService-Info.plist in Resources */,
 				6A8C88992919031D009EDBBB /* Assets.xcassets in Resources */,
 				6A8C88972919031A009EDBBB /* Main.storyboard in Resources */,
 			);
@@ -684,9 +686,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Soulmate/Soulmate.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = CU5DL5JJWC;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Soulmate/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -699,7 +702,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.ghdps.Soulmate;
+				PRODUCT_BUNDLE_IDENTIFIER = CU5DL5JJWC.com.soulmate;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -712,9 +715,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Soulmate/Soulmate.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = CU5DL5JJWC;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Soulmate/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -727,7 +731,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.ghdps.Soulmate;
+				PRODUCT_BUNDLE_IDENTIFIER = CU5DL5JJWC.com.soulmate;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;

@@ -19,7 +19,7 @@ class LoginViewModel {
         var didTappedPhoneLoginButton: AnyPublisher<Void, Never>
     }
     struct Output {}
-    
+        
     var bag = Set<AnyCancellable>()
     
     var actions: LoginViewModelActions?
