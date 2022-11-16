@@ -18,12 +18,18 @@ class GradientButton: UIButton {
     }
     
     private func configure(title: String) {
-        self.setTitle(title, for: .normal)
-        self.setTitleColor(.white, for: .normal)
-        self.backgroundColor = .gray
+        var config = UIButton.Configuration.plain()
+        config.contentInsets = NSDirectionalEdgeInsets(top: 16, leading: 0, bottom: 16, trailing: 0)
+        let attr: [NSAttributedString.Key : Any] = [
+            NSAttributedString.Key.foregroundColor: UIColor.white,
+            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 18, weight: .bold)
+        ]
+        let attrString = NSAttributedString(string: title, attributes: attr)
+        config.attributedTitle = AttributedString(attrString)
+        config.baseBackgroundColor = UIColor.gray
+        self.configuration = config        
         self.layer.cornerRadius = 12
         self.layer.cornerCurve = .continuous
-        self.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .bold)
     }
     
     convenience init(title: String) {
@@ -44,8 +50,8 @@ class GradientButton: UIButton {
         let l = CAGradientLayer()
         l.frame = self.bounds
         l.colors = [
-            UIColor(red: 0.647, green: 0.204, blue: 0.961, alpha: 1).cgColor,
-            UIColor(red: 0.325, green: 0.408, blue: 0.914, alpha: 1).cgColor
+            UIColor.gradientPurple?.cgColor ?? UIColor.black.cgColor,
+            UIColor.gradientBlue?.cgColor ?? UIColor.black.cgColor
         ]
         l.locations = [0, 1]
         l.startPoint = CGPoint(x: 0.4, y: 0.5)
