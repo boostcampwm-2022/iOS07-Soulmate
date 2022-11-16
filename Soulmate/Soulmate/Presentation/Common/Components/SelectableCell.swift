@@ -24,20 +24,34 @@ class SelectableCell: UICollectionViewCell {
         return imageView
     }()
     
+    override var isSelected: Bool {
+        didSet {
+            if isSelected {
+                self.contentView.layer.borderColor = UIColor.borderPurple?.cgColor
+                self.contentView.backgroundColor = UIColor.lightPurple
+                self.checkImageView.image = UIImage(named: "checkOn")
+            } else {
+                self.contentView.layer.borderColor = UIColor.symbolGrey?.cgColor
+                self.contentView.backgroundColor = UIColor.white
+                self.checkImageView.image = UIImage(named: "checkOff")
+            }
+        }
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
-        configure()
+        configureView()
         configureLayout()
-        isUnChecked()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure() {
+    func configureView() {
         self.contentView.layer.borderWidth = 1
         self.contentView.layer.cornerRadius = 14
+        self.isSelected = false
     }
     
     func configureLayout() {
@@ -53,18 +67,9 @@ class SelectableCell: UICollectionViewCell {
         }
     }
     
-    func isChecked() {
-        self.contentView.layer.borderColor = UIColor.borderPurple?.cgColor
-        self.contentView.backgroundColor = UIColor.lightPurple
-        self.checkImageView.image = UIImage(named: "checkOn")
+    func fill(with title: String) {
+        self.titleLabel.text = title
     }
-    
-    func isUnChecked() {
-        self.contentView.layer.borderColor = UIColor.symbolGrey?.cgColor
-        self.contentView.backgroundColor = UIColor.white
-        self.checkImageView.image = UIImage(named: "checkOff")
-    }
-    
     
 }
 
