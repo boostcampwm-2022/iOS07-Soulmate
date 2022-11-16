@@ -24,6 +24,12 @@
 		6A0041FF2919EE920042E02F /* ModificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A0041FE2919EE920042E02F /* ModificationViewController.swift */; };
 		6A0042032919EEED0042E02F /* ChatCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A0042022919EEED0042E02F /* ChatCoordinator.swift */; };
 		6A0042062919EF220042E02F /* MyPageCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A0042052919EF220042E02F /* MyPageCoordinator.swift */; };
+		6A03B6EC2923BD8C00AC15A6 /* PhoneNumberViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A03B6EB2923BD8C00AC15A6 /* PhoneNumberViewModel.swift */; };
+		6A03B6EE2923BF2300AC15A6 /* CertificationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A03B6ED2923BF2300AC15A6 /* CertificationViewModel.swift */; };
+		6A03B6F02923BF8900AC15A6 /* CertificationTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A03B6EF2923BF8900AC15A6 /* CertificationTextField.swift */; };
+		6A03B6F22923C00900AC15A6 /* UIFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A03B6F12923C00900AC15A6 /* UIFont.swift */; };
+		6A03B7242923DE7200AC15A6 /* DefaultAuthUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A03B7232923DE7200AC15A6 /* DefaultAuthUseCase.swift */; };
+		6A03B7272923E5E300AC15A6 /* AuthUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A03B7262923E5E300AC15A6 /* AuthUseCase.swift */; };
 		6A444533291EA23F009AE2E5 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A444532291EA23F009AE2E5 /* UIColor.swift */; };
 		6A8B0724292330D100492123 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6A8B0723292330D100492123 /* GoogleService-Info.plist */; };
 		6A8C88902919031A009EDBBB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A8C888F2919031A009EDBBB /* AppDelegate.swift */; };
@@ -69,6 +75,12 @@
 		6A0041FE2919EE920042E02F /* ModificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModificationViewController.swift; sourceTree = "<group>"; };
 		6A0042022919EEED0042E02F /* ChatCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatCoordinator.swift; sourceTree = "<group>"; };
 		6A0042052919EF220042E02F /* MyPageCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageCoordinator.swift; sourceTree = "<group>"; };
+		6A03B6EB2923BD8C00AC15A6 /* PhoneNumberViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneNumberViewModel.swift; sourceTree = "<group>"; };
+		6A03B6ED2923BF2300AC15A6 /* CertificationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CertificationViewModel.swift; sourceTree = "<group>"; };
+		6A03B6EF2923BF8900AC15A6 /* CertificationTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CertificationTextField.swift; sourceTree = "<group>"; };
+		6A03B6F12923C00900AC15A6 /* UIFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFont.swift; sourceTree = "<group>"; };
+		6A03B7232923DE7200AC15A6 /* DefaultAuthUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultAuthUseCase.swift; sourceTree = "<group>"; };
+		6A03B7262923E5E300AC15A6 /* AuthUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthUseCase.swift; sourceTree = "<group>"; };
 		6A444532291EA23F009AE2E5 /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		6A8B07222923274400492123 /* Soulmate.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Soulmate.entitlements; sourceTree = "<group>"; };
 		6A8B0723292330D100492123 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -155,6 +167,7 @@
 				B30A8F0E291CB4AC00ED4906 /* PhoneNumberViewController.swift */,
 				B30A8F10291CB4F100ED4906 /* CertificationNumberViewController.swift */,
 				6A0041E12919EB780042E02F /* RegisterViewController.swift */,
+				6A03B6EF2923BF8900AC15A6 /* CertificationTextField.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -271,12 +284,53 @@
 			path = Coordinator;
 			sourceTree = "<group>";
 		};
+		6A03B71F2923DE3700AC15A6 /* Domain */ = {
+			isa = PBXGroup;
+			children = (
+				6A03B7202923DE4900AC15A6 /* Entity */,
+				6A03B7212923DE5000AC15A6 /* Interface */,
+				6A03B7222923DE5800AC15A6 /* UseCase */,
+			);
+			path = Domain;
+			sourceTree = "<group>";
+		};
+		6A03B7202923DE4900AC15A6 /* Entity */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Entity;
+			sourceTree = "<group>";
+		};
+		6A03B7212923DE5000AC15A6 /* Interface */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Interface;
+			sourceTree = "<group>";
+		};
+		6A03B7222923DE5800AC15A6 /* UseCase */ = {
+			isa = PBXGroup;
+			children = (
+				6A03B7232923DE7200AC15A6 /* DefaultAuthUseCase.swift */,
+			);
+			path = UseCase;
+			sourceTree = "<group>";
+		};
+		6A03B7252923E5BB00AC15A6 /* Interface */ = {
+			isa = PBXGroup;
+			children = (
+				6A03B7262923E5E300AC15A6 /* AuthUseCase.swift */,
+			);
+			path = Interface;
+			sourceTree = "<group>";
+		};
 		6A444531291EA22D009AE2E5 /* Extension */ = {
 			isa = PBXGroup;
 			children = (
 				6ADEE4E829221C6600AD328B /* Combine */,
 				6A97FE62291CE0C2006F6DD9 /* UIImage+shadow.swift */,
 				6A444532291EA23F009AE2E5 /* UIColor.swift */,
+				6A03B6F12923C00900AC15A6 /* UIFont.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -303,6 +357,7 @@
 				6A8B07222923274400492123 /* Soulmate.entitlements */,
 				6A97FE61291CE0A4006F6DD9 /* Util */,
 				6A8C88A52919E3B6009EDBBB /* Data */,
+				6A03B71F2923DE3700AC15A6 /* Domain */,
 				6A8C88A42919E3B1009EDBBB /* Domain */,
 				6A8C88A32919E3AB009EDBBB /* Presentation */,
 				6A8C88932919031A009EDBBB /* ViewController.swift */,
@@ -319,6 +374,7 @@
 		6A8C88A32919E3AB009EDBBB /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
+				6A03B7252923E5BB00AC15A6 /* Interface */,
 				6A0041F72919EE180042E02F /* MyPageScene */,
 				6A0041EF2919ED9D0042E02F /* ChatScene */,
 				6A0041E72919ED410042E02F /* HomeScene */,
@@ -396,6 +452,8 @@
 			isa = PBXGroup;
 			children = (
 				6A97FE65291CE29E006F6DD9 /* LoginViewModel.swift */,
+				6A03B6EB2923BD8C00AC15A6 /* PhoneNumberViewModel.swift */,
+				6A03B6ED2923BF2300AC15A6 /* CertificationViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -540,20 +598,25 @@
 				6ADEE4EC29221CD900AD328B /* UITextField+Publisher.swift in Sources */,
 				6A0041E42919EBA40042E02F /* AuthCoordinator.swift in Sources */,
 				6A0041E22919EB780042E02F /* RegisterViewController.swift in Sources */,
+				6A03B6F02923BF8900AC15A6 /* CertificationTextField.swift in Sources */,
 				6A0041FD2919EE7B0042E02F /* ServiceTermViewController.swift in Sources */,
 				6A97FE63291CE0C2006F6DD9 /* UIImage+shadow.swift in Sources */,
+				6A03B6EE2923BF2300AC15A6 /* CertificationViewModel.swift in Sources */,
 				6AE21021291DE06600A32280 /* SelectableCell.swift in Sources */,
 				6A0041DB2919E9420042E02F /* AppCoordinator.swift in Sources */,
+				6A03B6EC2923BD8C00AC15A6 /* PhoneNumberViewModel.swift in Sources */,
 				6A0041EE2919ED7F0042E02F /* DetailViewController.swift in Sources */,
 				6A444533291EA23F009AE2E5 /* UIColor.swift in Sources */,
 				6A8C88942919031A009EDBBB /* ViewController.swift in Sources */,
 				6ADEE4EA29221CB800AD328B /* UIButton+Publisher.swift in Sources */,
 				6A8C88902919031A009EDBBB /* AppDelegate.swift in Sources */,
 				6ADEE4E72922198200AD328B /* UIControl+Publisher.swift in Sources */,
+				6A03B6F22923C00900AC15A6 /* UIFont.swift in Sources */,
 				6A0041D92919E6B60042E02F /* CoordinatorInterface.swift in Sources */,
 				6A0042032919EEED0042E02F /* ChatCoordinator.swift in Sources */,
 				6A0041E02919EB230042E02F /* LoginViewController.swift in Sources */,
 				6A0041EB2919ED5F0042E02F /* HomeViewController.swift in Sources */,
+				6A03B7242923DE7200AC15A6 /* DefaultAuthUseCase.swift in Sources */,
 				6A0042062919EF220042E02F /* MyPageCoordinator.swift in Sources */,
 				B30A8F0F291CB4AC00ED4906 /* PhoneNumberViewController.swift in Sources */,
 				6A8C88922919031A009EDBBB /* SceneDelegate.swift in Sources */,
@@ -562,6 +625,7 @@
 				B30A8F11291CB4F100ED4906 /* CertificationNumberViewController.swift in Sources */,
 				6A0041DD2919EADC0042E02F /* HomeCoordinator.swift in Sources */,
 				6A0041FF2919EE920042E02F /* ModificationViewController.swift in Sources */,
+				6A03B7272923E5E300AC15A6 /* AuthUseCase.swift in Sources */,
 				6A0041F42919EDC20042E02F /* ChatListViewController.swift in Sources */,
 				074F3B0B292261EA00D36C89 /* CandidatesCell.swift in Sources */,
 				6A0041F62919EE010042E02F /* ChattingRoomViewController.swift in Sources */,
