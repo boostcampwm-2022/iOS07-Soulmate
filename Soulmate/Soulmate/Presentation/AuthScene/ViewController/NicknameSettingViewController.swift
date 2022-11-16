@@ -9,6 +9,15 @@ import UIKit
 
 final class NicknameSettingViewController: UIViewController {
     
+    private lazy var progressBar: ProgressBar = {
+        let bar = ProgressBar()
+        view.addSubview(bar)
+        bar.translatesAutoresizingMaskIntoConstraints = false
+        bar.goToNextStep()
+        
+        return bar
+    }()
+    
     private lazy var guideLabel: UILabel = {
         let label = UILabel()
         label.text = "소울메이트에서 사용하실\n닉네임을 적어주세요."
@@ -97,6 +106,12 @@ final class NicknameSettingViewController: UIViewController {
 private extension NicknameSettingViewController {
     
     func configureLayout() {
+        
+        progressBar.snp.makeConstraints {
+            $0.top.equalTo(self.view.safeAreaLayoutGuide.snp.top).offset(20)
+            $0.leading.equalTo(self.view.safeAreaLayoutGuide.snp.leading).offset(20)
+        }
+        
         guideLabelAndDescriptionStackView.snp.makeConstraints {
             $0.top.equalTo(self.view.safeAreaLayoutGuide.snp.top).offset(50)
             $0.leading.equalTo(self.view.safeAreaLayoutGuide.snp.leading).offset(20)

@@ -9,6 +9,15 @@ import UIKit
 
 final class IntroductionSettingViewController: UIViewController {
     
+    private lazy var progressBar: ProgressBar = {
+        let bar = ProgressBar()
+        view.addSubview(bar)
+        bar.translatesAutoresizingMaskIntoConstraints = false
+        bar.goToNextStep()
+        
+        return bar
+    }()
+    
     private lazy var guideLabel: UILabel = {
         let label = UILabel()
         view.addSubview(label)
@@ -78,6 +87,12 @@ final class IntroductionSettingViewController: UIViewController {
 private extension IntroductionSettingViewController {
     
     func configureLayout() {
+        
+        progressBar.snp.makeConstraints {
+            $0.top.equalTo(self.view.safeAreaLayoutGuide.snp.top).offset(20)
+            $0.leading.equalTo(self.view.safeAreaLayoutGuide.snp.leading).offset(20)
+        }
+        
         guideLabel.snp.makeConstraints {
             $0.top.equalTo(self.view.safeAreaLayoutGuide.snp.top).offset(50)
             $0.leading.equalTo(self.view.safeAreaLayoutGuide.snp.leading).offset(20)
