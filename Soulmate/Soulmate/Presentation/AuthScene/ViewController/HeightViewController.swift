@@ -7,9 +7,10 @@
 
 import UIKit
 
-class HeightViewController: UIViewController {
-    let pickerData: [Int] = Array(140...210)
+final class HeightViewController: UIViewController {
+    private let pickerData: [Int] = Array(140...210) // 키 범위
     
+    // TODO: 프로그레스바 연결, 뭔가 더 좋은 방법으로?
     private lazy var progressBar: ProgressBar = {
         let bar = ProgressBar()
         for _ in 0..<4 {

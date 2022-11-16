@@ -7,8 +7,8 @@
 
 import UIKit
 
-class BirthViewController: UIViewController {
-
+final class BirthViewController: UIViewController {
+    // TODO: 프로그레스바 연결, 뭔가 더 좋은 방법으로?
     private lazy var progressBar: ProgressBar = {
         let bar = ProgressBar()
         for _ in 0..<3 {
