@@ -9,6 +9,7 @@ import UIKit
 import SnapKit
 
 final class PhoneNumberViewController: UIViewController {
+    
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.text = "회원님의 휴대폰번호를\n입력해주세요"
@@ -18,6 +19,7 @@ final class PhoneNumberViewController: UIViewController {
         self.view.addSubview(label)
         return label
     }()
+    
     private lazy var descriptionLabel: UILabel = {
         let label = UILabel()
         label.text = "본인의 휴대폰 번호를 입력해주세요."
@@ -27,6 +29,7 @@ final class PhoneNumberViewController: UIViewController {
         self.view.addSubview(label)
         return label
     }()
+    
     private lazy var nationCodeDropDown: UITextField = {
         let textField = UITextField()
         textField.placeholder = "US +1"
@@ -35,6 +38,7 @@ final class PhoneNumberViewController: UIViewController {
         self.view.addSubview(textField)
         return textField
     }()
+    
     private lazy var phoneNumberTextField: UITextField = {
         let textField = UITextField()
         textField.placeholder = "01012345678"
@@ -42,6 +46,7 @@ final class PhoneNumberViewController: UIViewController {
         self.view.addSubview(textField)
         return textField
     }()
+    
     private lazy var nextButton: GradientButton = {
         let button = GradientButton(title: "다음")
         button.isEnabled = false
