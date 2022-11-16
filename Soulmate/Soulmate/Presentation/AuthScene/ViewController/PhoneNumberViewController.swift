@@ -200,8 +200,8 @@ enum GlobalPhonePrefix: String, CaseIterable {
 extension UITextField {
     func addUnderLine() {
         let bottomLine = CALayer()
-        bottomLine.frame = CGRect(x: 0.0, y: self.bounds.height + 3, width: self.bounds.width, height: 2.5)
-        bottomLine.backgroundColor = UIColor.systemGray.cgColor
+        bottomLine.frame = CGRect(x: 0.0, y: self.bounds.height + 8, width: self.bounds.width, height: 2.5)
+        bottomLine.backgroundColor = UIColor.underlineGrey?.cgColor
         self.borderStyle = UITextField.BorderStyle.none
         self.layer.addSublayer(bottomLine)
     }

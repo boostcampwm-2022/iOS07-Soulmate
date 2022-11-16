@@ -33,6 +33,9 @@
 		6A03B7242923DE7200AC15A6 /* DefaultAuthUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A03B7232923DE7200AC15A6 /* DefaultAuthUseCase.swift */; };
 		6A03B7272923E5E300AC15A6 /* AuthUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A03B7262923E5E300AC15A6 /* AuthUseCase.swift */; };
 		6A444533291EA23F009AE2E5 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A444532291EA23F009AE2E5 /* UIColor.swift */; };
+		6A8377A92924A3FC00BC7112 /* NicknameSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A8377A82924A3FC00BC7112 /* NicknameSettingViewController.swift */; };
+		6A8377AB2924B0D700BC7112 /* IntroductionSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A8377AA2924B0D700BC7112 /* IntroductionSettingViewController.swift */; };
+		6A8377AD2924BCB400BC7112 /* CongraturationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A8377AC2924BCB400BC7112 /* CongraturationsViewController.swift */; };
 		6A8B0724292330D100492123 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6A8B0723292330D100492123 /* GoogleService-Info.plist */; };
 		6A8C88902919031A009EDBBB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A8C888F2919031A009EDBBB /* AppDelegate.swift */; };
 		6A8C88922919031A009EDBBB /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A8C88912919031A009EDBBB /* SceneDelegate.swift */; };
@@ -86,6 +89,9 @@
 		6A03B7232923DE7200AC15A6 /* DefaultAuthUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultAuthUseCase.swift; sourceTree = "<group>"; };
 		6A03B7262923E5E300AC15A6 /* AuthUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthUseCase.swift; sourceTree = "<group>"; };
 		6A444532291EA23F009AE2E5 /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
+		6A8377A82924A3FC00BC7112 /* NicknameSettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NicknameSettingViewController.swift; sourceTree = "<group>"; };
+		6A8377AA2924B0D700BC7112 /* IntroductionSettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroductionSettingViewController.swift; sourceTree = "<group>"; };
+		6A8377AC2924BCB400BC7112 /* CongraturationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CongraturationsViewController.swift; sourceTree = "<group>"; };
 		6A8B07222923274400492123 /* Soulmate.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Soulmate.entitlements; sourceTree = "<group>"; };
 		6A8B0723292330D100492123 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		6A8C888C2919031A009EDBBB /* Soulmate.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Soulmate.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -172,6 +178,9 @@
 				B30A8F10291CB4F100ED4906 /* CertificationNumberViewController.swift */,
 				6A0041E12919EB780042E02F /* RegisterViewController.swift */,
 				6A03B6EF2923BF8900AC15A6 /* CertificationTextField.swift */,
+				6A8377A82924A3FC00BC7112 /* NicknameSettingViewController.swift */,
+				6A8377AA2924B0D700BC7112 /* IntroductionSettingViewController.swift */,
+				6A8377AC2924BCB400BC7112 /* CongraturationsViewController.swift */,
 				07DDDF262924A7C600CB398C /* BirthViewController.swift */,
 				07DDDF282924B2D500CB398C /* HeightViewController.swift */,
 			);
@@ -616,9 +625,11 @@
 				07DDDF292924B2D500CB398C /* HeightViewController.swift in Sources */,
 				6A8C88942919031A009EDBBB /* ViewController.swift in Sources */,
 				6ADEE4EA29221CB800AD328B /* UIButton+Publisher.swift in Sources */,
+				6A8377AB2924B0D700BC7112 /* IntroductionSettingViewController.swift in Sources */,
 				6A8C88902919031A009EDBBB /* AppDelegate.swift in Sources */,
 				6ADEE4E72922198200AD328B /* UIControl+Publisher.swift in Sources */,
 				6A03B6F22923C00900AC15A6 /* UIFont.swift in Sources */,
+				6A8377A92924A3FC00BC7112 /* NicknameSettingViewController.swift in Sources */,
 				6A0041D92919E6B60042E02F /* CoordinatorInterface.swift in Sources */,
 				6A0042032919EEED0042E02F /* ChatCoordinator.swift in Sources */,
 				6A0041E02919EB230042E02F /* LoginViewController.swift in Sources */,
@@ -630,6 +641,7 @@
 				B303D651292367CF00414293 /* ProgressBar.swift in Sources */,
 				6A0041FB2919EE600042E02F /* MyPageViewController.swift in Sources */,
 				B30A8F11291CB4F100ED4906 /* CertificationNumberViewController.swift in Sources */,
+				6A8377AD2924BCB400BC7112 /* CongraturationsViewController.swift in Sources */,
 				6A0041DD2919EADC0042E02F /* HomeCoordinator.swift in Sources */,
 				6A0041FF2919EE920042E02F /* ModificationViewController.swift in Sources */,
 				6A03B7272923E5E300AC15A6 /* AuthUseCase.swift in Sources */,
