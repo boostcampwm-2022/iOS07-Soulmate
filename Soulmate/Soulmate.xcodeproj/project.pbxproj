@@ -44,6 +44,7 @@
 		6ADEE4EA29221CB800AD328B /* UIButton+Publisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ADEE4E929221CB800AD328B /* UIButton+Publisher.swift */; };
 		6ADEE4EC29221CD900AD328B /* UITextField+Publisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ADEE4EB29221CD900AD328B /* UITextField+Publisher.swift */; };
 		6AE21021291DE06600A32280 /* SelectableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AE21020291DE06600A32280 /* SelectableCell.swift */; };
+		B303D651292367CF00414293 /* ProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B303D650292367CF00414293 /* ProgressBar.swift */; };
 		B30A8ECE291C953F00ED4906 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = B30A8ECD291C953F00ED4906 /* FirebaseAnalytics */; };
 		B30A8ED0291C953F00ED4906 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = B30A8ECF291C953F00ED4906 /* FirebaseAuth */; };
 		B30A8ED2291C953F00ED4906 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = B30A8ED1291C953F00ED4906 /* FirebaseFirestore */; };
@@ -97,6 +98,7 @@
 		6ADEE4E929221CB800AD328B /* UIButton+Publisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Publisher.swift"; sourceTree = "<group>"; };
 		6ADEE4EB29221CD900AD328B /* UITextField+Publisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Publisher.swift"; sourceTree = "<group>"; };
 		6AE21020291DE06600A32280 /* SelectableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectableCell.swift; sourceTree = "<group>"; };
+		B303D650292367CF00414293 /* ProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBar.swift; sourceTree = "<group>"; };
 		B30A8F0E291CB4AC00ED4906 /* PhoneNumberViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneNumberViewController.swift; sourceTree = "<group>"; };
 		B30A8F10291CB4F100ED4906 /* CertificationNumberViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CertificationNumberViewController.swift; sourceTree = "<group>"; };
 		B31A68262919F5D2001D35E9 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
@@ -131,6 +133,7 @@
 		6A0041D32919E6490042E02F /* AuthScene */ = {
 			isa = PBXGroup;
 			children = (
+				B303D64F292366DC00414293 /* View */,
 				6A97FE64291CE28C006F6DD9 /* ViewModel */,
 				6A0041E62919ED290042E02F /* Coordinator */,
 				6A0041DE2919EB120042E02F /* ViewController */,
@@ -465,6 +468,14 @@
 			path = Combine;
 			sourceTree = "<group>";
 		};
+		B303D64F292366DC00414293 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				B303D650292367CF00414293 /* ProgressBar.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		B3E029A7291DDBF200931FA2 /* Components */ = {
 			isa = PBXGroup;
 			children = (
@@ -609,6 +620,7 @@
 				6A0042062919EF220042E02F /* MyPageCoordinator.swift in Sources */,
 				B30A8F0F291CB4AC00ED4906 /* PhoneNumberViewController.swift in Sources */,
 				6A8C88922919031A009EDBBB /* SceneDelegate.swift in Sources */,
+				B303D651292367CF00414293 /* ProgressBar.swift in Sources */,
 				6A0041FB2919EE600042E02F /* MyPageViewController.swift in Sources */,
 				B30A8F11291CB4F100ED4906 /* CertificationNumberViewController.swift in Sources */,
 				6A0041DD2919EADC0042E02F /* HomeCoordinator.swift in Sources */,

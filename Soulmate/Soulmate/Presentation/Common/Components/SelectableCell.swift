@@ -54,14 +54,14 @@ class SelectableCell: UICollectionViewCell {
     }
     
     func isChecked() {
-        self.contentView.layer.borderColor = #colorLiteral(red: 0.7750707269, green: 0.6288080812, blue: 1, alpha: 1)
-        self.contentView.backgroundColor = #colorLiteral(red: 0.9693349004, green: 0.951579988, blue: 0.9876489043, alpha: 1)
+        self.contentView.layer.borderColor = UIColor.borderPurple?.cgColor
+        self.contentView.backgroundColor = UIColor.lightPurple
         self.checkImageView.image = UIImage(named: "checkOn")
     }
     
     func isUnChecked() {
-        self.contentView.layer.borderColor = #colorLiteral(red: 0.8408175111, green: 0.8383532763, blue: 0.8636187315, alpha: 1)
-        self.contentView.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+        self.contentView.layer.borderColor = UIColor.symbolGrey?.cgColor
+        self.contentView.backgroundColor = UIColor.white
         self.checkImageView.image = UIImage(named: "checkOff")
     }
     
