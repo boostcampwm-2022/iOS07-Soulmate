@@ -47,6 +47,10 @@
 		6A45AA4629257E1E00F85D2C /* RegisterHeaderStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A45AA4529257E1E00F85D2C /* RegisterHeaderStackView.swift */; };
 		6A45AA48292585F300F85D2C /* ProgressBarNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A45AA47292585F300F85D2C /* ProgressBarNavigationController.swift */; };
 		6A45AA4B2925C68300F85D2C /* RegisterUserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A45AA4A2925C68300F85D2C /* RegisterUserInfo.swift */; };
+		6A45AA522925E26A00F85D2C /* DatabaseStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A45AA512925E26A00F85D2C /* DatabaseStorage.swift */; };
+		6A45AA542925E27400F85D2C /* FireStoreDatabaseStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A45AA532925E27400F85D2C /* FireStoreDatabaseStorage.swift */; };
+		6A45AA562925E29C00F85D2C /* QueryEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A45AA552925E29C00F85D2C /* QueryEntity.swift */; };
+		6A45AA582925E2C600F85D2C /* FireStoreQuery+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A45AA572925E2C600F85D2C /* FireStoreQuery+Ext.swift */; };
 		6A8377A92924A3FC00BC7112 /* NicknameSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A8377A82924A3FC00BC7112 /* NicknameSettingViewController.swift */; };
 		6A8377AB2924B0D700BC7112 /* IntroductionSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A8377AA2924B0D700BC7112 /* IntroductionSettingViewController.swift */; };
 		6A8377AD2924BCB400BC7112 /* CongraturationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A8377AC2924BCB400BC7112 /* CongraturationsViewController.swift */; };
@@ -117,6 +121,10 @@
 		6A45AA4529257E1E00F85D2C /* RegisterHeaderStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterHeaderStackView.swift; sourceTree = "<group>"; };
 		6A45AA47292585F300F85D2C /* ProgressBarNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBarNavigationController.swift; sourceTree = "<group>"; };
 		6A45AA4A2925C68300F85D2C /* RegisterUserInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = RegisterUserInfo.swift; path = Soulmate/Presentation/RegisterScene/View/RegisterUserInfo.swift; sourceTree = SOURCE_ROOT; };
+		6A45AA512925E26A00F85D2C /* DatabaseStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseStorage.swift; sourceTree = "<group>"; };
+		6A45AA532925E27400F85D2C /* FireStoreDatabaseStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FireStoreDatabaseStorage.swift; sourceTree = "<group>"; };
+		6A45AA552925E29C00F85D2C /* QueryEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueryEntity.swift; sourceTree = "<group>"; };
+		6A45AA572925E2C600F85D2C /* FireStoreQuery+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FireStoreQuery+Ext.swift"; sourceTree = "<group>"; };
 		6A8377A82924A3FC00BC7112 /* NicknameSettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NicknameSettingViewController.swift; sourceTree = "<group>"; };
 		6A8377AA2924B0D700BC7112 /* IntroductionSettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroductionSettingViewController.swift; sourceTree = "<group>"; };
 		6A8377AC2924BCB400BC7112 /* CongraturationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CongraturationsViewController.swift; sourceTree = "<group>"; };
@@ -422,6 +430,33 @@
 			path = Entity;
 			sourceTree = "<group>";
 		};
+		6A45AA4E2925E23700F85D2C /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				6A45AA502925E25800F85D2C /* Storage */,
+				6A45AA4F2925E24B00F85D2C /* Repository */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		6A45AA4F2925E24B00F85D2C /* Repository */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Repository;
+			sourceTree = "<group>";
+		};
+		6A45AA502925E25800F85D2C /* Storage */ = {
+			isa = PBXGroup;
+			children = (
+				6A45AA512925E26A00F85D2C /* DatabaseStorage.swift */,
+				6A45AA532925E27400F85D2C /* FireStoreDatabaseStorage.swift */,
+				6A45AA552925E29C00F85D2C /* QueryEntity.swift */,
+				6A45AA572925E2C600F85D2C /* FireStoreQuery+Ext.swift */,
+			);
+			path = Storage;
+			sourceTree = "<group>";
+		};
 		6A8C88832919031A009EDBBB = {
 			isa = PBXGroup;
 			children = (
@@ -443,7 +478,7 @@
 			children = (
 				6A8B07222923274400492123 /* Soulmate.entitlements */,
 				6A97FE61291CE0A4006F6DD9 /* Util */,
-				6A8C88A52919E3B6009EDBBB /* Data */,
+				6A45AA4E2925E23700F85D2C /* Data */,
 				6A03B71F2923DE3700AC15A6 /* Domain */,
 				6A8C88A32919E3AB009EDBBB /* Presentation */,
 				6A8C88932919031A009EDBBB /* ViewController.swift */,
@@ -470,21 +505,6 @@
 				6A8C88AE2919E504009EDBBB /* AppScene */,
 			);
 			path = Presentation;
-			sourceTree = "<group>";
-		};
-		6A8C88A52919E3B6009EDBBB /* Data */ = {
-			isa = PBXGroup;
-			children = (
-				6A8C88AC2919E4E6009EDBBB /* Repository */,
-			);
-			path = Data;
-			sourceTree = "<group>";
-		};
-		6A8C88AC2919E4E6009EDBBB /* Repository */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Repository;
 			sourceTree = "<group>";
 		};
 		6A8C88AE2919E504009EDBBB /* AppScene */ = {
@@ -656,6 +676,7 @@
 				6A45AA2B2925627800F85D2C /* RegisterBirthViewModel.swift in Sources */,
 				6A0041E42919EBA40042E02F /* AuthCoordinator.swift in Sources */,
 				6A45AA232925621600F85D2C /* RegisterSelectableViewModel.swift in Sources */,
+				6A45AA522925E26A00F85D2C /* DatabaseStorage.swift in Sources */,
 				6A03B6F02923BF8900AC15A6 /* CertificationTextField.swift in Sources */,
 				6A0041FD2919EE7B0042E02F /* ServiceTermViewController.swift in Sources */,
 				6A97FE63291CE0C2006F6DD9 /* UIImage+shadow.swift in Sources */,
@@ -676,6 +697,7 @@
 				6A45AA39292562E800F85D2C /* RegisterCongratulationViewModel.swift in Sources */,
 				6A8C88902919031A009EDBBB /* AppDelegate.swift in Sources */,
 				6A45AA35292562CC00F85D2C /* RegisterIntroductionViewModel.swift in Sources */,
+				6A45AA562925E29C00F85D2C /* QueryEntity.swift in Sources */,
 				6ADEE4E72922198200AD328B /* UIControl+Publisher.swift in Sources */,
 				6A03B6F22923C00900AC15A6 /* UIFont.swift in Sources */,
 				6A8377A92924A3FC00BC7112 /* NicknameSettingViewController.swift in Sources */,
@@ -688,6 +710,7 @@
 				6A45AA4B2925C68300F85D2C /* RegisterUserInfo.swift in Sources */,
 				6A03B7242923DE7200AC15A6 /* DefaultAuthUseCase.swift in Sources */,
 				6A45AA37292562D900F85D2C /* RegisterPhotoViewModel.swift in Sources */,
+				6A45AA582925E2C600F85D2C /* FireStoreQuery+Ext.swift in Sources */,
 				6A0042062919EF220042E02F /* MyPageCoordinator.swift in Sources */,
 				B30A8F0F291CB4AC00ED4906 /* PhoneNumberViewController.swift in Sources */,
 				6A45AA2D2925628B00F85D2C /* RegisterHeightViewModel.swift in Sources */,
@@ -696,6 +719,7 @@
 				6A0041FB2919EE600042E02F /* MyPageViewController.swift in Sources */,
 				B30A8F11291CB4F100ED4906 /* CertificationNumberViewController.swift in Sources */,
 				6A8377AD2924BCB400BC7112 /* CongraturationsViewController.swift in Sources */,
+				6A45AA542925E27400F85D2C /* FireStoreDatabaseStorage.swift in Sources */,
 				6A0041DD2919EADC0042E02F /* HomeCoordinator.swift in Sources */,
 				6A0041FF2919EE920042E02F /* ModificationViewController.swift in Sources */,
 				6A03B7272923E5E300AC15A6 /* AuthUseCase.swift in Sources */,
