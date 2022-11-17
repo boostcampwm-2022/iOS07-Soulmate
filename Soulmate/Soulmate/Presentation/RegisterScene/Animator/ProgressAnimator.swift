@@ -28,15 +28,31 @@ class ProgressAnimator: NSObject, UIViewControllerAnimatedTransitioning {
                 return
             }
             
+            let toViewFrame = toVC.view.frame
+            let fromViewFrame = fromVC.view.frame
+            let fromSubViews = fromVC.progressingComponents()
+            
             toVC.preset()
-            toVC.setPushInitStateAsTo()
+            
+            toVC.view.center = CGPoint(
+                x: toViewFrame.midX + toViewFrame.maxX,
+                y: toViewFrame.midY)
             
             containerView.addSubview(toVC.view)
             containerView.bringSubviewToFront(toVC.view)
             
             UIView.animate(withDuration: duration) {
-                toVC.setPushFinalStateAsTo()
-                fromVC.setPushFinalStateAsFrom()
+                
+                toVC.view.center = CGPoint(
+                    x: toViewFrame.midX,
+                    y: toViewFrame.midY
+                )
+                
+                for subView in fromSubViews {
+                    subView.center = CGPoint(
+                        x: fromViewFrame.midX - fromViewFrame.maxX,
+                        y: subView.frame.midY)
+                }
             } completion: { _ in
                 toVC.reset()
                 transitionContext.completeTransition(true)
@@ -50,14 +66,35 @@ class ProgressAnimator: NSObject, UIViewControllerAnimatedTransitioning {
                 return
             }
             
+            let toViewFrame = toVC.view.frame
+            let fromViewFrame = fromVC.view.frame
+            let toSubViews = toVC.progressingComponents()
+            let fromSubView = fromVC.progressingComponents()
+            
             toVC.preset()
-            toVC.setPopInitStateAsTo()
+
+            for subView in toSubViews {
+                subView.center = CGPoint(
+                    x: toViewFrame.midX - toViewFrame.maxX,
+                    y: subView.frame.midY)
+            }
             
             containerView.addSubview(toVC.view)
             
             UIView.animate(withDuration: duration) {
-                toVC.setPopFinalStateAsTo()
-                fromVC.setPopFinalStateAsFrom()
+
+                for subView in toSubViews {
+                    subView.center = CGPoint(
+                        x: toViewFrame.midX,
+                        y: subView.frame.midY)
+                }
+
+                for subView in fromSubView {
+                    subView.center = CGPoint(
+                        x: fromViewFrame.midX + fromViewFrame.maxX,
+                        y: subView.frame.midY)
+                }
+                
             } completion: { _ in
                 toVC.reset()
                 transitionContext.completeTransition(true)
