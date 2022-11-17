@@ -15,6 +15,16 @@ final class NicknameSettingViewController: UIViewController {
     
     var viewModel: RegisterNickNameViewModel?
     
+    private lazy var progressBar: ProgressBar = {
+        let bar = ProgressBar()
+        view.addSubview(bar)
+        bar.translatesAutoresizingMaskIntoConstraints = false
+        bar.goToNextStep()
+        bar.goToNextStep()
+        
+        return bar
+    }()
+    
     lazy var registerHeaderStackView: RegisterHeaderStackView = {
         let headerView = RegisterHeaderStackView(frame: .zero)
         headerView.setMessage(
@@ -72,6 +82,7 @@ final class NicknameSettingViewController: UIViewController {
 
 extension NicknameSettingViewController: ProgressAnimatable {
     func preset() {
+        progressBar.isHidden = true
         nextButton.isHidden = true
         view.backgroundColor = .clear
     }
@@ -161,6 +172,7 @@ extension NicknameSettingViewController: ProgressAnimatable {
     }
     
     func reset() {
+        progressBar.isHidden = false
         nextButton.isHidden = false
         view.backgroundColor = .white
     }
@@ -195,6 +207,12 @@ private extension NicknameSettingViewController {
     }
     
     func configureLayout() {
+        
+        progressBar.snp.makeConstraints {
+            $0.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(20)
+            $0.leading.equalToSuperview().offset(20)
+            $0.trailing.equalToSuperview().offset(-20)
+        }
 
         registerHeaderStackView.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(50)

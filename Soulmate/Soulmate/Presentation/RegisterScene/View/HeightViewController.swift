@@ -17,6 +17,17 @@ final class HeightViewController: UIViewController {
     
     private let pickerData: [Int] = Array(140...210) // 키 범위
     
+    private lazy var progressBar: ProgressBar = {
+        let bar = ProgressBar()
+        view.addSubview(bar)
+        bar.translatesAutoresizingMaskIntoConstraints = false
+        bar.goToNextStep()
+        bar.goToNextStep()
+        bar.goToNextStep()
+        
+        return bar
+    }()
+    
     lazy var registerHeaderStackView: RegisterHeaderStackView = {
         let headerView = RegisterHeaderStackView(frame: .zero)
         headerView.setMessage(
@@ -68,6 +79,7 @@ final class HeightViewController: UIViewController {
 
 extension HeightViewController: ProgressAnimatable {
     func preset() {
+        progressBar.isHidden = true
         nextButton.isHidden = true
         view.backgroundColor = .clear
     }
@@ -157,6 +169,7 @@ extension HeightViewController: ProgressAnimatable {
     }
     
     func reset() {
+        progressBar.isHidden = false
         nextButton.isHidden = false
         view.backgroundColor = .white
     }
@@ -183,6 +196,12 @@ private extension HeightViewController {
     }
     
     func configureLayout() {
+        
+        progressBar.snp.makeConstraints {
+            $0.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(20)
+            $0.leading.equalToSuperview().offset(20)
+            $0.trailing.equalToSuperview().offset(-20)
+        }
 
         registerHeaderStackView.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(50)

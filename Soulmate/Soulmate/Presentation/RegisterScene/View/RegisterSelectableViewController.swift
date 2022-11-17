@@ -19,6 +19,15 @@ class RegisterSelectableViewController: UIViewController {
     
     @Published var selectedIndex: Int?
     
+    private lazy var progressBar: ProgressBar = {
+        let bar = ProgressBar()
+        view.addSubview(bar)
+        bar.translatesAutoresizingMaskIntoConstraints = false
+        bar.goToNextStep()
+        
+        return bar
+    }()
+    
     lazy var registerHeaderStackView: RegisterHeaderStackView = {
         let headerView = RegisterHeaderStackView(frame: .zero)
         view.addSubview(headerView)
@@ -112,6 +121,12 @@ private extension RegisterSelectableViewController {
     
     func configureLayout() {
         
+        progressBar.snp.makeConstraints {
+            $0.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(20)
+            $0.leading.equalToSuperview().offset(20)
+            $0.trailing.equalToSuperview().offset(-20)
+        }
+        
         registerHeaderStackView.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(50)
             $0.leading.equalToSuperview().offset(20)
@@ -152,6 +167,7 @@ extension RegisterSelectableViewController: UINavigationControllerDelegate, Prog
     }
     
     func preset() {
+        progressBar.isHidden = true
         nextButton.isHidden = true
         view.backgroundColor = .clear
     }
@@ -241,6 +257,7 @@ extension RegisterSelectableViewController: UINavigationControllerDelegate, Prog
     }
     
     func reset() {
+        progressBar.isHidden = false
         nextButton.isHidden = false
         view.backgroundColor = .white
     }

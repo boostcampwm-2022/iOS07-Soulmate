@@ -15,6 +15,15 @@ final class IntroductionSettingViewController: UIViewController {
     var bag = Set<AnyCancellable>()
     var viewModel: RegisterIntroductionViewModel?
     
+    private lazy var progressBar: ProgressBar = {
+        let bar = ProgressBar()
+        view.addSubview(bar)
+        bar.translatesAutoresizingMaskIntoConstraints = false
+        bar.goToNextStep()
+        
+        return bar
+    }()
+    
     lazy var registerHeaderStackView: RegisterHeaderStackView = {
         let headerView = RegisterHeaderStackView(frame: .zero)
         headerView.setMessage(
@@ -95,6 +104,7 @@ final class IntroductionSettingViewController: UIViewController {
 
 extension IntroductionSettingViewController: ProgressAnimatable {
     func preset() {
+        progressBar.isHidden = true
         nextButton.isHidden = true
         view.backgroundColor = .clear
     }
@@ -184,6 +194,7 @@ extension IntroductionSettingViewController: ProgressAnimatable {
     }
     
     func reset() {
+        progressBar.isHidden = false
         nextButton.isHidden = false
         view.backgroundColor = .white
     }
@@ -203,6 +214,12 @@ private extension IntroductionSettingViewController {
     }
     
     func configureLayout() {
+        
+        progressBar.snp.makeConstraints {
+            $0.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(20)
+            $0.leading.equalToSuperview().offset(20)
+            $0.trailing.equalToSuperview().offset(-20)
+        }
         
         registerHeaderStackView.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(50)
