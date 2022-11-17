@@ -72,7 +72,7 @@ extension HeightViewController: ProgressAnimatable {
         view.backgroundColor = .clear
     }
     
-    func setInitStateAsTo() {
+    func setPushInitStateAsTo() {
         guard let viewFrame else { return }
         
         view.center = CGPoint(
@@ -80,7 +80,7 @@ extension HeightViewController: ProgressAnimatable {
             y: viewFrame.midY)
     }
     
-    func setFinalStateAsTo() {
+    func setPushFinalStateAsTo() {
         guard let viewFrame else { return }
         
         view.center = CGPoint(
@@ -88,12 +88,72 @@ extension HeightViewController: ProgressAnimatable {
             y: viewFrame.midY)
     }
     
-    func setInitStateAsFrom() {
+    func setPushInitStateAsFrom() {
+        guard let viewFrame else { return }
         
+        view.center = CGPoint(
+            x: viewFrame.midX,
+            y: viewFrame.midY)
     }
     
-    func setFinalStateAsFrom() {
+    func setPushFinalStateAsFrom() {
+        guard let viewFrame else { return }
         
+        registerHeaderStackView.center = CGPoint(
+            x: viewFrame.midX - viewFrame.maxX,
+            y: registerHeaderStackView.frame.midY)
+        
+        heightPicker.center = CGPoint(
+            x: viewFrame.midX - viewFrame.maxX,
+            y: heightPicker.frame.midY)
+    }
+    
+    func setPopInitStateAsTo() {
+        guard let viewFrame else { return }
+        
+        registerHeaderStackView.center = CGPoint(
+            x: viewFrame.midX - viewFrame.maxX,
+            y: registerHeaderStackView.frame.midY)
+        
+        heightPicker.center = CGPoint(
+            x: viewFrame.midX - viewFrame.maxX,
+            y: heightPicker.frame.midY)
+    }
+    
+    func setPopFinalStateAsTo() {
+        guard let viewFrame else { return }
+        
+        registerHeaderStackView.center = CGPoint(
+            x: viewFrame.midX,
+            y: registerHeaderStackView.frame.midY)
+        
+        heightPicker.center = CGPoint(
+            x: viewFrame.midX,
+            y: heightPicker.frame.midY)
+    }
+    
+    func setPopInitStateAsFrom() {
+        guard let viewFrame else { return }
+        
+        registerHeaderStackView.center = CGPoint(
+            x: viewFrame.midX,
+            y: registerHeaderStackView.frame.midY)
+        
+        heightPicker.center = CGPoint(
+            x: viewFrame.midX,
+            y: heightPicker.frame.midY)
+    }
+    
+    func setPopFinalStateAsFrom() {
+        guard let viewFrame else { return }
+        
+        registerHeaderStackView.center = CGPoint(
+            x: viewFrame.midX + viewFrame.maxX,
+            y: registerHeaderStackView.frame.midY)
+        
+        heightPicker.center = CGPoint(
+            x: viewFrame.midX + viewFrame.maxX,
+            y: heightPicker.frame.midY)
     }
     
     func reset() {

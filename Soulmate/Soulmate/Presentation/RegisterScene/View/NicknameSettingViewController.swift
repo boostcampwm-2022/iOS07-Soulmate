@@ -76,7 +76,7 @@ extension NicknameSettingViewController: ProgressAnimatable {
         view.backgroundColor = .clear
     }
     
-    func setInitStateAsTo() {
+    func setPushInitStateAsTo() {
         guard let viewFrame else { return }
         
         view.center = CGPoint(
@@ -84,7 +84,7 @@ extension NicknameSettingViewController: ProgressAnimatable {
             y: viewFrame.midY)
     }
     
-    func setFinalStateAsTo() {
+    func setPushFinalStateAsTo() {
         guard let viewFrame else { return }
         
         view.center = CGPoint(
@@ -92,15 +92,75 @@ extension NicknameSettingViewController: ProgressAnimatable {
             y: viewFrame.midY)
     }
     
-    func setInitStateAsFrom() {
+    func setPushInitStateAsFrom() {
+        guard let viewFrame else { return }
         
+        view.center = CGPoint(
+            x: viewFrame.midX,
+            y: viewFrame.midY)
     }
     
-    func setFinalStateAsFrom() {
+    func setPushFinalStateAsFrom() {
+        guard let viewFrame else { return }
         
+        registerHeaderStackView.center = CGPoint(
+            x: viewFrame.midX - viewFrame.maxX,
+            y: registerHeaderStackView.frame.midY)
+        
+        nicknameTextField.center = CGPoint(
+            x: viewFrame.midX - viewFrame.maxX,
+            y: nicknameTextField.frame.midY)
     }
     
-    func reset() {        
+    func setPopInitStateAsTo() {
+        guard let viewFrame else { return }
+        
+        registerHeaderStackView.center = CGPoint(
+            x: viewFrame.midX - viewFrame.maxX,
+            y: registerHeaderStackView.frame.midY)
+        
+        nicknameTextField.center = CGPoint(
+            x: viewFrame.midX - viewFrame.maxX,
+            y: nicknameTextField.frame.midY)
+    }
+    
+    func setPopFinalStateAsTo() {
+        guard let viewFrame else { return }
+        
+        registerHeaderStackView.center = CGPoint(
+            x: viewFrame.midX,
+            y: registerHeaderStackView.frame.midY)
+        
+        nicknameTextField.center = CGPoint(
+            x: viewFrame.midX,
+            y: nicknameTextField.frame.midY)
+    }
+    
+    func setPopInitStateAsFrom() {
+        guard let viewFrame else { return }
+        
+        registerHeaderStackView.center = CGPoint(
+            x: viewFrame.midX,
+            y: registerHeaderStackView.frame.midY)
+        
+        nicknameTextField.center = CGPoint(
+            x: viewFrame.midX,
+            y: nicknameTextField.frame.midY)
+    }
+    
+    func setPopFinalStateAsFrom() {
+        guard let viewFrame else { return }
+        
+        registerHeaderStackView.center = CGPoint(
+            x: viewFrame.midX + viewFrame.maxX,
+            y: registerHeaderStackView.frame.midY)
+        
+        nicknameTextField.center = CGPoint(
+            x: viewFrame.midX + viewFrame.maxX,
+            y: nicknameTextField.frame.midY)
+    }
+    
+    func reset() {
         nextButton.isHidden = false
         view.backgroundColor = .white
     }
@@ -152,6 +212,7 @@ private extension NicknameSettingViewController {
             $0.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom).offset(-33)
             $0.leading.equalTo(self.view.safeAreaLayoutGuide.snp.leading).offset(20)
             $0.trailing.equalTo(self.view.safeAreaLayoutGuide.snp.trailing).offset(-20)
+            $0.height.equalTo(54)
         }
     }
 }

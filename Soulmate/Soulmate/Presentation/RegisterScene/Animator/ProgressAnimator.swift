@@ -29,20 +29,39 @@ class ProgressAnimator: NSObject, UIViewControllerAnimatedTransitioning {
             }
             
             toVC.preset()
-            toVC.setInitStateAsTo()
+            toVC.setPushInitStateAsTo()
             
             containerView.addSubview(toVC.view)
             containerView.bringSubviewToFront(toVC.view)
             
             UIView.animate(withDuration: duration) {
-                toVC.setFinalStateAsTo()
-                fromVC.setFinalStateAsFrom()
+                toVC.setPushFinalStateAsTo()
+                fromVC.setPushFinalStateAsFrom()
             } completion: { _ in
                 toVC.reset()
                 transitionContext.completeTransition(true)
             }
 
-        case .pop: break
+        case .pop:
+            guard let toVC = transitionContext.viewController(forKey: .to) as? ProgressAnimatable,
+                  let fromVC = transitionContext.viewController(forKey: .from) as? ProgressAnimatable else {
+                
+                transitionContext.completeTransition(true)
+                return
+            }
+            
+            toVC.preset()
+            toVC.setPopInitStateAsTo()
+            
+            containerView.addSubview(toVC.view)
+            
+            UIView.animate(withDuration: duration) {
+                toVC.setPopFinalStateAsTo()
+                fromVC.setPopFinalStateAsFrom()
+            } completion: { _ in
+                toVC.reset()
+                transitionContext.completeTransition(true)
+            }
         default: break
         }
     }
