@@ -11,8 +11,9 @@ import Combine
 
 class RegisterSelectableViewController: UIViewController {
     
+    let transition = ProgressAnimator()
+    var viewFrame: CGRect?
     var bag = Set<AnyCancellable>()
-        
     var viewModel: RegisterSelectableViewModel?
     
     @Published var selectedIndex: Int?
@@ -58,6 +59,7 @@ class RegisterSelectableViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setConstants()
         configureView()
         configureLayout()
         
@@ -99,6 +101,10 @@ private extension RegisterSelectableViewController {
             .store(in: &bag)
     }
     
+    func setConstants() {
+        viewFrame = view.frame
+    }
+    
     func configureView() {
         view.backgroundColor = .systemBackground
         collectionView.register(SelectableCell.self, forCellWithReuseIdentifier: "SelectableCell")
@@ -127,6 +133,63 @@ private extension RegisterSelectableViewController {
     }
 }
 
+extension RegisterSelectableViewController: UINavigationControllerDelegate, ProgressAnimatable {
+    func navigationController(
+        _ navigationController: UINavigationController,
+        animationControllerFor operation: UINavigationController.Operation,
+        from fromVC: UIViewController,
+        to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        
+            transition.operation = operation
+            if operation == .pop {
+                return nil
+            } else {
+                return transition
+            }
+    }
+    
+    func preset() {
+        nextButton.isHidden = true
+        view.backgroundColor = .clear
+    }
+    
+    func setInitStateAsTo() {
+        guard let viewFrame else { return }
+        
+        view.center = CGPoint(
+            x: viewFrame.midX + viewFrame.maxX,
+            y: viewFrame.midY)
+    }
+    
+    func setFinalStateAsTo() {
+        guard let viewFrame else { return }
+        
+        view.center = CGPoint(
+            x: viewFrame.midX,
+            y: viewFrame.midY)
+    }
+    
+    func setInitStateAsFrom() {
+        
+    }
+    
+    func setFinalStateAsFrom() {
+        guard let viewFrame else { return }
+        
+        registerHeaderStackView.center = CGPoint(
+            x: registerHeaderStackView.frame.midX - viewFrame.maxX,
+            y: registerHeaderStackView.frame.midY)
+        
+        collectionView.center = CGPoint(
+            x: collectionView.frame.midX - viewFrame.maxX,
+            y: collectionView.frame.midY)
+    }
+    
+    func reset() {
+        nextButton.isHidden = false
+        view.backgroundColor = .white
+    }
+}
 
 extension RegisterSelectableViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     

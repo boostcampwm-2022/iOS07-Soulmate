@@ -24,12 +24,14 @@ final class AppCoordinator: Coordinator {
     }
     
     func start() {
-        if Auth.auth().currentUser == nil {
-            showAuthFlow()
-        }
-        else {
-            showMainTabFlow()
-        }
+//        if Auth.auth().currentUser == nil {
+//            showAuthFlow()
+//        }
+//        else {
+//            showMainTabFlow()
+//        }
+        
+        showAuthFlow()
     }
     
     private func showAuthFlow() {

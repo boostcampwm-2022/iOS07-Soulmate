@@ -21,7 +21,8 @@ class AuthCoordinator: Coordinator {
     }
     
     func start() {
-        showLoginPage()
+//        showLoginPage()
+        doneCertificationPage(true)
     }
     
     lazy var showLoginPage: () -> Void = { [weak self] in

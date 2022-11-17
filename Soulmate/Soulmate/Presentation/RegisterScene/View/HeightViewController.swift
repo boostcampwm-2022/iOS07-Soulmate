@@ -9,6 +9,7 @@ import UIKit
 
 final class HeightViewController: UIViewController {
     
+    var viewFrame: CGRect?
     var viewModel: RegisterHeightViewModel?
     
     // TODO: 이부분 상의하고 수정
@@ -58,9 +59,46 @@ final class HeightViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setConstants()
         configureView()
         configureLayout()
         bind()
+    }
+}
+
+extension HeightViewController: ProgressAnimatable {
+    func preset() {
+        nextButton.isHidden = true
+        view.backgroundColor = .clear
+    }
+    
+    func setInitStateAsTo() {
+        guard let viewFrame else { return }
+        
+        view.center = CGPoint(
+            x: viewFrame.midX + viewFrame.maxX,
+            y: viewFrame.midY)
+    }
+    
+    func setFinalStateAsTo() {
+        guard let viewFrame else { return }
+        
+        view.center = CGPoint(
+            x: viewFrame.midX,
+            y: viewFrame.midY)
+    }
+    
+    func setInitStateAsFrom() {
+        
+    }
+    
+    func setFinalStateAsFrom() {
+        
+    }
+    
+    func reset() {
+        nextButton.isHidden = false
+        view.backgroundColor = .white
     }
 }
 
@@ -74,6 +112,10 @@ private extension HeightViewController {
                 didTappedNextButton: nextButton.tapPublisher()
             )
         )
+    }
+    
+    func setConstants() {
+        viewFrame = view.frame
     }
     
     func configureView() {

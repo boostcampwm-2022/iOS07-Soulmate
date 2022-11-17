@@ -63,6 +63,8 @@
 		6ADEE4EA29221CB800AD328B /* UIButton+Publisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ADEE4E929221CB800AD328B /* UIButton+Publisher.swift */; };
 		6ADEE4EC29221CD900AD328B /* UITextField+Publisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ADEE4EB29221CD900AD328B /* UITextField+Publisher.swift */; };
 		6AE21021291DE06600A32280 /* SelectableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AE21020291DE06600A32280 /* SelectableCell.swift */; };
+		6AEF00832925D88A00BF49C6 /* ProgressAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AEF00822925D88A00BF49C6 /* ProgressAnimator.swift */; };
+		6AEF00862925DA9100BF49C6 /* ProgressAnimatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AEF00852925DA9100BF49C6 /* ProgressAnimatable.swift */; };
 		B303D651292367CF00414293 /* ProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B303D650292367CF00414293 /* ProgressBar.swift */; };
 		B30A8ECE291C953F00ED4906 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = B30A8ECD291C953F00ED4906 /* FirebaseAnalytics */; };
 		B30A8ED0291C953F00ED4906 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = B30A8ECF291C953F00ED4906 /* FirebaseAuth */; };
@@ -136,6 +138,8 @@
 		6ADEE4E929221CB800AD328B /* UIButton+Publisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Publisher.swift"; sourceTree = "<group>"; };
 		6ADEE4EB29221CD900AD328B /* UITextField+Publisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Publisher.swift"; sourceTree = "<group>"; };
 		6AE21020291DE06600A32280 /* SelectableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectableCell.swift; sourceTree = "<group>"; };
+		6AEF00822925D88A00BF49C6 /* ProgressAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressAnimator.swift; sourceTree = "<group>"; };
+		6AEF00852925DA9100BF49C6 /* ProgressAnimatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressAnimatable.swift; sourceTree = "<group>"; };
 		B303D650292367CF00414293 /* ProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBar.swift; sourceTree = "<group>"; };
 		B30A8F0E291CB4AC00ED4906 /* PhoneNumberViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneNumberViewController.swift; sourceTree = "<group>"; };
 		B30A8F10291CB4F100ED4906 /* CertificationNumberViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CertificationNumberViewController.swift; sourceTree = "<group>"; };
@@ -368,6 +372,8 @@
 		6A45AA242925621F00F85D2C /* RegisterScene */ = {
 			isa = PBXGroup;
 			children = (
+				6AEF00842925DA6D00BF49C6 /* Protocol */,
+				6AEF00812925D87600BF49C6 /* Animator */,
 				6A45AA442925784C00F85D2C /* Coordinator */,
 				6A45AA262925623800F85D2C /* ViewModel */,
 				6A45AA252925623100F85D2C /* View */,
@@ -523,6 +529,22 @@
 				6A45AA3C2925701200F85D2C /* UIDatePicker+Publisher.swift */,
 			);
 			path = Combine;
+			sourceTree = "<group>";
+		};
+		6AEF00812925D87600BF49C6 /* Animator */ = {
+			isa = PBXGroup;
+			children = (
+				6AEF00822925D88A00BF49C6 /* ProgressAnimator.swift */,
+			);
+			path = Animator;
+			sourceTree = "<group>";
+		};
+		6AEF00842925DA6D00BF49C6 /* Protocol */ = {
+			isa = PBXGroup;
+			children = (
+				6AEF00852925DA9100BF49C6 /* ProgressAnimatable.swift */,
+			);
+			path = Protocol;
 			sourceTree = "<group>";
 		};
 		B303D64F292366DC00414293 /* View */ = {
@@ -704,6 +726,8 @@
 				6A45AA3D2925701200F85D2C /* UIDatePicker+Publisher.swift in Sources */,
 				074F3B0B292261EA00D36C89 /* CandidatesCell.swift in Sources */,
 				6A0041F62919EE010042E02F /* ChattingRoomViewController.swift in Sources */,
+				6AEF00862925DA9100BF49C6 /* ProgressAnimatable.swift in Sources */,
+				6AEF00832925D88A00BF49C6 /* ProgressAnimator.swift in Sources */,
 				07DDDF272924A7C600CB398C /* BirthViewController.swift in Sources */,
 				6A0041D72919E68D0042E02F /* MainTabCoordinator.swift in Sources */,
 			);
