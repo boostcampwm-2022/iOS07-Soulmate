@@ -48,6 +48,7 @@ class ProgressBar: UIView {
         internalBar.snp.updateConstraints {
             $0.width.equalTo(Double(UIScreen.main.bounds.width) / 10 * Double(step))
         }
+        startAnimation()
     }
     
     func goToExStep() {
@@ -55,6 +56,13 @@ class ProgressBar: UIView {
         internalBar.snp.updateConstraints {
             $0.width.equalTo(Double(UIScreen.main.bounds.width) / 10 * Double(step))
         }
+        startAnimation()
+    }
+    
+    func startAnimation() {
+        UIView.animate(withDuration: 0.1, delay: 0, options:.curveEaseOut, animations: {
+            self.layoutIfNeeded()
+        }, completion: nil)
     }
     
 }
