@@ -172,11 +172,4 @@ private extension MbtiViewController {
         }
     }
     
-    func leftButtonTapped() {
-        print("left")
-    }
-
-    func rightButtonTapped() {
-        print("right")
-    }
 }
