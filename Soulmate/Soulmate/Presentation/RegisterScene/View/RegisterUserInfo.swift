@@ -27,22 +27,22 @@ struct Mbti {
     var lifeStyleType: LifeStyleType
 }
 
-enum InnerType {
+enum InnerType: String {
     case i
     case e
 }
 
-enum RecognizeType {
+enum RecognizeType: String {
     case n
     case s
 }
 
-enum JudgementType {
+enum JudgementType: String {
     case t
     case f
 }
 
-enum LifeStyleType {
+enum LifeStyleType: String {
     case p
     case j
 }
