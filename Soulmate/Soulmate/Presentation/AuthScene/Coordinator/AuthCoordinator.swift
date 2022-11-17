@@ -67,7 +67,25 @@ class AuthCoordinator: Coordinator {
         self?.navigationController.pushViewController(vc, animated: true)
     }
     
-    lazy var doneCertificationPage: (Bool) -> Void = { bool in
+    lazy var doneCertificationPage: (Bool) -> Void = { [weak self] bool in
+        // TODO: 여기서 이제 회원의 회원정보 입력 여부를 확인하고 그에따라 그냥 Auth flow를 끝내거나 register flow를 열어줌
+        guard let self else { return }
+        let coordinator = RegisterCoordinator(navigationController: self.navigationController)
+        coordinator.finishDelegate = self
+        self.childCoordinators.append(coordinator)
+        coordinator.start()
+    }
+}
+
+extension AuthCoordinator: CoordinatorFinishDelegate {
+    func coordinatorDidFinish(childCoordinator: Coordinator) {
+        childCoordinators = childCoordinators.filter {
+            $0.type != childCoordinator.type
+        }
         
+        if childCoordinator.type == .register {
+            self.finish()
+            navigationController.popToRootViewController(animated: false)
+        }
     }
 }

@@ -10,7 +10,7 @@ import SnapKit
 
 class ProgressBar: UIView {
 
-    private var step = 1
+    private var step = 0
     
     private lazy var totalBar: UIView = {
         let view = UIView()
@@ -45,6 +45,13 @@ class ProgressBar: UIView {
     
     func goToNextStep() {
         self.step += 1
+        internalBar.snp.updateConstraints {
+            $0.width.equalTo(Double(UIScreen.main.bounds.width) / 10 * Double(step))
+        }
+    }
+    
+    func goToExStep() {
+        self.step -= 1
         internalBar.snp.updateConstraints {
             $0.width.equalTo(Double(UIScreen.main.bounds.width) / 10 * Double(step))
         }

@@ -9,80 +9,13 @@ import UIKit
 import SnapKit
 import Combine
 
-class RegisterHeaderStackView: UIStackView {
-    
-    lazy var titleLabel: UILabel = {
-        let label = UILabel(frame: .zero)
-        
-        label.numberOfLines = 0
-        label.textColor = .black
-        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 22)
-        
-        self.addArrangedSubview(label)
-        return label
-    }()
-    
-    lazy var subTitleLabel: UILabel = {
-        let label = UILabel(frame: .zero)
-        
-        label.textColor = .gray
-        label.font = UIFont(name: "AppleSDGothicNeo-SemiBold", size: 14)
-                
-        self.addArrangedSubview(label)
-        return label
-    }()
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
-        configureView()
-    }
-    
-    required init(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    private func configureView() {
-        self.axis = .vertical
-        self.alignment = .leading
-        self.distribution = .equalSpacing
-        self.spacing = 12
-    }
-    
-    func setMessage(title: String, subTitle: String? = nil) {
-        let paragraphStyle = NSMutableParagraphStyle()
-
-        paragraphStyle.lineHeightMultiple = 1.33
-        paragraphStyle.alignment = .left
-        
-        titleLabel.attributedText = NSMutableAttributedString(
-            string: title, attributes: [NSAttributedString.Key.paragraphStyle: paragraphStyle]
-        )
-        
-        guard let subTitle = subTitle else {
-            subTitleLabel.isHidden = true
-            return
-        }
-        subTitleLabel.isHidden = false
-        subTitleLabel.text = subTitle
-    }
-
-}
-
 class RegisterSelectableViewController: UIViewController {
     
     var bag = Set<AnyCancellable>()
+        
+    var viewModel: RegisterSelectableViewModel?
     
-    var handler: (() -> Void)?
-    
-    @Published var selectableType: (any SelectableType.Type)?
     @Published var selectedIndex: Int?
-    
-    lazy var progressBar: ProgressBar = {
-        let bar = ProgressBar()
-        self.view.addSubview(bar)
-        return bar
-    }()
     
     lazy var registerHeaderStackView: RegisterHeaderStackView = {
         let headerView = RegisterHeaderStackView(frame: .zero)
@@ -117,9 +50,9 @@ class RegisterSelectableViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    convenience init(type: SelectableType.Type) {
+    convenience init(viewModel: RegisterSelectableViewModel) {
         self.init(nibName: nil, bundle: nil)
-        self.selectableType = type
+        self.viewModel = viewModel
     }
     
     override func viewDidLoad() {
@@ -138,22 +71,29 @@ class RegisterSelectableViewController: UIViewController {
 private extension RegisterSelectableViewController {
     
     func bind() {
-        $selectedIndex
-            .map { index in
-                return index != nil
-            }
+        
+        guard let viewModel = viewModel else { return }
+        
+        let output = viewModel.transform(
+            input: RegisterSelectableViewModel.Input(
+                didSelectedAtIndex: $selectedIndex.eraseToAnyPublisher(),
+                didTappedNextButton: nextButton.tapPublisher()
+            )
+        )
+        
+        output.isNextButtonEnabled
             .sink { [weak self] value in
                 self?.nextButton.isEnabled = value
             }
             .store(in: &bag)
         
-        $selectableType
+        output.didChangedSelectableType
             .compactMap { $0 }
             .sink { [weak self] type in
                 self?.collectionView.reloadData()
                 self?.registerHeaderStackView.setMessage(
-                    title: type.title,
-                    subTitle: type.subTitle
+                    guideText: type.guideText,
+                    descriptionText: type.descriptionText
                 )
             }
             .store(in: &bag)
@@ -165,21 +105,15 @@ private extension RegisterSelectableViewController {
     }
     
     func configureLayout() {
-        progressBar.snp.makeConstraints {
-            $0.leading.equalToSuperview().offset(20)
-            $0.trailing.equalToSuperview().offset(-20)
-            $0.height.equalTo(6)
-            $0.top.equalTo(view.safeAreaLayoutGuide.snp.top)
-        }
         
         registerHeaderStackView.snp.makeConstraints {
-            $0.top.equalTo(progressBar.snp.bottom).offset(40)
+            $0.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(50)
             $0.leading.equalToSuperview().offset(20)
             $0.trailing.equalToSuperview().offset(-20)
         }
         
         nextButton.snp.makeConstraints {
-            $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-30)
+            $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-33)
             $0.leading.equalTo(view.safeAreaLayoutGuide.snp.leading).offset(20)
             $0.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing).offset(-20)
             $0.height.equalTo(54)
@@ -201,12 +135,12 @@ extension RegisterSelectableViewController: UICollectionViewDataSource, UICollec
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        guard let selectableType = selectableType else { return 0 }
+        guard let selectableType = viewModel?.type else { return 0 }
         return selectableType.cases.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let selectableType = selectableType,
+        guard let selectableType = viewModel?.type,
               let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SelectableCell", for: indexPath) as? SelectableCell else { return UICollectionViewCell() }
         
         cell.fill(with: selectableType.cases[indexPath.row].value)
@@ -230,8 +164,8 @@ extension RegisterSelectableViewController: UICollectionViewDataSource, UICollec
 
 protocol SelectableType {
     static var cases: [SelectableType] { get }
-    static var title: String { get }
-    static var subTitle: String? { get }
+    static var guideText: String { get }
+    static var descriptionText: String? { get }
     var value: String { get }
 }
 
@@ -243,8 +177,8 @@ enum GenderType: String, CaseIterable, SelectableType {
         return Self.allCases
     }
     
-    static var title: String = "처음 오셨네요,\n성별이 어떻게 되시나요?"
-    static var subTitle: String? = "가입 후 성별은 변경이 불가능합니다."
+    static var guideText: String = "처음 오셨네요,\n성별이 어떻게 되시나요?"
+    static var descriptionText: String? = "가입 후 성별은 변경이 불가능합니다."
     
     var value: String {
         return self.rawValue
@@ -260,8 +194,8 @@ enum SmokingType: String, CaseIterable, SelectableType {
         return Self.allCases
     }
     
-    static var title: String = "흡연 여부를 알려주세요"
-    static var subTitle: String? = nil
+    static var guideText: String = "흡연 여부를 알려주세요"
+    static var descriptionText: String? = nil
     
     var value: String {
         return self.rawValue
@@ -278,8 +212,8 @@ enum DrinkingType: String, CaseIterable, SelectableType {
         return Self.allCases
     }
     
-    static var title: String = "음주 여부를 알려주세요"
-    static var subTitle: String? = nil
+    static var guideText: String = "음주 여부를 알려주세요"
+    static var descriptionText: String? = nil
     
     var value: String {
         return self.rawValue

@@ -15,7 +15,6 @@
 		6A0041DB2919E9420042E02F /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A0041DA2919E9420042E02F /* AppCoordinator.swift */; };
 		6A0041DD2919EADC0042E02F /* HomeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A0041DC2919EADC0042E02F /* HomeCoordinator.swift */; };
 		6A0041E02919EB230042E02F /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A0041DF2919EB230042E02F /* LoginViewController.swift */; };
-		6A0041E22919EB780042E02F /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A0041E12919EB780042E02F /* RegisterViewController.swift */; };
 		6A0041E42919EBA40042E02F /* AuthCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A0041E32919EBA40042E02F /* AuthCoordinator.swift */; };
 		6A0041EB2919ED5F0042E02F /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A0041EA2919ED5F0042E02F /* HomeViewController.swift */; };
 		6A0041EE2919ED7F0042E02F /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A0041ED2919ED7F0042E02F /* DetailViewController.swift */; };
@@ -34,6 +33,20 @@
 		6A03B7272923E5E300AC15A6 /* AuthUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A03B7262923E5E300AC15A6 /* AuthUseCase.swift */; };
 		6A3F91A72924A45300F1D901 /* RegisterSelectableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A3F91A62924A45300F1D901 /* RegisterSelectableViewController.swift */; };
 		6A444533291EA23F009AE2E5 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A444532291EA23F009AE2E5 /* UIColor.swift */; };
+		6A45AA212925595700F85D2C /* RegisterCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A45AA202925595700F85D2C /* RegisterCoordinator.swift */; };
+		6A45AA232925621600F85D2C /* RegisterSelectableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A45AA222925621600F85D2C /* RegisterSelectableViewModel.swift */; };
+		6A45AA292925626300F85D2C /* RegisterNickNameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A45AA282925626300F85D2C /* RegisterNickNameViewModel.swift */; };
+		6A45AA2B2925627800F85D2C /* RegisterBirthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A45AA2A2925627800F85D2C /* RegisterBirthViewModel.swift */; };
+		6A45AA2D2925628B00F85D2C /* RegisterHeightViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A45AA2C2925628B00F85D2C /* RegisterHeightViewModel.swift */; };
+		6A45AA2F2925629A00F85D2C /* RegisterMBTIViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A45AA2E2925629A00F85D2C /* RegisterMBTIViewModel.swift */; };
+		6A45AA35292562CC00F85D2C /* RegisterIntroductionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A45AA34292562CC00F85D2C /* RegisterIntroductionViewModel.swift */; };
+		6A45AA37292562D900F85D2C /* RegisterPhotoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A45AA36292562D900F85D2C /* RegisterPhotoViewModel.swift */; };
+		6A45AA39292562E800F85D2C /* RegisterCongratulationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A45AA38292562E800F85D2C /* RegisterCongratulationViewModel.swift */; };
+		6A45AA3B29256B8A00F85D2C /* RegisterViewModelActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A45AA3A29256B8A00F85D2C /* RegisterViewModelActions.swift */; };
+		6A45AA3D2925701200F85D2C /* UIDatePicker+Publisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A45AA3C2925701200F85D2C /* UIDatePicker+Publisher.swift */; };
+		6A45AA4629257E1E00F85D2C /* RegisterHeaderStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A45AA4529257E1E00F85D2C /* RegisterHeaderStackView.swift */; };
+		6A45AA48292585F300F85D2C /* ProgressBarNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A45AA47292585F300F85D2C /* ProgressBarNavigationController.swift */; };
+		6A45AA4B2925C68300F85D2C /* RegisterUserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A45AA4A2925C68300F85D2C /* RegisterUserInfo.swift */; };
 		6A8377A92924A3FC00BC7112 /* NicknameSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A8377A82924A3FC00BC7112 /* NicknameSettingViewController.swift */; };
 		6A8377AB2924B0D700BC7112 /* IntroductionSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A8377AA2924B0D700BC7112 /* IntroductionSettingViewController.swift */; };
 		6A8377AD2924BCB400BC7112 /* CongraturationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A8377AC2924BCB400BC7112 /* CongraturationsViewController.swift */; };
@@ -72,7 +85,6 @@
 		6A0041DA2919E9420042E02F /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
 		6A0041DC2919EADC0042E02F /* HomeCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCoordinator.swift; sourceTree = "<group>"; };
 		6A0041DF2919EB230042E02F /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
-		6A0041E12919EB780042E02F /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
 		6A0041E32919EBA40042E02F /* AuthCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthCoordinator.swift; sourceTree = "<group>"; };
 		6A0041EA2919ED5F0042E02F /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		6A0041ED2919ED7F0042E02F /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
@@ -91,6 +103,20 @@
 		6A03B7262923E5E300AC15A6 /* AuthUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthUseCase.swift; sourceTree = "<group>"; };
 		6A3F91A62924A45300F1D901 /* RegisterSelectableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterSelectableViewController.swift; sourceTree = "<group>"; };
 		6A444532291EA23F009AE2E5 /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
+		6A45AA202925595700F85D2C /* RegisterCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterCoordinator.swift; sourceTree = "<group>"; };
+		6A45AA222925621600F85D2C /* RegisterSelectableViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterSelectableViewModel.swift; sourceTree = "<group>"; };
+		6A45AA282925626300F85D2C /* RegisterNickNameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNickNameViewModel.swift; sourceTree = "<group>"; };
+		6A45AA2A2925627800F85D2C /* RegisterBirthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterBirthViewModel.swift; sourceTree = "<group>"; };
+		6A45AA2C2925628B00F85D2C /* RegisterHeightViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterHeightViewModel.swift; sourceTree = "<group>"; };
+		6A45AA2E2925629A00F85D2C /* RegisterMBTIViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterMBTIViewModel.swift; sourceTree = "<group>"; };
+		6A45AA34292562CC00F85D2C /* RegisterIntroductionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterIntroductionViewModel.swift; sourceTree = "<group>"; };
+		6A45AA36292562D900F85D2C /* RegisterPhotoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterPhotoViewModel.swift; sourceTree = "<group>"; };
+		6A45AA38292562E800F85D2C /* RegisterCongratulationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterCongratulationViewModel.swift; sourceTree = "<group>"; };
+		6A45AA3A29256B8A00F85D2C /* RegisterViewModelActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewModelActions.swift; sourceTree = "<group>"; };
+		6A45AA3C2925701200F85D2C /* UIDatePicker+Publisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIDatePicker+Publisher.swift"; sourceTree = "<group>"; };
+		6A45AA4529257E1E00F85D2C /* RegisterHeaderStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterHeaderStackView.swift; sourceTree = "<group>"; };
+		6A45AA47292585F300F85D2C /* ProgressBarNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBarNavigationController.swift; sourceTree = "<group>"; };
+		6A45AA4A2925C68300F85D2C /* RegisterUserInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = RegisterUserInfo.swift; path = Soulmate/Presentation/RegisterScene/View/RegisterUserInfo.swift; sourceTree = SOURCE_ROOT; };
 		6A8377A82924A3FC00BC7112 /* NicknameSettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NicknameSettingViewController.swift; sourceTree = "<group>"; };
 		6A8377AA2924B0D700BC7112 /* IntroductionSettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroductionSettingViewController.swift; sourceTree = "<group>"; };
 		6A8377AC2924BCB400BC7112 /* CongraturationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CongraturationsViewController.swift; sourceTree = "<group>"; };
@@ -178,14 +204,7 @@
 				6A0041DF2919EB230042E02F /* LoginViewController.swift */,
 				B30A8F0E291CB4AC00ED4906 /* PhoneNumberViewController.swift */,
 				B30A8F10291CB4F100ED4906 /* CertificationNumberViewController.swift */,
-				6A0041E12919EB780042E02F /* RegisterViewController.swift */,
 				6A03B6EF2923BF8900AC15A6 /* CertificationTextField.swift */,
-				6A3F91A62924A45300F1D901 /* RegisterSelectableViewController.swift */,
-				6A8377A82924A3FC00BC7112 /* NicknameSettingViewController.swift */,
-				6A8377AA2924B0D700BC7112 /* IntroductionSettingViewController.swift */,
-				6A8377AC2924BCB400BC7112 /* CongraturationsViewController.swift */,
-				07DDDF262924A7C600CB398C /* BirthViewController.swift */,
-				07DDDF282924B2D500CB398C /* HeightViewController.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -305,18 +324,11 @@
 		6A03B71F2923DE3700AC15A6 /* Domain */ = {
 			isa = PBXGroup;
 			children = (
-				6A03B7202923DE4900AC15A6 /* Entity */,
+				6A45AA492925C66B00F85D2C /* Entity */,
 				6A03B7212923DE5000AC15A6 /* Interface */,
 				6A03B7222923DE5800AC15A6 /* UseCase */,
 			);
 			path = Domain;
-			sourceTree = "<group>";
-		};
-		6A03B7202923DE4900AC15A6 /* Entity */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Entity;
 			sourceTree = "<group>";
 		};
 		6A03B7212923DE5000AC15A6 /* Interface */ = {
@@ -353,6 +365,63 @@
 			path = Extension;
 			sourceTree = "<group>";
 		};
+		6A45AA242925621F00F85D2C /* RegisterScene */ = {
+			isa = PBXGroup;
+			children = (
+				6A45AA442925784C00F85D2C /* Coordinator */,
+				6A45AA262925623800F85D2C /* ViewModel */,
+				6A45AA252925623100F85D2C /* View */,
+			);
+			path = RegisterScene;
+			sourceTree = "<group>";
+		};
+		6A45AA252925623100F85D2C /* View */ = {
+			isa = PBXGroup;
+			children = (
+				6A45AA4529257E1E00F85D2C /* RegisterHeaderStackView.swift */,
+				6A45AA47292585F300F85D2C /* ProgressBarNavigationController.swift */,
+				6A3F91A62924A45300F1D901 /* RegisterSelectableViewController.swift */,
+				6A8377A82924A3FC00BC7112 /* NicknameSettingViewController.swift */,
+				07DDDF262924A7C600CB398C /* BirthViewController.swift */,
+				07DDDF282924B2D500CB398C /* HeightViewController.swift */,
+				6A8377AA2924B0D700BC7112 /* IntroductionSettingViewController.swift */,
+				6A8377AC2924BCB400BC7112 /* CongraturationsViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		6A45AA262925623800F85D2C /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				6A45AA3A29256B8A00F85D2C /* RegisterViewModelActions.swift */,
+				6A45AA222925621600F85D2C /* RegisterSelectableViewModel.swift */,
+				6A45AA282925626300F85D2C /* RegisterNickNameViewModel.swift */,
+				6A45AA2A2925627800F85D2C /* RegisterBirthViewModel.swift */,
+				6A45AA2C2925628B00F85D2C /* RegisterHeightViewModel.swift */,
+				6A45AA2E2925629A00F85D2C /* RegisterMBTIViewModel.swift */,
+				6A45AA34292562CC00F85D2C /* RegisterIntroductionViewModel.swift */,
+				6A45AA36292562D900F85D2C /* RegisterPhotoViewModel.swift */,
+				6A45AA38292562E800F85D2C /* RegisterCongratulationViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		6A45AA442925784C00F85D2C /* Coordinator */ = {
+			isa = PBXGroup;
+			children = (
+				6A45AA202925595700F85D2C /* RegisterCoordinator.swift */,
+			);
+			path = Coordinator;
+			sourceTree = "<group>";
+		};
+		6A45AA492925C66B00F85D2C /* Entity */ = {
+			isa = PBXGroup;
+			children = (
+				6A45AA4A2925C68300F85D2C /* RegisterUserInfo.swift */,
+			);
+			path = Entity;
+			sourceTree = "<group>";
+		};
 		6A8C88832919031A009EDBBB = {
 			isa = PBXGroup;
 			children = (
@@ -376,7 +445,6 @@
 				6A97FE61291CE0A4006F6DD9 /* Util */,
 				6A8C88A52919E3B6009EDBBB /* Data */,
 				6A03B71F2923DE3700AC15A6 /* Domain */,
-				6A8C88A42919E3B1009EDBBB /* Domain */,
 				6A8C88A32919E3AB009EDBBB /* Presentation */,
 				6A8C88932919031A009EDBBB /* ViewController.swift */,
 				6A8C88952919031A009EDBBB /* Main.storyboard */,
@@ -396,21 +464,12 @@
 				6A0041F72919EE180042E02F /* MyPageScene */,
 				6A0041EF2919ED9D0042E02F /* ChatScene */,
 				6A0041E72919ED410042E02F /* HomeScene */,
+				6A45AA242925621F00F85D2C /* RegisterScene */,
 				6A0041D42919E6710042E02F /* Common */,
 				6A0041D32919E6490042E02F /* AuthScene */,
 				6A8C88AE2919E504009EDBBB /* AppScene */,
 			);
 			path = Presentation;
-			sourceTree = "<group>";
-		};
-		6A8C88A42919E3B1009EDBBB /* Domain */ = {
-			isa = PBXGroup;
-			children = (
-				6A8C88AD2919E4F4009EDBBB /* Entity */,
-				6A8C88AB2919E4CF009EDBBB /* Interface */,
-				6A8C88AA2919E4CA009EDBBB /* UseCase */,
-			);
-			path = Domain;
 			sourceTree = "<group>";
 		};
 		6A8C88A52919E3B6009EDBBB /* Data */ = {
@@ -421,32 +480,11 @@
 			path = Data;
 			sourceTree = "<group>";
 		};
-		6A8C88AA2919E4CA009EDBBB /* UseCase */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = UseCase;
-			sourceTree = "<group>";
-		};
-		6A8C88AB2919E4CF009EDBBB /* Interface */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Interface;
-			sourceTree = "<group>";
-		};
 		6A8C88AC2919E4E6009EDBBB /* Repository */ = {
 			isa = PBXGroup;
 			children = (
 			);
 			path = Repository;
-			sourceTree = "<group>";
-		};
-		6A8C88AD2919E4F4009EDBBB /* Entity */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Entity;
 			sourceTree = "<group>";
 		};
 		6A8C88AE2919E504009EDBBB /* AppScene */ = {
@@ -482,6 +520,7 @@
 				6ADEE4E62922198200AD328B /* UIControl+Publisher.swift */,
 				6ADEE4E929221CB800AD328B /* UIButton+Publisher.swift */,
 				6ADEE4EB29221CD900AD328B /* UITextField+Publisher.swift */,
+				6A45AA3C2925701200F85D2C /* UIDatePicker+Publisher.swift */,
 			);
 			path = Combine;
 			sourceTree = "<group>";
@@ -614,22 +653,29 @@
 				6A97FE66291CE29E006F6DD9 /* LoginViewModel.swift in Sources */,
 				B3E029A9291DDC1500931FA2 /* GradientButton.swift in Sources */,
 				6ADEE4EC29221CD900AD328B /* UITextField+Publisher.swift in Sources */,
+				6A45AA2B2925627800F85D2C /* RegisterBirthViewModel.swift in Sources */,
 				6A0041E42919EBA40042E02F /* AuthCoordinator.swift in Sources */,
-				6A0041E22919EB780042E02F /* RegisterViewController.swift in Sources */,
+				6A45AA232925621600F85D2C /* RegisterSelectableViewModel.swift in Sources */,
 				6A03B6F02923BF8900AC15A6 /* CertificationTextField.swift in Sources */,
 				6A0041FD2919EE7B0042E02F /* ServiceTermViewController.swift in Sources */,
 				6A97FE63291CE0C2006F6DD9 /* UIImage+shadow.swift in Sources */,
+				6A45AA4629257E1E00F85D2C /* RegisterHeaderStackView.swift in Sources */,
 				6A03B6EE2923BF2300AC15A6 /* CertificationViewModel.swift in Sources */,
 				6AE21021291DE06600A32280 /* SelectableCell.swift in Sources */,
 				6A0041DB2919E9420042E02F /* AppCoordinator.swift in Sources */,
 				6A03B6EC2923BD8C00AC15A6 /* PhoneNumberViewModel.swift in Sources */,
 				6A0041EE2919ED7F0042E02F /* DetailViewController.swift in Sources */,
+				6A45AA212925595700F85D2C /* RegisterCoordinator.swift in Sources */,
 				6A444533291EA23F009AE2E5 /* UIColor.swift in Sources */,
 				07DDDF292924B2D500CB398C /* HeightViewController.swift in Sources */,
 				6A8C88942919031A009EDBBB /* ViewController.swift in Sources */,
+				6A45AA2F2925629A00F85D2C /* RegisterMBTIViewModel.swift in Sources */,
 				6ADEE4EA29221CB800AD328B /* UIButton+Publisher.swift in Sources */,
+				6A45AA48292585F300F85D2C /* ProgressBarNavigationController.swift in Sources */,
 				6A8377AB2924B0D700BC7112 /* IntroductionSettingViewController.swift in Sources */,
+				6A45AA39292562E800F85D2C /* RegisterCongratulationViewModel.swift in Sources */,
 				6A8C88902919031A009EDBBB /* AppDelegate.swift in Sources */,
+				6A45AA35292562CC00F85D2C /* RegisterIntroductionViewModel.swift in Sources */,
 				6ADEE4E72922198200AD328B /* UIControl+Publisher.swift in Sources */,
 				6A03B6F22923C00900AC15A6 /* UIFont.swift in Sources */,
 				6A8377A92924A3FC00BC7112 /* NicknameSettingViewController.swift in Sources */,
@@ -638,9 +684,13 @@
 				6A0041E02919EB230042E02F /* LoginViewController.swift in Sources */,
 				6A3F91A72924A45300F1D901 /* RegisterSelectableViewController.swift in Sources */,
 				6A0041EB2919ED5F0042E02F /* HomeViewController.swift in Sources */,
+				6A45AA292925626300F85D2C /* RegisterNickNameViewModel.swift in Sources */,
+				6A45AA4B2925C68300F85D2C /* RegisterUserInfo.swift in Sources */,
 				6A03B7242923DE7200AC15A6 /* DefaultAuthUseCase.swift in Sources */,
+				6A45AA37292562D900F85D2C /* RegisterPhotoViewModel.swift in Sources */,
 				6A0042062919EF220042E02F /* MyPageCoordinator.swift in Sources */,
 				B30A8F0F291CB4AC00ED4906 /* PhoneNumberViewController.swift in Sources */,
+				6A45AA2D2925628B00F85D2C /* RegisterHeightViewModel.swift in Sources */,
 				6A8C88922919031A009EDBBB /* SceneDelegate.swift in Sources */,
 				B303D651292367CF00414293 /* ProgressBar.swift in Sources */,
 				6A0041FB2919EE600042E02F /* MyPageViewController.swift in Sources */,
@@ -650,6 +700,8 @@
 				6A0041FF2919EE920042E02F /* ModificationViewController.swift in Sources */,
 				6A03B7272923E5E300AC15A6 /* AuthUseCase.swift in Sources */,
 				6A0041F42919EDC20042E02F /* ChatListViewController.swift in Sources */,
+				6A45AA3B29256B8A00F85D2C /* RegisterViewModelActions.swift in Sources */,
+				6A45AA3D2925701200F85D2C /* UIDatePicker+Publisher.swift in Sources */,
 				074F3B0B292261EA00D36C89 /* CandidatesCell.swift in Sources */,
 				6A0041F62919EE010042E02F /* ChattingRoomViewController.swift in Sources */,
 				07DDDF272924A7C600CB398C /* BirthViewController.swift in Sources */,
