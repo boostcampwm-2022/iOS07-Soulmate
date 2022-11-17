@@ -26,31 +26,82 @@ class MbtiViewController: UIViewController {
         return preview
     }()
     
-//    var innerType: InnerType
-//    var recognizeType: RecognizeType
-//    var judgementType: JudgementType
-//    var lifeStyleType: LifeStyleType
-    
     private lazy var innerTypeView: MbtiSegmentView = {
         let view = MbtiSegmentView(titles: ("I", "E"))
+        view.leftButton.addAction(
+            UIAction { _ in
+                self.preview.innerTypeLabel.text = "I"
+                self.preview.innerTypeLabel.textColor = .black
+            },
+            for: .touchUpInside
+        )
+        view.rightButton.addAction(
+            UIAction { _ in
+                self.preview.innerTypeLabel.text = "E"
+                self.preview.innerTypeLabel.textColor = .black
+            },
+            for: .touchUpInside
+        )
         self.view.addSubview(view)
         return view
     }()
 
     private lazy var recognizeTypeView: MbtiSegmentView = {
         let view = MbtiSegmentView(titles: ("N", "S"))
+        view.leftButton.addAction(
+            UIAction { _ in
+                self.preview.recognizeTypeLabel.text = "N"
+                self.preview.recognizeTypeLabel.textColor = .black
+            },
+            for: .touchUpInside
+        )
+        view.rightButton.addAction(
+            UIAction { _ in
+                self.preview.recognizeTypeLabel.text = "S"
+                self.preview.recognizeTypeLabel.textColor = .black
+            },
+            for: .touchUpInside
+        )
         self.view.addSubview(view)
         return view
     }()
     
     private lazy var judgementTypeView: MbtiSegmentView = {
         let view = MbtiSegmentView(titles: ("F", "T"))
+        view.leftButton.addAction(
+            UIAction { _ in
+                self.preview.judgementTypeLabel.text = "F"
+                self.preview.judgementTypeLabel.textColor = .black
+            },
+            for: .touchUpInside
+        )
+        view.rightButton.addAction(
+            UIAction { _ in
+                self.preview.judgementTypeLabel.text = "T"
+                self.preview.judgementTypeLabel.textColor = .black
+            },
+            for: .touchUpInside
+        )
         self.view.addSubview(view)
         return view
     }()
     
     private lazy var lifeStyleTypeView: MbtiSegmentView = {
         let view = MbtiSegmentView(titles: ("P", "J"))
+        view.leftButton.addAction(
+            UIAction { _ in
+                self.preview.lifeStyleTypeLabel.text = "P"
+                self.preview.lifeStyleTypeLabel.textColor = .black
+            },
+            for: .touchUpInside
+        )
+        view.rightButton.addAction(
+            UIAction { _ in
+                self.preview.lifeStyleTypeLabel.text = "J"
+                self.preview.lifeStyleTypeLabel.textColor = .black
+            },
+            for: .touchUpInside
+        )
         self.view.addSubview(view)
         return view
     }()
@@ -119,5 +170,13 @@ private extension MbtiViewController {
             $0.height.equalTo(54)
             $0.centerX.equalTo(view.safeAreaLayoutGuide.snp.centerX)
         }
+    }
+    
+    func leftButtonTapped() {
+        print("left")
+    }
+
+    func rightButtonTapped() {
+        print("right")
     }
 }

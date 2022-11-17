@@ -93,7 +93,7 @@ private extension MbtiSegmentView {
         rightButton.setTitleColor(.black, for: .normal)
         self.seletedMbti = self.leftTitle
     }
-    
+
     func rightButtonTapped() {
         rightButton.backgroundColor = .mainPurple
         rightButton.setTitleColor(.white, for: .normal)
