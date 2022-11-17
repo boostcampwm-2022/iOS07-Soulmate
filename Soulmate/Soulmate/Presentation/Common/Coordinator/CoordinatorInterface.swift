@@ -8,7 +8,7 @@
 import UIKit
 
 enum CoordinatorType {
-    case app, tab, home, myPage, auth, chat
+    case app, tab, home, myPage, auth, chat, register
 }
 
 protocol Coordinator: AnyObject {

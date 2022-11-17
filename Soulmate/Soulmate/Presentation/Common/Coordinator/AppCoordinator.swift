@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 final class AppCoordinator: Coordinator {
         
@@ -23,7 +24,12 @@ final class AppCoordinator: Coordinator {
     }
     
     func start() {
-        showAuthFlow()
+        if Auth.auth().currentUser == nil {
+            showAuthFlow()
+        }
+        else {
+            showMainTabFlow()
+        }
     }
     
     private func showAuthFlow() {
@@ -45,6 +51,9 @@ extension AppCoordinator: CoordinatorFinishDelegate {
     func coordinatorDidFinish(childCoordinator: Coordinator) {
         childCoordinators = childCoordinators.filter {
             $0.type != childCoordinator.type
+        }
+        if childCoordinator.type == .auth {
+            showMainTabFlow()
         }
     }
 }

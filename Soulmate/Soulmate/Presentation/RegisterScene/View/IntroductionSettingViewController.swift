@@ -6,41 +6,21 @@
 //
 
 import UIKit
+import SnapKit
+import Combine
 
 final class IntroductionSettingViewController: UIViewController {
     
-    private lazy var progressBar: ProgressBar = {
-        let bar = ProgressBar()
-        view.addSubview(bar)
-        bar.translatesAutoresizingMaskIntoConstraints = false
-        bar.goToNextStep()
-        
-        return bar
-    }()
+    var bag = Set<AnyCancellable>()
+    var viewModel: RegisterIntroductionViewModel?
     
-    private lazy var guideLabel: UILabel = {
-        let label = UILabel()
-        view.addSubview(label)
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "회원님을 자유롭게\n소개해주세요."
-        label.numberOfLines = 2
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.maximumLineHeight = 35.2
-        paragraphStyle.minimumLineHeight = 35.2
-        let attr: [NSAttributedString.Key: Any] = [
-            NSAttributedString.Key.paragraphStyle: paragraphStyle
-        ]
-        let attrString = NSMutableAttributedString(
-            string: label.text ?? "",
-            attributes: attr)
-        label.attributedText = attrString
-        var font = UIFont(name: "AppleSDGothicNeo-Bold", size: 22)
-        var descriptor = font?.fontDescriptor
-        
-        
-        label.font = font
-        
-        return label
+    lazy var registerHeaderStackView: RegisterHeaderStackView = {
+        let headerView = RegisterHeaderStackView(frame: .zero)
+        headerView.setMessage(
+            guideText: "회원님을 자유롭게\n소개해주세요."
+        )
+        view.addSubview(headerView)
+        return headerView
     }()
     
     private lazy var introductionTextView: UITextView = {
@@ -77,29 +57,47 @@ final class IntroductionSettingViewController: UIViewController {
         return button
     }()
     
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    convenience init(viewModel: RegisterIntroductionViewModel) {
+        self.init(nibName: nil, bundle: nil)
+        self.viewModel = viewModel
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        configureView()
         configureLayout()
+        bind()
     }
 }
 
 private extension IntroductionSettingViewController {
     
+    func bind() {
+    }
+    
+    func configureView() {
+        view.backgroundColor = .systemBackground
+    }
+    
     func configureLayout() {
         
-        progressBar.snp.makeConstraints {
-            $0.top.equalTo(self.view.safeAreaLayoutGuide.snp.top).offset(20)
-            $0.leading.equalTo(self.view.safeAreaLayoutGuide.snp.leading).offset(20)
-        }
-        
-        guideLabel.snp.makeConstraints {
-            $0.top.equalTo(self.view.safeAreaLayoutGuide.snp.top).offset(50)
-            $0.leading.equalTo(self.view.safeAreaLayoutGuide.snp.leading).offset(20)
+        registerHeaderStackView.snp.makeConstraints {
+            $0.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(50)
+            $0.leading.equalToSuperview().offset(20)
+            $0.trailing.equalToSuperview().offset(-20)
         }
         
         nextButton.snp.makeConstraints {
-            $0.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom).offset(-12)
+            $0.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom).offset(-33)
             $0.leading.equalTo(self.view.safeAreaLayoutGuide.snp.leading).offset(20)
             $0.trailing.equalTo(self.view.safeAreaLayoutGuide.snp.trailing).offset(-20)
         }
@@ -107,7 +105,7 @@ private extension IntroductionSettingViewController {
         introductionTextView.snp.makeConstraints {
             $0.leading.equalTo(self.view.safeAreaLayoutGuide.snp.leading).offset(20)
             $0.trailing.equalTo(self.view.safeAreaLayoutGuide.snp.trailing).offset(-20)
-            $0.top.equalTo(self.guideLabel.snp.bottom).offset(60)
+            $0.top.equalTo(self.registerHeaderStackView.snp.bottom).offset(60)
             $0.height.equalTo(120)
         }
         

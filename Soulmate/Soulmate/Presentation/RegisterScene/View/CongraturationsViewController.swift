@@ -9,14 +9,7 @@ import UIKit
 
 final class CongraturationsViewController: UIViewController {
     
-    private lazy var progressBar: ProgressBar = {
-        let bar = ProgressBar()
-        view.addSubview(bar)
-        bar.translatesAutoresizingMaskIntoConstraints = false
-        bar.goToNextStep()
-        
-        return bar
-    }()
+    var actions: RegisterViewModelActions?
     
     private lazy var confetti: UIImageView = {
         let imageView = UIImageView()
@@ -86,21 +79,34 @@ final class CongraturationsViewController: UIViewController {
         return label
     }()
     
+    private lazy var nextButton: GradientButton = {
+        let button = GradientButton(title: "시작하기")
+        view.addSubview(button)
+        return button
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        configureView()
         configureLayout()
+        
+        // 뷰모델 만들기전 임시로 둔 타겟액션
+        //nextButton.addTarget(self, action: #selector(nextButtonTouched), for: .touchUpInside)
     }
+    
+//    @objc func nextButtonTouched() {
+//        actions?.nextStep?()
+//    }
 }
 
 private extension CongraturationsViewController {
     
+    func configureView() {
+        view.backgroundColor = .systemBackground
+    }
+    
     func configureLayout() {
-        
-        progressBar.snp.makeConstraints {
-            $0.top.equalTo(self.view.safeAreaLayoutGuide.snp.top).offset(20)
-            $0.leading.equalTo(self.view.safeAreaLayoutGuide.snp.leading).offset(20)
-        }
         
         confetti.snp.makeConstraints {
             $0.top.equalTo(self.view.safeAreaLayoutGuide.snp.top).offset(100)
@@ -126,6 +132,12 @@ private extension CongraturationsViewController {
         descriptionLabel.snp.makeConstraints {
             $0.top.equalTo(self.conguraturationsLabel.snp.bottom).offset(16)
             $0.centerX.equalTo(self.profileImage.snp.centerX)
+        }
+        
+        nextButton.snp.makeConstraints {
+            $0.leading.trailing.equalTo(view.safeAreaLayoutGuide).inset(20)
+            $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).inset(33)
+            $0.height.equalTo(54)
         }
     }
 }
