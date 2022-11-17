@@ -10,15 +10,6 @@ import UIKit
 protocol ProgressAnimatable: UIViewController {
     
     func preset()
-    func setPushInitStateAsTo()
-    func setPushFinalStateAsTo()
-    func setPushInitStateAsFrom()
-    func setPushFinalStateAsFrom()
-    func setPopInitStateAsTo()
-    func setPopFinalStateAsTo()
-    func setPopInitStateAsFrom()
-    func setPopFinalStateAsFrom()
     func reset()
-    
-    
+    func progressingComponents() -> [UIView]
 }

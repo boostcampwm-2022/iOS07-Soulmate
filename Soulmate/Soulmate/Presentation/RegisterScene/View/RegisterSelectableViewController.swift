@@ -12,7 +12,6 @@ import Combine
 class RegisterSelectableViewController: UIViewController {
     
     let transition = ProgressAnimator()
-    var viewFrame: CGRect?
     
     var bag = Set<AnyCancellable>()
     var viewModel: RegisterSelectableViewModel?
@@ -68,8 +67,7 @@ class RegisterSelectableViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-                
-        setConstants()
+                        
         configureView()
         configureLayout()
         
@@ -109,11 +107,7 @@ private extension RegisterSelectableViewController {
             }
             .store(in: &bag)
     }
-    
-    func setConstants() {
-        viewFrame = view.frame
-    }
-    
+
     func configureView() {
         view.backgroundColor = .systemBackground
         collectionView.register(SelectableCell.self, forCellWithReuseIdentifier: "SelectableCell")
@@ -157,11 +151,6 @@ extension RegisterSelectableViewController: UINavigationControllerDelegate, Prog
         to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         
             transition.operation = operation
-//            if operation == .pop {
-//                return nil
-//            } else {
-//                return transition
-//            }
             
             return transition
     }
@@ -172,88 +161,8 @@ extension RegisterSelectableViewController: UINavigationControllerDelegate, Prog
         view.backgroundColor = .clear
     }
     
-    func setPushInitStateAsTo() {
-        guard let viewFrame else { return }
-        
-        view.center = CGPoint(
-            x: viewFrame.midX + viewFrame.maxX,
-            y: viewFrame.midY)
-    }
-    
-    func setPushFinalStateAsTo() {
-        guard let viewFrame else { return }
-        
-        view.center = CGPoint(
-            x: viewFrame.midX,
-            y: viewFrame.midY)
-    }
-    
-    func setPushInitStateAsFrom() {
-        guard let viewFrame else { return }
-        
-        view.center = CGPoint(
-            x: viewFrame.midX,
-            y: viewFrame.midY)
-    }
-    
-    func setPushFinalStateAsFrom() {
-        guard let viewFrame else { return }
-        
-        registerHeaderStackView.center = CGPoint(
-            x: viewFrame.midX - viewFrame.maxX,
-            y: registerHeaderStackView.frame.midY)
-        
-        collectionView.center = CGPoint(
-            x: viewFrame.midX - viewFrame.maxX,
-            y: collectionView.frame.midY)
-    }
-    
-    func setPopInitStateAsTo() {
-        guard let viewFrame else { return }
-        
-        registerHeaderStackView.center = CGPoint(
-            x: viewFrame.midX - viewFrame.maxX,
-            y: registerHeaderStackView.frame.midY)
-        
-        collectionView.center = CGPoint(
-            x: viewFrame.midX - viewFrame.maxX,
-            y: collectionView.frame.midY)
-    }
-    
-    func setPopFinalStateAsTo() {
-        guard let viewFrame else { return }
-        
-        registerHeaderStackView.center = CGPoint(
-            x: viewFrame.midX,
-            y: registerHeaderStackView.frame.midY)
-        
-        collectionView.center = CGPoint(
-            x: viewFrame.midX,
-            y: collectionView.frame.midY)
-    }
-    
-    func setPopInitStateAsFrom() {
-        guard let viewFrame else { return }
-        
-        registerHeaderStackView.center = CGPoint(
-            x: viewFrame.midX,
-            y: registerHeaderStackView.frame.midY)
-        
-        collectionView.center = CGPoint(
-            x: viewFrame.midX,
-            y: collectionView.frame.midY)
-    }
-    
-    func setPopFinalStateAsFrom() {
-        guard let viewFrame else { return }
-        
-        registerHeaderStackView.center = CGPoint(
-            x: viewFrame.midX + viewFrame.maxX,
-            y: registerHeaderStackView.frame.midY)
-        
-        collectionView.center = CGPoint(
-            x: viewFrame.midX + viewFrame.maxX,
-            y: collectionView.frame.midY)
+    func progressingComponents() -> [UIView] {
+        return [registerHeaderStackView, collectionView]
     }
     
     func reset() {

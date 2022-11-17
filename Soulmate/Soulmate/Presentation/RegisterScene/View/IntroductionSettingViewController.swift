@@ -10,8 +10,7 @@ import SnapKit
 import Combine
 
 final class IntroductionSettingViewController: UIViewController {
-    
-    var viewFrame: CGRect?
+        
     var bag = Set<AnyCancellable>()
     var viewModel: RegisterIntroductionViewModel?
     
@@ -94,8 +93,7 @@ final class IntroductionSettingViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        setConstants()
+                
         configureView()
         configureLayout()
         bind()
@@ -109,88 +107,8 @@ extension IntroductionSettingViewController: ProgressAnimatable {
         view.backgroundColor = .clear
     }
     
-    func setPushInitStateAsTo() {
-        guard let viewFrame else { return }
-        
-        view.center = CGPoint(
-            x: viewFrame.midX + viewFrame.maxX,
-            y: viewFrame.midY)
-    }
-    
-    func setPushFinalStateAsTo() {
-        guard let viewFrame else { return }
-        
-        view.center = CGPoint(
-            x: viewFrame.midX,
-            y: viewFrame.midY)
-    }
-    
-    func setPushInitStateAsFrom() {
-        guard let viewFrame else { return }
-        
-        view.center = CGPoint(
-            x: viewFrame.midX,
-            y: viewFrame.midY)
-    }
-    
-    func setPushFinalStateAsFrom() {
-        guard let viewFrame else { return }
-        
-        registerHeaderStackView.center = CGPoint(
-            x: viewFrame.midX - viewFrame.maxX,
-            y: registerHeaderStackView.frame.midY)
-        
-        introductionStackView.center = CGPoint(
-            x: viewFrame.midX - viewFrame.maxX,
-            y: introductionStackView.frame.midY)
-    }
-    
-    func setPopInitStateAsTo() {
-        guard let viewFrame else { return }
-        
-        registerHeaderStackView.center = CGPoint(
-            x: viewFrame.midX - viewFrame.maxX,
-            y: registerHeaderStackView.frame.midY)
-        
-        introductionStackView.center = CGPoint(
-            x: viewFrame.midX - viewFrame.maxX,
-            y: introductionStackView.frame.midY)
-    }
-    
-    func setPopFinalStateAsTo() {
-        guard let viewFrame else { return }
-        
-        registerHeaderStackView.center = CGPoint(
-            x: viewFrame.midX,
-            y: registerHeaderStackView.frame.midY)
-        
-        introductionStackView.center = CGPoint(
-            x: viewFrame.midX,
-            y: introductionStackView.frame.midY)
-    }
-    
-    func setPopInitStateAsFrom() {
-        guard let viewFrame else { return }
-        
-        registerHeaderStackView.center = CGPoint(
-            x: viewFrame.midX,
-            y: registerHeaderStackView.frame.midY)
-        
-        introductionStackView.center = CGPoint(
-            x: viewFrame.midX,
-            y: introductionStackView.frame.midY)
-    }
-    
-    func setPopFinalStateAsFrom() {
-        guard let viewFrame else { return }
-        
-        registerHeaderStackView.center = CGPoint(
-            x: viewFrame.midX + viewFrame.maxX,
-            y: registerHeaderStackView.frame.midY)
-        
-        introductionStackView.center = CGPoint(
-            x: viewFrame.midX + viewFrame.maxX,
-            y: introductionStackView.frame.midY)
+    func progressingComponents() -> [UIView] {
+        return [registerHeaderStackView, introductionStackView]
     }
     
     func reset() {
@@ -204,11 +122,7 @@ private extension IntroductionSettingViewController {
     
     func bind() {
     }
-    
-    func setConstants() {
-        viewFrame = view.frame
-    }
-    
+
     func configureView() {
         view.backgroundColor = .systemBackground
     }
