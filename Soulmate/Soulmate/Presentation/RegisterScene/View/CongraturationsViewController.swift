@@ -9,6 +9,7 @@ import UIKit
 
 final class CongraturationsViewController: UIViewController {
     
+    var viewFrame: CGRect?
     var actions: RegisterViewModelActions?
     
     private lazy var confetti: UIImageView = {
@@ -88,6 +89,7 @@ final class CongraturationsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setConstants()
         configureView()
         configureLayout()
         
@@ -100,7 +102,73 @@ final class CongraturationsViewController: UIViewController {
 //    }
 }
 
+extension CongraturationsViewController: ProgressAnimatable {
+    func preset() {
+        view.backgroundColor = .clear
+    }
+    
+    func setPushInitStateAsTo() {
+        guard let viewFrame else { return }
+        
+        view.center = CGPoint(
+            x: viewFrame.midX + viewFrame.maxX,
+            y: viewFrame.midY)
+    }
+    
+    func setPushFinalStateAsTo() {
+        guard let viewFrame else { return }
+        
+        view.center = CGPoint(
+            x: viewFrame.midX,
+            y: viewFrame.midY)
+    }
+    
+    func setPushInitStateAsFrom() {
+        guard let viewFrame else { return }
+        
+        view.center = CGPoint(
+            x: viewFrame.midX,
+            y: viewFrame.midY)
+    }
+    
+    func setPushFinalStateAsFrom() {
+
+    }
+    
+    func setPopInitStateAsTo() {
+
+    }
+    
+    func setPopFinalStateAsTo() {
+
+    }
+    
+    func setPopInitStateAsFrom() {
+        guard let viewFrame else { return }
+        
+        view.center = CGPoint(
+            x: viewFrame.midX,
+            y: viewFrame.midY)
+    }
+    
+    func setPopFinalStateAsFrom() {
+        guard let viewFrame else { return }
+        
+        view.center = CGPoint(
+            x: viewFrame.midX + viewFrame.maxX,
+            y: viewFrame.midY)
+    }
+    
+    func reset() {
+        view.backgroundColor = .white
+    }
+}
+
 private extension CongraturationsViewController {
+    
+    func setConstants() {
+        viewFrame = view.frame
+    }
     
     func configureView() {
         view.backgroundColor = .systemBackground

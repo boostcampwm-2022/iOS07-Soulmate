@@ -11,8 +11,18 @@ import Combine
 
 final class IntroductionSettingViewController: UIViewController {
     
+    var viewFrame: CGRect?
     var bag = Set<AnyCancellable>()
     var viewModel: RegisterIntroductionViewModel?
+    
+    private lazy var progressBar: ProgressBar = {
+        let bar = ProgressBar()
+        view.addSubview(bar)
+        bar.translatesAutoresizingMaskIntoConstraints = false
+        bar.goToNextStep()
+        
+        return bar
+    }()
     
     lazy var registerHeaderStackView: RegisterHeaderStackView = {
         let headerView = RegisterHeaderStackView(frame: .zero)
@@ -25,8 +35,6 @@ final class IntroductionSettingViewController: UIViewController {
     
     private lazy var introductionTextView: UITextView = {
         let textView = UITextView()
-        view.addSubview(textView)
-        textView.translatesAutoresizingMaskIntoConstraints = false
         textView.layer.masksToBounds = true
         textView.layer.cornerCurve = .continuous
         textView.layer.cornerRadius = 10
@@ -34,19 +42,33 @@ final class IntroductionSettingViewController: UIViewController {
         textView.layer.borderColor = UIColor.systemGray5.cgColor
         textView.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 16)
         textView.textContainerInset = .init(top: 16, left: 12, bottom: 0, right: 12)
+        textView.heightAnchor.constraint(equalToConstant: 120).isActive = true
+        textView.showsVerticalScrollIndicator = false
         
         return textView
     }()
     
     private lazy var textCountLabel: UILabel = {
         let label = UILabel()
-        view.addSubview(label)
-        label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "0/50"
         label.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 14)
         label.textColor = .labelDarkGrey
+        label.textAlignment = .right
         
         return label
+    }()
+    
+    private lazy var introductionStackView: UIStackView = {
+        let stackView = UIStackView()
+        view.addSubview(stackView)
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .vertical
+        stackView.spacing = 10
+        stackView.alignment = .fill
+        stackView.addArrangedSubview(textCountLabel)
+        stackView.addArrangedSubview(introductionTextView)
+        
+        return stackView
     }()
     
     private lazy var nextButton: UIButton = {
@@ -73,9 +95,108 @@ final class IntroductionSettingViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setConstants()
         configureView()
         configureLayout()
         bind()
+    }
+}
+
+extension IntroductionSettingViewController: ProgressAnimatable {
+    func preset() {
+        progressBar.isHidden = true
+        nextButton.isHidden = true
+        view.backgroundColor = .clear
+    }
+    
+    func setPushInitStateAsTo() {
+        guard let viewFrame else { return }
+        
+        view.center = CGPoint(
+            x: viewFrame.midX + viewFrame.maxX,
+            y: viewFrame.midY)
+    }
+    
+    func setPushFinalStateAsTo() {
+        guard let viewFrame else { return }
+        
+        view.center = CGPoint(
+            x: viewFrame.midX,
+            y: viewFrame.midY)
+    }
+    
+    func setPushInitStateAsFrom() {
+        guard let viewFrame else { return }
+        
+        view.center = CGPoint(
+            x: viewFrame.midX,
+            y: viewFrame.midY)
+    }
+    
+    func setPushFinalStateAsFrom() {
+        guard let viewFrame else { return }
+        
+        registerHeaderStackView.center = CGPoint(
+            x: viewFrame.midX - viewFrame.maxX,
+            y: registerHeaderStackView.frame.midY)
+        
+        introductionStackView.center = CGPoint(
+            x: viewFrame.midX - viewFrame.maxX,
+            y: introductionStackView.frame.midY)
+    }
+    
+    func setPopInitStateAsTo() {
+        guard let viewFrame else { return }
+        
+        registerHeaderStackView.center = CGPoint(
+            x: viewFrame.midX - viewFrame.maxX,
+            y: registerHeaderStackView.frame.midY)
+        
+        introductionStackView.center = CGPoint(
+            x: viewFrame.midX - viewFrame.maxX,
+            y: introductionStackView.frame.midY)
+    }
+    
+    func setPopFinalStateAsTo() {
+        guard let viewFrame else { return }
+        
+        registerHeaderStackView.center = CGPoint(
+            x: viewFrame.midX,
+            y: registerHeaderStackView.frame.midY)
+        
+        introductionStackView.center = CGPoint(
+            x: viewFrame.midX,
+            y: introductionStackView.frame.midY)
+    }
+    
+    func setPopInitStateAsFrom() {
+        guard let viewFrame else { return }
+        
+        registerHeaderStackView.center = CGPoint(
+            x: viewFrame.midX,
+            y: registerHeaderStackView.frame.midY)
+        
+        introductionStackView.center = CGPoint(
+            x: viewFrame.midX,
+            y: introductionStackView.frame.midY)
+    }
+    
+    func setPopFinalStateAsFrom() {
+        guard let viewFrame else { return }
+        
+        registerHeaderStackView.center = CGPoint(
+            x: viewFrame.midX + viewFrame.maxX,
+            y: registerHeaderStackView.frame.midY)
+        
+        introductionStackView.center = CGPoint(
+            x: viewFrame.midX + viewFrame.maxX,
+            y: introductionStackView.frame.midY)
+    }
+    
+    func reset() {
+        progressBar.isHidden = false
+        nextButton.isHidden = false
+        view.backgroundColor = .white
     }
 }
 
@@ -84,11 +205,21 @@ private extension IntroductionSettingViewController {
     func bind() {
     }
     
+    func setConstants() {
+        viewFrame = view.frame
+    }
+    
     func configureView() {
         view.backgroundColor = .systemBackground
     }
     
     func configureLayout() {
+        
+        progressBar.snp.makeConstraints {
+            $0.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(20)
+            $0.leading.equalToSuperview().offset(20)
+            $0.trailing.equalToSuperview().offset(-20)
+        }
         
         registerHeaderStackView.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(50)
@@ -100,18 +231,13 @@ private extension IntroductionSettingViewController {
             $0.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom).offset(-33)
             $0.leading.equalTo(self.view.safeAreaLayoutGuide.snp.leading).offset(20)
             $0.trailing.equalTo(self.view.safeAreaLayoutGuide.snp.trailing).offset(-20)
+            $0.height.equalTo(54)
         }
         
-        introductionTextView.snp.makeConstraints {
+        introductionStackView.snp.makeConstraints {
             $0.leading.equalTo(self.view.safeAreaLayoutGuide.snp.leading).offset(20)
             $0.trailing.equalTo(self.view.safeAreaLayoutGuide.snp.trailing).offset(-20)
             $0.top.equalTo(self.registerHeaderStackView.snp.bottom).offset(60)
-            $0.height.equalTo(120)
-        }
-        
-        textCountLabel.snp.makeConstraints {
-            $0.trailing.equalTo(self.introductionTextView.snp.trailing)
-            $0.bottom.equalTo(self.introductionTextView.snp.top).offset(-10)
         }
     }
 }

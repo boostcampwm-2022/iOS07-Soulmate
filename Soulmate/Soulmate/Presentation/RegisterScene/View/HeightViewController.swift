@@ -9,12 +9,24 @@ import UIKit
 
 final class HeightViewController: UIViewController {
     
+    var viewFrame: CGRect?
     var viewModel: RegisterHeightViewModel?
     
     // TODO: 이부분 상의하고 수정
     @Published var selectedHeight: String = String()
     
     private let pickerData: [Int] = Array(140...210) // 키 범위
+    
+    private lazy var progressBar: ProgressBar = {
+        let bar = ProgressBar()
+        view.addSubview(bar)
+        bar.translatesAutoresizingMaskIntoConstraints = false
+        bar.goToNextStep()
+        bar.goToNextStep()
+        bar.goToNextStep()
+        
+        return bar
+    }()
     
     lazy var registerHeaderStackView: RegisterHeaderStackView = {
         let headerView = RegisterHeaderStackView(frame: .zero)
@@ -58,9 +70,108 @@ final class HeightViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setConstants()
         configureView()
         configureLayout()
         bind()
+    }
+}
+
+extension HeightViewController: ProgressAnimatable {
+    func preset() {
+        progressBar.isHidden = true
+        nextButton.isHidden = true
+        view.backgroundColor = .clear
+    }
+    
+    func setPushInitStateAsTo() {
+        guard let viewFrame else { return }
+        
+        view.center = CGPoint(
+            x: viewFrame.midX + viewFrame.maxX,
+            y: viewFrame.midY)
+    }
+    
+    func setPushFinalStateAsTo() {
+        guard let viewFrame else { return }
+        
+        view.center = CGPoint(
+            x: viewFrame.midX,
+            y: viewFrame.midY)
+    }
+    
+    func setPushInitStateAsFrom() {
+        guard let viewFrame else { return }
+        
+        view.center = CGPoint(
+            x: viewFrame.midX,
+            y: viewFrame.midY)
+    }
+    
+    func setPushFinalStateAsFrom() {
+        guard let viewFrame else { return }
+        
+        registerHeaderStackView.center = CGPoint(
+            x: viewFrame.midX - viewFrame.maxX,
+            y: registerHeaderStackView.frame.midY)
+        
+        heightPicker.center = CGPoint(
+            x: viewFrame.midX - viewFrame.maxX,
+            y: heightPicker.frame.midY)
+    }
+    
+    func setPopInitStateAsTo() {
+        guard let viewFrame else { return }
+        
+        registerHeaderStackView.center = CGPoint(
+            x: viewFrame.midX - viewFrame.maxX,
+            y: registerHeaderStackView.frame.midY)
+        
+        heightPicker.center = CGPoint(
+            x: viewFrame.midX - viewFrame.maxX,
+            y: heightPicker.frame.midY)
+    }
+    
+    func setPopFinalStateAsTo() {
+        guard let viewFrame else { return }
+        
+        registerHeaderStackView.center = CGPoint(
+            x: viewFrame.midX,
+            y: registerHeaderStackView.frame.midY)
+        
+        heightPicker.center = CGPoint(
+            x: viewFrame.midX,
+            y: heightPicker.frame.midY)
+    }
+    
+    func setPopInitStateAsFrom() {
+        guard let viewFrame else { return }
+        
+        registerHeaderStackView.center = CGPoint(
+            x: viewFrame.midX,
+            y: registerHeaderStackView.frame.midY)
+        
+        heightPicker.center = CGPoint(
+            x: viewFrame.midX,
+            y: heightPicker.frame.midY)
+    }
+    
+    func setPopFinalStateAsFrom() {
+        guard let viewFrame else { return }
+        
+        registerHeaderStackView.center = CGPoint(
+            x: viewFrame.midX + viewFrame.maxX,
+            y: registerHeaderStackView.frame.midY)
+        
+        heightPicker.center = CGPoint(
+            x: viewFrame.midX + viewFrame.maxX,
+            y: heightPicker.frame.midY)
+    }
+    
+    func reset() {
+        progressBar.isHidden = false
+        nextButton.isHidden = false
+        view.backgroundColor = .white
     }
 }
 
@@ -76,11 +187,21 @@ private extension HeightViewController {
         )
     }
     
+    func setConstants() {
+        viewFrame = view.frame
+    }
+    
     func configureView() {
         view.backgroundColor = .systemBackground
     }
     
     func configureLayout() {
+        
+        progressBar.snp.makeConstraints {
+            $0.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(20)
+            $0.leading.equalToSuperview().offset(20)
+            $0.trailing.equalToSuperview().offset(-20)
+        }
 
         registerHeaderStackView.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(50)

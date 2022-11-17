@@ -10,9 +10,20 @@ import Combine
 
 final class NicknameSettingViewController: UIViewController {
         
+    var viewFrame: CGRect?
     var bag = Set<AnyCancellable>()
     
     var viewModel: RegisterNickNameViewModel?
+    
+    private lazy var progressBar: ProgressBar = {
+        let bar = ProgressBar()
+        view.addSubview(bar)
+        bar.translatesAutoresizingMaskIntoConstraints = false
+        bar.goToNextStep()
+        bar.goToNextStep()
+        
+        return bar
+    }()
     
     lazy var registerHeaderStackView: RegisterHeaderStackView = {
         let headerView = RegisterHeaderStackView(frame: .zero)
@@ -58,6 +69,7 @@ final class NicknameSettingViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setConstants()
         configureView()
         configureLayout()
         bind()
@@ -65,6 +77,104 @@ final class NicknameSettingViewController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         nicknameTextField.addUnderLine()
+    }
+}
+
+extension NicknameSettingViewController: ProgressAnimatable {
+    func preset() {
+        progressBar.isHidden = true
+        nextButton.isHidden = true
+        view.backgroundColor = .clear
+    }
+    
+    func setPushInitStateAsTo() {
+        guard let viewFrame else { return }
+        
+        view.center = CGPoint(
+            x: viewFrame.midX + viewFrame.maxX,
+            y: viewFrame.midY)
+    }
+    
+    func setPushFinalStateAsTo() {
+        guard let viewFrame else { return }
+        
+        view.center = CGPoint(
+            x: viewFrame.midX,
+            y: viewFrame.midY)
+    }
+    
+    func setPushInitStateAsFrom() {
+        guard let viewFrame else { return }
+        
+        view.center = CGPoint(
+            x: viewFrame.midX,
+            y: viewFrame.midY)
+    }
+    
+    func setPushFinalStateAsFrom() {
+        guard let viewFrame else { return }
+        
+        registerHeaderStackView.center = CGPoint(
+            x: viewFrame.midX - viewFrame.maxX,
+            y: registerHeaderStackView.frame.midY)
+        
+        nicknameTextField.center = CGPoint(
+            x: viewFrame.midX - viewFrame.maxX,
+            y: nicknameTextField.frame.midY)
+    }
+    
+    func setPopInitStateAsTo() {
+        guard let viewFrame else { return }
+        
+        registerHeaderStackView.center = CGPoint(
+            x: viewFrame.midX - viewFrame.maxX,
+            y: registerHeaderStackView.frame.midY)
+        
+        nicknameTextField.center = CGPoint(
+            x: viewFrame.midX - viewFrame.maxX,
+            y: nicknameTextField.frame.midY)
+    }
+    
+    func setPopFinalStateAsTo() {
+        guard let viewFrame else { return }
+        
+        registerHeaderStackView.center = CGPoint(
+            x: viewFrame.midX,
+            y: registerHeaderStackView.frame.midY)
+        
+        nicknameTextField.center = CGPoint(
+            x: viewFrame.midX,
+            y: nicknameTextField.frame.midY)
+    }
+    
+    func setPopInitStateAsFrom() {
+        guard let viewFrame else { return }
+        
+        registerHeaderStackView.center = CGPoint(
+            x: viewFrame.midX,
+            y: registerHeaderStackView.frame.midY)
+        
+        nicknameTextField.center = CGPoint(
+            x: viewFrame.midX,
+            y: nicknameTextField.frame.midY)
+    }
+    
+    func setPopFinalStateAsFrom() {
+        guard let viewFrame else { return }
+        
+        registerHeaderStackView.center = CGPoint(
+            x: viewFrame.midX + viewFrame.maxX,
+            y: registerHeaderStackView.frame.midY)
+        
+        nicknameTextField.center = CGPoint(
+            x: viewFrame.midX + viewFrame.maxX,
+            y: nicknameTextField.frame.midY)
+    }
+    
+    func reset() {
+        progressBar.isHidden = false
+        nextButton.isHidden = false
+        view.backgroundColor = .white
     }
 }
 
@@ -88,11 +198,21 @@ private extension NicknameSettingViewController {
         
     }
     
+    func setConstants() {
+        viewFrame = view.frame
+    }
+    
     func configureView() {
         view.backgroundColor = .systemBackground
     }
     
     func configureLayout() {
+        
+        progressBar.snp.makeConstraints {
+            $0.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(20)
+            $0.leading.equalToSuperview().offset(20)
+            $0.trailing.equalToSuperview().offset(-20)
+        }
 
         registerHeaderStackView.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(50)
@@ -110,6 +230,7 @@ private extension NicknameSettingViewController {
             $0.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom).offset(-33)
             $0.leading.equalTo(self.view.safeAreaLayoutGuide.snp.leading).offset(20)
             $0.trailing.equalTo(self.view.safeAreaLayoutGuide.snp.trailing).offset(-20)
+            $0.height.equalTo(54)
         }
     }
 }

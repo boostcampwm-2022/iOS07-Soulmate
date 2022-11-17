@@ -11,11 +11,22 @@ import Combine
 
 class RegisterSelectableViewController: UIViewController {
     
+    let transition = ProgressAnimator()
+    var viewFrame: CGRect?
+    
     var bag = Set<AnyCancellable>()
-        
     var viewModel: RegisterSelectableViewModel?
     
     @Published var selectedIndex: Int?
+    
+    private lazy var progressBar: ProgressBar = {
+        let bar = ProgressBar()
+        view.addSubview(bar)
+        bar.translatesAutoresizingMaskIntoConstraints = false
+        bar.goToNextStep()
+        
+        return bar
+    }()
     
     lazy var registerHeaderStackView: RegisterHeaderStackView = {
         let headerView = RegisterHeaderStackView(frame: .zero)
@@ -57,13 +68,13 @@ class RegisterSelectableViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+                
+        setConstants()
         configureView()
         configureLayout()
         
         bind()
     }
-    
 }
 
 // MARK: - View Generators
@@ -99,12 +110,22 @@ private extension RegisterSelectableViewController {
             .store(in: &bag)
     }
     
+    func setConstants() {
+        viewFrame = view.frame
+    }
+    
     func configureView() {
         view.backgroundColor = .systemBackground
         collectionView.register(SelectableCell.self, forCellWithReuseIdentifier: "SelectableCell")
     }
     
     func configureLayout() {
+        
+        progressBar.snp.makeConstraints {
+            $0.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(20)
+            $0.leading.equalToSuperview().offset(20)
+            $0.trailing.equalToSuperview().offset(-20)
+        }
         
         registerHeaderStackView.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(50)
@@ -127,6 +148,120 @@ private extension RegisterSelectableViewController {
     }
 }
 
+extension RegisterSelectableViewController: UINavigationControllerDelegate, ProgressAnimatable {
+    
+    func navigationController(
+        _ navigationController: UINavigationController,
+        animationControllerFor operation: UINavigationController.Operation,
+        from fromVC: UIViewController,
+        to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        
+            transition.operation = operation
+//            if operation == .pop {
+//                return nil
+//            } else {
+//                return transition
+//            }
+            
+            return transition
+    }
+    
+    func preset() {
+        progressBar.isHidden = true
+        nextButton.isHidden = true
+        view.backgroundColor = .clear
+    }
+    
+    func setPushInitStateAsTo() {
+        guard let viewFrame else { return }
+        
+        view.center = CGPoint(
+            x: viewFrame.midX + viewFrame.maxX,
+            y: viewFrame.midY)
+    }
+    
+    func setPushFinalStateAsTo() {
+        guard let viewFrame else { return }
+        
+        view.center = CGPoint(
+            x: viewFrame.midX,
+            y: viewFrame.midY)
+    }
+    
+    func setPushInitStateAsFrom() {
+        guard let viewFrame else { return }
+        
+        view.center = CGPoint(
+            x: viewFrame.midX,
+            y: viewFrame.midY)
+    }
+    
+    func setPushFinalStateAsFrom() {
+        guard let viewFrame else { return }
+        
+        registerHeaderStackView.center = CGPoint(
+            x: viewFrame.midX - viewFrame.maxX,
+            y: registerHeaderStackView.frame.midY)
+        
+        collectionView.center = CGPoint(
+            x: viewFrame.midX - viewFrame.maxX,
+            y: collectionView.frame.midY)
+    }
+    
+    func setPopInitStateAsTo() {
+        guard let viewFrame else { return }
+        
+        registerHeaderStackView.center = CGPoint(
+            x: viewFrame.midX - viewFrame.maxX,
+            y: registerHeaderStackView.frame.midY)
+        
+        collectionView.center = CGPoint(
+            x: viewFrame.midX - viewFrame.maxX,
+            y: collectionView.frame.midY)
+    }
+    
+    func setPopFinalStateAsTo() {
+        guard let viewFrame else { return }
+        
+        registerHeaderStackView.center = CGPoint(
+            x: viewFrame.midX,
+            y: registerHeaderStackView.frame.midY)
+        
+        collectionView.center = CGPoint(
+            x: viewFrame.midX,
+            y: collectionView.frame.midY)
+    }
+    
+    func setPopInitStateAsFrom() {
+        guard let viewFrame else { return }
+        
+        registerHeaderStackView.center = CGPoint(
+            x: viewFrame.midX,
+            y: registerHeaderStackView.frame.midY)
+        
+        collectionView.center = CGPoint(
+            x: viewFrame.midX,
+            y: collectionView.frame.midY)
+    }
+    
+    func setPopFinalStateAsFrom() {
+        guard let viewFrame else { return }
+        
+        registerHeaderStackView.center = CGPoint(
+            x: viewFrame.midX + viewFrame.maxX,
+            y: registerHeaderStackView.frame.midY)
+        
+        collectionView.center = CGPoint(
+            x: viewFrame.midX + viewFrame.maxX,
+            y: collectionView.frame.midY)
+    }
+    
+    func reset() {
+        progressBar.isHidden = false
+        nextButton.isHidden = false
+        view.backgroundColor = .white
+    }
+}
 
 extension RegisterSelectableViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     
