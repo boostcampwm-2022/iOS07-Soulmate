@@ -31,6 +31,7 @@ class ProgressAnimator: NSObject, UIViewControllerAnimatedTransitioning {
             let toViewFrame = toVC.view.frame
             let fromViewFrame = fromVC.view.frame
             let fromSubViews = fromVC.progressingComponents()
+            let bar = fromVC.bar()
             
             toVC.preset()
             
@@ -43,6 +44,8 @@ class ProgressAnimator: NSObject, UIViewControllerAnimatedTransitioning {
             
             UIView.animate(withDuration: duration) {
                 
+                bar.goToNextStep()
+                
                 toVC.view.center = CGPoint(
                     x: toViewFrame.midX,
                     y: toViewFrame.midY
@@ -53,9 +56,12 @@ class ProgressAnimator: NSObject, UIViewControllerAnimatedTransitioning {
                         x: fromViewFrame.midX - fromViewFrame.maxX,
                         y: subView.frame.midY)
                 }
+                
+                bar.layoutIfNeeded()
             } completion: { _ in
                 toVC.reset()
                 transitionContext.completeTransition(true)
+                bar.goToExStep()
             }
 
         case .pop:
@@ -70,6 +76,7 @@ class ProgressAnimator: NSObject, UIViewControllerAnimatedTransitioning {
             let fromViewFrame = fromVC.view.frame
             let toSubViews = toVC.progressingComponents()
             let fromSubView = fromVC.progressingComponents()
+            let bar = fromVC.bar()
             
             toVC.preset()
 
@@ -82,6 +89,8 @@ class ProgressAnimator: NSObject, UIViewControllerAnimatedTransitioning {
             containerView.addSubview(toVC.view)
             
             UIView.animate(withDuration: duration) {
+                
+                bar.goToExStep()
 
                 for subView in toSubViews {
                     subView.center = CGPoint(
@@ -95,7 +104,10 @@ class ProgressAnimator: NSObject, UIViewControllerAnimatedTransitioning {
                         y: subView.frame.midY)
                 }
                 
+                bar.layoutIfNeeded()
+                
             } completion: { _ in
+                bar.goToNextStep()
                 toVC.reset()
                 transitionContext.completeTransition(true)
             }

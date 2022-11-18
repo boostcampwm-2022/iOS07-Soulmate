@@ -18,7 +18,10 @@ final class BirthViewController: UIViewController {
         let bar = ProgressBar()
         view.addSubview(bar)
         bar.translatesAutoresizingMaskIntoConstraints = false
-        bar.goToNextStep()
+        
+        (0..<4).forEach { _ in
+            bar.goToNextStep()
+        }
         
         return bar
     }()
@@ -81,6 +84,10 @@ extension BirthViewController: ProgressAnimatable {
     
     func progressingComponents() -> [UIView] {
         return [registerHeaderStackView, birthPicker]
+    }
+    
+    func bar() -> ProgressBar {
+        return self.progressBar
     }
     
     func reset() {
