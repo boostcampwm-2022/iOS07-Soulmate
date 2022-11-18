@@ -86,6 +86,10 @@ extension HeightViewController: ProgressAnimatable {
         return [registerHeaderStackView, heightPicker]
     }
     
+    func bar() -> ProgressBar {
+        return self.progressBar
+    }
+    
     func reset() {
         progressBar.isHidden = false
         nextButton.isHidden = false

@@ -22,7 +22,6 @@ class RegisterSelectableViewController: UIViewController {
         let bar = ProgressBar()
         view.addSubview(bar)
         bar.translatesAutoresizingMaskIntoConstraints = false
-        bar.goToNextStep()
         
         return bar
     }()
@@ -104,6 +103,20 @@ private extension RegisterSelectableViewController {
                     guideText: type.guideText,
                     descriptionText: type.descriptionText
                 )
+                
+                switch type {
+                case is GenderType.Type:
+                    self?.progressBar.goToNextStep()
+                case is SmokingType.Type:
+                    (0..<5).forEach { _ in
+                        self?.progressBar.goToNextStep()
+                    }
+                case is DrinkingType.Type:
+                    (0..<6).forEach { _ in
+                        self?.progressBar.goToNextStep()
+                    }
+                default: break
+                }
             }
             .store(in: &bag)
     }
@@ -151,7 +164,7 @@ extension RegisterSelectableViewController: UINavigationControllerDelegate, Prog
         to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         
             transition.operation = operation
-            
+
             return transition
     }
     
@@ -163,6 +176,10 @@ extension RegisterSelectableViewController: UINavigationControllerDelegate, Prog
     
     func progressingComponents() -> [UIView] {
         return [registerHeaderStackView, collectionView]
+    }
+    
+    func bar() -> ProgressBar {
+        return self.progressBar
     }
     
     func reset() {

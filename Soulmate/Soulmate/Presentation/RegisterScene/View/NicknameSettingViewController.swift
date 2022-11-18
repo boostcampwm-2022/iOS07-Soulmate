@@ -89,6 +89,10 @@ extension NicknameSettingViewController: ProgressAnimatable {
         return [registerHeaderStackView, nicknameTextField]
     }
     
+    func bar() -> ProgressBar {
+        return self.progressBar
+    }
+    
     func reset() {
         progressBar.isHidden = false
         nextButton.isHidden = false

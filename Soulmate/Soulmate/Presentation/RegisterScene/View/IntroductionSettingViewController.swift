@@ -18,7 +18,10 @@ final class IntroductionSettingViewController: UIViewController {
         let bar = ProgressBar()
         view.addSubview(bar)
         bar.translatesAutoresizingMaskIntoConstraints = false
-        bar.goToNextStep()
+        
+        (0..<7).forEach { _ in
+            bar.goToNextStep()
+        }
         
         return bar
     }()
@@ -109,6 +112,10 @@ extension IntroductionSettingViewController: ProgressAnimatable {
     
     func progressingComponents() -> [UIView] {
         return [registerHeaderStackView, introductionStackView]
+    }
+    
+    func bar() -> ProgressBar {
+        return self.progressBar
     }
     
     func reset() {

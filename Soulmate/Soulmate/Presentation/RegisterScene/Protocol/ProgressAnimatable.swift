@@ -12,4 +12,5 @@ protocol ProgressAnimatable: UIViewController {
     func preset()
     func reset()
     func progressingComponents() -> [UIView]
+    func bar() -> ProgressBar
 }
