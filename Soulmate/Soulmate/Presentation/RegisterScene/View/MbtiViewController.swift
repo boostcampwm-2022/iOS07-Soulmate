@@ -7,8 +7,12 @@
 
 import UIKit
 import SnapKit
+import Combine
 
-class MbtiViewController: UIViewController {
+final class MbtiViewController: UIViewController {
+    
+    var bag = Set<AnyCancellable>()
+    let viewModel = RegisterMBTIViewModel()
     
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
@@ -28,80 +32,24 @@ class MbtiViewController: UIViewController {
     
     private lazy var innerTypeView: MbtiSegmentView = {
         let view = MbtiSegmentView(titles: ("I", "E"))
-        view.leftButton.addAction(
-            UIAction { _ in
-                self.preview.innerTypeLabel.text = "I"
-                self.preview.innerTypeLabel.textColor = .black
-            },
-            for: .touchUpInside
-        )
-        view.rightButton.addAction(
-            UIAction { _ in
-                self.preview.innerTypeLabel.text = "E"
-                self.preview.innerTypeLabel.textColor = .black
-            },
-            for: .touchUpInside
-        )
         self.view.addSubview(view)
         return view
     }()
 
     private lazy var recognizeTypeView: MbtiSegmentView = {
         let view = MbtiSegmentView(titles: ("N", "S"))
-        view.leftButton.addAction(
-            UIAction { _ in
-                self.preview.recognizeTypeLabel.text = "N"
-                self.preview.recognizeTypeLabel.textColor = .black
-            },
-            for: .touchUpInside
-        )
-        view.rightButton.addAction(
-            UIAction { _ in
-                self.preview.recognizeTypeLabel.text = "S"
-                self.preview.recognizeTypeLabel.textColor = .black
-            },
-            for: .touchUpInside
-        )
         self.view.addSubview(view)
         return view
     }()
     
     private lazy var judgementTypeView: MbtiSegmentView = {
         let view = MbtiSegmentView(titles: ("F", "T"))
-        view.leftButton.addAction(
-            UIAction { _ in
-                self.preview.judgementTypeLabel.text = "F"
-                self.preview.judgementTypeLabel.textColor = .black
-            },
-            for: .touchUpInside
-        )
-        view.rightButton.addAction(
-            UIAction { _ in
-                self.preview.judgementTypeLabel.text = "T"
-                self.preview.judgementTypeLabel.textColor = .black
-            },
-            for: .touchUpInside
-        )
         self.view.addSubview(view)
         return view
     }()
     
     private lazy var lifeStyleTypeView: MbtiSegmentView = {
         let view = MbtiSegmentView(titles: ("P", "J"))
-        view.leftButton.addAction(
-            UIAction { _ in
-                self.preview.lifeStyleTypeLabel.text = "P"
-                self.preview.lifeStyleTypeLabel.textColor = .black
-            },
-            for: .touchUpInside
-        )
-        view.rightButton.addAction(
-            UIAction { _ in
-                self.preview.lifeStyleTypeLabel.text = "J"
-                self.preview.lifeStyleTypeLabel.textColor = .black
-            },
-            for: .touchUpInside
-        )
         self.view.addSubview(view)
         return view
     }()
@@ -118,11 +66,55 @@ class MbtiViewController: UIViewController {
         // Do any additional setup after loading the view.
         self.view.backgroundColor = .white
         configureLayout()
+        bind()
     }
 
 }
 
 private extension MbtiViewController {
+    
+    func bind() {
+        innerTypeView.$seletedMbti.sink {
+            self.preview.innerTypeLabel.text = $0
+            if !$0.isEmpty {
+                self.preview.innerTypeLabel.textColor = .black
+            } else {
+                self.preview.innerTypeLabel.text = "?"
+            }
+        }
+        .store(in: &bag)
+        
+        recognizeTypeView.$seletedMbti.sink {
+            self.preview.recognizeTypeLabel.text = $0
+            if !$0.isEmpty {
+                self.preview.recognizeTypeLabel.textColor = .black
+            } else {
+                self.preview.recognizeTypeLabel.text = "?"
+            }
+        }
+        .store(in: &bag)
+        
+        judgementTypeView.$seletedMbti.sink {
+            self.preview.judgementTypeLabel.text = $0
+            if !$0.isEmpty {
+                self.preview.judgementTypeLabel.textColor = .black
+            } else {
+                self.preview.judgementTypeLabel.text = "?"
+            }
+        }
+        .store(in: &bag)
+        
+        lifeStyleTypeView.$seletedMbti.sink {
+            self.preview.lifeStyleTypeLabel.text = $0
+            if !$0.isEmpty {
+                self.preview.lifeStyleTypeLabel.textColor = .black
+            } else {
+                self.preview.lifeStyleTypeLabel.text = "?"
+            }
+        }
+        .store(in: &bag)
+    }
+    
     func configureLayout() {
         titleLabel.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(30)

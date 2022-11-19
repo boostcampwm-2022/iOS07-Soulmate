@@ -12,7 +12,7 @@ class MbtiSegmentView: UIView {
 
     let leftTitle: String = ""
     let rightTitle: String = ""
-    var seletedMbti: String?
+    @Published var seletedMbti = String()
     
     private lazy var hStackView: UIStackView = {
         let stack = UIStackView()
@@ -91,7 +91,7 @@ private extension MbtiSegmentView {
         leftButton.setTitleColor(.white, for: .normal)
         rightButton.backgroundColor = .symbolGrey
         rightButton.setTitleColor(.black, for: .normal)
-        self.seletedMbti = self.leftTitle
+        self.seletedMbti = self.leftButton.titleLabel?.text ?? ""
     }
 
     func rightButtonTapped() {
@@ -99,7 +99,7 @@ private extension MbtiSegmentView {
         rightButton.setTitleColor(.white, for: .normal)
         leftButton.backgroundColor = .symbolGrey
         leftButton.setTitleColor(.black, for: .normal)
-        self.seletedMbti = self.rightTitle
+        self.seletedMbti = self.rightButton.titleLabel?.text ?? ""
     }
     
 }
