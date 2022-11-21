@@ -5,6 +5,7 @@
 //  Created by Hoen on 2022/11/21.
 //
 
+import Combine
 import UIKit
 
 final class ChattingRoomViewController: UIViewController {
@@ -32,6 +33,10 @@ final class ChattingRoomViewController: UIViewController {
         Chat(isMe: true, text: "VI?")
     ]
     
+    private var viewModel: ChattingRoomViewModel?
+    private var cancellabels = Set<AnyCancellable>()
+    private var messageSubject = PassthroughSubject<String?, Never>()
+    
     private var shouldScrollToBottom = true
     
     private lazy var chatTableView: UITableView = {
@@ -46,6 +51,7 @@ final class ChattingRoomViewController: UIViewController {
         tableView.register(OtherChatCell.self, forCellReuseIdentifier: OtherChatCell.id)
         tableView.separatorStyle = .none
         tableView.showsVerticalScrollIndicator = false
+        tableView.showsHorizontalScrollIndicator = false
         
         return tableView
     }()
@@ -54,7 +60,7 @@ final class ChattingRoomViewController: UIViewController {
         let messageInputView = ComposeBar()
         view.addSubview(messageInputView)
         messageInputView.translatesAutoresizingMaskIntoConstraints = false
-        messageInputView.configure()
+        messageInputView.configure(with: self)
         
         return messageInputView
     }()
@@ -72,9 +78,23 @@ final class ChattingRoomViewController: UIViewController {
         return true
     }
     
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    convenience init(viewModel: ChattingRoomViewModel) {
+        self.init(nibName: nil, bundle: nil)
+        self.viewModel = viewModel
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        bind()
         configureView()
         configureLayout()
         registerKeyboardNotifications()
@@ -87,6 +107,18 @@ final class ChattingRoomViewController: UIViewController {
             shouldScrollToBottom = false
             scrollToBottom(animated: false)
         }
+    }
+}
+
+// MARK: - TextView Delegate
+extension ChattingRoomViewController: NSTextStorageDelegate {
+    func textStorage(
+        _ textStorage: NSTextStorage,
+        didProcessEditing editedMask: NSTextStorage.EditActions,
+        range editedRange: NSRange,
+        changeInLength delta: Int) {
+            
+            messageSubject.send(textStorage.string)
     }
 }
 
@@ -141,6 +173,34 @@ private extension ChattingRoomViewController {
             $0.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing)
             $0.bottom.equalTo(view.snp.bottom)
         }
+    }
+}
+
+// MARK: - ViewModel Binding
+private extension ChattingRoomViewController {
+    
+    func bind() {
+        
+        guard let viewModel else { return }
+        
+        let output = viewModel.transform(
+            input: ChattingRoomViewModel.Input(
+                viewDidLoad: Just(()).eraseToAnyPublisher(),
+                message: messageSubject.eraseToAnyPublisher()
+            ),
+            cancellables: &cancellabels
+        )
+        
+        output.sendButtonEnabled
+            .sink { [weak self] isEnabled in
+                
+                if isEnabled {
+                    self?.composeBar.activateSendButton()
+                } else {
+                    self?.composeBar.deactivateSendButton()
+                }
+            }
+            .store(in: &cancellabels)
     }
 }
 

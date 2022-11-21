@@ -37,7 +37,11 @@ final class AppCoordinator: Coordinator {
     }
     
     private func chattingRoomTest() {
-        let vc = ChattingRoomViewController()
+        let sendMesssageUseCase = DefaultSendMessageUseCase()
+        let viewModel = ChattingRoomViewModel(
+            sendMessageUseCase: sendMesssageUseCase
+        )
+        let vc = ChattingRoomViewController(viewModel: viewModel)
         self.navigationController.pushViewController(vc, animated: true)
     }
     
