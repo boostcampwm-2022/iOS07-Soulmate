@@ -10,54 +10,23 @@ import UIKit
 import SnapKit
 
 final class DetailViewController: UIViewController {
-    let images = [
-        UIImage(named: "emoji"),
-        UIImage(named: "heart"),
-        UIImage(named: "nav3On"),
-        UIImage(named: "Phone"),
-        UIImage(named: "friendAccept")
-    ]
 
-    private lazy var scrollView: UIScrollView = {
-        let scrollView = UIScrollView()
-        scrollView.delegate = self
-        scrollView.isPagingEnabled = true
-        scrollView.isScrollEnabled = true
-        scrollView.showsVerticalScrollIndicator = false
-        scrollView.showsHorizontalScrollIndicator = false
-        scrollView.alwaysBounceVertical = false
-        scrollView.bounces = true
-        scrollView.backgroundColor = .systemPink
-        
-        self.view.addSubview(scrollView)
-        return scrollView
+    private lazy var collectionView: UICollectionView = {
+        let layout = createCompositionalLayout()
+        let collection = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collection.delegate = self
+        collection.dataSource = self
+        collection.backgroundColor = .borderPurple
+        collection.bounces = false
+        collection.showsVerticalScrollIndicator = false
+        collection.showsHorizontalScrollIndicator = false
+        self.view.addSubview(collection)
+        collection.register(PhotoCell.self, forCellWithReuseIdentifier: "PhotoCell")
+        collection.register(ProfileCell.self, forCellWithReuseIdentifier: "ProfileCell")
+        collection.register(GreetingCell.self, forCellWithReuseIdentifier: "GreetingCell")
+        collection.register(BasicInfoCell.self, forCellWithReuseIdentifier: "BasicInfoCell")
+        return collection
     }()
-    
-    private lazy var pageControl: UIPageControl = {
-        let pageControl = UIPageControl()
-
-        scrollView.addSubview(pageControl)
-        return pageControl
-    }()
-    
-    private lazy var tableView: UITableView = {
-        let tableView = UITableView()
-        tableView.separatorStyle = .none
-        tableView.register(ProfileCell.self, forCellReuseIdentifier: "ProfileCell")
-        tableView.register(GreetingCell.self, forCellReuseIdentifier: "GreetingCell")
-        tableView.delegate = self
-        tableView.dataSource = self
-        view.addSubview(tableView)
-        return tableView
-    }()
-    
-
-    
-    
-    
-    
-    
-    
     
     
     private lazy var applyButton: GradientButton = {
@@ -86,27 +55,14 @@ private extension DetailViewController {
     }
     
     private func configureView() {
-        self.view.backgroundColor = .gray
-        
-        setPageControl()
-        addContentScrollView()
+        self.view.backgroundColor = .systemBackground
+
     }
     
     private func configureLayout() {
-        scrollView.snp.makeConstraints {
+        collectionView.snp.makeConstraints {
             $0.leading.trailing.top.equalTo(self.view.safeAreaLayoutGuide)
-            $0.height.equalTo(self.view.snp.width)
-        }
-        
-        pageControl.snp.makeConstraints {
-            $0.bottom.equalToSuperview().inset(12)
-            $0.centerX.equalTo(self.view.snp.centerX)
-        }
-        
-        tableView.snp.makeConstraints {
-            $0.top.equalTo(scrollView.snp.bottom)
             $0.bottom.equalTo(applyButton.snp.top)
-            $0.leading.trailing.equalToSuperview()
         }
         
         applyButton.snp.makeConstraints {
@@ -116,69 +72,159 @@ private extension DetailViewController {
         }
     }
 }
-
-// MARK: - 스크롤뷰 및 페이지컨트롤
-extension DetailViewController: UIScrollViewDelegate {
-    private func addContentScrollView() {
-        for i in 0..<images.count {
-            let imageView = UIImageView()
-            imageView.contentMode = .scaleAspectFit
-            let xPos = scrollView.frame.width * CGFloat(i)
-            imageView.frame = CGRect(x: xPos, y: 0,
-                                     width: scrollView.bounds.width,
-                                     height: scrollView.bounds.height)
-            imageView.image = images[i]
-            scrollView.addSubview(imageView)
-            scrollView.contentSize.width = imageView.frame.width * CGFloat(i + 1)
+    
+// MARK: - 컬렉션 뷰
+extension DetailViewController: UICollectionViewDataSource, UICollectionViewDelegate {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 4
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        if section == 0 {
+            return 5
+        } else {
+            return 1
         }
     }
     
-    private func setPageControl() {
-        pageControl.numberOfPages = images.count
-        pageControl.pageIndicatorTintColor = .lightGray
-        pageControl.currentPageIndicatorTintColor = .white
-    }
-    
-    private func setPageControlSelectedPage(currentPage: Int) {
-        pageControl.currentPage = currentPage
-    }
-    
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let value = scrollView.contentOffset.x / scrollView.frame.size.width
-        setPageControlSelectedPage(currentPage: Int(round(value)))
-    }
-}
-
-// MARK: - 테이블 뷰
-extension DetailViewController: UITableViewDataSource, UITableViewDelegate {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        switch indexPath.row {
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        switch indexPath.section {
         case 0:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "ProfileCell", for: indexPath) as? ProfileCell else { fatalError() }
-            cell.partnerName.text =
+            guard let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: "PhotoCell",
+                for: indexPath) as? PhotoCell else { return PhotoCell() }
             return cell
+            
         case 1:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "GreetingCell", for: indexPath) as? GreetingCell else { fatalError() }
+            guard let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: "ProfileCell",
+                for: indexPath) as? ProfileCell else { return ProfileCell() }
             return cell
+            
         case 2:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "BasicInfoCell", for: indexPath) as? BasicInfoCell else { fatalError() }
+            guard let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: "GreetingCell",
+                for: indexPath) as? GreetingCell else { return GreetingCell() }
             return cell
+            
+        case 3:
+            guard let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: "BasicInfoCell",
+                for: indexPath) as? BasicInfoCell else { return BasicInfoCell() }
+            return cell
+            
         default:
-            fatalError()
+            fatalError("indexPath.section")
+        }
+
+    }
+    
+    private func createCompositionalLayout() -> UICollectionViewCompositionalLayout {
+        return UICollectionViewCompositionalLayout { (sectionNumber, _) -> NSCollectionLayoutSection? in
+            switch sectionNumber {
+            case 0: return self.firstLayoutSection()
+            case 1: return self.secondLayoutSection()
+            case 2: return self.thirdLayoutSection()
+            case 3: return self.forthLayoutSection()
+            default: return self.forthLayoutSection()
+            }
         }
     }
     
-
+    private func firstLayoutSection() -> NSCollectionLayoutSection {
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1))
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        item.contentInsets.bottom = 5
+        
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.95), heightDimension: .fractionalWidth(0.95))
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+        group.contentInsets = .init(top: 0, leading: 0, bottom: 0, trailing: 5)
+        
+        let section = NSCollectionLayoutSection(group: group)
+        section.orthogonalScrollingBehavior = .groupPaging
+        
+        return section
+    }
     
+    private func secondLayoutSection() -> NSCollectionLayoutSection {
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalWidth(0.3))
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        item.contentInsets = .init(top: 0, leading: 0, bottom: 0, trailing: 0)
+        
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalWidth(0.3))
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+        
+        let section = NSCollectionLayoutSection(group: group)
+        
+        return section
+    }
+    
+    private func thirdLayoutSection() -> NSCollectionLayoutSection {
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalWidth(0.5))
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        item.contentInsets = .init(top: 0, leading: 0, bottom: 0, trailing: 0)
+        
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalWidth(0.5))
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+        
+        let section = NSCollectionLayoutSection(group: group)
+        
+        return section
+    }
+    
+    private func forthLayoutSection() -> NSCollectionLayoutSection {
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalWidth(0.5))
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        item.contentInsets = .init(top: 0, leading: 0, bottom: 0, trailing: 0)
+        
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalWidth(0.5))
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+        
+        let section = NSCollectionLayoutSection(group: group)
+        
+        return section
+    }
     
 }
+
+
+// MARK: - 사진 셀
+final class PhotoCell: UICollectionViewCell {
+    private lazy var imageView: UIImageView = {
+        let photo = UIImageView()
+        photo.contentMode = .scaleAspectFit
+        photo.image = UIImage(named: "emoji")
+        contentView.addSubview(photo)
+        return photo
+    }()
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        configureView()
+        configureLayout()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func configureView() {
+        self.backgroundColor = .white
+    }
+    
+    func configureLayout() {
+        imageView.snp.makeConstraints {
+            $0.height.equalToSuperview()
+            $0.width.equalTo(imageView.snp.height)
+            $0.centerX.centerY.equalToSuperview()
+        }
+    }
+}
+
 
 // MARK: - 프로필 셀
-final class ProfileCell: UITableViewCell {
+final class ProfileCell: UICollectionViewCell {
     private lazy var partnerSubView: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor.white
@@ -219,14 +265,14 @@ final class ProfileCell: UITableViewCell {
         let label = UILabel()
         label.text = "3 km"
         label.frame = CGRect(x: 0, y: 0, width: 32, height: 20)
-        label.textColor = UIColor.lightText
+        label.textColor = UIColor.labelGrey
         label.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 15)
         partnerSubView.addSubview(label)
         return label
     }()
     
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         
         configureView()
         configureLayout()
@@ -235,9 +281,6 @@ final class ProfileCell: UITableViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    func setData(
-    
     
     func configureView() {
         self.backgroundColor = .white
@@ -271,10 +314,11 @@ final class ProfileCell: UITableViewCell {
         
         partnerSubView.snp.makeConstraints {
             $0.width.equalToSuperview()
+            $0.centerY.equalToSuperview()
             $0.leading.trailing.equalToSuperview()
         }
         
-        var separator = UIView(frame: .zero)
+        let separator = UIView(frame: .zero)
         separator.backgroundColor = .labelGrey
         self.contentView.addSubview(separator)
         separator.snp.makeConstraints {
@@ -286,7 +330,7 @@ final class ProfileCell: UITableViewCell {
 }
 
 // MARK: - 인사말 셀
-final class GreetingCell: UITableViewCell {
+final class GreetingCell: UICollectionViewCell {
     private lazy var title: UILabel = {
         let label = UILabel()
         label.text = "인사말"
@@ -296,17 +340,20 @@ final class GreetingCell: UITableViewCell {
         return label
     }()
     
-    private lazy var textView: UITextView = {
-        let textView = UITextView()
-        textView.text = "솔직한 사람이 좋아요😋"
-        textView.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 15)
-        textView.textColor = UIColor.lightText
-        contentView.addSubview(textView)
-        return textView
+    private lazy var greetingMessage: UILabel = {
+        let message = UILabel()
+        message.text = "솔직한 사람이 좋아요😋 솔직한 사람이 좋아요😋 솔직한 사람이 좋아요😋 솔직한 사람이 좋아요😋 솔직한 사람이 좋아요😋 솔직한 사람이 좋아요😋 솔직한 사람이 좋아요😋 솔직한 사람이 좋아요😋 솔직한 사람이 좋아요😋 솔직한 사람이 좋아요😋 솔직한 사람이 좋아요😋 솔직한 사람이 좋아요😋 솔직한 사람이 좋아요😋 솔직한 사람이 좋아요😋 솔직한 사람이 좋아요😋 솔직한 사람이 좋아요😋 솔직한 사람이 좋아요😋 솔직한 사람이 좋아요😋 솔직한 사람이 좋아요😋 솔직한 사람이 좋아요😋 솔직한 사람이 좋아요😋 솔직한 사람이 좋아요😋 솔직한 사람이 좋아요😋 솔직한 사람이 좋아요😋 솔직한 사람이 좋아요😋 솔직한 사람이 좋아요😋 솔직한 사람이 좋아요😋 솔직한 사람이 좋아요😋 솔직한 사람이 좋아요😋 솔직한 사람이 좋아요😋 솔직한 사람이 좋아요😋 솔직한 사람이 좋아요😋 솔직한 사람이 좋아요😋 솔직한 사람이 좋아요😋 솔직한 사람이 좋아요😋"
+        message.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 15)
+        message.textColor = UIColor.labelGrey
+        message.numberOfLines = 0
+        message.lineBreakStrategy = .hangulWordPriority
+        contentView.addSubview(message)
+        return message
     }()
     
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         
         configureView()
         configureLayout()
@@ -327,12 +374,14 @@ final class GreetingCell: UITableViewCell {
             $0.height.equalTo(22)
         }
         
-        textView.snp.makeConstraints {
-            $0.top.equalTo(title).offset(12)
+        greetingMessage.snp.makeConstraints {
+            $0.top.equalTo(title.snp.bottom).offset(12)
+            $0.centerY.equalToSuperview()
             $0.leading.trailing.equalToSuperview().inset(20)
+            $0.height.equalToSuperview().inset(40)
         }
         
-        var separator = UIView(frame: .zero)
+        let separator = UIView(frame: .zero)
         separator.backgroundColor = .labelGrey
         self.contentView.addSubview(separator)
         separator.snp.makeConstraints {
@@ -344,12 +393,12 @@ final class GreetingCell: UITableViewCell {
 }
 
 // MARK: - 기본정보 셀
-final class BasicInfoCell: UITableViewCell {
+final class BasicInfoCell: UICollectionViewCell {
     private lazy var heightLabel: UILabel = {
         let label = UILabel()
         label.text = "키"
         label.font = UIFont(name: "AppleSDGothicNeo-SemiBold", size: 14)
-        label.textColor = UIColor.lightText
+        label.textColor = UIColor.labelGrey
         contentView.addSubview(label)
         return label
     }()
@@ -358,7 +407,7 @@ final class BasicInfoCell: UITableViewCell {
         let label = UILabel()
         label.text = "MBTI"
         label.font = UIFont(name: "AppleSDGothicNeo-SemiBold", size: 14)
-        label.textColor = UIColor.lightText
+        label.textColor = UIColor.labelGrey
         contentView.addSubview(label)
         return label
     }()
@@ -367,7 +416,7 @@ final class BasicInfoCell: UITableViewCell {
         let label = UILabel()
         label.text = "음주"
         label.font = UIFont(name: "AppleSDGothicNeo-SemiBold", size: 14)
-        label.textColor = UIColor.lightText
+        label.textColor = UIColor.labelGrey
         contentView.addSubview(label)
         return label
     }()
@@ -376,7 +425,7 @@ final class BasicInfoCell: UITableViewCell {
         let label = UILabel()
         label.text = "흡연"
         label.font = UIFont(name: "AppleSDGothicNeo-SemiBold", size: 14)
-        label.textColor = UIColor.lightText
+        label.textColor = UIColor.labelGrey
         contentView.addSubview(label)
         return label
     }()
@@ -417,9 +466,8 @@ final class BasicInfoCell: UITableViewCell {
         return label
     }()
     
-    
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         
         configureView()
         configureLayout()

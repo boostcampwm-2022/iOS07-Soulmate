@@ -102,7 +102,7 @@ final class PartnerCell: UICollectionViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         
-        partnerImageView.image = UIImage(named: "photo")
+        partnerImageView.image = UIImage(systemName: "photo")
         partnerName.text = ""
         partnerAge.text = ""
         partnerDistance.text = ""
