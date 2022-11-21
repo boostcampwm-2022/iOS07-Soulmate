@@ -12,4 +12,5 @@ protocol LoadChattingsUseCase {
     var loadedChattings: CurrentValueSubject<[Chat], Never> { get }
     
     func loadChattings()
+    func testLoad()
 }

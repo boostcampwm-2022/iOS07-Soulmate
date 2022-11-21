@@ -165,7 +165,8 @@ private extension ChattingRoomViewController {
         let output = viewModel.transform(
             input: ChattingRoomViewModel.Input(
                 viewDidLoad: Just(()).eraseToAnyPublisher(),
-                message: messageSubject.eraseToAnyPublisher()
+                message: messageSubject.eraseToAnyPublisher(),
+                sendButtonDidTap: composeBar.sendButtonPublisher()
             ),
             cancellables: &cancellabels
         )
@@ -183,7 +184,15 @@ private extension ChattingRoomViewController {
         
         output.reloadTableView
             .sink { [weak self] _ in
+                
+                let bottomOffset = self?.bottomOffset().y
+                let tableViewOffset = self?.chatTableView.contentOffset.y
+                
                 self?.chatTableView.reloadData()
+                                
+                if bottomOffset ?? 1 <= (tableViewOffset ?? 0) + 10 {
+                    self?.scrollToBottom(animated: false)
+                }
             }
             .store(in: &cancellabels)
     }

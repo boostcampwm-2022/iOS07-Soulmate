@@ -39,4 +39,12 @@ final class DefaultLoadChattingsUseCase: LoadChattingsUseCase {
         loadedChattings.send(data)
         loadedNewChattings.send(true)
     }
+    
+    func testLoad() {
+        var current = loadedChattings.value
+        let new = current + [Chat(isMe: false, text: "Cupcake!")]
+        
+        loadedChattings.send(new)
+        loadedNewChattings.send(true)
+    }
 }

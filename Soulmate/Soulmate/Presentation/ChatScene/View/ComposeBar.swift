@@ -5,6 +5,7 @@
 //  Created by Hoen on 2022/11/21.
 //
 
+import Combine
 import UIKit
 
 final class ComposeBar: UIView {
@@ -42,5 +43,9 @@ final class ComposeBar: UIView {
     func deactivateSendButton() {
         sendButton.isEnabled = false
         sendButton.setImage(UIImage(named: "messageOff"), for: .normal)
+    }
+    
+    func sendButtonPublisher() -> AnyPublisher<Void, Never> {
+        return sendButton.tapPublisher()
     }
 }

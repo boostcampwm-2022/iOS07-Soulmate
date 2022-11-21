@@ -26,6 +26,7 @@ final class ChattingRoomViewModel {
     struct Input {
         var viewDidLoad: AnyPublisher<Void, Never>
         var message: AnyPublisher<String?, Never>
+        var sendButtonDidTap: AnyPublisher<Void, Never>
     }
     
     struct Output {
@@ -46,6 +47,12 @@ final class ChattingRoomViewModel {
             .compactMap { $0 }
             .sink { [weak self] text in                
                 self?.sendMessageUseCase.updateMessage(text)
+            }
+            .store(in: &cancellables)
+        
+        input.sendButtonDidTap
+            .sink { [weak self] _ in
+                self?.loadChattingsUseCase.testLoad()
             }
             .store(in: &cancellables)
         
