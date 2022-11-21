@@ -13,18 +13,8 @@ class ChatListViewModel {
     @Published var chatRoomInfoList = [ChatRoomViewModelElement]()
     
     init() {
-        chatRoomInfoList.append(ChatRoomInfoViewModel(mateName: "방가워요", matePicture: UIImage(named: "p1.png")!.pngData()!, latestChatContent: "안녕하세요 블라블라 한줄이 넘어가면 그뒤는 짤립니다", latestChatAt: "3시간 전", unreadMessageNumber: 2))
-        chatRoomInfoList.append(ChatRoomInfoViewModel(mateName: "방가워요2", matePicture: UIImage(named: "p1.png")!.pngData()!, latestChatContent: "안녕하세요 잘부탁드려요", latestChatAt: "1시간 전", unreadMessageNumber: 1))
-        chatRoomInfoList.append(ChatRequestViewModel(mateName: "초록잎", matePicture: UIImage(named: "p2.png")!.pngData()!))
-        chatRoomInfoList.append(ChatRoomInfoViewModel(mateName: "방가워요3", matePicture: UIImage(named: "p2.png")!.pngData()!, latestChatContent: "대화 수락을 기다리고 있습니다.", latestChatAt: "", unreadMessageNumber: 0))
-        chatRoomInfoList.append(ChatRoomInfoViewModel(mateName: "방가워요", matePicture: UIImage(named: "p1.png")!.pngData()!, latestChatContent: "안녕하세요 블라블라 한줄이 넘어가면 그뒤는 짤립니다", latestChatAt: "3시간 전", unreadMessageNumber: 2))
-        chatRoomInfoList.append(ChatRoomInfoViewModel(mateName: "방가워요2", matePicture: UIImage(named: "p2.png")!.pngData()!, latestChatContent: "안녕하세요 잘부탁드려요", latestChatAt: "1시간 전", unreadMessageNumber: 1))
-        chatRoomInfoList.append(ChatRequestViewModel(mateName: "초록잎", matePicture: UIImage(named: "p1.png")!.pngData()!))
-        chatRoomInfoList.append(ChatRoomInfoViewModel(mateName: "방가워요3", matePicture: UIImage(named: "p2.png")!.pngData()!, latestChatContent: "대화 수락을 기다리고 있습니다.", latestChatAt: "", unreadMessageNumber: 0))
-        chatRoomInfoList.append(ChatRoomInfoViewModel(mateName: "방가워요3", matePicture: UIImage(named: "p2.png")!.pngData()!, latestChatContent: "대화 수락을 기다리고 있습니다.", latestChatAt: "", unreadMessageNumber: 0))
-        chatRoomInfoList.append(ChatRoomInfoViewModel(mateName: "방가워요", matePicture: UIImage(named: "p1.png")!.pngData()!, latestChatContent: "안녕하세요 블라블라 한줄이 넘어가면 그뒤는 짤립니다", latestChatAt: "3시간 전", unreadMessageNumber: 2))
-        chatRoomInfoList.append(ChatRoomInfoViewModel(mateName: "방가워요2", matePicture: UIImage(named: "p2.png")!.pngData()!, latestChatContent: "안녕하세요 잘부탁드려요", latestChatAt: "1시간 전", unreadMessageNumber: 1))
-        chatRoomInfoList.append(ChatRequestViewModel(mateName: "초록잎", matePicture: UIImage(named: "p1.png")!.pngData()!))
+       
+        
     }
 }
 
