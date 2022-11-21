@@ -2,11 +2,12 @@
 //  ChattingRoomViewController.swift
 //  Soulmate
 //
-//  Created by Sangmin Lee on 2022/11/08.
+//  Created by Hoen on 2022/11/21.
 //
 
 import UIKit
 
-class ChattingRoomViewController: UIViewController {
+final class ChattingRoomViewController: UIViewController {
     
 }
+
