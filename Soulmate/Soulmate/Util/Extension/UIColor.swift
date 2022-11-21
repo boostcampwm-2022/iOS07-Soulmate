@@ -21,4 +21,5 @@ extension UIColor {
     static let messagePurple = UIColor(named: "messagePurple")
     static let symbolGrey = UIColor(named: "symbolGrey")
     static let underlineGrey = UIColor(named: "underlineGrey")
+    static let myPageGray = UIColor(named: "myPageGray")
 }
