@@ -22,6 +22,7 @@ class RegisterViewController: UIViewController {
         RegisterNickNameView(),
         RegisterBirthView(),
         RegisterHeightView(),
+        RegisterMbtiView(),
         RegisterSelectableView(selectableType: SmokingType.self),
         RegisterSelectableView(selectableType: DrinkingType.self),
         RegisterIntroductionView()
@@ -128,15 +129,16 @@ private extension RegisterViewController {
               let nickNameView = childView[1] as? RegisterNickNameView,
               let birthView = childView[2] as? RegisterBirthView,
               let heightView = childView[3] as? RegisterHeightView,
-              let smokingView = childView[4] as? RegisterSelectableView,
-              let drinkingView = childView[5] as? RegisterSelectableView,
-              let introductionView = childView[6] as? RegisterIntroductionView else { return }
+              let mbtiView = childView[4] as? RegisterMbtiView,
+              let smokingView = childView[5] as? RegisterSelectableView,
+              let drinkingView = childView[6] as? RegisterSelectableView,
+              let introductionView = childView[7] as? RegisterIntroductionView else { return }
                 
         let didFinishedRegister = PassthroughSubject<Void, Never>()
         
         nextButton.tapPublisher()
             .sink { [weak self] _ in
-                if self?.currentPage == 6 {
+                if self?.currentPage == 7 {
                     self?.viewModel?.register()
                 } else {
                     self?.nextPage()
@@ -149,12 +151,6 @@ private extension RegisterViewController {
                 self?.prevPage()
             }
             .store(in: &bag)
-        
-//        quitButton.tapPublisher()
-//            .sink { _ in
-//                self.navigationController?.popViewController(animated: true)
-//            }
-//            .store(in: &bag)
         
         $currentPage
             .sink { value in
@@ -175,6 +171,7 @@ private extension RegisterViewController {
                 didChangedNickNameValue: nickNameView.nicknameTextField.textPublisher(),
                 didChangedHeightValue: heightView.$selectedHeight.eraseToAnyPublisher(),
                 didChangedBirthValue: birthView.birthPicker.datePublisher(),
+                didChangedMbtiValue: mbtiView.mbtiPublisher(),
                 didChangedSmokingIndex: smokingView.$selectedIndex.eraseToAnyPublisher(),
                 didChangedDrinkingIndex: drinkingView.$selectedIndex.eraseToAnyPublisher(),
                 didChangedIntroductionValue: introductionView.introductionTextView.publisher(for: \.text).eraseToAnyPublisher(),

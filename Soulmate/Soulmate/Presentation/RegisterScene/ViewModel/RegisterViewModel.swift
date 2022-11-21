@@ -23,6 +23,7 @@ class RegisterViewModel {
     @Published var nickName: String?
     @Published var height: String = String()
     @Published var birth: Date = Date()
+    @Published var mbti: String?
     @Published var smokingIndex: Int?
     @Published var drinkingIndex: Int?
     @Published var introduction: String?
@@ -33,6 +34,7 @@ class RegisterViewModel {
         var didChangedNickNameValue: AnyPublisher<String?, Never>
         var didChangedHeightValue: AnyPublisher<String, Never>
         var didChangedBirthValue: AnyPublisher<Date, Never>
+        var didChangedMbtiValue: AnyPublisher<String?, Never>
         var didChangedSmokingIndex: AnyPublisher<Int?, Never>
         var didChangedDrinkingIndex: AnyPublisher<Int?, Never>
         var didChangedIntroductionValue: AnyPublisher<String?, Never>
@@ -84,6 +86,13 @@ class RegisterViewModel {
         
         input.didChangedBirthValue
             .assign(to: \.birth, on: self)
+            .store(in: &bag)
+        
+        input.didChangedMbtiValue
+            .sink { value in
+                self.mbti = value
+                valueChangedInPage.send(value != nil)
+            }
             .store(in: &bag)
         
         input.didChangedSmokingIndex
