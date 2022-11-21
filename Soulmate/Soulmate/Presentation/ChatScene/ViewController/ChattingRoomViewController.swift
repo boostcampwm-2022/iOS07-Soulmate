@@ -10,17 +10,11 @@ import UIKit
 final class ChattingRoomViewController: UIViewController {
     
     private var data: [Chat] = [
-        Chat(isMe: false, text: "Cupcake?"),
+        Chat(isMe: false, text: "Cupcake!"),
         Chat(isMe: true, text: "VI?"),
-        Chat(isMe: false, text: "Cupcake?"),
-        Chat(isMe: true, text: "VI?"),
-        Chat(isMe: false, text: "Cupcake?"),
-        Chat(isMe: true, text: "VI?"),
-        Chat(isMe: false, text: "Cupcake?"),
-        Chat(isMe: true, text: "VI?"),
-        Chat(isMe: false, text: "Cupcake?"),
-        Chat(isMe: true, text: "VI?")
     ]
+    
+    private var shouldScrollToBottom = true
     
     private lazy var chatTableView: UITableView = {
         let tableView = UITableView()
@@ -66,8 +60,19 @@ final class ChattingRoomViewController: UIViewController {
         configureView()
         configureLayout()
     }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        if shouldScrollToBottom {
+            shouldScrollToBottom = false
+            scrollToBottom(animated: false)
+        }
+    }
 }
 
+
+// MARK: - TableView Delegae, DataSource
 extension ChattingRoomViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return data.count
@@ -103,6 +108,7 @@ extension ChattingRoomViewController: UITableViewDelegate, UITableViewDataSource
     }
 }
 
+// MARK: - UI Configure
 private extension ChattingRoomViewController {
     func configureView() {
         view.backgroundColor = .white
@@ -116,5 +122,21 @@ private extension ChattingRoomViewController {
             $0.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing)
             $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
         }
+    }
+}
+
+// MARK: - 가장 아래로 스크롤
+private extension ChattingRoomViewController {
+    
+    func scrollToBottom(animated: Bool) {
+        view.layoutIfNeeded()
+        chatTableView.setContentOffset(bottomOffset(), animated: animated)
+    }
+    
+    func bottomOffset() -> CGPoint {
+        return CGPoint(
+            x: 0,
+            y: max(-chatTableView.contentInset.top, chatTableView.contentSize.height - (chatTableView.bounds.size.height - chatTableView.contentInset.bottom))
+        )
     }
 }

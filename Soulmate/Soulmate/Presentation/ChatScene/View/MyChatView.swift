@@ -19,7 +19,7 @@ final class MyChatView: UIView {
         label.layer.cornerCurve = .continuous
         label.layer.cornerRadius = 12
         label.clipsToBounds = true
-        label.textColor = .black
+        label.textColor = .white
         
         return label
     }()
