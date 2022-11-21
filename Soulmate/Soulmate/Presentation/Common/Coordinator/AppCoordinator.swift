@@ -31,7 +31,8 @@ final class AppCoordinator: Coordinator {
 //            showMainTabFlow()
 //        }
         
-        showAuthFlow()
+        //showAuthFlow()
+        showMainTabFlow()
     }
     
     private func showAuthFlow() {

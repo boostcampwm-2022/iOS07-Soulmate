@@ -12,14 +12,16 @@ import SnapKit
 final class CandidatesCell: UICollectionViewCell {
     private lazy var candidateView: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor.backgroundGrey
-        view.layer.cornerRadius = 10
+        view.backgroundColor = UIColor.white
+        view.layer.cornerRadius = 14
+        view.layer.cornerCurve = .continuous
         addSubview(view)
         return view
     }()
     
     private lazy var candidateImageView: UIImageView = {
         let imageView = UIImageView()
+        // TODO: 프로필 사진으로 교체
         imageView.image = UIImage(named: "emoji")
         imageView.contentMode = .scaleAspectFit
         candidateView.addSubview(imageView)
@@ -28,12 +30,28 @@ final class CandidatesCell: UICollectionViewCell {
     
     private lazy var candidateSubView: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor.labelDarkGrey
-        view.layer.cornerRadius = 10
+        view.backgroundColor = UIColor.labelGrey
+        view.layer.cornerRadius = 14
+        view.layer.addSublayer(gradientLayer)
         candidateView.addSubview(view)
         return view
     }()
     
+    private lazy var gradientLayer: CAGradientLayer = {
+        let l = CAGradientLayer()
+        l.colors = [
+            UIColor(red: 0, green: 0, blue: 0, alpha: 0).cgColor,
+            UIColor(red: 0, green: 0, blue: 0, alpha: 0.4).cgColor
+        ]
+        l.locations = [0, 1]
+        l.startPoint = CGPoint(x: 0.25, y: 0.5)
+        l.endPoint = CGPoint(x: 0.75, y: 0.5)
+        l.cornerRadius = 14
+        l.cornerCurve = .continuous
+        //l.frame = candidateSubView.bounds
+        return l
+    }()
+
     private lazy var candidateName: UILabel = {
         let label = UILabel()
         label.text = "초록잎"
@@ -89,6 +107,11 @@ final class CandidatesCell: UICollectionViewCell {
         candidateName.text = ""
         candidateAge.text = ""
         candidateDistance.text = ""
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        gradientLayer.frame = candidateSubView.bounds
     }
     
 }
