@@ -8,6 +8,7 @@
 import UIKit
 import SnapKit
 import Combine
+import PhotosUI
 
 class RegisterViewController: UIViewController {
     
@@ -25,7 +26,8 @@ class RegisterViewController: UIViewController {
         RegisterMbtiView(),
         RegisterSelectableView(selectableType: SmokingType.self),
         RegisterSelectableView(selectableType: DrinkingType.self),
-        RegisterIntroductionView()
+        RegisterIntroductionView(),
+        RegisterPhotoView()
     ]
     
     private lazy var progressBar: ProgressBar = {
@@ -132,16 +134,18 @@ private extension RegisterViewController {
               let mbtiView = childView[4] as? RegisterMbtiView,
               let smokingView = childView[5] as? RegisterSelectableView,
               let drinkingView = childView[6] as? RegisterSelectableView,
-              let introductionView = childView[7] as? RegisterIntroductionView else { return }
+              let introductionView = childView[7] as? RegisterIntroductionView,
+              let photoView = childView[8] as? RegisterPhotoView else { return }
                 
         let didFinishedRegister = PassthroughSubject<Void, Never>()
         
         nextButton.tapPublisher()
             .sink { [weak self] _ in
-                if self?.currentPage == 7 {
-                    self?.viewModel?.register()
+                guard let self else { return }
+                if self.currentPage == self.childView.count - 1 {
+                    self.viewModel?.register()
                 } else {
-                    self?.nextPage()
+                    self.nextPage()
                 }
             }
             .store(in: &bag)
@@ -174,14 +178,17 @@ private extension RegisterViewController {
                 didChangedMbtiValue: mbtiView.mbtiPublisher(),
                 didChangedSmokingIndex: smokingView.$selectedIndex.eraseToAnyPublisher(),
                 didChangedDrinkingIndex: drinkingView.$selectedIndex.eraseToAnyPublisher(),
-                didChangedIntroductionValue: introductionView.introductionTextView.publisher(for: \.text).eraseToAnyPublisher(),
+                didChangedIntroductionValue: introductionView.textSubject.eraseToAnyPublisher(),
+                didChangedImageListValue: photoView.$imageList.eraseToAnyPublisher(),
                 didFinishedRegister: didFinishedRegister.eraseToAnyPublisher()
             )
         )
         
         output.isNextButtonEnabled
             .sink { [weak self] value in
-                self?.nextButton.isEnabled = value
+                DispatchQueue.main.async {
+                    self?.nextButton.isEnabled = value
+                }
             }
             .store(in: &bag)
         
@@ -193,6 +200,9 @@ private extension RegisterViewController {
         childView.forEach {
             self.view.addSubview($0)
         }
+        
+        guard let photoView = childView[8] as? RegisterPhotoView else { return }
+        photoView.delegate = self
     }
     
     func configureLayout() {
@@ -246,6 +256,40 @@ private extension RegisterViewController {
             }
         }
     }
+}
+
+extension RegisterViewController: RegisterPhotoViewDelegate {
+    func presentPhotoPicker(_ registerPhotoView: RegisterPhotoView) {
+        var phPickerConfiguration = PHPickerConfiguration()
+        phPickerConfiguration.selectionLimit = 1
+        phPickerConfiguration.filter = .images
+        phPickerConfiguration.preferredAssetRepresentationMode = .current
+
+        let phPicker = PHPickerViewController(configuration: phPickerConfiguration)
+        phPicker.delegate = self
+        self.present(phPicker, animated: true)
+    }
+}
+
+extension RegisterViewController: PHPickerViewControllerDelegate { //PHPicker 델리게이트
+    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+        picker.dismiss(animated: true)
+
+        results.first?.itemProvider.loadDataRepresentation(forTypeIdentifier: "public.image") { [weak self] (data, error) in
+            guard let data = data else { return }
+            guard let photoView = self?.childView[8] as? RegisterPhotoView,
+                  let index = photoView.pickingItem else { return }
+            
+            photoView.imageList[index] = data
+            photoView.pickingItem = nil
+            
+            DispatchQueue.main.async {
+                photoView.collectionView.reloadData()
+            }
+        }
+    }
+    
+    
 }
 
 

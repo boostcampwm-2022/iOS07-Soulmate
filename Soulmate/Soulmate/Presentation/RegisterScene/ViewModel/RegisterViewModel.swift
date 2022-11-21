@@ -27,6 +27,7 @@ class RegisterViewModel {
     @Published var smokingIndex: Int?
     @Published var drinkingIndex: Int?
     @Published var introduction: String?
+    @Published var photoData: [Data?] = [nil, nil, nil, nil, nil]
     
     struct Input {
         var didChangedPageIndex: AnyPublisher<Int, Never>
@@ -38,6 +39,7 @@ class RegisterViewModel {
         var didChangedSmokingIndex: AnyPublisher<Int?, Never>
         var didChangedDrinkingIndex: AnyPublisher<Int?, Never>
         var didChangedIntroductionValue: AnyPublisher<String?, Never>
+        var didChangedImageListValue: AnyPublisher<[Data?], Never>
         var didFinishedRegister: AnyPublisher<Void, Never>
     }
     
@@ -51,32 +53,34 @@ class RegisterViewModel {
     
     func transform(input: Input) -> Output {
         
-        let valueChangedInPage = PassthroughSubject<Bool, Never>()
-        let valueInPageChange = input.didChangedPageIndex
+        let valueChangedInCurrentPage = PassthroughSubject<Bool, Never>()
+        let valueInChangedPage = input.didChangedPageIndex
             .map { [weak self] index in
+                guard let self else { return true }
                 switch index {
-                case 0: return self?.genderIndex != nil
-                case 1: return self?.nickName != nil
-                case 4: return self?.smokingIndex != nil
-                case 5: return self?.drinkingIndex != nil
-                case 6: return self?.introduction != nil
-                default:
-                    return true
+                case 0: return self.genderIndex != nil
+                case 1: return self.nickName != nil
+                case 4: return self.mbti != nil
+                case 5: return self.smokingIndex != nil
+                case 6: return self.drinkingIndex != nil
+                case 7: return self.introduction != nil
+                case 8: return self.photoData.allSatisfy { $0 != nil }
+                default: return true
                 }
             }
-            .eraseToAnyPublisher() //페이지가 바뀌고 value가 없을 때
+            .eraseToAnyPublisher()
         
         input.didChangedGenderIndex
             .sink { value in
                 self.genderIndex = value
-                valueChangedInPage.send(value != nil)
+                valueChangedInCurrentPage.send(value != nil)
             }
             .store(in: &bag)
 
         input.didChangedNickNameValue
             .sink { value in
                 self.nickName = value
-                valueChangedInPage.send(value != nil && !value!.isEmpty)
+                valueChangedInCurrentPage.send(value != nil && !value!.isEmpty)
             }
             .store(in: &bag)
         
@@ -91,28 +95,35 @@ class RegisterViewModel {
         input.didChangedMbtiValue
             .sink { value in
                 self.mbti = value
-                valueChangedInPage.send(value != nil)
+                valueChangedInCurrentPage.send(value != nil)
             }
             .store(in: &bag)
         
         input.didChangedSmokingIndex
             .sink { value in
                 self.smokingIndex = value
-                valueChangedInPage.send(value != nil)
+                valueChangedInCurrentPage.send(value != nil)
             }
             .store(in: &bag)
         
         input.didChangedDrinkingIndex
             .sink { value in
                 self.drinkingIndex = value
-                valueChangedInPage.send(value != nil)
+                valueChangedInCurrentPage.send(value != nil)
             }
             .store(in: &bag)
         
         input.didChangedIntroductionValue
             .sink { value in
                 self.introduction = value
-                valueChangedInPage.send(value != nil)
+                valueChangedInCurrentPage.send(value != nil)
+            }
+            .store(in: &bag)
+        
+        input.didChangedImageListValue
+            .sink { value in
+                self.photoData = value
+                valueChangedInCurrentPage.send(value.allSatisfy { $0 != nil })
             }
             .store(in: &bag)
         
@@ -122,7 +133,7 @@ class RegisterViewModel {
             }
             .store(in: &bag)
         
-        let isNextButtonEnabled = valueChangedInPage.merge(with: valueInPageChange).eraseToAnyPublisher()
+        let isNextButtonEnabled = valueChangedInCurrentPage.merge(with: valueInChangedPage).eraseToAnyPublisher()
 
         
         return Output(isNextButtonEnabled: isNextButtonEnabled)
@@ -152,3 +163,4 @@ class RegisterViewModel {
         actions?.finishRegister?()
     }
 }
+

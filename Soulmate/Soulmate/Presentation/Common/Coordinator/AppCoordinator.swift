@@ -31,9 +31,9 @@ final class AppCoordinator: Coordinator {
 //            showMainTabFlow()
 //        }
         
-//        showAuthFlow()
+        showAuthFlow()
         
-        chattingRoomTest()
+        //chattingRoomTest()
     }
     
     private func chattingRoomTest() {

@@ -13,6 +13,8 @@ final class RegisterIntroductionView: UIView {
         
     var bag = Set<AnyCancellable>()
     
+    var textSubject = PassthroughSubject<String?, Never>()
+    
     lazy var registerHeaderStackView: RegisterHeaderStackView = {
         let headerView = RegisterHeaderStackView(frame: .zero)
         headerView.setMessage(
@@ -33,7 +35,7 @@ final class RegisterIntroductionView: UIView {
         textView.textContainerInset = .init(top: 16, left: 12, bottom: 0, right: 12)
         textView.heightAnchor.constraint(equalToConstant: 120).isActive = true
         textView.showsVerticalScrollIndicator = false
-        
+        textView.textStorage.delegate = self
         return textView
     }()
     
@@ -77,9 +79,25 @@ final class RegisterIntroductionView: UIView {
     }
 }
 
+extension RegisterIntroductionView: NSTextStorageDelegate {
+    func textStorage(
+        _ textStorage: NSTextStorage,
+        didProcessEditing editedMask: NSTextStorage.EditActions,
+        range editedRange: NSRange,
+        changeInLength delta: Int) {
+            textSubject.send(textStorage.string)
+    }
+}
+
 private extension RegisterIntroductionView {
     
     func bind() {
+        textSubject
+            .compactMap { $0 }
+            .sink { [weak self] value in
+                self?.textCountLabel.text = "\(value.count)/50"
+            }
+            .store(in: &bag)
     }
 
     func configureView() {
