@@ -53,9 +53,6 @@
 		6A97FE63291CE0C2006F6DD9 /* UIImage+shadow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A97FE62291CE0C2006F6DD9 /* UIImage+shadow.swift */; };
 		6A97FE66291CE29E006F6DD9 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A97FE65291CE29E006F6DD9 /* LoginViewModel.swift */; };
 		6AB6B946292AAD7600A029BD /* RegisterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB6B945292AAD7600A029BD /* RegisterViewModel.swift */; };
-		6AB6B948292AE1C600A029BD /* p1.png in Resources */ = {isa = PBXBuildFile; fileRef = 6AB6B947292AE1C600A029BD /* p1.png */; };
-		6AB6B94A292AE1CB00A029BD /* p2.png in Resources */ = {isa = PBXBuildFile; fileRef = 6AB6B949292AE1CB00A029BD /* p2.png */; };
-		6AB6B94C292AEAAA00A029BD /* p3.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 6AB6B94B292AEAAA00A029BD /* p3.jpg */; };
 		6AB6B950292B155A00A029BD /* UILabel+Publisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB6B94F292B155A00A029BD /* UILabel+Publisher.swift */; };
 		6ADEE4E72922198200AD328B /* UIControl+Publisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ADEE4E62922198200AD328B /* UIControl+Publisher.swift */; };
 		6ADEE4EA29221CB800AD328B /* UIButton+Publisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ADEE4E929221CB800AD328B /* UIButton+Publisher.swift */; };
@@ -127,9 +124,6 @@
 		6A97FE62291CE0C2006F6DD9 /* UIImage+shadow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+shadow.swift"; sourceTree = "<group>"; };
 		6A97FE65291CE29E006F6DD9 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		6AB6B945292AAD7600A029BD /* RegisterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewModel.swift; sourceTree = "<group>"; };
-		6AB6B947292AE1C600A029BD /* p1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = p1.png; path = ../../../../../../../Downloads/p1.png; sourceTree = "<group>"; };
-		6AB6B949292AE1CB00A029BD /* p2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = p2.png; path = ../../../../../../../Downloads/p2.png; sourceTree = "<group>"; };
-		6AB6B94B292AEAAA00A029BD /* p3.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = p3.jpg; path = ../../../../../../../Downloads/p3.jpg; sourceTree = "<group>"; };
 		6AB6B94F292B155A00A029BD /* UILabel+Publisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+Publisher.swift"; sourceTree = "<group>"; };
 		6ADEE4E62922198200AD328B /* UIControl+Publisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIControl+Publisher.swift"; sourceTree = "<group>"; };
 		6ADEE4E929221CB800AD328B /* UIButton+Publisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Publisher.swift"; sourceTree = "<group>"; };
@@ -259,9 +253,6 @@
 		6A0041F02919EDA30042E02F /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
-				6AB6B947292AE1C600A029BD /* p1.png */,
-				6AB6B949292AE1CB00A029BD /* p2.png */,
-				6AB6B94B292AEAAA00A029BD /* p3.jpg */,
 				6A0041F32919EDC20042E02F /* ChatListViewController.swift */,
 				6A0041F52919EE010042E02F /* ChattingRoomViewController.swift */,
 			);
@@ -617,11 +608,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6AB6B948292AE1C600A029BD /* p1.png in Resources */,
 				B31A68272919F5D2001D35E9 /* .swiftlint.yml in Resources */,
-				6AB6B94C292AEAAA00A029BD /* p3.jpg in Resources */,
 				6A8C889C2919031D009EDBBB /* LaunchScreen.storyboard in Resources */,
-				6AB6B94A292AE1CB00A029BD /* p2.png in Resources */,
 				6A8B0724292330D100492123 /* GoogleService-Info.plist in Resources */,
 				6A8C88992919031D009EDBBB /* Assets.xcassets in Resources */,
 				6A8C88972919031A009EDBBB /* Main.storyboard in Resources */,
