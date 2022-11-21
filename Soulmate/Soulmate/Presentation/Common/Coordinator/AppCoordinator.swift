@@ -31,7 +31,14 @@ final class AppCoordinator: Coordinator {
 //            showMainTabFlow()
 //        }
         
-        showAuthFlow()
+//        showAuthFlow()
+        
+        chattingRoomTest()
+    }
+    
+    private func chattingRoomTest() {
+        let vc = ChattingRoomViewController()
+        self.navigationController.pushViewController(vc, animated: true)
     }
     
     private func showAuthFlow() {

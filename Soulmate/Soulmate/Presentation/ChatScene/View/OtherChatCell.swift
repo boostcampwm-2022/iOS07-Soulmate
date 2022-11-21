@@ -8,9 +8,9 @@
 import UIKit
 import SnapKit
 
-final class OhterChatCell: UITableViewCell {
+final class OtherChatCell: UITableViewCell {
     
-    static let id = String(describing: OhterChatCell.self)
+    static let id = String(describing: OtherChatCell.self)
     
     private lazy var otherChatView: OtherChatView = {
         let chatView = OtherChatView()
