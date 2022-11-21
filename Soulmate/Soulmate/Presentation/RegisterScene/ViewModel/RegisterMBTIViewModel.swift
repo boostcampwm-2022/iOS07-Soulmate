@@ -6,19 +6,19 @@
 //
 
 import Foundation
+import Combine
 
 class RegisterMBTIViewModel {
     
+    var bag = Set<AnyCancellable>()
+    
     struct Input {
-        
+
     }
     
-    struct Output {
-        
-    }
+    struct Output {}
     
     func transform(input: Input) -> Output {
-        
         
         return Output()
     }
