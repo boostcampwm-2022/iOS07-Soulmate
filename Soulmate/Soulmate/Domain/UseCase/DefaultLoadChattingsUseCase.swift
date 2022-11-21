@@ -28,7 +28,7 @@ final class DefaultLoadChattingsUseCase: LoadChattingsUseCase {
         Chat(isMe: true, text: "VI?"),
         Chat(isMe: false, text: "Cupcake!"),
         Chat(isMe: true, text: "VI?"),
-        Chat(isMe: false, text: "Cupcake!"),
+        Chat(isMe: false, text: "Cupcake!\nCupcake!"),
         Chat(isMe: true, text: "VI?")
     ]
     

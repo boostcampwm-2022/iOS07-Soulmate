@@ -24,6 +24,17 @@ final class MyChatView: UIView {
         return label
     }()
     
+    private lazy var timeLabel: UILabel = {
+        let label = UILabel()
+        self.addSubview(label)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 11)
+        label.textColor = .labelGrey
+        label.text = "오전 8:18"
+        
+        return label
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -45,6 +56,11 @@ final class MyChatView: UIView {
             $0.trailing.equalTo(self.snp.trailing).offset(-16)
             $0.bottom.equalTo(self.snp.bottom).offset(-5)
             $0.width.lessThanOrEqualTo(230)
+        }
+        
+        timeLabel.snp.makeConstraints {
+            $0.trailing.equalTo(chatLabel.snp.leading).offset(-5)
+            $0.bottom.equalTo(chatLabel.snp.bottom)
         }
     }
 }
