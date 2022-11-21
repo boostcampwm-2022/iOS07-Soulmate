@@ -8,9 +8,7 @@
 import UIKit
 
 final class CongraturationsViewController: UIViewController {
-        
-    var actions: RegisterViewModelActions?
-    
+            
     private lazy var confetti: UIImageView = {
         let imageView = UIImageView()
         view.addSubview(imageView)
