@@ -10,9 +10,17 @@ import Combine
 final class ChattingRoomViewModel {
     
     private let sendMessageUseCase: SendMessageUseCase
+    private let loadChattingsUseCase: LoadChattingsUseCase
+    var chattings: [Chat] {
+        return loadChattingsUseCase.loadedChattings.value
+    }
     
-    init(sendMessageUseCase: SendMessageUseCase) {
+    init(
+        sendMessageUseCase: SendMessageUseCase,
+        loadChattingsUseCase: LoadChattingsUseCase
+    ) {
         self.sendMessageUseCase = sendMessageUseCase
+        self.loadChattingsUseCase = loadChattingsUseCase
     }
     
     struct Input {
@@ -22,14 +30,15 @@ final class ChattingRoomViewModel {
     
     struct Output {
         var sendButtonEnabled = CurrentValueSubject<Bool, Never>(false)
+        var reloadTableView = PassthroughSubject<Bool, Never>()
     }
     
     func transform(input: Input, cancellables: inout Set<AnyCancellable>) -> Output {
         let output = Output()
         
         input.viewDidLoad
-            .sink { _ in
-                
+            .sink { [weak self] _ in
+                self?.loadChattingsUseCase.loadChattings()
             }
             .store(in: &cancellables)
         
@@ -43,6 +52,13 @@ final class ChattingRoomViewModel {
         self.sendMessageUseCase.sendButtonEnabled
             .sink { isEnabled in
                 output.sendButtonEnabled.send(isEnabled)
+            }
+            .store(in: &cancellables)
+        
+        self.loadChattingsUseCase.loadedNewChattings
+            .filter { $0 }
+            .sink { _ in
+                output.reloadTableView.send(true)
             }
             .store(in: &cancellables)
         

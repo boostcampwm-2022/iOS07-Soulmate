@@ -10,29 +10,6 @@ import UIKit
 
 final class ChattingRoomViewController: UIViewController {
     
-    private var data: [Chat] = [
-        Chat(isMe: false, text: "Cupcake!"),
-        Chat(isMe: true, text: "VI?"),
-        Chat(isMe: false, text: "Cupcake!"),
-        Chat(isMe: true, text: "VI?"),
-        Chat(isMe: false, text: "Cupcake!"),
-        Chat(isMe: true, text: "VI?"),
-        Chat(isMe: false, text: "Cupcake!"),
-        Chat(isMe: true, text: "VI?"),
-        Chat(isMe: false, text: "Cupcake!"),
-        Chat(isMe: true, text: "VI?"),
-        Chat(isMe: false, text: "Cupcake!"),
-        Chat(isMe: true, text: "VI?"),
-        Chat(isMe: false, text: "Cupcake!"),
-        Chat(isMe: true, text: "VI?"),
-        Chat(isMe: false, text: "Cupcake!"),
-        Chat(isMe: true, text: "VI?"),
-        Chat(isMe: false, text: "Cupcake!"),
-        Chat(isMe: true, text: "VI?"),
-        Chat(isMe: false, text: "Cupcake!"),
-        Chat(isMe: true, text: "VI?")
-    ]
-    
     private var viewModel: ChattingRoomViewModel?
     private var cancellabels = Set<AnyCancellable>()
     private var messageSubject = PassthroughSubject<String?, Never>()
@@ -126,12 +103,14 @@ extension ChattingRoomViewController: NSTextStorageDelegate {
 // MARK: - TableView Delegae, DataSource
 extension ChattingRoomViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return data.count
+        return viewModel?.chattings.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let chat = data[indexPath.row]
+        guard let chat = viewModel?.chattings[indexPath.row] else {
+            return UITableViewCell()
+        }
         
         if chat.isMe {
             guard let cell = tableView.dequeueReusableCell(
@@ -199,6 +178,12 @@ private extension ChattingRoomViewController {
                 } else {
                     self?.composeBar.deactivateSendButton()
                 }
+            }
+            .store(in: &cancellabels)
+        
+        output.reloadTableView
+            .sink { [weak self] _ in
+                self?.chatTableView.reloadData()
             }
             .store(in: &cancellabels)
     }

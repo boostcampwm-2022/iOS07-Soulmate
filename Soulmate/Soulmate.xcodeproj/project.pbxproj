@@ -45,6 +45,8 @@
 		6A34C1ED292B3A3A00A3E57F /* ChattingRoomViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A34C1EC292B3A3A00A3E57F /* ChattingRoomViewModel.swift */; };
 		6A34C1F1292B48AE00A3E57F /* SendMessageUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A34C1F0292B48AE00A3E57F /* SendMessageUseCase.swift */; };
 		6A34C1F3292B48C700A3E57F /* DefaultSendMessageUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A34C1F2292B48C700A3E57F /* DefaultSendMessageUseCase.swift */; };
+		6A34C1F5292B4FE500A3E57F /* LoadChattingsUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A34C1F4292B4FE500A3E57F /* LoadChattingsUseCase.swift */; };
+		6A34C1F7292B501500A3E57F /* DefaultLoadChattingsUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A34C1F6292B501500A3E57F /* DefaultLoadChattingsUseCase.swift */; };
 		6A3F91A72924A45300F1D901 /* RegisterSelectableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A3F91A62924A45300F1D901 /* RegisterSelectableView.swift */; };
 		6A444533291EA23F009AE2E5 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A444532291EA23F009AE2E5 /* UIColor.swift */; };
 		6A45AA212925595700F85D2C /* RegisterCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A45AA202925595700F85D2C /* RegisterCoordinator.swift */; };
@@ -125,6 +127,8 @@
 		6A34C1EC292B3A3A00A3E57F /* ChattingRoomViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChattingRoomViewModel.swift; sourceTree = "<group>"; };
 		6A34C1F0292B48AE00A3E57F /* SendMessageUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendMessageUseCase.swift; sourceTree = "<group>"; };
 		6A34C1F2292B48C700A3E57F /* DefaultSendMessageUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultSendMessageUseCase.swift; sourceTree = "<group>"; };
+		6A34C1F4292B4FE500A3E57F /* LoadChattingsUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadChattingsUseCase.swift; sourceTree = "<group>"; };
+		6A34C1F6292B501500A3E57F /* DefaultLoadChattingsUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultLoadChattingsUseCase.swift; sourceTree = "<group>"; };
 		6A3F91A62924A45300F1D901 /* RegisterSelectableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterSelectableView.swift; sourceTree = "<group>"; };
 		6A444532291EA23F009AE2E5 /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		6A45AA202925595700F85D2C /* RegisterCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterCoordinator.swift; sourceTree = "<group>"; };
@@ -358,6 +362,7 @@
 			children = (
 				6A03B7232923DE7200AC15A6 /* DefaultAuthUseCase.swift */,
 				6A34C1F2292B48C700A3E57F /* DefaultSendMessageUseCase.swift */,
+				6A34C1F6292B501500A3E57F /* DefaultLoadChattingsUseCase.swift */,
 			);
 			path = UseCase;
 			sourceTree = "<group>";
@@ -367,6 +372,7 @@
 			children = (
 				6A03B7262923E5E300AC15A6 /* AuthUseCase.swift */,
 				6A34C1F0292B48AE00A3E57F /* SendMessageUseCase.swift */,
+				6A34C1F4292B4FE500A3E57F /* LoadChattingsUseCase.swift */,
 			);
 			path = Interface;
 			sourceTree = "<group>";
@@ -705,6 +711,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6A34C1F7292B501500A3E57F /* DefaultLoadChattingsUseCase.swift in Sources */,
 				6A34C1DB292B216A00A3E57F /* OtherChatCell.swift in Sources */,
 				6A97FE66291CE29E006F6DD9 /* LoginViewModel.swift in Sources */,
 				B3E029A9291DDC1500931FA2 /* GradientButton.swift in Sources */,
@@ -726,6 +733,7 @@
 				6A34C1E2292B233300A3E57F /* MyChatCell.swift in Sources */,
 				6A0041EE2919ED7F0042E02F /* DetailViewController.swift in Sources */,
 				6A34C1F3292B48C700A3E57F /* DefaultSendMessageUseCase.swift in Sources */,
+				6A34C1F5292B4FE500A3E57F /* LoadChattingsUseCase.swift in Sources */,
 				6A45AA212925595700F85D2C /* RegisterCoordinator.swift in Sources */,
 				6A444533291EA23F009AE2E5 /* UIColor.swift in Sources */,
 				B311F4AA2925EC7100806E86 /* RegisterMbtiView.swift in Sources */,
