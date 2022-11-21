@@ -38,6 +38,28 @@ final class ChattingRoomViewController: UIViewController {
         return tableView
     }()
     
+    private lazy var composeBar: ComposeBar = {
+        let messageInputView = ComposeBar()
+        view.addSubview(messageInputView)
+        messageInputView.translatesAutoresizingMaskIntoConstraints = false
+        messageInputView.configure()
+        
+        return messageInputView
+    }()
+    
+    override var inputAccessoryView: UIView? {                
+        
+        return composeBar
+    }
+    
+    override var canBecomeFirstResponder: Bool {
+        return true
+    }
+    
+    override var canResignFirstResponder: Bool {
+        return true
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         

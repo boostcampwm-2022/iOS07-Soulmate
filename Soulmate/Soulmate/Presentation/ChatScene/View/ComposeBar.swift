@@ -9,9 +9,7 @@ import UIKit
 
 final class ComposeBar: UIView {
     
-    @IBOutlet weak var contentView: UIView!
-    @IBOutlet weak var sendButton: UIImageView!
-    @IBOutlet weak var messageInputTextView: UITextView!
+    @IBOutlet var contentView: UIView!
     
     override init(frame: CGRect) {
         super.init(frame: frame)
