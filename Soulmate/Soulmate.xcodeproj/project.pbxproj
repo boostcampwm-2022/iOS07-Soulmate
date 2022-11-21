@@ -219,7 +219,6 @@
 				B30A8F0E291CB4AC00ED4906 /* PhoneNumberViewController.swift */,
 				B30A8F10291CB4F100ED4906 /* CertificationNumberViewController.swift */,
 				6A03B6EF2923BF8900AC15A6 /* CertificationTextField.swift */,
-				B311F4A92925EC7100806E86 /* MbtiViewController.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -396,11 +395,14 @@
 			isa = PBXGroup;
 			children = (
 				6A45AA4529257E1E00F85D2C /* RegisterHeaderStackView.swift */,
+				B311F4A52925E82300806E86 /* MbtiPreview.swift */,
+				B311F4A62925E82400806E86 /* MbtiSegmentView.swift */,
 				6A45AA47292585F300F85D2C /* ProgressBarNavigationController.swift */,
 				6A3F91A62924A45300F1D901 /* RegisterSelectableViewController.swift */,
 				6A8377A82924A3FC00BC7112 /* NicknameSettingViewController.swift */,
 				07DDDF262924A7C600CB398C /* BirthViewController.swift */,
 				07DDDF282924B2D500CB398C /* HeightViewController.swift */,
+				B311F4A92925EC7100806E86 /* MbtiViewController.swift */,
 				6A8377AA2924B0D700BC7112 /* IntroductionSettingViewController.swift */,
 				07EAD6F82925EBB0001AE220 /* PhotoViewController.swift */,
 				6A8377AC2924BCB400BC7112 /* CongraturationsViewController.swift */,
@@ -562,8 +564,6 @@
 		B303D64F292366DC00414293 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				B311F4A52925E82300806E86 /* MbtiPreview.swift */,
-				B311F4A62925E82400806E86 /* MbtiSegmentView.swift */,
 				B303D650292367CF00414293 /* ProgressBar.swift */,
 			);
 			path = View;
