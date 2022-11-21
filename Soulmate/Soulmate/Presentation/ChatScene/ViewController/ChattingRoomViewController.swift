@@ -12,6 +12,24 @@ final class ChattingRoomViewController: UIViewController {
     private var data: [Chat] = [
         Chat(isMe: false, text: "Cupcake!"),
         Chat(isMe: true, text: "VI?"),
+        Chat(isMe: false, text: "Cupcake!"),
+        Chat(isMe: true, text: "VI?"),
+        Chat(isMe: false, text: "Cupcake!"),
+        Chat(isMe: true, text: "VI?"),
+        Chat(isMe: false, text: "Cupcake!"),
+        Chat(isMe: true, text: "VI?"),
+        Chat(isMe: false, text: "Cupcake!"),
+        Chat(isMe: true, text: "VI?"),
+        Chat(isMe: false, text: "Cupcake!"),
+        Chat(isMe: true, text: "VI?"),
+        Chat(isMe: false, text: "Cupcake!"),
+        Chat(isMe: true, text: "VI?"),
+        Chat(isMe: false, text: "Cupcake!"),
+        Chat(isMe: true, text: "VI?"),
+        Chat(isMe: false, text: "Cupcake!"),
+        Chat(isMe: true, text: "VI?"),
+        Chat(isMe: false, text: "Cupcake!"),
+        Chat(isMe: true, text: "VI?")
     ]
     
     private var shouldScrollToBottom = true
@@ -59,6 +77,7 @@ final class ChattingRoomViewController: UIViewController {
         
         configureView()
         configureLayout()
+        registerKeyboardNotifications()
     }
     
     override func viewDidLayoutSubviews() {
@@ -120,7 +139,7 @@ private extension ChattingRoomViewController {
             $0.top.equalTo(view.safeAreaLayoutGuide.snp.top)
             $0.leading.equalTo(view.safeAreaLayoutGuide.snp.leading)
             $0.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing)
-            $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
+            $0.bottom.equalTo(view.snp.bottom)
         }
     }
 }
@@ -138,5 +157,58 @@ private extension ChattingRoomViewController {
             x: 0,
             y: max(-chatTableView.contentInset.top, chatTableView.contentSize.height - (chatTableView.bounds.size.height - chatTableView.contentInset.bottom))
         )
+    }
+}
+
+// MARK: - 키보트 높이에 따라 TableView 변경
+private extension ChattingRoomViewController {
+    func registerKeyboardNotifications() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardWillShow(_:)),
+            name: UIResponder.keyboardWillShowNotification,
+            object: nil
+        )
+     
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardWillHide(_:)),
+            name: UIResponder.keyboardWillHideNotification,
+            object: nil
+        )
+    }
+    
+    @objc
+    func keyboardWillShow(_ notification: NSNotification) {
+        adjustContentForKeyboard(shown: true, notification: notification)
+    }
+     
+    @objc
+    func keyboardWillHide(_ notification: NSNotification) {
+        adjustContentForKeyboard(shown: false, notification: notification)
+    }
+     
+    func adjustContentForKeyboard(shown: Bool, notification: NSNotification) {
+        guard let payload = KeyboardInfo(notification as Notification) else { return }
+     
+        let keyboardHeight = shown ? payload.frameEnd.size.height : composeBar.bounds.size.height
+        if chatTableView.contentInset.bottom == keyboardHeight {
+            return
+        }
+     
+        let distanceFromBottom = bottomOffset().y - chatTableView.contentOffset.y
+     
+        var insets = chatTableView.contentInset
+        insets.bottom = keyboardHeight
+     
+        UIView.animate(withDuration: payload.animationDuration, delay: 0, options: [], animations: {
+     
+            self.chatTableView.contentInset = insets
+            self.chatTableView.scrollIndicatorInsets = insets
+     
+            if distanceFromBottom < 10 {
+                self.chatTableView.contentOffset = self.bottomOffset()
+            }
+        }, completion: nil)
     }
 }
