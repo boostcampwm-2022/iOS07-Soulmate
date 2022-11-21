@@ -48,7 +48,7 @@ final class HomeViewController: UIViewController {
         layout.itemSize = CGSize(width: view.frame.size.width - 40, height: view.frame.size.width - 40)
         
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        cv.register(CandidatesCell.self, forCellWithReuseIdentifier: "CandidatesCell")
+        cv.register(PartnerCell.self, forCellWithReuseIdentifier: "CandidatesCell")
         cv.contentInset = UIEdgeInsets(top: -64, left: 0, bottom: 0, right: 0)
         cv.showsVerticalScrollIndicator = false
         cv.bounces = true
@@ -133,7 +133,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CandidatesCell", for: indexPath) as? CandidatesCell else {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CandidatesCell", for: indexPath) as? PartnerCell else {
             return UICollectionViewCell()
         }
         return cell

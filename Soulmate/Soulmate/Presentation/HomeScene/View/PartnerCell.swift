@@ -9,8 +9,8 @@ import UIKit
 
 import SnapKit
 
-final class CandidatesCell: UICollectionViewCell {
-    private lazy var candidateView: UIView = {
+final class PartnerCell: UICollectionViewCell {
+    private lazy var partnerView: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor.white
         view.layer.cornerRadius = 14
@@ -19,21 +19,21 @@ final class CandidatesCell: UICollectionViewCell {
         return view
     }()
     
-    private lazy var candidateImageView: UIImageView = {
+    private lazy var partnerImageView: UIImageView = {
         let imageView = UIImageView()
         // TODO: 프로필 사진으로 교체
         imageView.image = UIImage(named: "emoji")
         imageView.contentMode = .scaleAspectFit
-        candidateView.addSubview(imageView)
+        partnerView.addSubview(imageView)
         return imageView
     }()
     
-    private lazy var candidateSubView: UIView = {
+    private lazy var partnerSubview: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor.labelGrey
         view.layer.cornerRadius = 14
         view.layer.addSublayer(gradientLayer)
-        candidateView.addSubview(view)
+        partnerView.addSubview(view)
         return view
     }()
     
@@ -48,46 +48,45 @@ final class CandidatesCell: UICollectionViewCell {
         l.endPoint = CGPoint(x: 0.75, y: 0.5)
         l.cornerRadius = 14
         l.cornerCurve = .continuous
-        //l.frame = candidateSubView.bounds
         return l
     }()
 
-    private lazy var candidateName: UILabel = {
+    private lazy var partnerName: UILabel = {
         let label = UILabel()
         label.text = "초록잎"
         label.frame = CGRect(x: 0, y: 0, width: 58, height: 26)
         label.textColor = UIColor.white
         label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 22)
-        candidateSubView.addSubview(label)
+        partnerSubview.addSubview(label)
         return label
     }()
     
-    private lazy var candidateAge: UILabel = {
+    private lazy var partnerAge: UILabel = {
         let label = UILabel()
         label.text = "25"
         label.frame = CGRect(x: 0, y: 0, width: 23, height: 26)
         label.textColor = UIColor.white
         label.font = UIFont(name: "AppleSDGothicNeo-Light", size: 22)
-        candidateSubView.addSubview(label)
+        partnerSubview.addSubview(label)
         return label
     }()
     
-    private lazy var candidateMapImageView: UIImageView = {
+    private lazy var partnerMapImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "mapGrey")
         imageView.frame = CGRect(x: 0, y: 0, width: 13.04, height: 18)
         imageView.contentMode = .scaleAspectFit
-        candidateSubView.addSubview(imageView)
+        partnerSubview.addSubview(imageView)
         return imageView
     }()
     
-    private lazy var candidateDistance: UILabel = {
+    private lazy var partnerDistance: UILabel = {
         let label = UILabel()
         label.text = "3 km"
         label.frame = CGRect(x: 0, y: 0, width: 32, height: 20)
         label.textColor = UIColor.white
         label.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 15)
-        candidateSubView.addSubview(label)
+        partnerSubview.addSubview(label)
         return label
     }()
  
@@ -103,58 +102,58 @@ final class CandidatesCell: UICollectionViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         
-        candidateImageView.image = UIImage(named: "photo")
-        candidateName.text = ""
-        candidateAge.text = ""
-        candidateDistance.text = ""
+        partnerImageView.image = UIImage(named: "photo")
+        partnerName.text = ""
+        partnerAge.text = ""
+        partnerDistance.text = ""
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        gradientLayer.frame = candidateSubView.bounds
+        gradientLayer.frame = partnerSubview.bounds
     }
     
 }
 
-private extension CandidatesCell {
+private extension PartnerCell {
     func configureLayout() {
-        candidateName.snp.makeConstraints {
+        partnerName.snp.makeConstraints {
             $0.top.equalToSuperview().inset(24)
             $0.left.equalToSuperview().inset(20)
             $0.bottom.equalToSuperview().inset(50)
         }
         
-        candidateAge.snp.makeConstraints {
+        partnerAge.snp.makeConstraints {
             $0.top.equalToSuperview().inset(24)
             $0.left.equalToSuperview().inset(84)
             $0.bottom.equalToSuperview().inset(50)
         }
         
-        candidateMapImageView.snp.makeConstraints {
+        partnerMapImageView.snp.makeConstraints {
             $0.top.equalToSuperview().inset(57)
             $0.left.equalToSuperview().inset(22.48)
             $0.bottom.equalToSuperview().inset(25)
         }
         
-        candidateDistance.snp.makeConstraints {
+        partnerDistance.snp.makeConstraints {
             $0.top.equalToSuperview().inset(56)
             $0.left.equalToSuperview().inset(44)
             $0.bottom.equalToSuperview().inset(24)
         }
         
-        candidateSubView.snp.makeConstraints {
+        partnerSubview.snp.makeConstraints {
             $0.width.equalToSuperview()
             $0.left.right.bottom.equalToSuperview()
             $0.height.equalTo(100)
         }
         
-        candidateImageView.snp.makeConstraints {
+        partnerImageView.snp.makeConstraints {
             $0.width.height.equalToSuperview()
         }
         
-        candidateView.snp.makeConstraints {
+        partnerView.snp.makeConstraints {
             $0.width.equalToSuperview()
-            $0.height.equalTo(candidateView.snp.width)
+            $0.height.equalTo(partnerView.snp.width)
         }
     }
 }
