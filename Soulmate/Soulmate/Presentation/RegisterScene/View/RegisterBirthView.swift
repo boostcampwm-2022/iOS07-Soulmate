@@ -44,15 +44,14 @@ final class RegisterBirthView: UIView {
         
         configureView()
         configureLayout()
-        
-        bind()
+    }
+    
+    func birthPublisher() -> AnyPublisher<Date, Never> {
+        return birthPicker.datePublisher()
     }
 }
 
 private extension RegisterBirthView {
-    
-    func bind() {
-    }
 
     func configureView() {
         self.backgroundColor = .systemBackground

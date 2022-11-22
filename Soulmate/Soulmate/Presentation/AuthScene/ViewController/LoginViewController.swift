@@ -127,7 +127,6 @@ private extension LoginViewController {
     func bind() {
         let _ = viewModel?.transform(
             input: LoginViewModel.Input(
-                didTappedAppleLoginButton: appleLoginButton.tapPublisher(),
                 didTappedPhoneLoginButton: phoneLoginButton.tapPublisher()
             )
         )
@@ -253,7 +252,7 @@ extension LoginViewController: ASAuthorizationControllerDelegate {
                 rawNonce: nonce
             )
             // Sign in with Firebase.
-            Auth.auth().signIn(with: credential) { _, error in
+            Auth.auth().signIn(with: credential) { [weak self] _, error in
                 if let error {
                     // Error. If error.code == .MissingOrInvalidNonce, make sure
                     // you're sending the SHA256-hashed nonce as a hex string with
@@ -261,8 +260,7 @@ extension LoginViewController: ASAuthorizationControllerDelegate {
                     print(error.localizedDescription)
                     return
                 }
-                // User is signed in to Firebase with Apple.
-                // ...
+                self?.viewModel?.doneAppleLogin()
             }
         }
     }

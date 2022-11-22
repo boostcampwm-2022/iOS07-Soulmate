@@ -7,11 +7,11 @@
 
 import UIKit
 
-final class CongraturationsViewController: UIViewController {
+final class RegisterCongraturationsView: UIView {
             
     private lazy var confetti: UIImageView = {
         let imageView = UIImageView()
-        view.addSubview(imageView)
+        self.addSubview(imageView)
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.image = UIImage(named: "Confetti")
         imageView.contentMode = .scaleAspectFill
@@ -21,7 +21,7 @@ final class CongraturationsViewController: UIViewController {
     
     private lazy var profileImage: UIImageView = {
         let imageView = UIImageView()
-        view.addSubview(imageView)
+        self.addSubview(imageView)
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFill
         imageView.widthAnchor.constraint(equalToConstant: 200).isActive = true
@@ -34,7 +34,7 @@ final class CongraturationsViewController: UIViewController {
     
     private lazy var profileBorder: UIView = {
         let circle = UIView()
-        view.addSubview(circle)
+        self.addSubview(circle)
         circle.translatesAutoresizingMaskIntoConstraints = false
         circle.widthAnchor.constraint(equalToConstant: 216).isActive = true
         circle.heightAnchor.constraint(equalToConstant: 216).isActive = true
@@ -47,7 +47,7 @@ final class CongraturationsViewController: UIViewController {
     
     private lazy var conguraturationsLabel: UILabel = {
         let label = UILabel()
-        view.addSubview(label)
+        self.addSubview(label)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Conguraturations!"
         label.font = UIFont.systemFont(ofSize: 24, weight: .semibold)
@@ -57,7 +57,7 @@ final class CongraturationsViewController: UIViewController {
     
     private lazy var descriptionLabel: UILabel = {
         let label = UILabel()
-        view.addSubview(label)
+        self.addSubview(label)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont(name: "AppleSDGothicNeo-SemiBold", size: 14)
         label.textColor = .labelGrey
@@ -77,48 +77,40 @@ final class CongraturationsViewController: UIViewController {
         return label
     }()
     
-    private lazy var nextButton: GradientButton = {
-        let button = GradientButton(title: "시작하기")
-        view.addSubview(button)
-        return button
-    }()
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-                
-        configureView()
-        configureLayout()
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         
-        // 뷰모델 만들기전 임시로 둔 타겟액션
-        //nextButton.addTarget(self, action: #selector(nextButtonTouched), for: .touchUpInside)
+        self.backgroundColor = .white
+        configureLayout()
+        configureView()
     }
     
-//    @objc func nextButtonTouched() {
-//        actions?.nextStep?()
-//    }
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 }
 
-private extension CongraturationsViewController {
+private extension RegisterCongraturationsView {
 
     func configureView() {
-        view.backgroundColor = .systemBackground
+        self.backgroundColor = .systemBackground
     }
     
     func configureLayout() {
         
         confetti.snp.makeConstraints {
-            $0.top.equalTo(self.view.safeAreaLayoutGuide.snp.top).offset(100)
-            $0.leading.equalTo(self.view.safeAreaLayoutGuide.snp.leading).offset(20)
-            $0.trailing.equalTo(self.view.safeAreaLayoutGuide.snp.trailing).offset(-20)
+            $0.top.equalTo(self.safeAreaLayoutGuide.snp.top).offset(100)
+            $0.leading.equalTo(self.safeAreaLayoutGuide.snp.leading).offset(20)
+            $0.trailing.equalTo(self.safeAreaLayoutGuide.snp.trailing).offset(-20)
         }
         
         profileImage.snp.makeConstraints {
-            $0.centerY.equalTo(self.view.snp.centerY).offset(-100)
-            $0.centerX.equalTo(self.view.snp.centerX)
+            $0.centerY.equalTo(self.snp.centerY).offset(-100)
+            $0.centerX.equalTo(self.snp.centerX)
         }
         
         profileBorder.snp.makeConstraints {
-            $0.centerY.equalTo(self.view.snp.centerY).offset(-100)
+            $0.centerY.equalTo(self.snp.centerY).offset(-100)
             $0.centerX.equalTo(self.profileImage.snp.centerX)
         }
         
@@ -131,34 +123,5 @@ private extension CongraturationsViewController {
             $0.top.equalTo(self.conguraturationsLabel.snp.bottom).offset(16)
             $0.centerX.equalTo(self.profileImage.snp.centerX)
         }
-        
-        nextButton.snp.makeConstraints {
-            $0.leading.trailing.equalTo(view.safeAreaLayoutGuide).inset(20)
-            $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).inset(33)
-            $0.height.equalTo(54)
-        }
     }
 }
-
-#if DEBUG
-import SwiftUI
-struct CongraturationsViewControllerRepresentable: UIViewControllerRepresentable {
-    func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {
-        // leave this empty
-    }
-    @available(iOS 13.0.0, *)
-    func makeUIViewController(context: Context) -> some UIViewController {
-        CongraturationsViewController()
-    }
-    @available(iOS 13.0, *)
-    struct SnapKitVCRepresentable_PreviewProvider: PreviewProvider {
-        static var previews: some View {
-            Group {
-                CongraturationsViewControllerRepresentable()
-                    .ignoresSafeArea()
-                    .previewDisplayName("Preview")
-                    .previewDevice(PreviewDevice(rawValue: "iPhone 14"))
-            }
-        }
-    }
-} #endif

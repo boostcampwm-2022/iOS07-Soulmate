@@ -46,17 +46,23 @@ class RegisterSelectableView: UIView {
         configureView()
         configureLayout()
         
-        bind()
+    }
+    
+    func selectablePublisher<T: SelectableType>(type: T.Type) -> AnyPublisher<T?, Never> {
+        return $selectedIndex.map { index -> T? in
+            guard let index = index,
+                  let value = type.cases[index] as? T else {
+                return nil
+            }
+            return value
+        }
+        .eraseToAnyPublisher()
     }
 }
 
 // MARK: - View Generators
 
 private extension RegisterSelectableView {
-    
-    func bind() { // 여기선 저쪽에 있는 뷰모델에 바인딩을 해야한다... 어케 접근할까..? 아니면 그냥 이 뷰 자체에서 바인딩을 할까??
-        
-    }
 
     func configureView() {
         self.backgroundColor = .systemBackground

@@ -7,15 +7,19 @@
 
 import Foundation
 import Combine
+import FirebaseAuth
 
 struct LoginViewModelActions {
-    var showAppleLoginSheet: (() -> Void)?
+    var doneAppleLogin: ((RegisterState) -> Void)?
     var showPhoneLoginPage: (() -> Void)?
 }
 
 class LoginViewModel {
+    
+    var loadDetailInfoUseCase: LoadDetailInfoUseCase
+    var registerStateValidateUseCase: RegisterStateValidateUseCase
+    
     struct Input {
-        var didTappedAppleLoginButton: AnyPublisher<Void, Never>
         var didTappedPhoneLoginButton: AnyPublisher<Void, Never>
     }
     struct Output {}
@@ -24,33 +28,43 @@ class LoginViewModel {
     
     var actions: LoginViewModelActions?
     
-    init() {}
+    init(
+        loadDetailInfoUseCase: LoadDetailInfoUseCase,
+        registerStateValidateUseCase: RegisterStateValidateUseCase
+    ) {
+        self.registerStateValidateUseCase = registerStateValidateUseCase
+        self.loadDetailInfoUseCase = loadDetailInfoUseCase
+    }
     
     func setActions(actions: LoginViewModelActions) {
         self.actions = actions
     }
     
     func transform(input: Input) -> Output {
-        input.didTappedAppleLoginButton
-            .sink { [weak self] in
-                self?.appleLogin()
-            }
-            .store(in: &bag)
-        
         input.didTappedPhoneLoginButton
             .sink { [weak self] in
-                self?.phoneLogin()
+                self?.phoneLoginTapped()
             }
             .store(in: &bag)
         
         return Output()
     }
     
-    func appleLogin() {
-        actions?.showAppleLoginSheet?()
+    func doneAppleLogin() {
+        Task {
+            do {
+                let registerUserInfo = try await loadDetailInfoUseCase.loadDetailInfo(userUid: Auth.auth().currentUser!.uid)
+                let state = registerStateValidateUseCase.validateRegisterState(registerUserInfo: registerUserInfo)
+                await MainActor.run { actions?.doneAppleLogin?(state) }
+            } catch DecodingError.valueNotFound {
+                await MainActor.run { actions?.doneAppleLogin?(.none) }
+            } catch {
+                print(error.localizedDescription)
+            }
+        }
     }
     
-    func phoneLogin() {
+    func phoneLoginTapped() {
         actions?.showPhoneLoginPage?()
     }
     

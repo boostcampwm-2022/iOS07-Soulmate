@@ -50,12 +50,6 @@ final class RegisterMbtiView: UIView {
         return view
     }()
     
-    private lazy var nextButton: GradientButton = {
-        let button = GradientButton(title: "다음")
-        self.addSubview(button)
-        return button
-    }()
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -136,8 +130,6 @@ private extension RegisterMbtiView {
         registerHeaderStackView.snp.makeConstraints {
             $0.top.equalTo(self.safeAreaLayoutGuide.snp.top).offset(50)
             $0.leading.trailing.equalToSuperview().inset(20)
-            //$0.trailing.equalTo(self.safeAreaLayoutGuide.snp.trailing).inset(20)
-
         }
         
         preview.snp.makeConstraints {
@@ -171,14 +163,6 @@ private extension RegisterMbtiView {
             $0.top.equalTo(judgementTypeView.snp.bottom).offset(24)
             $0.width.equalTo(350)
             $0.height.equalTo(50)
-            $0.centerX.equalTo(self.safeAreaLayoutGuide.snp.centerX)
-        }
-        
-        nextButton.snp.makeConstraints {
-            $0.bottom.equalTo(self.safeAreaLayoutGuide.snp.bottom).offset(-12)
-            $0.leading.equalTo(20)
-            $0.trailing.equalTo(-20)
-            $0.height.equalTo(54)
             $0.centerX.equalTo(self.safeAreaLayoutGuide.snp.centerX)
         }
     }

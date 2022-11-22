@@ -10,7 +10,7 @@ import Combine
 import FirebaseAuth
 
 struct CertificationViewModelActions {
-    var doneCertification: ((Bool) -> Void)?
+    var doneSignIn: ((RegisterState) -> Void)?
 }
 
 class CertificationViewModel {
@@ -18,6 +18,8 @@ class CertificationViewModel {
     var bag = Set<AnyCancellable>()
     
     var authUseCase: AuthUseCase
+    var registerStateValidateUseCase: RegisterStateValidateUseCase
+    var loadDetailInfoUseCase: LoadDetailInfoUseCase
     
     var actions: CertificationViewModelActions?
     
@@ -33,8 +35,14 @@ class CertificationViewModel {
         var nextButtonEnabled: AnyPublisher<Bool, Never>
     }
     
-    init(authUseCase: AuthUseCase) {
+    init(
+        authUseCase: AuthUseCase,
+        registerStateValidateUseCase: RegisterStateValidateUseCase,
+        loadDetailInfoUseCase: LoadDetailInfoUseCase
+    ) {
         self.authUseCase = authUseCase
+        self.registerStateValidateUseCase = registerStateValidateUseCase
+        self.loadDetailInfoUseCase = loadDetailInfoUseCase
     }
     
     func setActions(actions: CertificationViewModelActions) {
@@ -64,21 +72,18 @@ class CertificationViewModel {
     }
     
     func nextButtonTouched() {
-    
         Task { [weak self] in
             do {
                 guard let self else { return }
                 try await authUseCase.certifyWithSMSCode(certificationCode: self.certificationNumber)
-                
-                //여기서 한번더 디비를 확인해 개인정보설정을 모두 마친 사람이면 true, 아니면 false 전달해서 회원가입 코디네이터 실행
-                await MainActor.run {
-                    self.actions?.doneCertification?(true)
-                }
-            }
-            catch {
+                let registerUserInfo = try await loadDetailInfoUseCase.loadDetailInfo(userUid: Auth.auth().currentUser!.uid)
+                let state = registerStateValidateUseCase.validateRegisterState(registerUserInfo: registerUserInfo)
+                await MainActor.run { actions?.doneSignIn?(state) }
+            } catch DecodingError.valueNotFound {
+                await MainActor.run { actions?.doneSignIn?(.none) }
+            } catch {
                 print(error)
             }
         }
-        
     }
 }
