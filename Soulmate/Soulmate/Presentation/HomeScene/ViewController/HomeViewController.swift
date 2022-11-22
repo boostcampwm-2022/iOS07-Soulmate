@@ -48,7 +48,7 @@ final class HomeViewController: UIViewController {
         layout.itemSize = CGSize(width: view.frame.size.width - 40, height: view.frame.size.width - 40)
         
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        cv.register(CandidatesCell.self, forCellWithReuseIdentifier: "CandidatesCell")
+        cv.register(PartnerCell.self, forCellWithReuseIdentifier: "PartnerCell")
         cv.contentInset = UIEdgeInsets(top: -64, left: 0, bottom: 0, right: 0)
         cv.showsVerticalScrollIndicator = false
         cv.bounces = true
@@ -133,10 +133,38 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CandidatesCell", for: indexPath) as? CandidatesCell else {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PartnerCell", for: indexPath) as? PartnerCell else {
             return UICollectionViewCell()
         }
         return cell
     }
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let vc = DetailViewController()
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
 }
+
+#if DEBUG
+import SwiftUI
+struct HomeViewControllerRepresentable: UIViewControllerRepresentable {
+    func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {
+        // leave this empty
+    }
+    @available(iOS 13.0.0, *)
+    func makeUIViewController(context: Context) -> some UIViewController {
+        HomeViewController()
+    }
+    @available(iOS 13.0, *)
+    struct SnapKitVCRepresentable_PreviewProvider: PreviewProvider {
+        static var previews: some View {
+            Group {
+                HomeViewControllerRepresentable()
+                    .ignoresSafeArea()
+                    .previewDisplayName("Preview")
+                    .previewDevice(PreviewDevice(rawValue: "iPhone 14"))
+            }
+        }
+    }
+} #endif

@@ -31,20 +31,8 @@ final class AppCoordinator: Coordinator {
 //            showMainTabFlow()
 //        }
         
-//        showAuthFlow()
-        
-        chattingRoomTest()
-    }
-    
-    private func chattingRoomTest() {
-        let loadChattingsUseCase = DefaultLoadChattingsUseCase()
-        let sendMesssageUseCase = DefaultSendMessageUseCase()
-        let viewModel = ChattingRoomViewModel(
-            sendMessageUseCase: sendMesssageUseCase,
-            loadChattingsUseCase: loadChattingsUseCase
-        )
-        let vc = ChattingRoomViewController(viewModel: viewModel)
-        self.navigationController.pushViewController(vc, animated: true)
+        //showAuthFlow()
+        showMainTabFlow()
     }
     
     private func showAuthFlow() {
