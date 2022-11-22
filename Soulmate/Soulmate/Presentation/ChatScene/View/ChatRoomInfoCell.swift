@@ -39,7 +39,7 @@ final class ChatRoomInfoCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure(with info: ChattingRoomInfo) {
+    func configure(with info: ChatRoomInfo) {
         chatRoomInfoView.configure(with: info)
     }
 }

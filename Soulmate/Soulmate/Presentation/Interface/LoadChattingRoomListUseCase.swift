@@ -8,7 +8,7 @@
 import Combine
 
 protocol LoadChattingRoomListUseCase {
-    var chattingRoomList: CurrentValueSubject<[ChattingRoomInfo], Never> { get }
+    var chattingRoomList: CurrentValueSubject<[ChatRoomInfo], Never> { get }
     
     func loadChattingRooms()
 }

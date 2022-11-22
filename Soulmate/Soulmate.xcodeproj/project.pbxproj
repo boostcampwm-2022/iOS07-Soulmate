@@ -52,7 +52,7 @@
 		6A34C1FF292C944D00A3E57F /* ChatRoomInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A34C1FE292C944D00A3E57F /* ChatRoomInfoCell.swift */; };
 		6A34C201292C97BC00A3E57F /* ChatListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A34C200292C97BC00A3E57F /* ChatListViewModel.swift */; };
 		6A34C203292C982500A3E57F /* LoadChattingRoomListUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A34C202292C982500A3E57F /* LoadChattingRoomListUseCase.swift */; };
-		6A34C205292C98D300A3E57F /* ChattingRoomInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A34C204292C98D300A3E57F /* ChattingRoomInfo.swift */; };
+		6A34C205292C98D300A3E57F /* ChatRoomInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A34C204292C98D300A3E57F /* ChatRoomInfo.swift */; };
 		6A34C207292C99BB00A3E57F /* DefaultLoadChattingRoomListUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A34C206292C99BB00A3E57F /* DefaultLoadChattingRoomListUseCase.swift */; };
 		6A34C209292CA1A800A3E57F /* UnreadMessageCountBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A34C208292CA1A800A3E57F /* UnreadMessageCountBadge.swift */; };
 		6A3F91A72924A45300F1D901 /* RegisterSelectableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A3F91A62924A45300F1D901 /* RegisterSelectableView.swift */; };
@@ -157,7 +157,7 @@
 		6A34C1FE292C944D00A3E57F /* ChatRoomInfoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomInfoCell.swift; sourceTree = "<group>"; };
 		6A34C200292C97BC00A3E57F /* ChatListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatListViewModel.swift; sourceTree = "<group>"; };
 		6A34C202292C982500A3E57F /* LoadChattingRoomListUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadChattingRoomListUseCase.swift; sourceTree = "<group>"; };
-		6A34C204292C98D300A3E57F /* ChattingRoomInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChattingRoomInfo.swift; sourceTree = "<group>"; };
+		6A34C204292C98D300A3E57F /* ChatRoomInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomInfo.swift; sourceTree = "<group>"; };
 		6A34C206292C99BB00A3E57F /* DefaultLoadChattingRoomListUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultLoadChattingRoomListUseCase.swift; sourceTree = "<group>"; };
 		6A34C208292CA1A800A3E57F /* UnreadMessageCountBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnreadMessageCountBadge.swift; sourceTree = "<group>"; };
 		6A3F91A62924A45300F1D901 /* RegisterSelectableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterSelectableView.swift; sourceTree = "<group>"; };
@@ -441,7 +441,7 @@
 			children = (
 				6A45AA4A2925C68300F85D2C /* RegisterUserInfo.swift */,
 				6A34C1D7292B211700A3E57F /* Chat.swift */,
-				6A34C204292C98D300A3E57F /* ChattingRoomInfo.swift */,
+				6A34C204292C98D300A3E57F /* ChatRoomInfo.swift */,
 			);
 			path = Entity;
 			sourceTree = "<group>";
@@ -856,7 +856,7 @@
 				6A3F91A72924A45300F1D901 /* RegisterSelectableView.swift in Sources */,
 				6A34C1FF292C944D00A3E57F /* ChatRoomInfoCell.swift in Sources */,
 				6A0041EB2919ED5F0042E02F /* HomeViewController.swift in Sources */,
-				6A34C205292C98D300A3E57F /* ChattingRoomInfo.swift in Sources */,
+				6A34C205292C98D300A3E57F /* ChatRoomInfo.swift in Sources */,
 				6A45AA4B2925C68300F85D2C /* RegisterUserInfo.swift in Sources */,
 				6A34C1F1292B48AE00A3E57F /* SendMessageUseCase.swift in Sources */,
 				6A03B7242923DE7200AC15A6 /* DefaultAuthUseCase.swift in Sources */,

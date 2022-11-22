@@ -10,17 +10,16 @@ import Combine
 final class ChatListViewModel {
     
     private let loadChattingRoomListUseCase: LoadChattingRoomListUseCase
-    
-    var chattingList: [ChattingRoomInfo] {
-        return loadChattingRoomListUseCase.chattingRoomList.value
+    var chattingList: [ChatRoomInfo] {
+        loadChattingRoomListUseCase.chattingRoomList.value
     }
-    
+
     struct Input {
         var viewDidLoad: AnyPublisher<Void, Never>
     }
     
     struct Output {
-        
+        var listLoaded = PassthroughSubject<Void, Never>()
     }
     
     init(loadChattingRoomListUseCase: LoadChattingRoomListUseCase) {
@@ -33,6 +32,12 @@ final class ChatListViewModel {
         input.viewDidLoad
             .sink { [weak self] _ in
                 self?.loadChattingRoomListUseCase.loadChattingRooms()
+            }
+            .store(in: &cancellables)
+        
+        self.loadChattingRoomListUseCase.chattingRoomList
+            .sink { _ in
+                output.listLoaded.send(())
             }
             .store(in: &cancellables)
         

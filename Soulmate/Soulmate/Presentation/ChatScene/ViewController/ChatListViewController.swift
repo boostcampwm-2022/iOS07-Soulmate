@@ -57,6 +57,12 @@ private extension ChatListViewController {
             ),
             cancellables: &cancellables
         )
+        
+        output?.listLoaded
+            .sink(receiveValue: { [weak self] _ in
+                self?.chattingListView.reloadData()
+            })
+            .store(in: &cancellables)
     }
     
     func configureView() {        
