@@ -1,10 +1,12 @@
 {
   "images" : [
     {
+      "filename" : "plusGrey 2.svg",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "plusGrey 1.svg",
       "idiom" : "universal",
       "scale" : "2x"
     },
