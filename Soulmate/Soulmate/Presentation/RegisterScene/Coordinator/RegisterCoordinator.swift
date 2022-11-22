@@ -8,6 +8,7 @@
 import UIKit
 
 class RegisterCoordinator: Coordinator {
+    
     var finishDelegate: CoordinatorFinishDelegate?
     
     var navigationController: UINavigationController
@@ -21,7 +22,14 @@ class RegisterCoordinator: Coordinator {
     }
     
     func start() {
-        let vm = RegisterViewModel()
+        let profilePhotoRepository = DefaultProfilePhotoRepository()
+        
+        let uploadDetailInfoUseCase = DefaultUploadDetailInfoUseCase()
+        let uploadPhotoUseCase = DefaultUpLoadPictureUseCase(profilePhotoRepository: profilePhotoRepository)
+        let vm = RegisterViewModel(
+            uploadDetailInfoUseCase: uploadDetailInfoUseCase,
+            uploadPictureUseCase: uploadPhotoUseCase
+        )
         vm.setActions(
             actions: RegisterViewModelAction(
                 quitRegister: quitRegister,
@@ -33,10 +41,27 @@ class RegisterCoordinator: Coordinator {
         navigationController.pushViewController(vc, animated: true)
     }
     
+    // 스타트 메서드 하나로 통합하기
+    func start(registerUserInfo: RegisterUserInfo) {
+        let profilePhotoRepository = DefaultProfilePhotoRepository()
+        
+        let uploadDetailInfoUseCase = DefaultUploadDetailInfoUseCase()
+        let uploadPhotoUseCase = DefaultUpLoadPictureUseCase(profilePhotoRepository: profilePhotoRepository)
+        let vm = RegisterViewModel(
+            uploadDetailInfoUseCase: uploadDetailInfoUseCase,
+            uploadPictureUseCase: uploadPhotoUseCase
+        )
+        
+        vm.setPrevRegisterInfo(registerUserInfo: registerUserInfo)
+        
+        let vc = RegisterViewController(viewModel: vm)
+        
+        navigationController.pushViewController(vc, animated: true)
+    }
+
+    
     lazy var finishRegister: () -> Void = { [weak self] in
         self?.finish()
-        
-        //성공했으니 홈으로 가도 좋다는 것을 전달해야함 어떻게??????????
     }
     
     lazy var quitRegister: () -> Void = { [weak self] in
