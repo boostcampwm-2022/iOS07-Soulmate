@@ -77,6 +77,10 @@ final class RegisterIntroductionView: UIView {
         configureLayout()
         bind()
     }
+    
+    func introductionPublisher() -> AnyPublisher<String?, Never> {
+        return textSubject.eraseToAnyPublisher()
+    }
 }
 
 extension RegisterIntroductionView: NSTextStorageDelegate {

@@ -64,6 +64,10 @@ final class RegisterPhotoView: UIView {
         configureLayout()
         bind()
     }
+    
+    func imageListPublisher() -> AnyPublisher<[Data?], Never> {
+        return $imageList.eraseToAnyPublisher()
+    }
 
 }
 

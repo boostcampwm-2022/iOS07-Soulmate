@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import FirebaseAuth
 
 struct RegisterViewModelAction {
     var quitRegister: (() -> Void)?
@@ -19,32 +20,54 @@ class RegisterViewModel {
     
     var bag = Set<AnyCancellable>()
     
-    @Published var genderIndex: Int?
+    var uploadDetailInfoUseCase: UploadDetailInfoUseCase
+    var uploadPictureUseCase: UploadPictureUseCase
+    
+    @Published var genderType: GenderType?
     @Published var nickName: String?
-    @Published var height: String = String()
+    @Published var height: Int = Int()
     @Published var birth: Date = Date()
     @Published var mbti: String?
-    @Published var smokingIndex: Int?
-    @Published var drinkingIndex: Int?
+    @Published var smokingType: SmokingType?
+    @Published var drinkingType: DrinkingType?
     @Published var introduction: String?
     @Published var photoData: [Data?] = [nil, nil, nil, nil, nil]
     
     struct Input {
         var didChangedPageIndex: AnyPublisher<Int, Never>
-        var didChangedGenderIndex: AnyPublisher<Int?, Never>
+        var didChangedGenderType: AnyPublisher<GenderType?, Never>
         var didChangedNickNameValue: AnyPublisher<String?, Never>
-        var didChangedHeightValue: AnyPublisher<String, Never>
+        var didChangedHeightValue: AnyPublisher<Int, Never>
         var didChangedBirthValue: AnyPublisher<Date, Never>
         var didChangedMbtiValue: AnyPublisher<String?, Never>
-        var didChangedSmokingIndex: AnyPublisher<Int?, Never>
-        var didChangedDrinkingIndex: AnyPublisher<Int?, Never>
+        var didChangedSmokingType: AnyPublisher<SmokingType?, Never>
+        var didChangedDrinkingType: AnyPublisher<DrinkingType?, Never>
         var didChangedIntroductionValue: AnyPublisher<String?, Never>
         var didChangedImageListValue: AnyPublisher<[Data?], Never>
-        var didFinishedRegister: AnyPublisher<Void, Never>
+        var didTappedNextButton: AnyPublisher<Void, Never>
     }
     
     struct Output {
         var isNextButtonEnabled: AnyPublisher<Bool, Never>
+    }
+    
+    init(
+        uploadDetailInfoUseCase: UploadDetailInfoUseCase,
+        uploadPictureUseCase: UploadPictureUseCase
+    ) {
+        self.uploadDetailInfoUseCase = uploadDetailInfoUseCase
+        self.uploadPictureUseCase = uploadPictureUseCase
+    }
+    
+    func setPrevRegisterInfo(registerUserInfo: RegisterUserInfo) {
+        self.genderType = registerUserInfo.gender
+        self.nickName = registerUserInfo.nickName
+        self.height = registerUserInfo.height == nil ? Int() : registerUserInfo.height!
+        self.birth = registerUserInfo.birthDay == nil ? Date() : registerUserInfo.birthDay!
+        self.mbti = registerUserInfo.mbti == nil ? nil : registerUserInfo.mbti!.toString()
+        self.smokingType = registerUserInfo.smokingType
+        self.drinkingType = registerUserInfo.drinkingType
+        self.introduction = registerUserInfo.aboutMe
     }
     
     func setActions(actions: RegisterViewModelAction) {
@@ -58,11 +81,11 @@ class RegisterViewModel {
             .map { [weak self] index in
                 guard let self else { return true }
                 switch index {
-                case 0: return self.genderIndex != nil
+                case 0: return self.genderType != nil
                 case 1: return self.nickName != nil
                 case 4: return self.mbti != nil
-                case 5: return self.smokingIndex != nil
-                case 6: return self.drinkingIndex != nil
+                case 5: return self.smokingType != nil
+                case 6: return self.drinkingType != nil
                 case 7: return self.introduction != nil
                 case 8: return self.photoData.allSatisfy { $0 != nil }
                 default: return true
@@ -70,9 +93,9 @@ class RegisterViewModel {
             }
             .eraseToAnyPublisher()
         
-        input.didChangedGenderIndex
+        input.didChangedGenderType
             .sink { value in
-                self.genderIndex = value
+                self.genderType = value
                 valueChangedInCurrentPage.send(value != nil)
             }
             .store(in: &bag)
@@ -99,16 +122,16 @@ class RegisterViewModel {
             }
             .store(in: &bag)
         
-        input.didChangedSmokingIndex
+        input.didChangedSmokingType
             .sink { value in
-                self.smokingIndex = value
+                self.smokingType = value
                 valueChangedInCurrentPage.send(value != nil)
             }
             .store(in: &bag)
         
-        input.didChangedDrinkingIndex
+        input.didChangedDrinkingType
             .sink { value in
-                self.drinkingIndex = value
+                self.drinkingType = value
                 valueChangedInCurrentPage.send(value != nil)
             }
             .store(in: &bag)
@@ -127,9 +150,12 @@ class RegisterViewModel {
             }
             .store(in: &bag)
         
-        input.didFinishedRegister
-            .sink { [weak self] _ in
+        input.didTappedNextButton.combineLatest(input.didChangedPageIndex)
+            .sink { [weak self] (_, index) in
                 self?.register()
+                if index == 10 {
+                    self?.actions?.finishRegister?()
+                }
             }
             .store(in: &bag)
         
@@ -144,23 +170,26 @@ class RegisterViewModel {
     }
     
     func register() {
-        guard let genderIndex = genderIndex,
-              let nickName = nickName,
-              let smokingIndex = smokingIndex,
-              let drinkingIndex = drinkingIndex,
-              let introduction = introduction else { return }
-        
-        let userInfo = RegisterUserInfo(
-            id: "hihi",
-            gender: GenderType.allCases[genderIndex],
-            nickName: nickName, height: Int(height),
-            smokingType: SmokingType.allCases[smokingIndex],
-            drinkingType: DrinkingType.allCases[drinkingIndex],
-            aboutMe: introduction
-        )
-        
-        print(userInfo)
-        actions?.finishRegister?()
+        Task {
+            
+            // 이부분을 따로 떼서 해야할거같음
+            let keys = try await uploadPictureUseCase.uploadPhotoData(photoData: photoData)
+
+            let userInfo = RegisterUserInfo(
+                id: "hihi",
+                gender: genderType,
+                nickName: nickName,
+                birthDay: birth,
+                height: Int(height),
+                mbti: mbti == nil ? nil : Mbti.toDomain(target: mbti!),
+                smokingType: smokingType,
+                drinkingType: drinkingType,
+                aboutMe: introduction,
+                imageList: keys
+            )
+            
+            try await uploadDetailInfoUseCase.uploadDetailInfo(registerUserInfo: userInfo)
+
+        }
     }
 }
-

@@ -6,11 +6,12 @@
 //
 
 import UIKit
+import Combine
 
 final class RegisterHeightView: UIView {
             
     // TODO: 이부분 상의하고 수정
-    @Published var selectedHeight = String()
+    @Published var selectedHeight = "170"
     
     private let pickerData: [Int] = Array(140...210) // 키 범위
     
@@ -46,14 +47,15 @@ final class RegisterHeightView: UIView {
         
         configureView()
         configureLayout()
-        bind()
+    }
+    
+    func heightPublisher() -> AnyPublisher<Int, Never> {
+        return $selectedHeight.map { Int($0)! }.eraseToAnyPublisher()
     }
 }
 
 private extension RegisterHeightView {
-    func bind() {
-    }
-    
+
     func configureView() {
         self.backgroundColor = .systemBackground
     }

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 class AuthCoordinator: Coordinator {
     var finishDelegate: CoordinatorFinishDelegate?
@@ -25,10 +26,16 @@ class AuthCoordinator: Coordinator {
     }
     
     lazy var showLoginPage: () -> Void = { [weak self] in
-        let viewModel = LoginViewModel()
+        let loadDetailInfoUseCase = DefaultLoadDetailInfoUseCase()
+        let registerDetailInfoUseCase = DefaultRegisterStateValidateUseCase()
+        
+        let viewModel = LoginViewModel(
+            loadDetailInfoUseCase: loadDetailInfoUseCase,
+            registerStateValidateUseCase: registerDetailInfoUseCase
+        )
         viewModel.setActions(
             actions: LoginViewModelActions(
-                showAppleLoginSheet: self?.showAppleLoginSheet,
+                doneAppleLogin: self?.doneSignIn,
                 showPhoneLoginPage: self?.showPhoneLoginPage
             )
         )
@@ -36,8 +43,6 @@ class AuthCoordinator: Coordinator {
         let vc = LoginViewController(viewModel: viewModel)
         self?.navigationController.pushViewController(vc, animated: true)
     }
-    
-    lazy var showAppleLoginSheet: () -> Void = {}
     
     lazy var showPhoneLoginPage: () -> Void = { [weak self] in
         let authUseCase = DefaultAuthUseCase()
@@ -50,18 +55,24 @@ class AuthCoordinator: Coordinator {
         
         let vc = PhoneNumberViewController(viewModel: viewModel)
         self?.navigationController.pushViewController(vc, animated: true)
-        self?.showCerfiticationPage("")
-        self?.doneCertificationPage(true)
+
     }
     
     lazy var showCerfiticationPage: (String) -> Void = { [weak self] phoneNumber in
         let authUseCase = DefaultAuthUseCase()
-        let viewModel = CertificationViewModel(authUseCase: authUseCase)
-        viewModel.phoneNumber = phoneNumber // 수정
+        let registerStateValidateUseCase = DefaultRegisterStateValidateUseCase()
+        let loadDetailInfoUseCase = DefaultLoadDetailInfoUseCase()
+        
+        let viewModel = CertificationViewModel(
+            authUseCase: authUseCase,
+            registerStateValidateUseCase: registerStateValidateUseCase,
+            loadDetailInfoUseCase: loadDetailInfoUseCase
+        )
+        viewModel.phoneNumber = phoneNumber
         
         viewModel.setActions(
             actions: CertificationViewModelActions(
-                doneCertification: self?.doneCertificationPage
+                doneSignIn: self?.doneSignIn
             )
         )
         
@@ -69,17 +80,35 @@ class AuthCoordinator: Coordinator {
         self?.navigationController.pushViewController(vc, animated: true)
     }
     
-    lazy var doneCertificationPage: (Bool) -> Void = { [weak self] bool in
+    lazy var doneSignIn: (RegisterState) -> Void = { [weak self] state in
         
+        // 이부분 어칼지 상의
         self?.navigationController.popViewController(animated: false)
         self?.navigationController.popViewController(animated: false)
 
-
-        let coordinator = RegisterCoordinator(navigationController: self?.navigationController ?? UINavigationController())
-        coordinator.finishDelegate = self
-        self?.childCoordinators.append(coordinator)
-        coordinator.start()
+        
+        switch state {
+        case .none:
+            let coordinator = RegisterCoordinator(navigationController: self?.navigationController ?? UINavigationController())
+            coordinator.finishDelegate = self
+            self?.childCoordinators.append(coordinator)
+            coordinator.start()
+        case .part(let registerUserInfo):
+            let coordinator = RegisterCoordinator(navigationController: self?.navigationController ?? UINavigationController())
+            coordinator.finishDelegate = self
+            self?.childCoordinators.append(coordinator)
+            coordinator.start(registerUserInfo: registerUserInfo)
+            
+        case .done:
+            self?.finish()
+        }
     }
+}
+
+enum RegisterState {
+    case none
+    case part(RegisterUserInfo)
+    case done
 }
 
 extension AuthCoordinator: CoordinatorFinishDelegate {

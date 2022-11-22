@@ -27,7 +27,8 @@ class RegisterViewController: UIViewController {
         RegisterSelectableView(selectableType: SmokingType.self),
         RegisterSelectableView(selectableType: DrinkingType.self),
         RegisterIntroductionView(),
-        RegisterPhotoView()
+        RegisterPhotoView(),
+        RegisterCongraturationsView()
     ]
     
     private lazy var progressBar: ProgressBar = {
@@ -77,7 +78,20 @@ class RegisterViewController: UIViewController {
             viewModel?.quit()
         }
     }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        guard let nickNameView = childView[1] as? RegisterNickNameView else { return }
+        nickNameView.nicknameTextField.addUnderLine()
+    }
+    
+}
 
+// MARK: 화면 전환 관련 기능
+
+private extension RegisterViewController {
+    
     func nextPage() {
         progressBar.goToNextStep()
         
@@ -124,7 +138,10 @@ class RegisterViewController: UIViewController {
     
 }
 
+// MARK: 초기 셋팅
+
 private extension RegisterViewController {
+    
     func bind() {
         guard let viewModel = viewModel,
               let genderView = childView[0] as? RegisterSelectableView,
@@ -137,14 +154,11 @@ private extension RegisterViewController {
               let introductionView = childView[7] as? RegisterIntroductionView,
               let photoView = childView[8] as? RegisterPhotoView else { return }
                 
-        let didFinishedRegister = PassthroughSubject<Void, Never>()
-        
         nextButton.tapPublisher()
             .sink { [weak self] _ in
                 guard let self else { return }
-                if self.currentPage == self.childView.count - 1 {
-                    self.viewModel?.register()
-                } else {
+                if self.currentPage < 10 {
+                    print(self.currentPage)
                     self.nextPage()
                 }
             }
@@ -164,23 +178,22 @@ private extension RegisterViewController {
                 else {
                     self.navigationItem.setLeftBarButton(nil, animated: true)
                 }
-                let backButton = self.navigationItem.leftBarButtonItem
             }
             .store(in: &bag)
         
         let output = viewModel.transform(
             input: RegisterViewModel.Input(
                 didChangedPageIndex: $currentPage.eraseToAnyPublisher(),
-                didChangedGenderIndex: genderView.$selectedIndex.eraseToAnyPublisher(),
-                didChangedNickNameValue: nickNameView.nicknameTextField.textPublisher(),
-                didChangedHeightValue: heightView.$selectedHeight.eraseToAnyPublisher(),
-                didChangedBirthValue: birthView.birthPicker.datePublisher(),
+                didChangedGenderType: genderView.selectablePublisher(type: GenderType.self),
+                didChangedNickNameValue: nickNameView.nickNamePublisher(),
+                didChangedHeightValue: heightView.heightPublisher(),
+                didChangedBirthValue: birthView.birthPublisher(),
                 didChangedMbtiValue: mbtiView.mbtiPublisher(),
-                didChangedSmokingIndex: smokingView.$selectedIndex.eraseToAnyPublisher(),
-                didChangedDrinkingIndex: drinkingView.$selectedIndex.eraseToAnyPublisher(),
-                didChangedIntroductionValue: introductionView.textSubject.eraseToAnyPublisher(),
-                didChangedImageListValue: photoView.$imageList.eraseToAnyPublisher(),
-                didFinishedRegister: didFinishedRegister.eraseToAnyPublisher()
+                didChangedSmokingType: smokingView.selectablePublisher(type: SmokingType.self),
+                didChangedDrinkingType: drinkingView.selectablePublisher(type: DrinkingType.self),
+                didChangedIntroductionValue: introductionView.introductionPublisher(),
+                didChangedImageListValue: photoView.imageListPublisher(),
+                didTappedNextButton: nextButton.tapPublisher()
             )
         )
         
@@ -191,8 +204,6 @@ private extension RegisterViewController {
                 }
             }
             .store(in: &bag)
-        
-        
     }
     
     func configureView() {
@@ -217,25 +228,25 @@ private extension RegisterViewController {
             $0.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom).offset(-30)
             $0.height.equalTo(54)
         }
-    
     }
-    
+
     func targetPage() -> Int {
         guard let viewModel = viewModel else { return 0 }
 
-        guard let _ = viewModel.genderIndex else { return 0 }
+        guard let _ = viewModel.genderType else { return 0 }
         guard let _ = viewModel.nickName else { return 1 }
-        guard let _ = viewModel.smokingIndex else { return 4 }
-        guard let _ = viewModel.drinkingIndex else { return 5}
-        guard let _ = viewModel.introduction else { return 6 }
-        return 7
+        guard let _ = viewModel.mbti else { return 4}
+        guard let _ = viewModel.smokingType else { return 5 }
+        guard let _ = viewModel.drinkingType else { return 6}
+        guard let _ = viewModel.introduction else { return 7 }
+        return 8
     }
     
     // MARK: 페이지 레이아웃 초기 셋팅
     func configurePageLayout() {
     
-        // MARK: 지금은 currentPage 초기값을 0으로 셋팅해놔서 사실 상 이 라인은 필요 없을듯
         for i in 0..<currentPage {
+            progressBar.goToNextStep()
             childView[i].snp.remakeConstraints {
                 $0.trailing.equalTo(self.view.snp.leading)
                 $0.centerY.equalTo(self.view.snp.centerY)
@@ -248,7 +259,7 @@ private extension RegisterViewController {
             $0.width.height.equalToSuperview()
         }
         
-        for i in currentPage+1..<childView.count {
+        for i in currentPage + 1..<childView.count {
             childView[i].snp.remakeConstraints {
                 $0.centerY.equalTo(self.view.snp.centerY)
                 $0.leading.equalTo(self.view.snp.trailing)
@@ -257,6 +268,8 @@ private extension RegisterViewController {
         }
     }
 }
+
+// MARK: 포토뷰 델리게이트
 
 extension RegisterViewController: RegisterPhotoViewDelegate {
     func presentPhotoPicker(_ registerPhotoView: RegisterPhotoView) {
@@ -291,27 +304,3 @@ extension RegisterViewController: PHPickerViewControllerDelegate { //PHPicker �
     
     
 }
-
-
-#if DEBUG
-import SwiftUI
-struct RegisterViewControllerRepresentable: UIViewControllerRepresentable {
-    func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {
-        // leave this empty
-    }
-    @available(iOS 13.0.0, *)
-    func makeUIViewController(context: Context) -> some UIViewController {
-        RegisterViewController()
-    }
-    @available(iOS 13.0, *)
-    struct SnapKitVCRepresentable_PreviewProvider: PreviewProvider {
-        static var previews: some View {
-            Group {
-                RegisterViewControllerRepresentable()
-                    .ignoresSafeArea()
-                    .previewDisplayName("Preview")
-                    .previewDevice(PreviewDevice(rawValue: "iPhone 14"))
-            }
-        }
-    }
-} #endif
