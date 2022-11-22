@@ -114,7 +114,6 @@
 		B31A682A291A4257001D35E9 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = B31A6829291A4257001D35E9 /* Then */; };
 		B31A682D291A42BC001D35E9 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = B31A682C291A42BC001D35E9 /* SnapKit */; };
 		B331CED0292B854500F17AED /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B331CECF292B854500F17AED /* UIImage.swift */; };
-		B3B03B44292C8C5E000AF283 /* MyPageMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B03B43292C8C5E000AF283 /* MyPageMenuView.swift */; };
 		B3B03B48292CB877000AF283 /* MyPageMenuCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B03B47292CB877000AF283 /* MyPageMenuCollectionViewCell.swift */; };
 		B3E029A9291DDC1500931FA2 /* GradientButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3E029A8291DDC1500931FA2 /* GradientButton.swift */; };
 /* End PBXBuildFile section */
@@ -223,7 +222,6 @@
 		B311F4A92925EC7100806E86 /* RegisterMbtiView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterMbtiView.swift; sourceTree = "<group>"; };
 		B31A68262919F5D2001D35E9 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		B331CECF292B854500F17AED /* UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
-		B3B03B43292C8C5E000AF283 /* MyPageMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageMenuView.swift; sourceTree = "<group>"; };
 		B3B03B47292CB877000AF283 /* MyPageMenuCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageMenuCollectionViewCell.swift; sourceTree = "<group>"; };
 		B3E029A8291DDC1500931FA2 /* GradientButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -371,7 +369,6 @@
 			isa = PBXGroup;
 			children = (
 				6A0041FA2919EE600042E02F /* MyPageViewController.swift */,
-				B3B03B43292C8C5E000AF283 /* MyPageMenuView.swift */,
 				B3B03B47292CB877000AF283 /* MyPageMenuCollectionViewCell.swift */,
 				6A0041FC2919EE7B0042E02F /* ServiceTermViewController.swift */,
 				6A0041FE2919EE920042E02F /* ModificationViewController.swift */,
@@ -822,7 +819,6 @@
 			files = (
 				6A34C1F7292B501500A3E57F /* DefaultLoadChattingsUseCase.swift in Sources */,
 				6A34C1DB292B216A00A3E57F /* OtherChatCell.swift in Sources */,
-				B3B03B44292C8C5E000AF283 /* MyPageMenuView.swift in Sources */,
 				6A97FE66291CE29E006F6DD9 /* LoginViewModel.swift in Sources */,
 				6AB6B95F292BDE7A00A029BD /* FireStoreDatabaseStorage.swift in Sources */,
 				6AB6B970292C2C7500A029BD /* DefaultUpLoadPictureUseCase.swift in Sources */,
