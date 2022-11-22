@@ -45,19 +45,15 @@ final class RegisterNickNameView: UIView {
         
         configureView()
         configureLayout()
-        bind()
     }
     
-//    override func viewDidLayoutSubviews() {
-//        nicknameTextField.addUnderLine()
-//    }
+    func nickNamePublisher() -> AnyPublisher<String?, Never> {
+        return nicknameTextField.textPublisher()
+    }
 }
 
 
 private extension RegisterNickNameView {
-    
-    func bind() {
-    }
 
     func configureView() {
         self.backgroundColor = .systemBackground
@@ -77,7 +73,6 @@ private extension RegisterNickNameView {
             $0.leading.equalTo(self.safeAreaLayoutGuide.snp.leading).offset(20)
             $0.trailing.equalTo(self.safeAreaLayoutGuide.snp.trailing).offset(-20)
         }
-        
     }
 }
 

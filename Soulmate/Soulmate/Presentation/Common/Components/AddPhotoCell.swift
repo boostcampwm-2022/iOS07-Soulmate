@@ -10,33 +10,17 @@ import UIKit
 import SnapKit
 
 final class AddPhotoCell: UICollectionViewCell {
-    private lazy var addPhotoView: UIView = {
-        let view = UIView()
-        addSubview(view)
-        return view
-    }()
-    
+
     lazy var addPhotoImageView: UIImageView = {
         let imageView = UIImageView(frame: .zero)
-        imageView.contentMode = .center
-        imageView.image = UIImage(named: "plusColor")
-        addPhotoView.addSubview(imageView)
+        imageView.clipsToBounds = true
+        imageView.layer.cornerRadius = 14
+        imageView.layer.borderWidth = 1
+        imageView.layer.borderColor = UIColor.backgroundGrey?.cgColor
+        imageView.backgroundColor = UIColor.backgroundGrey
+        self.contentView.addSubview(imageView)
         return imageView
     }()
-    
-    override var isSelected: Bool {
-        didSet {
-            if isSelected {
-                self.contentView.layer.borderColor = UIColor.borderPurple?.cgColor
-                self.contentView.backgroundColor = UIColor.lightPurple
-                self.addPhotoImageView.image = UIImage(named: "plusColor")
-            } else {
-                self.contentView.layer.borderColor = UIColor.backgroundGrey?.cgColor
-                self.contentView.backgroundColor = UIColor.backgroundGrey
-                self.addPhotoImageView.image = UIImage(named: "plusGrey")
-            }
-        }
-    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -48,19 +32,26 @@ final class AddPhotoCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func prepareForReuse() {
+        configureView()
+    }
+    
     func configureView() {
-        self.contentView.layer.borderWidth = 1
-        self.contentView.layer.cornerRadius = 14
-        self.isSelected = true
+        addPhotoImageView.contentMode = .center
+        addPhotoImageView.image = UIImage(named: "plusGrey")
     }
     
     func configureLayout() {
-        addPhotoView.snp.makeConstraints {
-            $0.centerX.centerY.equalToSuperview()
-        }
-        
         addPhotoImageView.snp.makeConstraints {
-            $0.centerX.centerY.equalToSuperview()
+            $0.edges.equalToSuperview()
+        }
+    }
+    
+    func fill(with photoData: Data?) {
+        if let data = photoData,
+           let image = UIImage(data: data) {
+            addPhotoImageView.contentMode = .scaleAspectFill
+            addPhotoImageView.image = image
         }
     }
 }

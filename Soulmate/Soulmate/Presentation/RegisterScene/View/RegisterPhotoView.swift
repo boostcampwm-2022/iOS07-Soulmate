@@ -6,12 +6,21 @@
 //
 
 import UIKit
-
+import Combine
 import SnapKit
+import PhotosUI
+
+protocol RegisterPhotoViewDelegate: AnyObject {
+    func presentPhotoPicker(_ registerPhotoView: RegisterPhotoView)
+}
 
 final class RegisterPhotoView: UIView {
-    let imagePicker = UIImagePickerController()
-        
+    
+    var pickingItem: Int?
+    @Published var imageList: [Data?] = [nil, nil, nil, nil, nil]
+    
+    weak var delegate: RegisterPhotoViewDelegate?
+            
     lazy var registerHeaderStackView: RegisterHeaderStackView = {
         let headerView = RegisterHeaderStackView(frame: .zero)
         headerView.setMessage(
@@ -40,12 +49,6 @@ final class RegisterPhotoView: UIView {
         return cv
     }()
     
-    private lazy var startButton: GradientButton = {
-        let button = GradientButton(title: "시작하기")
-        self.addSubview(button)
-        return button
-    }()
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
     }
@@ -61,6 +64,10 @@ final class RegisterPhotoView: UIView {
         configureLayout()
         bind()
     }
+    
+    func imageListPublisher() -> AnyPublisher<[Data?], Never> {
+        return $imageList.eraseToAnyPublisher()
+    }
 
 }
 
@@ -75,9 +82,6 @@ private extension RegisterPhotoView {
         collectionView.delegate = self
         collectionView.dataSource = self
         
-        imagePicker.sourceType = .photoLibrary
-        imagePicker.allowsEditing = false
-        imagePicker.delegate = self
     }
     
     private func configureLayout() {
@@ -92,12 +96,7 @@ private extension RegisterPhotoView {
             $0.bottom.equalTo(self.safeAreaLayoutGuide.snp.bottom).inset(208.5)
             $0.leading.trailing.equalTo(self.safeAreaLayoutGuide).inset(10)
         }
-        
-        startButton.snp.makeConstraints {
-            $0.leading.trailing.equalTo(self.safeAreaLayoutGuide).inset(20)
-            $0.bottom.equalTo(self.safeAreaLayoutGuide.snp.bottom).inset(33)
-            $0.height.equalTo(54)
-        }
+
     }
 }
 
@@ -109,6 +108,7 @@ extension RegisterPhotoView: UICollectionViewDataSource, UICollectionViewDelegat
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "AddPhotoCell", for: indexPath) as? AddPhotoCell else { return UICollectionViewCell() }
+        cell.fill(with: imageList[indexPath.row])
         return cell
     }
     
@@ -129,8 +129,8 @@ extension RegisterPhotoView: UICollectionViewDataSource, UICollectionViewDelegat
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let cell = collectionView.cellForItem(at: indexPath) as? AddPhotoCell else { return }
-        
+        pickingItem = indexPath.row
+        delegate?.presentPhotoPicker(self)
     }
     
     private func centerItemsInCollectionView(cellWidth: Double, numberOfItems: Double, spaceBetweenCell: Double, collectionView: UICollectionView) -> UIEdgeInsets {
@@ -142,12 +142,16 @@ extension RegisterPhotoView: UICollectionViewDataSource, UICollectionViewDelegat
     }
 }
 
-extension RegisterPhotoView: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
-        guard let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage else { return }
-        //dismiss(animated: true, completion: nil)
-    }
-}
+//extension RegisterPhotoView: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+//    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
+//        guard let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage else { return }
+//
+//        //dismiss(animated: true, completion: nil)
+//    }
+//}
+
+
+
 
 //#if DEBUG
 //import SwiftUI
