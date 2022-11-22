@@ -120,25 +120,24 @@ extension DetailViewController: UICollectionViewDataSource, UICollectionViewDele
     }
     
     private func createCompositionalLayout() -> UICollectionViewCompositionalLayout {
-        return UICollectionViewCompositionalLayout { (sectionNumber, _) -> NSCollectionLayoutSection? in
+        return UICollectionViewCompositionalLayout { sectionNumber, _ -> NSCollectionLayoutSection? in
             switch sectionNumber {
-            case 0: return self.firstLayoutSection()
-            case 1: return self.secondLayoutSection()
-            case 2: return self.thirdLayoutSection()
-            case 3: return self.forthLayoutSection()
-            default: return self.forthLayoutSection()
+            case 0: return self.photoLayoutSection()
+            case 1: return self.profileLayoutSection()
+            case 2: return self.greetingLayoutSection()
+            case 3: return self.basicInfoLayoutSection()
+            default: return self.basicInfoLayoutSection()
             }
         }
     }
     
-    private func firstLayoutSection() -> NSCollectionLayoutSection {
+    private func photoLayoutSection() -> NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        item.contentInsets.bottom = 5
         
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.95), heightDimension: .fractionalWidth(0.95))
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
-        group.contentInsets = .init(top: 0, leading: 0, bottom: 0, trailing: 5)
+        group.contentInsets = .init(top: 5, leading: 0, bottom: 5, trailing: 5)
         
         let section = NSCollectionLayoutSection(group: group)
         section.orthogonalScrollingBehavior = .groupPaging
@@ -146,7 +145,7 @@ extension DetailViewController: UICollectionViewDataSource, UICollectionViewDele
         return section
     }
     
-    private func secondLayoutSection() -> NSCollectionLayoutSection {
+    private func profileLayoutSection() -> NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalWidth(0.3))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         item.contentInsets = .init(top: 0, leading: 0, bottom: 0, trailing: 0)
@@ -159,7 +158,7 @@ extension DetailViewController: UICollectionViewDataSource, UICollectionViewDele
         return section
     }
     
-    private func thirdLayoutSection() -> NSCollectionLayoutSection {
+    private func greetingLayoutSection() -> NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalWidth(0.5))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         item.contentInsets = .init(top: 0, leading: 0, bottom: 0, trailing: 0)
@@ -172,7 +171,7 @@ extension DetailViewController: UICollectionViewDataSource, UICollectionViewDele
         return section
     }
     
-    private func forthLayoutSection() -> NSCollectionLayoutSection {
+    private func basicInfoLayoutSection() -> NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalWidth(0.5))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         item.contentInsets = .init(top: 0, leading: 0, bottom: 0, trailing: 0)
