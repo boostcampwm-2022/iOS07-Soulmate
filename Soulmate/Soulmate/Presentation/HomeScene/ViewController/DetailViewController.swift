@@ -6,17 +6,22 @@
 //
 
 import UIKit
+import Combine
 
 import SnapKit
 
 final class DetailViewController: UIViewController {
+    private let pagingInfoSubject = PassthroughSubject<Int, Never>()
 
+    private var viewModel: DetailViewModel?
+    private var cancellables = Set<AnyCancellable>()
+    
     private lazy var collectionView: UICollectionView = {
         let layout = createCompositionalLayout()
         let collection = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collection.delegate = self
         collection.dataSource = self
-        collection.backgroundColor = .borderPurple
+        collection.backgroundColor = .systemBackground
         collection.bounces = false
         collection.showsVerticalScrollIndicator = false
         collection.showsHorizontalScrollIndicator = false
@@ -25,9 +30,9 @@ final class DetailViewController: UIViewController {
         collection.register(ProfileCell.self, forCellWithReuseIdentifier: "ProfileCell")
         collection.register(GreetingCell.self, forCellWithReuseIdentifier: "GreetingCell")
         collection.register(BasicInfoCell.self, forCellWithReuseIdentifier: "BasicInfoCell")
+        collection.register(PhotoFooterView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: "PhotoFooterView")
         return collection
     }()
-    
     
     private lazy var applyButton: GradientButton = {
         let button = GradientButton(title: "대화친구 신청하기")
@@ -43,9 +48,20 @@ final class DetailViewController: UIViewController {
         configureLayout()
         
         bind()
+        
+        // Test
+        viewModel = DetailViewModel(userInfo: RegisterUserInfo(
+            id: "1234",
+            gender: GenderType.male,
+            nickName: "테스트",
+            birthDay: Date(),
+            height: 175,
+            mbti: Mbti(innerType: InnerType.i, recognizeType: RecognizeType.n, judgementType: JudgementType.t, lifeStyleType: LifeStyleType.p),
+            smokingType: SmokingType.often,
+            drinkingType: DrinkingType.rarely,
+            aboutMe: "하아라어랴아 러야마얼 야라으마야 라야으라 야을 매야라 으랴 아르 얌로야 ㅡ 라얄오 ㅏ으 랴이라 야므 라야라 만아랴 으마야러 아먀아르 만아라 으망랑 러 ㅁㄴ아랑마라야르 하아 라어랴아러 야마얼야 라으마야 라야으라 야을매야라 으랴 아르 얌로야 ㅡ 라얄오 ㅏ으 랴이라 야므 라야라 만아 랴 으마야러 아먀아르 만아라 으망랑러 ㅁㄴ아랑마라야르 ",
+            imageList: ["heart", "logo", "Phone", "checkOn"]), distance: 11)
     }
-    
-    
 }
 
 // MARK: - configure
@@ -64,7 +80,7 @@ private extension DetailViewController {
             $0.leading.trailing.top.equalTo(self.view.safeAreaLayoutGuide)
             $0.bottom.equalTo(applyButton.snp.top)
         }
-        
+         
         applyButton.snp.makeConstraints {
             $0.leading.trailing.equalTo(self.view.safeAreaLayoutGuide).inset(20)
             $0.bottom.equalTo(self.view.snp.bottom).inset(46)
@@ -81,7 +97,7 @@ extension DetailViewController: UICollectionViewDataSource, UICollectionViewDele
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if section == 0 {
-            return 5
+            return viewModel?.userInfo.imageList?.count ?? 1
         } else {
             return 1
         }
@@ -93,30 +109,44 @@ extension DetailViewController: UICollectionViewDataSource, UICollectionViewDele
             guard let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: "PhotoCell",
                 for: indexPath) as? PhotoCell else { return PhotoCell() }
+            cell.loadImage(image: viewModel?.userInfo.imageList?[indexPath.item] ?? "")
             return cell
             
         case 1:
             guard let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: "ProfileCell",
                 for: indexPath) as? ProfileCell else { return ProfileCell() }
+            cell.configure(nickName: viewModel?.userInfo.nickName ?? "", birthDay: viewModel?.userInfo.birthDay ?? Date(), distance: viewModel?.distance ?? 0)
             return cell
             
         case 2:
             guard let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: "GreetingCell",
                 for: indexPath) as? GreetingCell else { return GreetingCell() }
+            cell.configure(message: viewModel?.userInfo.aboutMe ?? "")
             return cell
             
         case 3:
             guard let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: "BasicInfoCell",
-                for: indexPath) as? BasicInfoCell else { return BasicInfoCell() }
+                for: indexPath) as? BasicInfoCell,
+                  let height = viewModel?.userInfo.height,
+                  let mbti = viewModel?.userInfo.mbti,
+                  let drink = viewModel?.userInfo.drinkingType,
+                  let smoke = viewModel?.userInfo.smokingType else { return BasicInfoCell() }
+            cell.configure(height: height, mbti: mbti, drink: drink, smoke: smoke)
             return cell
             
         default:
             fatalError("indexPath.section")
         }
-
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        guard let footer = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "PhotoFooterView", for: indexPath) as? PhotoFooterView else { return PhotoFooterView() }
+        footer.configure(with: collectionView.numberOfItems(inSection: 0))
+        footer.subscribeTo(subject: pagingInfoSubject)
+        return footer
     }
     
     private func createCompositionalLayout() -> UICollectionViewCompositionalLayout {
@@ -135,13 +165,22 @@ extension DetailViewController: UICollectionViewDataSource, UICollectionViewDele
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.95), heightDimension: .fractionalWidth(0.95))
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalWidth(1))
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
-        group.contentInsets = .init(top: 5, leading: 0, bottom: 5, trailing: 5)
+        group.contentInsets = .init(top: 0, leading: 0, bottom: 0, trailing: 0)
         
         let section = NSCollectionLayoutSection(group: group)
         section.orthogonalScrollingBehavior = .groupPaging
         
+        let footerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(20))
+        let footer = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: footerSize, elementKind: UICollectionView.elementKindSectionFooter, alignment: .bottom)
+    
+        section.boundarySupplementaryItems = [footer]
+        section.visibleItemsInvalidationHandler = { [weak self] _, offset, _ -> Void in
+            guard let self = self else { return }
+            let page = round(offset.x / self.view.bounds.width)
+            self.pagingInfoSubject.send(Int(page))
+        }
         return section
     }
     
@@ -154,7 +193,6 @@ extension DetailViewController: UICollectionViewDataSource, UICollectionViewDele
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
         
         let section = NSCollectionLayoutSection(group: group)
-        
         return section
     }
     
@@ -167,7 +205,6 @@ extension DetailViewController: UICollectionViewDataSource, UICollectionViewDele
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
         
         let section = NSCollectionLayoutSection(group: group)
-        
         return section
     }
     
@@ -180,348 +217,10 @@ extension DetailViewController: UICollectionViewDataSource, UICollectionViewDele
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
         
         let section = NSCollectionLayoutSection(group: group)
-        
         return section
     }
-    
 }
 
-
-// MARK: - 사진 셀
-final class PhotoCell: UICollectionViewCell {
-    private lazy var imageView: UIImageView = {
-        let photo = UIImageView()
-        photo.contentMode = .scaleAspectFit
-        photo.image = UIImage(named: "emoji")
-        contentView.addSubview(photo)
-        return photo
-    }()
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
-        configureView()
-        configureLayout()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    func configureView() {
-        self.backgroundColor = .white
-    }
-    
-    func configureLayout() {
-        imageView.snp.makeConstraints {
-            $0.height.equalToSuperview()
-            $0.width.equalTo(imageView.snp.height)
-            $0.centerX.centerY.equalToSuperview()
-        }
-    }
-}
-
-
-// MARK: - 프로필 셀
-final class ProfileCell: UICollectionViewCell {
-    private lazy var partnerSubView: UIView = {
-        let view = UIView()
-        view.backgroundColor = UIColor.white
-        contentView.addSubview(view)
-        return view
-    }()
-
-    private lazy var partnerName: UILabel = {
-        let label = UILabel()
-        label.text = "초록잎"
-        label.frame = CGRect(x: 0, y: 0, width: 58, height: 26)
-        label.textColor = UIColor.darkText
-        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 22)
-        partnerSubView.addSubview(label)
-        return label
-    }()
-    
-    private lazy var partnerAge: UILabel = {
-        let label = UILabel()
-        label.text = "25"
-        label.frame = CGRect(x: 0, y: 0, width: 23, height: 26)
-        label.textColor = UIColor.darkText
-        label.font = UIFont(name: "AppleSDGothicNeo-Light", size: 22)
-        partnerSubView.addSubview(label)
-        return label
-    }()
-    
-    private lazy var partnerMapImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.image = UIImage(named: "mapColor")
-        imageView.frame = CGRect(x: 0, y: 0, width: 13.04, height: 18)
-        imageView.contentMode = .scaleAspectFit
-        partnerSubView.addSubview(imageView)
-        return imageView
-    }()
-    
-    private lazy var partnerDistance: UILabel = {
-        let label = UILabel()
-        label.text = "3 km"
-        label.frame = CGRect(x: 0, y: 0, width: 32, height: 20)
-        label.textColor = UIColor.labelGrey
-        label.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 15)
-        partnerSubView.addSubview(label)
-        return label
-    }()
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
-        configureView()
-        configureLayout()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    func configureView() {
-        self.backgroundColor = .white
-    }
-    
-    func configureLayout() {
-        
-        partnerName.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(24)
-            $0.left.equalToSuperview().inset(20)
-            $0.bottom.equalToSuperview().inset(50)
-        }
-        
-        partnerAge.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(24)
-            $0.left.equalToSuperview().inset(84)
-            $0.bottom.equalToSuperview().inset(50)
-        }
-        
-        partnerMapImageView.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(57)
-            $0.left.equalToSuperview().inset(22.48)
-            $0.bottom.equalToSuperview().inset(25)
-        }
-        
-        partnerDistance.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(56)
-            $0.left.equalToSuperview().inset(44)
-            $0.bottom.equalToSuperview().inset(24)
-        }
-        
-        partnerSubView.snp.makeConstraints {
-            $0.width.equalToSuperview()
-            $0.centerY.equalToSuperview()
-            $0.leading.trailing.equalToSuperview()
-        }
-        
-        let separator = UIView(frame: .zero)
-        separator.backgroundColor = .labelGrey
-        self.contentView.addSubview(separator)
-        separator.snp.makeConstraints {
-            $0.bottom.equalToSuperview()
-            $0.leading.trailing.equalToSuperview()
-            $0.height.equalTo(0.5)
-        }
-    }
-}
-
-// MARK: - 인사말 셀
-final class GreetingCell: UICollectionViewCell {
-    private lazy var title: UILabel = {
-        let label = UILabel()
-        label.text = "인사말"
-        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 16)
-        label.textColor = UIColor.darkText
-        contentView.addSubview(label)
-        return label
-    }()
-    
-    private lazy var greetingMessage: UILabel = {
-        let message = UILabel()
-        message.text = "솔직한 사람이 좋아요😋 솔직한 사람이 좋아요😋 솔직한 사람이 좋아요😋 솔직한 사람이 좋아요😋 솔직한 사람이 좋아요😋 솔직한 사람이 좋아요😋 솔직한 사람이 좋아요😋 솔직한 사람이 좋아요😋 솔직한 사람이 좋아요😋 솔직한 사람이 좋아요😋 솔직한 사람이 좋아요😋 솔직한 사람이 좋아요😋 솔직한 사람이 좋아요😋 솔직한 사람이 좋아요😋 솔직한 사람이 좋아요😋 솔직한 사람이 좋아요😋 솔직한 사람이 좋아요😋 솔직한 사람이 좋아요😋 솔직한 사람이 좋아요😋 솔직한 사람이 좋아요😋 솔직한 사람이 좋아요😋 솔직한 사람이 좋아요😋 솔직한 사람이 좋아요😋 솔직한 사람이 좋아요😋 솔직한 사람이 좋아요😋 솔직한 사람이 좋아요😋 솔직한 사람이 좋아요😋 솔직한 사람이 좋아요😋 솔직한 사람이 좋아요😋 솔직한 사람이 좋아요😋 솔직한 사람이 좋아요😋 솔직한 사람이 좋아요😋 솔직한 사람이 좋아요😋 솔직한 사람이 좋아요😋 솔직한 사람이 좋아요😋"
-        message.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 15)
-        message.textColor = UIColor.labelGrey
-        message.numberOfLines = 0
-        message.lineBreakStrategy = .hangulWordPriority
-        contentView.addSubview(message)
-        return message
-    }()
-    
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
-        configureView()
-        configureLayout()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    func configureView() {
-        self.backgroundColor = .white
-    }
-    
-    func configureLayout() {
-        title.snp.makeConstraints {
-            $0.leading.equalToSuperview().inset(20)
-            $0.width.equalTo(42)
-            $0.height.equalTo(22)
-        }
-        
-        greetingMessage.snp.makeConstraints {
-            $0.top.equalTo(title.snp.bottom).offset(12)
-            $0.centerY.equalToSuperview()
-            $0.leading.trailing.equalToSuperview().inset(20)
-            $0.height.equalToSuperview().inset(40)
-        }
-        
-        let separator = UIView(frame: .zero)
-        separator.backgroundColor = .labelGrey
-        self.contentView.addSubview(separator)
-        separator.snp.makeConstraints {
-            $0.bottom.equalToSuperview()
-            $0.leading.trailing.equalToSuperview()
-            $0.height.equalTo(0.5)
-        }
-    }
-}
-
-// MARK: - 기본정보 셀
-final class BasicInfoCell: UICollectionViewCell {
-    private lazy var heightLabel: UILabel = {
-        let label = UILabel()
-        label.text = "키"
-        label.font = UIFont(name: "AppleSDGothicNeo-SemiBold", size: 14)
-        label.textColor = UIColor.labelGrey
-        contentView.addSubview(label)
-        return label
-    }()
-    
-    private lazy var mbtiLabel: UILabel = {
-        let label = UILabel()
-        label.text = "MBTI"
-        label.font = UIFont(name: "AppleSDGothicNeo-SemiBold", size: 14)
-        label.textColor = UIColor.labelGrey
-        contentView.addSubview(label)
-        return label
-    }()
-    
-    private lazy var drinkLabel: UILabel = {
-        let label = UILabel()
-        label.text = "음주"
-        label.font = UIFont(name: "AppleSDGothicNeo-SemiBold", size: 14)
-        label.textColor = UIColor.labelGrey
-        contentView.addSubview(label)
-        return label
-    }()
-    
-    private lazy var smokeLabel: UILabel = {
-        let label = UILabel()
-        label.text = "흡연"
-        label.font = UIFont(name: "AppleSDGothicNeo-SemiBold", size: 14)
-        label.textColor = UIColor.labelGrey
-        contentView.addSubview(label)
-        return label
-    }()
-    
-    private lazy var heightInput: UILabel = {
-        let label = UILabel()
-        label.text = "161cm"
-        label.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 15)
-        label.textColor = UIColor.darkText
-        contentView.addSubview(label)
-        return label
-    }()
-    
-    private lazy var mbtiInput: UILabel = {
-        let label = UILabel()
-        label.text = "ISFP"
-        label.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 15)
-        label.textColor = UIColor.darkText
-        contentView.addSubview(label)
-        return label
-    }()
-    
-    private lazy var drinkInput: UILabel = {
-        let label = UILabel()
-        label.text = "가끔 마심"
-        label.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 15)
-        label.textColor = UIColor.darkText
-        contentView.addSubview(label)
-        return label
-    }()
-    
-    private lazy var smokeInput: UILabel = {
-        let label = UILabel()
-        label.text = "비흡연"
-        label.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 15)
-        label.textColor = UIColor.darkText
-        contentView.addSubview(label)
-        return label
-    }()
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
-        configureView()
-        configureLayout()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    func configureView() {
-        self.backgroundColor = .white
-    }
-    
-    func configureLayout() {
-        heightLabel.snp.makeConstraints {
-            $0.leading.equalToSuperview().offset(20)
-            $0.top.equalToSuperview().offset(33)
-        }
-        
-        mbtiLabel.snp.makeConstraints {
-            $0.leading.equalToSuperview().offset(20)
-            $0.top.equalTo(heightLabel.snp.bottom).offset(22)
-        }
-        
-        drinkLabel.snp.makeConstraints {
-            $0.leading.equalToSuperview().offset(20)
-            $0.top.equalTo(mbtiLabel.snp.bottom).offset(22)
-        }
-        
-        smokeLabel.snp.makeConstraints {
-            $0.leading.equalToSuperview().offset(20)
-            $0.top.equalTo(drinkLabel.snp.bottom).offset(22)
-        }
-        
-        heightInput.snp.makeConstraints {
-            $0.leading.equalToSuperview().offset(118)
-            $0.top.equalToSuperview().offset(32)
-        }
-        
-        mbtiInput.snp.makeConstraints {
-            $0.leading.equalToSuperview().offset(118)
-            $0.top.equalTo(heightInput.snp.bottom).offset(20)
-        }
-        
-        drinkInput.snp.makeConstraints {
-            $0.leading.equalToSuperview().offset(118)
-            $0.top.equalTo(mbtiInput.snp.bottom).offset(20)
-        }
-        
-        smokeInput.snp.makeConstraints {
-            $0.leading.equalToSuperview().offset(118)
-            $0.top.equalTo(drinkInput.snp.bottom).offset(20)
-        }
-    }
-}
 
 
 // MARK: - 미리보기
