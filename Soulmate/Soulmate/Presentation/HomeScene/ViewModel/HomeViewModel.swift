@@ -13,7 +13,7 @@ struct HomeViewModelAction {
 
 final class HomeViewModel {
     var actions: HomeViewModelAction?
-    private weak var coordinator: HomeCoordinator?
+    weak var coordinator: HomeCoordinator?
     
     func setActions(actions: HomeViewModelAction) {
         self.actions = actions

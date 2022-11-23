@@ -155,9 +155,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        // TODO: 코디네이터로?
-        let vc = DetailViewController()
-        navigationController?.pushViewController(vc, animated: true)
+        viewModel?.coordinator?.showDetailVC()
     }
     
 }
