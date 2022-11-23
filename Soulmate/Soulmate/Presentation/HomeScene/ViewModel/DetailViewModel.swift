@@ -7,10 +7,6 @@
 
 import Foundation
 
-struct DetailViewModelAction {
-    var showChatListVC: (() -> Void)?
-}
-
 final class DetailViewModel {
     let userInfo: RegisterUserInfo
     let distance: Int

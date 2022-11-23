@@ -905,6 +905,7 @@
 				6AB6B96E292BF2F400A029BD /* DefaultUploadDetailInfoUseCase.swift in Sources */,
 				6A8377AD2924BCB400BC7112 /* CongraturationsViewController.swift in Sources */,
 				07EE0F11292C86EC00E761C4 /* ProfileCell.swift in Sources */,
+				B331CED0292B854500F17AED /* UIImage.swift in Sources */,
 				6A0041DD2919EADC0042E02F /* HomeCoordinator.swift in Sources */,
 				07EE0F15292C870400E761C4 /* GreetingCell.swift in Sources */,
 				6A0041FF2919EE920042E02F /* ModificationViewController.swift in Sources */,
