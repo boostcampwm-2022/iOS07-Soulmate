@@ -18,7 +18,6 @@ final class ChattingRoomViewController: UIViewController {
     
     private lazy var chatTableView: UITableView = {
         let tableView = UITableView()
-        view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 60
@@ -35,17 +34,11 @@ final class ChattingRoomViewController: UIViewController {
     
     private lazy var composeBar: ComposeBar = {
         let messageInputView = ComposeBar()
-        view.addSubview(messageInputView)
         messageInputView.translatesAutoresizingMaskIntoConstraints = false
         messageInputView.configure(with: self)
         
         return messageInputView
     }()
-    
-    override var inputAccessoryView: UIView? {                
-        
-        return composeBar
-    }
     
     override var canBecomeFirstResponder: Bool {
         return true
@@ -57,6 +50,7 @@ final class ChattingRoomViewController: UIViewController {
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+        hidesBottomBarWhenPushed = true
     }
     
     required init?(coder: NSCoder) {
@@ -146,11 +140,21 @@ private extension ChattingRoomViewController {
     
     func configureLayout() {
         
+        view.addSubview(chatTableView)
+        view.addSubview(composeBar)
+        
+        composeBar.snp.makeConstraints {
+            $0.centerX.equalTo(view.snp.centerX)
+            $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
+            $0.width.equalTo(view.snp.width)
+            $0.height.equalTo(50)
+        }
+        
         chatTableView.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide.snp.top)
             $0.leading.equalTo(view.safeAreaLayoutGuide.snp.leading)
             $0.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing)
-            $0.bottom.equalTo(view.snp.bottom)
+            $0.bottom.equalTo(composeBar.snp.top)
         }
     }
 }
@@ -244,8 +248,10 @@ private extension ChattingRoomViewController {
      
     func adjustContentForKeyboard(shown: Bool, notification: NSNotification) {
         guard let payload = KeyboardInfo(notification as Notification) else { return }
-     
-        let keyboardHeight = shown ? payload.frameEnd.size.height : composeBar.bounds.size.height
+        
+        let safeLayoutBottomHeight = view.frame.maxY - view.safeAreaLayoutGuide.layoutFrame.maxY
+        let keyboardHeight = shown ? payload.frameEnd.size.height - safeLayoutBottomHeight : 0
+        
         if chatTableView.contentInset.bottom == keyboardHeight {
             return
         }
@@ -256,10 +262,13 @@ private extension ChattingRoomViewController {
         insets.bottom = keyboardHeight
      
         UIView.animate(withDuration: payload.animationDuration, delay: 0, options: [], animations: {
-     
-            self.chatTableView.contentInset = insets
-            self.chatTableView.scrollIndicatorInsets = insets
-     
+            
+            self.composeBar.snp.updateConstraints {
+                $0.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom).offset(-keyboardHeight)
+            }
+            
+            self.view.layoutIfNeeded()
+            
             if distanceFromBottom < 10 {
                 self.chatTableView.contentOffset = self.bottomOffset()
             }

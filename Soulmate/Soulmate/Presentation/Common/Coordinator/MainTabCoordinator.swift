@@ -25,14 +25,14 @@ enum TabBarPage: Int, CaseIterable {
         }
     }
     
-    func pageTabIcon() -> UIImage {
+    func pageTabIcon() -> UIImage? {
         switch self {
         case .home:
-            return UIImage(systemName: "house")!
+            return UIImage(systemName: "house")
         case .chat:
-            return UIImage(systemName: "magnifyingglass")!
+            return UIImage(systemName: "magnifyingglass")
         case .myPage:
-            return UIImage(systemName: "text.justify")!
+            return UIImage(systemName: "text.justify")
         }
     }
 }
@@ -75,8 +75,6 @@ final class MainTabCoordinator: NSObject, Coordinator {
     private func getTabController(_ page: TabBarPage) -> UINavigationController {
         let navigation = UINavigationController()
         
-        navigation.setNavigationBarHidden(false, animated: false)
-        
         navigation.tabBarItem = UITabBarItem.init(
             title: page.pageTitleValue(),
             image: page.pageTabIcon(),
@@ -90,7 +88,7 @@ final class MainTabCoordinator: NSObject, Coordinator {
             childCoordinators.append(homeCoordinator)
             homeCoordinator.start()
         case .chat:
-            let chatCoordinator = ChatCoordinator(navigationController: navigation)
+            let chatCoordinator = DefaultChatCoordinator(navigationController: navigation)
             chatCoordinator.finishDelegate = self
             childCoordinators.append(chatCoordinator)
             chatCoordinator.start()

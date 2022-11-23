@@ -24,6 +24,7 @@ final class AppCoordinator: Coordinator {
     }
     
     func start() {
+        self.navigationController.setNavigationBarHidden(true, animated: false)
 //        if Auth.auth().currentUser == nil {
 //            showAuthFlow()
 //        }
@@ -34,14 +35,8 @@ final class AppCoordinator: Coordinator {
 
 //        showAuthFlow()
         
-        chattingRoomListTest()
-    }
-    
-    private func chattingRoomListTest() {
-        let loadChattingRoomListUseCase = DefaultLoadChattingRoomListUseCase()
-        let viewModel = ChatListViewModel(loadChattingRoomListUseCase: loadChattingRoomListUseCase)
-        let viewController = ChatListViewController(viewModel: viewModel)
-        self.navigationController.pushViewController(viewController, animated: true)
+        showMainTabFlow()
+
     }
     
     private func showAuthFlow() {
