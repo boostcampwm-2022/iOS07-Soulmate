@@ -22,7 +22,7 @@ final class DetailViewController: UIViewController {
         collection.delegate = self
         collection.dataSource = self
         collection.backgroundColor = .systemBackground
-        collection.bounces = false
+        collection.bounces = true
         collection.showsVerticalScrollIndicator = false
         collection.showsHorizontalScrollIndicator = false
         self.view.addSubview(collection)
@@ -51,6 +51,7 @@ final class DetailViewController: UIViewController {
     convenience init(viewModel: DetailViewModel) {
         self.init(nibName: nil, bundle: nil)
         self.viewModel = viewModel
+        hidesBottomBarWhenPushed = true
     }
     
     // MARK: - 초기화
@@ -61,19 +62,6 @@ final class DetailViewController: UIViewController {
         configureLayout()
         
         bind()
-        
-        // Test
-//        viewModel = DetailViewModel(userInfo: RegisterUserInfo(
-//            id: "1234",
-//            gender: GenderType.male,
-//            nickName: "테스트",
-//            birthDay: Date(),
-//            height: 175,
-//            mbti: Mbti(innerType: InnerType.i, recognizeType: RecognizeType.n, judgementType: JudgementType.t, lifeStyleType: LifeStyleType.p),
-//            smokingType: SmokingType.often,
-//            drinkingType: DrinkingType.rarely,
-//            aboutMe: "하아라어랴아 러야마얼 야라으마야 라야으라 야을 매야라 으랴 아르 얌로야 ㅡ 라얄오 ㅏ으 랴이라 야므 라야라 만아랴 으마야러 아먀아르 만아라 으망랑 러 ㅁㄴ아랑마라야르 하아 라어랴아러 야마얼야 라으마야 라야으라 야을매야라 으랴 아르 얌로야 ㅡ 라얄오 ㅏ으 랴이라 야므 라야라 만아 랴 으마야러 아먀아르 만아라 으망랑러 ㅁㄴ아랑마라야르 ",
-//            imageList: ["heart", "logo", "Phone", "checkOn"]), distance: 11, coordinator: <#HomeCoordinator#>)
 
     }
 }
