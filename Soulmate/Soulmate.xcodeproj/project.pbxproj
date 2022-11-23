@@ -60,6 +60,8 @@
 		6A34C205292C98D300A3E57F /* ChatRoomInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A34C204292C98D300A3E57F /* ChatRoomInfo.swift */; };
 		6A34C207292C99BB00A3E57F /* DefaultLoadChattingRoomListUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A34C206292C99BB00A3E57F /* DefaultLoadChattingRoomListUseCase.swift */; };
 		6A34C209292CA1A800A3E57F /* UnreadMessageCountBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A34C208292CA1A800A3E57F /* UnreadMessageCountBadge.swift */; };
+		6A34C20C292DB9E900A3E57F /* ChatRoomInfoDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A34C20B292DB9E900A3E57F /* ChatRoomInfoDTO.swift */; };
+		6A34C20E292DBCD500A3E57F /* Date+toString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A34C20D292DBCD400A3E57F /* Date+toString.swift */; };
 		6A3F91A72924A45300F1D901 /* RegisterSelectableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A3F91A62924A45300F1D901 /* RegisterSelectableView.swift */; };
 		6A444533291EA23F009AE2E5 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A444532291EA23F009AE2E5 /* UIColor.swift */; };
 		6A45AA212925595700F85D2C /* RegisterCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A45AA202925595700F85D2C /* RegisterCoordinator.swift */; };
@@ -173,6 +175,8 @@
 		6A34C204292C98D300A3E57F /* ChatRoomInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomInfo.swift; sourceTree = "<group>"; };
 		6A34C206292C99BB00A3E57F /* DefaultLoadChattingRoomListUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultLoadChattingRoomListUseCase.swift; sourceTree = "<group>"; };
 		6A34C208292CA1A800A3E57F /* UnreadMessageCountBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnreadMessageCountBadge.swift; sourceTree = "<group>"; };
+		6A34C20B292DB9E900A3E57F /* ChatRoomInfoDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomInfoDTO.swift; sourceTree = "<group>"; };
+		6A34C20D292DBCD400A3E57F /* Date+toString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+toString.swift"; sourceTree = "<group>"; };
 		6A3F91A62924A45300F1D901 /* RegisterSelectableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterSelectableView.swift; sourceTree = "<group>"; };
 		6A444532291EA23F009AE2E5 /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		6A45AA202925595700F85D2C /* RegisterCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterCoordinator.swift; sourceTree = "<group>"; };
@@ -501,6 +505,14 @@
 			path = Notification;
 			sourceTree = "<group>";
 		};
+		6A34C20A292DB9B600A3E57F /* DTO */ = {
+			isa = PBXGroup;
+			children = (
+				6A34C20B292DB9E900A3E57F /* ChatRoomInfoDTO.swift */,
+			);
+			path = DTO;
+			sourceTree = "<group>";
+		};
 		6A444531291EA22D009AE2E5 /* Extension */ = {
 			isa = PBXGroup;
 			children = (
@@ -509,6 +521,7 @@
 				6A444532291EA23F009AE2E5 /* UIColor.swift */,
 				6A03B6F12923C00900AC15A6 /* UIFont.swift */,
 				B331CECF292B854500F17AED /* UIImage.swift */,
+				6A34C20D292DBCD400A3E57F /* Date+toString.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -640,6 +653,7 @@
 		6AB6B951292BDDF500A029BD /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				6A34C20A292DB9B600A3E57F /* DTO */,
 				6AB6B953292BDE0E00A029BD /* Storage */,
 				6AB6B952292BDE0600A029BD /* Repository */,
 			);
@@ -822,6 +836,7 @@
 			files = (
 				6A34C1F7292B501500A3E57F /* DefaultLoadChattingsUseCase.swift in Sources */,
 				6A34C1DB292B216A00A3E57F /* OtherChatCell.swift in Sources */,
+				6A34C20C292DB9E900A3E57F /* ChatRoomInfoDTO.swift in Sources */,
 				B3B03B44292C8C5E000AF283 /* MyPageMenuView.swift in Sources */,
 				6A97FE66291CE29E006F6DD9 /* LoginViewModel.swift in Sources */,
 				6AB6B95F292BDE7A00A029BD /* FireStoreDatabaseStorage.swift in Sources */,
@@ -831,6 +846,7 @@
 				6AB6B97A292C3E5800A029BD /* ProfilePhotoRepository.swift in Sources */,
 				6A0041E42919EBA40042E02F /* AuthCoordinator.swift in Sources */,
 				6A03B6F02923BF8900AC15A6 /* CertificationTextField.swift in Sources */,
+				6A34C20E292DBCD500A3E57F /* Date+toString.swift in Sources */,
 				6A34C1FB292C8F8F00A3E57F /* ChatListViewController.swift in Sources */,
 				6A0041FD2919EE7B0042E02F /* ServiceTermViewController.swift in Sources */,
 				6A97FE63291CE0C2006F6DD9 /* UIImage+shadow.swift in Sources */,

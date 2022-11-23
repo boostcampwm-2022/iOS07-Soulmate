@@ -8,8 +8,8 @@
 import Foundation
 
 struct ChatRoomInfo {
-    var mateName: String
-    var mateProfileImage: Data?
-    var latestChatContent: String?
-    var lastChatDate: String?
+    var mateName: String? = nil
+    var mateProfileImage: Data? = nil
+    var latestChatContent: String? = nil
+    var lastChatDate: Date? = nil
 }
