@@ -9,10 +9,6 @@ import Foundation
 
 extension Date { // 만나이 계산기
     func toAge() -> Int {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .medium
-        formatter.timeStyle = .none
-
         return Calendar.current.dateComponents([.year], from: self, to: Date()).year ?? 0
     }
 }
