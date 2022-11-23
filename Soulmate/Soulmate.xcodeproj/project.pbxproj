@@ -18,6 +18,7 @@
 		07EE0F13292C86FA00E761C4 /* BasicInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07EE0F12292C86FA00E761C4 /* BasicInfoCell.swift */; };
 		07EE0F15292C870400E761C4 /* GreetingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07EE0F14292C870400E761C4 /* GreetingCell.swift */; };
 		07EE0F18292C893D00E761C4 /* PhotoFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07EE0F17292C893D00E761C4 /* PhotoFooterView.swift */; };
+		07EE0F1C292CEEDC00E761C4 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07EE0F1B292CEEDC00E761C4 /* HomeViewModel.swift */; };
 		6A0041D72919E68D0042E02F /* MainTabCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A0041D62919E68C0042E02F /* MainTabCoordinator.swift */; };
 		6A0041D92919E6B60042E02F /* CoordinatorInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A0041D82919E6B60042E02F /* CoordinatorInterface.swift */; };
 		6A0041DB2919E9420042E02F /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A0041DA2919E9420042E02F /* AppCoordinator.swift */; };
@@ -116,8 +117,8 @@
 		B31A68272919F5D2001D35E9 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = B31A68262919F5D2001D35E9 /* .swiftlint.yml */; };
 		B31A682A291A4257001D35E9 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = B31A6829291A4257001D35E9 /* Then */; };
 		B31A682D291A42BC001D35E9 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = B31A682C291A42BC001D35E9 /* SnapKit */; };
-		B331CED0292B854500F17AED /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B331CECF292B854500F17AED /* UIImage.swift */; };
 		B3B03B44292C8C5E000AF283 /* MyPageMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B03B43292C8C5E000AF283 /* MyPageMenuView.swift */; };
+		B331CED0292B854500F17AED /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B331CECF292B854500F17AED /* UIImage.swift */; };
 		B3B03B48292CB877000AF283 /* MyPageMenuCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B03B47292CB877000AF283 /* MyPageMenuCollectionViewCell.swift */; };
 		B3E029A9291DDC1500931FA2 /* GradientButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3E029A8291DDC1500931FA2 /* GradientButton.swift */; };
 /* End PBXBuildFile section */
@@ -134,6 +135,7 @@
 		07EE0F12292C86FA00E761C4 /* BasicInfoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicInfoCell.swift; sourceTree = "<group>"; };
 		07EE0F14292C870400E761C4 /* GreetingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GreetingCell.swift; sourceTree = "<group>"; };
 		07EE0F17292C893D00E761C4 /* PhotoFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoFooterView.swift; sourceTree = "<group>"; };
+		07EE0F1B292CEEDC00E761C4 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		6A0041D62919E68C0042E02F /* MainTabCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabCoordinator.swift; sourceTree = "<group>"; };
 		6A0041D82919E6B60042E02F /* CoordinatorInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinatorInterface.swift; sourceTree = "<group>"; };
 		6A0041DA2919E9420042E02F /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
@@ -229,7 +231,6 @@
 		B311F4A92925EC7100806E86 /* RegisterMbtiView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterMbtiView.swift; sourceTree = "<group>"; };
 		B31A68262919F5D2001D35E9 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		B331CECF292B854500F17AED /* UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
-		B3B03B43292C8C5E000AF283 /* MyPageMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageMenuView.swift; sourceTree = "<group>"; };
 		B3B03B47292CB877000AF283 /* MyPageMenuCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageMenuCollectionViewCell.swift; sourceTree = "<group>"; };
 		B3E029A8291DDC1500931FA2 /* GradientButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -338,6 +339,7 @@
 		6A0041E92919ED500042E02F /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				07EE0F1B292CEEDC00E761C4 /* HomeViewModel.swift */,
 				07B61AC1292B6C510009BC8A /* DetailViewModel.swift */,
 			);
 			path = ViewModel;
@@ -377,7 +379,6 @@
 			isa = PBXGroup;
 			children = (
 				6A0041FA2919EE600042E02F /* MyPageViewController.swift */,
-				B3B03B43292C8C5E000AF283 /* MyPageMenuView.swift */,
 				B3B03B47292CB877000AF283 /* MyPageMenuCollectionViewCell.swift */,
 				6A0041FC2919EE7B0042E02F /* ServiceTermViewController.swift */,
 				6A0041FE2919EE920042E02F /* ModificationViewController.swift */,
@@ -870,6 +871,7 @@
 				6A34C1E4292B233800A3E57F /* MyChatView.swift in Sources */,
 				6AE21021291DE06600A32280 /* SelectableCell.swift in Sources */,
 				6A0041DB2919E9420042E02F /* AppCoordinator.swift in Sources */,
+				07EE0F1C292CEEDC00E761C4 /* HomeViewModel.swift in Sources */,
 				6A03B6EC2923BD8C00AC15A6 /* PhoneNumberViewModel.swift in Sources */,
 				07EAD6FB2925F6B5001AE220 /* AddPhotoCell.swift in Sources */,
 				6A34C1E2292B233300A3E57F /* MyChatCell.swift in Sources */,
