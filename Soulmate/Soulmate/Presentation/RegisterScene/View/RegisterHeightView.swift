@@ -25,7 +25,7 @@ final class RegisterHeightView: UIView {
         return headerView
     }()
     
-    private lazy var heightPicker: UIPickerView = {
+    lazy var heightPicker: UIPickerView = {
         let picker = UIPickerView()
         picker.delegate = self
         picker.dataSource = self
@@ -50,7 +50,7 @@ final class RegisterHeightView: UIView {
     }
     
     func heightPublisher() -> AnyPublisher<Int, Never> {
-        return $selectedHeight.map { Int($0)! }.eraseToAnyPublisher()
+        return $selectedHeight.map { print($0); return Int($0)! }.eraseToAnyPublisher()
     }
 }
 

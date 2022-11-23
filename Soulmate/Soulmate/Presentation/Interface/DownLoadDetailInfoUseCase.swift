@@ -7,6 +7,6 @@
 
 import Foundation
 
-protocol LoadDetailInfoUseCase {
-    func loadDetailInfo(userUid: String) async throws -> RegisterUserInfo
+protocol DownLoadDetailInfoUseCase {
+    func downloadDetailInfo(userUid: String) async throws -> RegisterUserInfo
 }

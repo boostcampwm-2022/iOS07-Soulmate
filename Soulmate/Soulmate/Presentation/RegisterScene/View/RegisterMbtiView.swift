@@ -20,31 +20,31 @@ final class RegisterMbtiView: UIView {
         return headerView
     }()
     
-    private lazy var preview: MbtiPreview = {
+    lazy var preview: MbtiPreview = {
         let preview = MbtiPreview()
         self.addSubview(preview)
         return preview
     }()
     
-    private lazy var innerTypeView: MbtiSegmentView = {
+    lazy var innerTypeView: MbtiSegmentView = {
         let view = MbtiSegmentView(titles: ("I", "E"))
         self.addSubview(view)
         return view
     }()
 
-    private lazy var recognizeTypeView: MbtiSegmentView = {
+    lazy var recognizeTypeView: MbtiSegmentView = {
         let view = MbtiSegmentView(titles: ("N", "S"))
         self.addSubview(view)
         return view
     }()
     
-    private lazy var judgementTypeView: MbtiSegmentView = {
+    lazy var judgementTypeView: MbtiSegmentView = {
         let view = MbtiSegmentView(titles: ("F", "T"))
         self.addSubview(view)
         return view
     }()
     
-    private lazy var lifeStyleTypeView: MbtiSegmentView = {
+    lazy var lifeStyleTypeView: MbtiSegmentView = {
         let view = MbtiSegmentView(titles: ("P", "J"))
         self.addSubview(view)
         return view
@@ -62,19 +62,20 @@ final class RegisterMbtiView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func mbtiPublisher() -> AnyPublisher<String?, Never> {
+    func mbtiPublisher() -> AnyPublisher<Mbti?, Never> {
         return Publishers.CombineLatest4(
             innerTypeView.$seletedMbti.eraseToAnyPublisher(),
             recognizeTypeView.$seletedMbti.eraseToAnyPublisher(),
             judgementTypeView.$seletedMbti.eraseToAnyPublisher(),
             lifeStyleTypeView.$seletedMbti.eraseToAnyPublisher()
         )
-        .map { (m, b, t, i) -> String? in
+        .map { (m, b, t, i) -> Mbti? in
             guard !m.isEmpty,
                   !b.isEmpty,
                   !t.isEmpty,
                   !i.isEmpty else { return nil }
-            return m+b+t+i
+
+            return Mbti.toDomain(target: m+b+t+i)
         }
         .eraseToAnyPublisher()
     }

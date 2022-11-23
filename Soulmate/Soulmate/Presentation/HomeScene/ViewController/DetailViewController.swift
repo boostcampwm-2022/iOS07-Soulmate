@@ -51,7 +51,7 @@ final class DetailViewController: UIViewController {
         
         // Test
         viewModel = DetailViewModel(userInfo: RegisterUserInfo(
-            id: "1234",
+            //id: "1234",
             gender: GenderType.male,
             nickName: "테스트",
             birthDay: Date(),

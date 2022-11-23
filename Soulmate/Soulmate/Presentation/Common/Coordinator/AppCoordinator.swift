@@ -12,51 +12,95 @@ final class AppCoordinator: Coordinator {
         
     weak var finishDelegate: CoordinatorFinishDelegate?
     
-    var navigationController: UINavigationController
+    var window: UIWindow
         
     var childCoordinators: [Coordinator] = []
 
     var type: CoordinatorType = .app
-        
-    init(navigationController: UINavigationController) {
-        self.navigationController = navigationController
-
+            
+    init(window: UIWindow) {
+        self.window = window
     }
     
     func start() {
-//        if Auth.auth().currentUser == nil {
-//            showAuthFlow()
-//        }
-//        else {
-//            showMainTabFlow()
-//        }
-        
+        try! Auth.auth().signOut()
 
-//        showAuthFlow()
+        if let uid = Auth.auth().currentUser?.uid {
+            checkRegistration(for: uid)
+        }
+        else {
+            showAuthSignInFlow()
+        }
+    }
+    
+    private func checkRegistration(for uid: String) {
+        Task {
+            let networkDatabseApi = FireStoreNetworkDatabaseApi()
+            let userDetailInfoRepository = DefaultUserDetailInfoRepository(networkDatabaseApi: networkDatabseApi)
+            var downloadDetailInfoUseCase = DefaultDownLoadDetailInfoUseCase(userDetailInfoRepository: userDetailInfoRepository)
+            var registerStateValidateUseCase = DefaultRegisterStateValidateUseCase()
+            
+            do {
+                let userInfo = try await downloadDetailInfoUseCase.downloadDetailInfo(userUid: uid)
+                let state = registerStateValidateUseCase.validateRegisterState(registerUserInfo: userInfo)
+
+                switch state {
+                case .part:
+                    await MainActor.run { showAuthRegisterFlow(registerUserInfo: userInfo) }
+                case .done:
+                    print("here")
+                    await MainActor.run { showMainTabFlow() }
+                }
+            }
+            catch DecodingError.valueNotFound {
+                await MainActor.run { showAuthRegisterFlow() }
+            }
+        }
+    }
+    
+//    private func chattingRoomListTest() {
+//        let loadChattingRoomListUseCase = DefaultLoadChattingRoomListUseCase()
+//        let viewModel = ChatListViewModel(loadChattingRoomListUseCase: loadChattingRoomListUseCase)
+//        let viewController = ChatListViewController(viewModel: viewModel)
+//        self.navigationController.pushViewController(viewController, animated: true)
+//    }
+    
+    private func showAuthSignInFlow() {
+        let navigation = UINavigationController()
+        window.rootViewController = navigation
         
-        chattingRoomListTest()
-    }
-    
-    private func chattingRoomListTest() {
-        let loadChattingRoomListUseCase = DefaultLoadChattingRoomListUseCase()
-        let viewModel = ChatListViewModel(loadChattingRoomListUseCase: loadChattingRoomListUseCase)
-        let viewController = ChatListViewController(viewModel: viewModel)
-        self.navigationController.pushViewController(viewController, animated: true)
-    }
-    
-    private func showAuthFlow() {
-        let authCoordinator = AuthCoordinator(navigationController: navigationController)
+        let authCoordinator = AuthCoordinator(navigationController: navigation)
         authCoordinator.finishDelegate = self
-        authCoordinator.start()
+        authCoordinator.start(with: .login)
         childCoordinators.append(authCoordinator)
+        
+        window.makeKeyAndVisible()
     }
     
-    private func showMainTabFlow() {
-        let tabCoordinator = MainTabCoordinator(navigationController: navigationController)
+    func showMainTabFlow() {
+        let navigation = UINavigationController()
+        window.rootViewController = navigation
+
+        let tabCoordinator = MainTabCoordinator(navigationController: navigation)
         tabCoordinator.finishDelegate = self
         tabCoordinator.start()
         childCoordinators.append(tabCoordinator)
+        
+        window.makeKeyAndVisible()
     }
+    
+    private func showAuthRegisterFlow(registerUserInfo: RegisterUserInfo? = nil) {        
+        let navigation = UINavigationController()
+        window.rootViewController = navigation
+        
+        let authCoordinator = AuthCoordinator(navigationController: navigation)
+        authCoordinator.finishDelegate = self
+        authCoordinator.start(with: .register(registerUserInfo))
+        childCoordinators.append(authCoordinator)
+        
+        window.makeKeyAndVisible()
+    }
+    
 }
 
 extension AppCoordinator: CoordinatorFinishDelegate {

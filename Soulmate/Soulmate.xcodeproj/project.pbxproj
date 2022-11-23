@@ -36,7 +36,7 @@
 		6A03B6F02923BF8900AC15A6 /* CertificationTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A03B6EF2923BF8900AC15A6 /* CertificationTextField.swift */; };
 		6A03B6F22923C00900AC15A6 /* UIFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A03B6F12923C00900AC15A6 /* UIFont.swift */; };
 		6A03B7242923DE7200AC15A6 /* DefaultAuthUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A03B7232923DE7200AC15A6 /* DefaultAuthUseCase.swift */; };
-		6A03B7272923E5E300AC15A6 /* AuthUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A03B7262923E5E300AC15A6 /* AuthUseCase.swift */; };
+		6A03B7272923E5E300AC15A6 /* PhoneSignInUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A03B7262923E5E300AC15A6 /* PhoneSignInUseCase.swift */; };
 		6A34C1D3292B202B00A3E57F /* ChattingRoomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A34C1D2292B202B00A3E57F /* ChattingRoomViewController.swift */; };
 		6A34C1D8292B211700A3E57F /* Chat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A34C1D7292B211700A3E57F /* Chat.swift */; };
 		6A34C1DB292B216A00A3E57F /* OtherChatCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A34C1DA292B216A00A3E57F /* OtherChatCell.swift */; };
@@ -69,7 +69,7 @@
 		6A45AA5F292794B500F85D2C /* ReigsterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A45AA5E292794B500F85D2C /* ReigsterViewController.swift */; };
 		6A8377A92924A3FC00BC7112 /* RegisterNickNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A8377A82924A3FC00BC7112 /* RegisterNickNameView.swift */; };
 		6A8377AB2924B0D700BC7112 /* RegisterIntroductionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A8377AA2924B0D700BC7112 /* RegisterIntroductionView.swift */; };
-		6A8377AD2924BCB400BC7112 /* CongraturationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A8377AC2924BCB400BC7112 /* CongraturationsViewController.swift */; };
+		6A8377AD2924BCB400BC7112 /* RegisterCongraturationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A8377AC2924BCB400BC7112 /* RegisterCongraturationsView.swift */; };
 		6A8B0724292330D100492123 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6A8B0723292330D100492123 /* GoogleService-Info.plist */; };
 		6A8C88902919031A009EDBBB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A8C888F2919031A009EDBBB /* AppDelegate.swift */; };
 		6A8C88922919031A009EDBBB /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A8C88912919031A009EDBBB /* SceneDelegate.swift */; };
@@ -82,12 +82,12 @@
 		6AB6B946292AAD7600A029BD /* RegisterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB6B945292AAD7600A029BD /* RegisterViewModel.swift */; };
 		6AB6B950292B155A00A029BD /* UILabel+Publisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB6B94F292B155A00A029BD /* UILabel+Publisher.swift */; };
 		6AB6B95C292BDE7A00A029BD /* QueryEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB6B958292BDE7900A029BD /* QueryEntity.swift */; };
-		6AB6B95D292BDE7A00A029BD /* DatabaseStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB6B959292BDE7900A029BD /* DatabaseStorage.swift */; };
+		6AB6B95D292BDE7A00A029BD /* NetworkDatabaseApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB6B959292BDE7900A029BD /* NetworkDatabaseApi.swift */; };
 		6AB6B95E292BDE7A00A029BD /* FireStoreQuery+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB6B95A292BDE7900A029BD /* FireStoreQuery+Ext.swift */; };
-		6AB6B95F292BDE7A00A029BD /* FireStoreDatabaseStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB6B95B292BDE7A00A029BD /* FireStoreDatabaseStorage.swift */; };
-		6AB6B961292BDEEB00A029BD /* DefaultLoadDetailInfoUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB6B960292BDEEB00A029BD /* DefaultLoadDetailInfoUseCase.swift */; };
+		6AB6B95F292BDE7A00A029BD /* FireStoreNetworkDatabaseApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB6B95B292BDE7A00A029BD /* FireStoreNetworkDatabaseApi.swift */; };
+		6AB6B961292BDEEB00A029BD /* DefaultDownLoadDetailInfoUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB6B960292BDEEB00A029BD /* DefaultDownLoadDetailInfoUseCase.swift */; };
 		6AB6B964292BE1EA00A029BD /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 6AB6B963292BE1EA00A029BD /* FirebaseFirestoreSwift */; };
-		6AB6B966292BE4F500A029BD /* LoadDetailInfoUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB6B965292BE4F500A029BD /* LoadDetailInfoUseCase.swift */; };
+		6AB6B966292BE4F500A029BD /* DownLoadDetailInfoUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB6B965292BE4F500A029BD /* DownLoadDetailInfoUseCase.swift */; };
 		6AB6B968292BEC3900A029BD /* DefaultRegisterStateValidateUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB6B967292BEC3900A029BD /* DefaultRegisterStateValidateUseCase.swift */; };
 		6AB6B96A292BEEC200A029BD /* RegisterStateValidateUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB6B969292BEEC200A029BD /* RegisterStateValidateUseCase.swift */; };
 		6AB6B96C292BF2E600A029BD /* UploadDetailInfoUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB6B96B292BF2E600A029BD /* UploadDetailInfoUseCase.swift */; };
@@ -96,6 +96,19 @@
 		6AB6B973292C2E5E00A029BD /* UploadPictureUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB6B972292C2E5E00A029BD /* UploadPictureUseCase.swift */; };
 		6AB6B977292C3DD500A029BD /* DefaultProfilePhotoRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB6B976292C3DD500A029BD /* DefaultProfilePhotoRepository.swift */; };
 		6AB6B97A292C3E5800A029BD /* ProfilePhotoRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB6B979292C3E5800A029BD /* ProfilePhotoRepository.swift */; };
+		6AB6B97C292D380A00A029BD /* Mbti.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB6B97B292D380A00A029BD /* Mbti.swift */; };
+		6AB6B99F292D718500A029BD /* RegisterUserInfoDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB6B99E292D718500A029BD /* RegisterUserInfoDTO.swift */; };
+		6AB6B9A1292D71EC00A029BD /* DefaultUserDetailInfoRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB6B9A0292D71EC00A029BD /* DefaultUserDetailInfoRepository.swift */; };
+		6AB6B9A4292D733700A029BD /* UserDetailInfoRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB6B9A3292D733700A029BD /* UserDetailInfoRepository.swift */; };
+		6AB6B9AE292D7B0300A029BD /* NetworkKeyValueStorageApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB6B9AD292D7B0300A029BD /* NetworkKeyValueStorageApi.swift */; };
+		6AB6B9B0292D7B8A00A029BD /* FirebaseNetworkKeyValueStorageApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB6B9AF292D7B8A00A029BD /* FirebaseNetworkKeyValueStorageApi.swift */; };
+		6AB6B9B3292D7D9300A029BD /* LocalKeyValueStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB6B9B2292D7D9300A029BD /* LocalKeyValueStorage.swift */; };
+		6AB6B9B5292D7DA100A029BD /* UserDefaultsLocalKeyValueStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB6B9B4292D7DA100A029BD /* UserDefaultsLocalKeyValueStorage.swift */; };
+		6AB6B9B7292D807B00A029BD /* DefaultUserDefaultsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB6B9B6292D807B00A029BD /* DefaultUserDefaultsRepository.swift */; };
+		6AB6B9B9292D814F00A029BD /* UserDefaultsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB6B9B8292D814E00A029BD /* UserDefaultsRepository.swift */; };
+		6AB6B9BB292D81DF00A029BD /* DefaultSignOutUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB6B9BA292D81DF00A029BD /* DefaultSignOutUseCase.swift */; };
+		6AB6B9BD292D82F800A029BD /* SignOutUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB6B9BC292D82F800A029BD /* SignOutUseCase.swift */; };
+		6AB6B9C1292DCBE800A029BD /* PhoneLoginCoorinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB6B9C0292DCBE800A029BD /* PhoneLoginCoorinator.swift */; };
 		6ADEE4E72922198200AD328B /* UIControl+Publisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ADEE4E62922198200AD328B /* UIControl+Publisher.swift */; };
 		6ADEE4EA29221CB800AD328B /* UIButton+Publisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ADEE4E929221CB800AD328B /* UIButton+Publisher.swift */; };
 		6ADEE4EC29221CD900AD328B /* UITextField+Publisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ADEE4EB29221CD900AD328B /* UITextField+Publisher.swift */; };
@@ -149,7 +162,7 @@
 		6A03B6EF2923BF8900AC15A6 /* CertificationTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CertificationTextField.swift; sourceTree = "<group>"; };
 		6A03B6F12923C00900AC15A6 /* UIFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFont.swift; sourceTree = "<group>"; };
 		6A03B7232923DE7200AC15A6 /* DefaultAuthUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultAuthUseCase.swift; sourceTree = "<group>"; };
-		6A03B7262923E5E300AC15A6 /* AuthUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthUseCase.swift; sourceTree = "<group>"; };
+		6A03B7262923E5E300AC15A6 /* PhoneSignInUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneSignInUseCase.swift; sourceTree = "<group>"; };
 		6A34C1D2292B202B00A3E57F /* ChattingRoomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChattingRoomViewController.swift; sourceTree = "<group>"; };
 		6A34C1D7292B211700A3E57F /* Chat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chat.swift; sourceTree = "<group>"; };
 		6A34C1DA292B216A00A3E57F /* OtherChatCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherChatCell.swift; sourceTree = "<group>"; };
@@ -182,7 +195,7 @@
 		6A45AA5E292794B500F85D2C /* ReigsterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReigsterViewController.swift; sourceTree = "<group>"; };
 		6A8377A82924A3FC00BC7112 /* RegisterNickNameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNickNameView.swift; sourceTree = "<group>"; };
 		6A8377AA2924B0D700BC7112 /* RegisterIntroductionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterIntroductionView.swift; sourceTree = "<group>"; };
-		6A8377AC2924BCB400BC7112 /* CongraturationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CongraturationsViewController.swift; sourceTree = "<group>"; };
+		6A8377AC2924BCB400BC7112 /* RegisterCongraturationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterCongraturationsView.swift; sourceTree = "<group>"; };
 		6A8B07222923274400492123 /* Soulmate.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Soulmate.entitlements; sourceTree = "<group>"; };
 		6A8B0723292330D100492123 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		6A8C888C2919031A009EDBBB /* Soulmate.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Soulmate.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -198,11 +211,11 @@
 		6AB6B945292AAD7600A029BD /* RegisterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewModel.swift; sourceTree = "<group>"; };
 		6AB6B94F292B155A00A029BD /* UILabel+Publisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+Publisher.swift"; sourceTree = "<group>"; };
 		6AB6B958292BDE7900A029BD /* QueryEntity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueryEntity.swift; sourceTree = "<group>"; };
-		6AB6B959292BDE7900A029BD /* DatabaseStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseStorage.swift; sourceTree = "<group>"; };
+		6AB6B959292BDE7900A029BD /* NetworkDatabaseApi.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkDatabaseApi.swift; sourceTree = "<group>"; };
 		6AB6B95A292BDE7900A029BD /* FireStoreQuery+Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FireStoreQuery+Ext.swift"; sourceTree = "<group>"; };
-		6AB6B95B292BDE7A00A029BD /* FireStoreDatabaseStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FireStoreDatabaseStorage.swift; sourceTree = "<group>"; };
-		6AB6B960292BDEEB00A029BD /* DefaultLoadDetailInfoUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultLoadDetailInfoUseCase.swift; sourceTree = "<group>"; };
-		6AB6B965292BE4F500A029BD /* LoadDetailInfoUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadDetailInfoUseCase.swift; sourceTree = "<group>"; };
+		6AB6B95B292BDE7A00A029BD /* FireStoreNetworkDatabaseApi.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FireStoreNetworkDatabaseApi.swift; sourceTree = "<group>"; };
+		6AB6B960292BDEEB00A029BD /* DefaultDownLoadDetailInfoUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultDownLoadDetailInfoUseCase.swift; sourceTree = "<group>"; };
+		6AB6B965292BE4F500A029BD /* DownLoadDetailInfoUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownLoadDetailInfoUseCase.swift; sourceTree = "<group>"; };
 		6AB6B967292BEC3900A029BD /* DefaultRegisterStateValidateUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultRegisterStateValidateUseCase.swift; sourceTree = "<group>"; };
 		6AB6B969292BEEC200A029BD /* RegisterStateValidateUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterStateValidateUseCase.swift; sourceTree = "<group>"; };
 		6AB6B96B292BF2E600A029BD /* UploadDetailInfoUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadDetailInfoUseCase.swift; sourceTree = "<group>"; };
@@ -211,6 +224,19 @@
 		6AB6B972292C2E5E00A029BD /* UploadPictureUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadPictureUseCase.swift; sourceTree = "<group>"; };
 		6AB6B976292C3DD500A029BD /* DefaultProfilePhotoRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultProfilePhotoRepository.swift; sourceTree = "<group>"; };
 		6AB6B979292C3E5800A029BD /* ProfilePhotoRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePhotoRepository.swift; sourceTree = "<group>"; };
+		6AB6B97B292D380A00A029BD /* Mbti.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mbti.swift; sourceTree = "<group>"; };
+		6AB6B99E292D718500A029BD /* RegisterUserInfoDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterUserInfoDTO.swift; sourceTree = "<group>"; };
+		6AB6B9A0292D71EC00A029BD /* DefaultUserDetailInfoRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultUserDetailInfoRepository.swift; sourceTree = "<group>"; };
+		6AB6B9A3292D733700A029BD /* UserDetailInfoRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailInfoRepository.swift; sourceTree = "<group>"; };
+		6AB6B9AD292D7B0300A029BD /* NetworkKeyValueStorageApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkKeyValueStorageApi.swift; sourceTree = "<group>"; };
+		6AB6B9AF292D7B8A00A029BD /* FirebaseNetworkKeyValueStorageApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseNetworkKeyValueStorageApi.swift; sourceTree = "<group>"; };
+		6AB6B9B2292D7D9300A029BD /* LocalKeyValueStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalKeyValueStorage.swift; sourceTree = "<group>"; };
+		6AB6B9B4292D7DA100A029BD /* UserDefaultsLocalKeyValueStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsLocalKeyValueStorage.swift; sourceTree = "<group>"; };
+		6AB6B9B6292D807B00A029BD /* DefaultUserDefaultsRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultUserDefaultsRepository.swift; sourceTree = "<group>"; };
+		6AB6B9B8292D814E00A029BD /* UserDefaultsRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsRepository.swift; sourceTree = "<group>"; };
+		6AB6B9BA292D81DF00A029BD /* DefaultSignOutUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultSignOutUseCase.swift; sourceTree = "<group>"; };
+		6AB6B9BC292D82F800A029BD /* SignOutUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignOutUseCase.swift; sourceTree = "<group>"; };
+		6AB6B9C0292DCBE800A029BD /* PhoneLoginCoorinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneLoginCoorinator.swift; sourceTree = "<group>"; };
 		6ADEE4E62922198200AD328B /* UIControl+Publisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIControl+Publisher.swift"; sourceTree = "<group>"; };
 		6ADEE4E929221CB800AD328B /* UIButton+Publisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Publisher.swift"; sourceTree = "<group>"; };
 		6ADEE4EB29221CD900AD328B /* UITextField+Publisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Publisher.swift"; sourceTree = "<group>"; };
@@ -305,6 +331,7 @@
 			isa = PBXGroup;
 			children = (
 				6A0041E32919EBA40042E02F /* AuthCoordinator.swift */,
+				6AB6B9C0292DCBE800A029BD /* PhoneLoginCoorinator.swift */,
 			);
 			path = Coordinator;
 			sourceTree = "<group>";
@@ -426,11 +453,12 @@
 				6A03B7232923DE7200AC15A6 /* DefaultAuthUseCase.swift */,
 				6A34C1F2292B48C700A3E57F /* DefaultSendMessageUseCase.swift */,
 				6A34C1F6292B501500A3E57F /* DefaultLoadChattingsUseCase.swift */,
-				6AB6B960292BDEEB00A029BD /* DefaultLoadDetailInfoUseCase.swift */,
+				6AB6B960292BDEEB00A029BD /* DefaultDownLoadDetailInfoUseCase.swift */,
 				6AB6B967292BEC3900A029BD /* DefaultRegisterStateValidateUseCase.swift */,
 				6AB6B96D292BF2F300A029BD /* DefaultUploadDetailInfoUseCase.swift */,
 				6AB6B96F292C2C7500A029BD /* DefaultUpLoadPictureUseCase.swift */,
 				6A34C206292C99BB00A3E57F /* DefaultLoadChattingRoomListUseCase.swift */,
+				6AB6B9BA292D81DF00A029BD /* DefaultSignOutUseCase.swift */,
 			);
 			path = UseCase;
 			sourceTree = "<group>";
@@ -438,14 +466,15 @@
 		6A03B7252923E5BB00AC15A6 /* Interface */ = {
 			isa = PBXGroup;
 			children = (
-				6A03B7262923E5E300AC15A6 /* AuthUseCase.swift */,
+				6A03B7262923E5E300AC15A6 /* PhoneSignInUseCase.swift */,
 				6A34C1F0292B48AE00A3E57F /* SendMessageUseCase.swift */,
 				6A34C1F4292B4FE500A3E57F /* LoadChattingsUseCase.swift */,
-				6AB6B965292BE4F500A029BD /* LoadDetailInfoUseCase.swift */,
+				6AB6B965292BE4F500A029BD /* DownLoadDetailInfoUseCase.swift */,
 				6AB6B969292BEEC200A029BD /* RegisterStateValidateUseCase.swift */,
 				6AB6B96B292BF2E600A029BD /* UploadDetailInfoUseCase.swift */,
 				6AB6B972292C2E5E00A029BD /* UploadPictureUseCase.swift */,
 				6A34C202292C982500A3E57F /* LoadChattingRoomListUseCase.swift */,
+				6AB6B9BC292D82F800A029BD /* SignOutUseCase.swift */,
 			);
 			path = Interface;
 			sourceTree = "<group>";
@@ -465,6 +494,7 @@
 				6A45AA4A2925C68300F85D2C /* RegisterUserInfo.swift */,
 				6A34C1D7292B211700A3E57F /* Chat.swift */,
 				6A34C204292C98D300A3E57F /* ChatRoomInfo.swift */,
+				6AB6B97B292D380A00A029BD /* Mbti.swift */,
 			);
 			path = Entity;
 			sourceTree = "<group>";
@@ -536,7 +566,7 @@
 				B311F4A52925E82300806E86 /* MbtiPreview.swift */,
 				B311F4A62925E82400806E86 /* MbtiSegmentView.swift */,
 				B311F4A92925EC7100806E86 /* RegisterMbtiView.swift */,
-				6A8377AC2924BCB400BC7112 /* CongraturationsViewController.swift */,
+				6A8377AC2924BCB400BC7112 /* RegisterCongraturationsView.swift */,
 				6A45AA5E292794B500F85D2C /* ReigsterViewController.swift */,
 			);
 			path = View;
@@ -640,7 +670,10 @@
 		6AB6B951292BDDF500A029BD /* Data */ = {
 			isa = PBXGroup;
 			children = (
-				6AB6B953292BDE0E00A029BD /* Storage */,
+				6AB6B99D292D716200A029BD /* DataTransferObject */,
+				6AB6B9B1292D7D7A00A029BD /* LocalKeyValueStorage */,
+				6AB6B9AC292D7AF500A029BD /* NetworkKeyValueStorageApi */,
+				6AB6B953292BDE0E00A029BD /* NetworkDatabaseApi */,
 				6AB6B952292BDE0600A029BD /* Repository */,
 			);
 			path = Data;
@@ -650,19 +683,21 @@
 			isa = PBXGroup;
 			children = (
 				6AB6B976292C3DD500A029BD /* DefaultProfilePhotoRepository.swift */,
+				6AB6B9A0292D71EC00A029BD /* DefaultUserDetailInfoRepository.swift */,
+				6AB6B9B6292D807B00A029BD /* DefaultUserDefaultsRepository.swift */,
 			);
 			path = Repository;
 			sourceTree = "<group>";
 		};
-		6AB6B953292BDE0E00A029BD /* Storage */ = {
+		6AB6B953292BDE0E00A029BD /* NetworkDatabaseApi */ = {
 			isa = PBXGroup;
 			children = (
-				6AB6B959292BDE7900A029BD /* DatabaseStorage.swift */,
-				6AB6B95B292BDE7A00A029BD /* FireStoreDatabaseStorage.swift */,
+				6AB6B959292BDE7900A029BD /* NetworkDatabaseApi.swift */,
+				6AB6B95B292BDE7A00A029BD /* FireStoreNetworkDatabaseApi.swift */,
 				6AB6B95A292BDE7900A029BD /* FireStoreQuery+Ext.swift */,
 				6AB6B958292BDE7900A029BD /* QueryEntity.swift */,
 			);
-			path = Storage;
+			path = NetworkDatabaseApi;
 			sourceTree = "<group>";
 		};
 		6AB6B962292BE1EA00A029BD /* Frameworks */ = {
@@ -676,8 +711,36 @@
 			isa = PBXGroup;
 			children = (
 				6AB6B979292C3E5800A029BD /* ProfilePhotoRepository.swift */,
+				6AB6B9A3292D733700A029BD /* UserDetailInfoRepository.swift */,
+				6AB6B9B8292D814E00A029BD /* UserDefaultsRepository.swift */,
 			);
 			path = Interface;
+			sourceTree = "<group>";
+		};
+		6AB6B99D292D716200A029BD /* DataTransferObject */ = {
+			isa = PBXGroup;
+			children = (
+				6AB6B99E292D718500A029BD /* RegisterUserInfoDTO.swift */,
+			);
+			path = DataTransferObject;
+			sourceTree = "<group>";
+		};
+		6AB6B9AC292D7AF500A029BD /* NetworkKeyValueStorageApi */ = {
+			isa = PBXGroup;
+			children = (
+				6AB6B9AD292D7B0300A029BD /* NetworkKeyValueStorageApi.swift */,
+				6AB6B9AF292D7B8A00A029BD /* FirebaseNetworkKeyValueStorageApi.swift */,
+			);
+			path = NetworkKeyValueStorageApi;
+			sourceTree = "<group>";
+		};
+		6AB6B9B1292D7D7A00A029BD /* LocalKeyValueStorage */ = {
+			isa = PBXGroup;
+			children = (
+				6AB6B9B2292D7D9300A029BD /* LocalKeyValueStorage.swift */,
+				6AB6B9B4292D7DA100A029BD /* UserDefaultsLocalKeyValueStorage.swift */,
+			);
+			path = LocalKeyValueStorage;
 			sourceTree = "<group>";
 		};
 		6ADEE4E829221C6600AD328B /* Combine */ = {
@@ -824,7 +887,7 @@
 				6A34C1DB292B216A00A3E57F /* OtherChatCell.swift in Sources */,
 				B3B03B44292C8C5E000AF283 /* MyPageMenuView.swift in Sources */,
 				6A97FE66291CE29E006F6DD9 /* LoginViewModel.swift in Sources */,
-				6AB6B95F292BDE7A00A029BD /* FireStoreDatabaseStorage.swift in Sources */,
+				6AB6B95F292BDE7A00A029BD /* FireStoreNetworkDatabaseApi.swift in Sources */,
 				6AB6B970292C2C7500A029BD /* DefaultUpLoadPictureUseCase.swift in Sources */,
 				B3E029A9291DDC1500931FA2 /* GradientButton.swift in Sources */,
 				6ADEE4EC29221CD900AD328B /* UITextField+Publisher.swift in Sources */,
@@ -833,24 +896,32 @@
 				6A03B6F02923BF8900AC15A6 /* CertificationTextField.swift in Sources */,
 				6A34C1FB292C8F8F00A3E57F /* ChatListViewController.swift in Sources */,
 				6A0041FD2919EE7B0042E02F /* ServiceTermViewController.swift in Sources */,
+				6AB6B9BB292D81DF00A029BD /* DefaultSignOutUseCase.swift in Sources */,
 				6A97FE63291CE0C2006F6DD9 /* UIImage+shadow.swift in Sources */,
 				6A45AA4629257E1E00F85D2C /* RegisterHeaderStackView.swift in Sources */,
+				6AB6B9AE292D7B0300A029BD /* NetworkKeyValueStorageApi.swift in Sources */,
+				6AB6B9A1292D71EC00A029BD /* DefaultUserDetailInfoRepository.swift in Sources */,
 				6A03B6EE2923BF2300AC15A6 /* CertificationViewModel.swift in Sources */,
 				6A34C1E8292B279000A3E57F /* ComposeBar.swift in Sources */,
 				6AB6B946292AAD7600A029BD /* RegisterViewModel.swift in Sources */,
 				B311F4A72925E82400806E86 /* MbtiPreview.swift in Sources */,
+				6AB6B9B9292D814F00A029BD /* UserDefaultsRepository.swift in Sources */,
+				6AB6B97C292D380A00A029BD /* Mbti.swift in Sources */,
 				6A34C1FD292C905200A3E57F /* ChatRoomInfoView.swift in Sources */,
 				6A34C1E4292B233800A3E57F /* MyChatView.swift in Sources */,
+				6AB6B99F292D718500A029BD /* RegisterUserInfoDTO.swift in Sources */,
 				6AE21021291DE06600A32280 /* SelectableCell.swift in Sources */,
 				6A0041DB2919E9420042E02F /* AppCoordinator.swift in Sources */,
 				6A03B6EC2923BD8C00AC15A6 /* PhoneNumberViewModel.swift in Sources */,
 				07EAD6FB2925F6B5001AE220 /* AddPhotoCell.swift in Sources */,
 				6A34C1E2292B233300A3E57F /* MyChatCell.swift in Sources */,
+				6AB6B9B5292D7DA100A029BD /* UserDefaultsLocalKeyValueStorage.swift in Sources */,
 				6A0041EE2919ED7F0042E02F /* DetailViewController.swift in Sources */,
 				6A34C1F3292B48C700A3E57F /* DefaultSendMessageUseCase.swift in Sources */,
 				6A34C1F5292B4FE500A3E57F /* LoadChattingsUseCase.swift in Sources */,
 				B3B03B48292CB877000AF283 /* MyPageMenuCollectionViewCell.swift in Sources */,
 				6A34C207292C99BB00A3E57F /* DefaultLoadChattingRoomListUseCase.swift in Sources */,
+				6AB6B9B0292D7B8A00A029BD /* FirebaseNetworkKeyValueStorageApi.swift in Sources */,
 				6A45AA212925595700F85D2C /* RegisterCoordinator.swift in Sources */,
 				6A444533291EA23F009AE2E5 /* UIColor.swift in Sources */,
 				B311F4AA2925EC7100806E86 /* RegisterMbtiView.swift in Sources */,
@@ -880,8 +951,10 @@
 				6A0041E02919EB230042E02F /* LoginViewController.swift in Sources */,
 				6A34C1EB292B30FC00A3E57F /* KeyboardInfo.swift in Sources */,
 				07EE0F18292C893D00E761C4 /* PhotoFooterView.swift in Sources */,
+				6AB6B9BD292D82F800A029BD /* SignOutUseCase.swift in Sources */,
 				6A3F91A72924A45300F1D901 /* RegisterSelectableView.swift in Sources */,
 				6A34C1FF292C944D00A3E57F /* ChatRoomInfoCell.swift in Sources */,
+				6AB6B9B3292D7D9300A029BD /* LocalKeyValueStorage.swift in Sources */,
 				6A0041EB2919ED5F0042E02F /* HomeViewController.swift in Sources */,
 				6A34C205292C98D300A3E57F /* ChatRoomInfo.swift in Sources */,
 				6A45AA4B2925C68300F85D2C /* RegisterUserInfo.swift in Sources */,
@@ -894,27 +967,30 @@
 				B30A8F0F291CB4AC00ED4906 /* PhoneNumberViewController.swift in Sources */,
 				07EE0F13292C86FA00E761C4 /* BasicInfoCell.swift in Sources */,
 				6A8C88922919031A009EDBBB /* SceneDelegate.swift in Sources */,
+				6AB6B9C1292DCBE800A029BD /* PhoneLoginCoorinator.swift in Sources */,
 				B303D651292367CF00414293 /* ProgressBar.swift in Sources */,
 				6A0041FB2919EE600042E02F /* MyPageViewController.swift in Sources */,
 				B30A8F11291CB4F100ED4906 /* CertificationNumberViewController.swift in Sources */,
-				6AB6B961292BDEEB00A029BD /* DefaultLoadDetailInfoUseCase.swift in Sources */,
+				6AB6B961292BDEEB00A029BD /* DefaultDownLoadDetailInfoUseCase.swift in Sources */,
 				6AB6B950292B155A00A029BD /* UILabel+Publisher.swift in Sources */,
 				6AB6B96E292BF2F400A029BD /* DefaultUploadDetailInfoUseCase.swift in Sources */,
-				6A8377AD2924BCB400BC7112 /* CongraturationsViewController.swift in Sources */,
+				6A8377AD2924BCB400BC7112 /* RegisterCongraturationsView.swift in Sources */,
+				6AB6B9A4292D733700A029BD /* UserDetailInfoRepository.swift in Sources */,
 				07EE0F11292C86EC00E761C4 /* ProfileCell.swift in Sources */,
 				B331CED0292B854500F17AED /* UIImage.swift in Sources */,
 				6A0041DD2919EADC0042E02F /* HomeCoordinator.swift in Sources */,
 				07EE0F15292C870400E761C4 /* GreetingCell.swift in Sources */,
 				6A0041FF2919EE920042E02F /* ModificationViewController.swift in Sources */,
-				6A03B7272923E5E300AC15A6 /* AuthUseCase.swift in Sources */,
+				6AB6B9B7292D807B00A029BD /* DefaultUserDefaultsRepository.swift in Sources */,
+				6A03B7272923E5E300AC15A6 /* PhoneSignInUseCase.swift in Sources */,
 				6AB6B968292BEC3900A029BD /* DefaultRegisterStateValidateUseCase.swift in Sources */,
-				6AB6B966292BE4F500A029BD /* LoadDetailInfoUseCase.swift in Sources */,
+				6AB6B966292BE4F500A029BD /* DownLoadDetailInfoUseCase.swift in Sources */,
 				6A34C1D3292B202B00A3E57F /* ChattingRoomViewController.swift in Sources */,
 				6A45AA3D2925701200F85D2C /* UIDatePicker+Publisher.swift in Sources */,
 				074F3B0B292261EA00D36C89 /* PartnerCell.swift in Sources */,
 				6A45AA5F292794B500F85D2C /* ReigsterViewController.swift in Sources */,
 				07DDDF272924A7C600CB398C /* RegisterBirthView.swift in Sources */,
-				6AB6B95D292BDE7A00A029BD /* DatabaseStorage.swift in Sources */,
+				6AB6B95D292BDE7A00A029BD /* NetworkDatabaseApi.swift in Sources */,
 				07B61AC2292B6C510009BC8A /* DetailViewModel.swift in Sources */,
 				6A0041D72919E68D0042E02F /* MainTabCoordinator.swift in Sources */,
 			);

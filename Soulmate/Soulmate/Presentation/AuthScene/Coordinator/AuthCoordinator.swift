@@ -9,6 +9,12 @@ import UIKit
 import FirebaseAuth
 
 class AuthCoordinator: Coordinator {
+    
+    enum AuthInitType {
+        case login
+        case register(RegisterUserInfo?)
+    }
+    
     var finishDelegate: CoordinatorFinishDelegate?
     
     var navigationController: UINavigationController
@@ -21,22 +27,30 @@ class AuthCoordinator: Coordinator {
         self.navigationController = navigationController
     }
     
-    func start() {
-        showLoginPage()
+    func start(with `type`: AuthInitType) {
+        switch `type` {
+        case .login: showLoginPage()
+        case .register(let registerUserInfo):
+            showLoginPage() // 류트뷰를 로그인뷰컨으로 잡아둬서 나중에 뒤로가면 로그인 페이지로 돌아올수있도록
+            showRegisterFlow(registerUserInfo)
+        }
     }
     
     lazy var showLoginPage: () -> Void = { [weak self] in
-        let loadDetailInfoUseCase = DefaultLoadDetailInfoUseCase()
+        let networkDatabaseApi = FireStoreNetworkDatabaseApi()
+        let userDetailInfoRepository = DefaultUserDetailInfoRepository(networkDatabaseApi: networkDatabaseApi)
+        let downloadDetailInfoUseCase = DefaultDownLoadDetailInfoUseCase(userDetailInfoRepository: userDetailInfoRepository)
         let registerDetailInfoUseCase = DefaultRegisterStateValidateUseCase()
         
         let viewModel = LoginViewModel(
-            loadDetailInfoUseCase: loadDetailInfoUseCase,
+            downLoadDetailInfoUseCase: downloadDetailInfoUseCase,
             registerStateValidateUseCase: registerDetailInfoUseCase
         )
         viewModel.setActions(
             actions: LoginViewModelActions(
-                doneAppleLogin: self?.doneSignIn,
-                showPhoneLoginPage: self?.showPhoneLoginPage
+                showRegisterFlow: self?.showRegisterFlow,
+                showMainTabFlow: self?.showMainTabFlow,
+                showPhoneLoginFlow: self?.showPhoneLoginFlow
             )
         )
         
@@ -44,70 +58,29 @@ class AuthCoordinator: Coordinator {
         self?.navigationController.pushViewController(vc, animated: true)
     }
     
-    lazy var showPhoneLoginPage: () -> Void = { [weak self] in
-        let authUseCase = DefaultAuthUseCase()
-        let viewModel = PhoneNumberViewModel(authUseCase: authUseCase)
-        viewModel.setActions(
-            actions: PhoneNumberViewModelActions(
-                showCertificationPage: self?.showCerfiticationPage
-            )
-        )
-        
-        let vc = PhoneNumberViewController(viewModel: viewModel)
-        self?.navigationController.pushViewController(vc, animated: true)
-
+    lazy var showPhoneLoginFlow: () -> Void = { [weak self] in
+        let coordinator = PhoneLoginCoordinator(navigationController: self?.navigationController ?? UINavigationController())
+        coordinator.finishDelegate = self
+        self?.childCoordinators.append(coordinator)
+        coordinator.start()
     }
     
-    lazy var showCerfiticationPage: (String) -> Void = { [weak self] phoneNumber in
-        let authUseCase = DefaultAuthUseCase()
-        let registerStateValidateUseCase = DefaultRegisterStateValidateUseCase()
-        let loadDetailInfoUseCase = DefaultLoadDetailInfoUseCase()
-        
-        let viewModel = CertificationViewModel(
-            authUseCase: authUseCase,
-            registerStateValidateUseCase: registerStateValidateUseCase,
-            loadDetailInfoUseCase: loadDetailInfoUseCase
-        )
-        viewModel.phoneNumber = phoneNumber
-        
-        viewModel.setActions(
-            actions: CertificationViewModelActions(
-                doneSignIn: self?.doneSignIn
-            )
-        )
-        
-        let vc = CertificationNumberViewController(viewModel: viewModel)
-        self?.navigationController.pushViewController(vc, animated: true)
+    lazy var showRegisterFlow: (RegisterUserInfo?) -> Void = { [weak self] registerUserInfo in
+        let coordinator = RegisterCoordinator(navigationController: self?.navigationController ?? UINavigationController())
+        coordinator.finishDelegate = self
+        self?.childCoordinators.append(coordinator)
+        coordinator.start(with: registerUserInfo)
     }
     
-    lazy var doneSignIn: (RegisterState) -> Void = { [weak self] state in
+    lazy var showMainTabFlow: () -> Void = { [weak self] in
+        guard let appCoordinator = self?.finishDelegate as? AppCoordinator else { return }
         
-        // 이부분 어칼지 상의
-        self?.navigationController.popViewController(animated: false)
-        self?.navigationController.popViewController(animated: false)
-
-        
-        switch state {
-        case .none:
-            let coordinator = RegisterCoordinator(navigationController: self?.navigationController ?? UINavigationController())
-            coordinator.finishDelegate = self
-            self?.childCoordinators.append(coordinator)
-            coordinator.start()
-        case .part(let registerUserInfo):
-            let coordinator = RegisterCoordinator(navigationController: self?.navigationController ?? UINavigationController())
-            coordinator.finishDelegate = self
-            self?.childCoordinators.append(coordinator)
-            coordinator.start(registerUserInfo: registerUserInfo)
-            
-        case .done:
-            self?.finish()
-        }
+        appCoordinator.showMainTabFlow()
     }
 }
 
 enum RegisterState {
-    case none
-    case part(RegisterUserInfo)
+    case part
     case done
 }
 
@@ -115,10 +88,6 @@ extension AuthCoordinator: CoordinatorFinishDelegate {
     func coordinatorDidFinish(childCoordinator: Coordinator) {
         childCoordinators = childCoordinators.filter {
             $0.type != childCoordinator.type
-        }
-        
-        if childCoordinator.type == .register {
-            self.finish()
         }
     }
 }

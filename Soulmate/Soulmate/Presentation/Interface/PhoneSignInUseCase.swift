@@ -7,9 +7,7 @@
 
 import Foundation
 
-protocol AuthUseCase {
-    func register()
-    func logOut() throws
+protocol PhoneSignInUseCase {
     func verifyPhoneNumber(phoneNumber: String) async throws -> String
     func certifyWithSMSCode(certificationCode: String) async throws
 }

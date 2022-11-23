@@ -11,12 +11,13 @@ import FirebaseAuth
 
 struct PhoneNumberViewModelActions {
     var showCertificationPage: ((String) -> Void)?
+    var quitPhoneLoginFlow: (() -> Void)?
 }
 
 class PhoneNumberViewModel {
     var bag = Set<AnyCancellable>()
     
-    var authUseCase: AuthUseCase
+    var phoneSignInUseCase: PhoneSignInUseCase
     
     var actions: PhoneNumberViewModelActions?
     
@@ -32,8 +33,8 @@ class PhoneNumberViewModel {
         var isNextButtonEnabled: AnyPublisher<Bool, Never>
     }
     
-    init(authUseCase: AuthUseCase) {
-        self.authUseCase = authUseCase
+    init(phoneSignInUseCase: PhoneSignInUseCase) {
+        self.phoneSignInUseCase = phoneSignInUseCase
     }
     
     func setActions(actions: PhoneNumberViewModelActions) {
@@ -78,7 +79,7 @@ class PhoneNumberViewModel {
         
         Task { [phoneNumber, weak self] in
             do {
-                let verificationID = try await authUseCase.verifyPhoneNumber(phoneNumber: phoneNumber)
+                let verificationID = try await phoneSignInUseCase.verifyPhoneNumber(phoneNumber: phoneNumber)
                 await MainActor.run { [self] in
                     self?.actions?.showCertificationPage?(phoneNumber)
                 }

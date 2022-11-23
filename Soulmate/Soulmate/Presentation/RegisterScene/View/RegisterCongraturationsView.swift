@@ -19,11 +19,12 @@ final class RegisterCongraturationsView: UIView {
         return imageView
     }()
     
-    private lazy var profileImage: UIImageView = {
+    lazy var profileImage: UIImageView = {
         let imageView = UIImageView()
         self.addSubview(imageView)
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
         imageView.widthAnchor.constraint(equalToConstant: 200).isActive = true
         imageView.heightAnchor.constraint(equalToConstant: 200).isActive = true
         imageView.backgroundColor = .systemGray6

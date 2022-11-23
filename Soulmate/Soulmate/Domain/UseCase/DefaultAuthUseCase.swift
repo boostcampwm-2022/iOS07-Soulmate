@@ -8,27 +8,23 @@
 import Foundation
 import FirebaseAuth
 
-class DefaultAuthUseCase: AuthUseCase {
+class DefaultPhoneSignInUseCase: PhoneSignInUseCase {
     
-    func register() {
-        
-    }
+    let userDefaultsRepository: UserDefaultsRepository
     
-    func logOut() throws {
-        try Auth.auth().signOut()
+    init(userDefaultsRepository: UserDefaultsRepository) {
+        self.userDefaultsRepository = userDefaultsRepository
     }
     
     func verifyPhoneNumber(phoneNumber: String) async throws -> String {
         let verificationID = try await PhoneAuthProvider.provider().verifyPhoneNumber(phoneNumber, uiDelegate: nil)
-        UserDefaults.standard.set(verificationID, forKey: "verificationID")
+        userDefaultsRepository.set(key: "verificationID", value: verificationID)
         return verificationID
     }
     
     func certifyWithSMSCode(certificationCode: String) async throws {
-        guard let verificationID = UserDefaults.standard.string(forKey: "verificationID") else {
-            throw AuthError.noVerificationIDError
-        }
-                
+        guard let verificationID: String = userDefaultsRepository.get(key: "verificationID") else { print("fuck"); return }
+        print("good")
         let credential = PhoneAuthProvider.provider().credential(
             withVerificationID: verificationID,
             verificationCode: certificationCode
@@ -41,4 +37,5 @@ class DefaultAuthUseCase: AuthUseCase {
 // TODO: 에러 따로 빼서 정의하기
 enum AuthError: Error {
     case noVerificationIDError
+    case noCurrentUserError
 }

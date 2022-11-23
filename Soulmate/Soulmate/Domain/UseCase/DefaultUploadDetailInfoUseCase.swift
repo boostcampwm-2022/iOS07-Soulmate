@@ -9,13 +9,16 @@ import Foundation
 import FirebaseAuth
 
 class DefaultUploadDetailInfoUseCase: UploadDetailInfoUseCase {
+        
+    let userDetailInfoRepository: UserDetailInfoRepository
     
-    let db = FireStoreDatabaseStorage()
+    init(userDetailInfoRepository: UserDetailInfoRepository) {
+        self.userDetailInfoRepository = userDetailInfoRepository
+    }
     
     func uploadDetailInfo(registerUserInfo: RegisterUserInfo) async throws {
-        try await db.create(table: "UserDetailInfo", documentID: Auth.auth().currentUser!.uid, data: registerUserInfo.toDTO())
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        try await userDetailInfoRepository.uploadDetailInfo(userUid: uid, registerUserInfo: registerUserInfo)
     }
 
 }
-
-// 다음버튼이 눌릴때마다 업로드

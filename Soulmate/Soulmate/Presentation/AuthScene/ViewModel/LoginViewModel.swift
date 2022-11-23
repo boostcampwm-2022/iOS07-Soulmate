@@ -10,13 +10,14 @@ import Combine
 import FirebaseAuth
 
 struct LoginViewModelActions {
-    var doneAppleLogin: ((RegisterState) -> Void)?
-    var showPhoneLoginPage: (() -> Void)?
+    var showRegisterFlow: ((RegisterUserInfo?) -> Void)?
+    var showMainTabFlow: (() -> Void)?
+    var showPhoneLoginFlow: (() -> Void)?
 }
 
 class LoginViewModel {
     
-    var loadDetailInfoUseCase: LoadDetailInfoUseCase
+    var downLoadDetailInfoUseCase: DownLoadDetailInfoUseCase
     var registerStateValidateUseCase: RegisterStateValidateUseCase
     
     struct Input {
@@ -29,11 +30,11 @@ class LoginViewModel {
     var actions: LoginViewModelActions?
     
     init(
-        loadDetailInfoUseCase: LoadDetailInfoUseCase,
+        downLoadDetailInfoUseCase: DownLoadDetailInfoUseCase,
         registerStateValidateUseCase: RegisterStateValidateUseCase
     ) {
         self.registerStateValidateUseCase = registerStateValidateUseCase
-        self.loadDetailInfoUseCase = loadDetailInfoUseCase
+        self.downLoadDetailInfoUseCase = downLoadDetailInfoUseCase
     }
     
     func setActions(actions: LoginViewModelActions) {
@@ -53,11 +54,16 @@ class LoginViewModel {
     func doneAppleLogin() {
         Task {
             do {
-                let registerUserInfo = try await loadDetailInfoUseCase.loadDetailInfo(userUid: Auth.auth().currentUser!.uid)
+                let registerUserInfo = try await downLoadDetailInfoUseCase.downloadDetailInfo(userUid: Auth.auth().currentUser!.uid)
                 let state = registerStateValidateUseCase.validateRegisterState(registerUserInfo: registerUserInfo)
-                await MainActor.run { actions?.doneAppleLogin?(state) }
+                switch state {
+                case .part:
+                    await MainActor.run { actions?.showRegisterFlow?(registerUserInfo) }
+                case .done:
+                    await MainActor.run { actions?.showMainTabFlow?() }
+                }
             } catch DecodingError.valueNotFound {
-                await MainActor.run { actions?.doneAppleLogin?(.none) }
+                await MainActor.run { actions?.showRegisterFlow?(nil) }
             } catch {
                 print(error.localizedDescription)
             }
@@ -65,7 +71,7 @@ class LoginViewModel {
     }
     
     func phoneLoginTapped() {
-        actions?.showPhoneLoginPage?()
+        actions?.showPhoneLoginFlow?()
     }
     
 }
