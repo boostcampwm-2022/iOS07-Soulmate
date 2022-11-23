@@ -48,7 +48,6 @@ final class AppCoordinator: Coordinator {
                 case .part:
                     await MainActor.run { showAuthRegisterFlow(registerUserInfo: userInfo) }
                 case .done:
-                    print("here")
                     await MainActor.run { showMainTabFlow() }
                 }
             }

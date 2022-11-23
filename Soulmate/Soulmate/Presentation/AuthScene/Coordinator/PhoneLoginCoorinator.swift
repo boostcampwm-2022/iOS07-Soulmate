@@ -83,7 +83,7 @@ class PhoneLoginCoordinator: Coordinator {
     lazy var showMainTabFlow: () -> Void = { [weak self] in
         guard let authCoordinator = self?.finishDelegate as? AuthCoordinator else { return }
         
-        self?.navigationController.popToRootViewController(animated: false)
+        //self?.navigationController.popToRootViewController(animated: false)
         self?.finish()
         authCoordinator.showMainTabFlow()
     }

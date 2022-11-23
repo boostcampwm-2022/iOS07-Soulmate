@@ -23,8 +23,7 @@ class DefaultPhoneSignInUseCase: PhoneSignInUseCase {
     }
     
     func certifyWithSMSCode(certificationCode: String) async throws {
-        guard let verificationID: String = userDefaultsRepository.get(key: "verificationID") else { print("fuck"); return }
-        print("good")
+        guard let verificationID: String = userDefaultsRepository.get(key: "verificationID") else { return }
         let credential = PhoneAuthProvider.provider().credential(
             withVerificationID: verificationID,
             verificationCode: certificationCode

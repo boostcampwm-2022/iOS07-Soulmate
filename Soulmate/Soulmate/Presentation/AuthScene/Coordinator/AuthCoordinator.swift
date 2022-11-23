@@ -75,6 +75,7 @@ class AuthCoordinator: Coordinator {
     lazy var showMainTabFlow: () -> Void = { [weak self] in
         guard let appCoordinator = self?.finishDelegate as? AppCoordinator else { return }
         
+        self?.finish()
         appCoordinator.showMainTabFlow()
     }
 }
