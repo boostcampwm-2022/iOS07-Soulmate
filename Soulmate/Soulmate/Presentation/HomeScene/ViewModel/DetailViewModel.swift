@@ -10,7 +10,7 @@ import Foundation
 final class DetailViewModel {
     let userInfo: RegisterUserInfo
     let distance: Int
-    var actions: DetailViewModelAction?
+    //var actions: DetailViewModelAction?
     private weak var coordinator: HomeCoordinator?
     
     init(userInfo: RegisterUserInfo, distance: Int, coordinator: HomeCoordinator) {
@@ -19,9 +19,9 @@ final class DetailViewModel {
         self.coordinator = coordinator
     }
     
-    func setActions(actions: DetailViewModelAction) {
-        self.actions = actions
-    }
+//    func setActions(actions: DetailViewModelAction) {
+//        self.actions = actions
+//    }
     
 }
 
