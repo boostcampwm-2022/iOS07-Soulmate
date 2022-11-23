@@ -20,7 +20,7 @@ final class ChattingRoomViewModel {
         loadChattingsUseCase: LoadChattingsUseCase
     ) {
         self.sendMessageUseCase = sendMessageUseCase
-        self.loadChattingsUseCase = loadChattingsUseCase
+        self.loadChattingsUseCase = loadChattingsUseCase        
     }
     
     struct Input {

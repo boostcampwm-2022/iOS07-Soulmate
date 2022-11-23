@@ -13,6 +13,7 @@ final class ChatListViewController: UIViewController {
     
     private var viewModel: ChatListViewModel?
     private var cancellables = Set<AnyCancellable>()
+    private let rowSelectSubject = PassthroughSubject<Int, Never>()
     
     private lazy var chattingListView: UITableView = {
         let tableView = UITableView()
@@ -53,19 +54,20 @@ private extension ChatListViewController {
     func bind() {
         let output = viewModel?.transform(
             input: ChatListViewModel.Input(
-                viewDidLoad: Just(()).eraseToAnyPublisher()
+                viewDidLoad: Just(()).eraseToAnyPublisher(),
+                didSelectRowAt: rowSelectSubject.eraseToAnyPublisher()
             ),
             cancellables: &cancellables
         )
         
         output?.listLoaded
-            .sink(receiveValue: { [weak self] _ in
+            .sink { [weak self] _ in
                 self?.chattingListView.reloadData()
-            })
+            }
             .store(in: &cancellables)
     }
     
-    func configureView() {        
+    func configureView() {
         view.backgroundColor = .white
     }
     
@@ -99,5 +101,9 @@ extension ChatListViewController: UITableViewDelegate, UITableViewDataSource {
         cell.configure(with: info)
         
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        rowSelectSubject.send(indexPath.row)
     }
 }

@@ -24,7 +24,7 @@ final class DefaultLoadChattingRoomListUseCase: LoadChattingRoomListUseCase {
             let chatRoomInfos = chatRoomInfoDTOs.map { $0.toModel() }.sorted { l, r in
                 guard let lDate = l.lastChatDate, let rDate = r.lastChatDate else { return true }
                 
-                return lDate < rDate
+                return lDate > rDate
             }
             
             self?.chattingRoomList.send(chatRoomInfos)
