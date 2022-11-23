@@ -10,6 +10,8 @@ import UIKit
 import SnapKit
 
 final class HomeViewController: UIViewController {
+    private var viewModel: HomeViewModel?
+    
     // MARK: - UI
     private lazy var logo: UIImageView = {
         let imageView = UIImageView()
@@ -73,6 +75,19 @@ final class HomeViewController: UIViewController {
         self.view.addSubview(button)
         return button
     }()
+    
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    convenience init(viewModel: HomeViewModel) {
+        self.init(nibName: nil, bundle: nil)
+        self.viewModel = viewModel
+    }
     
     // MARK: - 초기화
     override func viewDidLoad() {
