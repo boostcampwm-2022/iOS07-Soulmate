@@ -4,15 +4,19 @@
 //
 //  Created by Hoen on 2022/11/23.
 //
-import Foundation
+
 import FirebaseFirestore
-struct ChatRoomInfoDTO: Codable {
+
+struct ChatRoomInfoDTO: Decodable {
+    var documentId: String?
     var mateName: String
     var lastMessage: String
-    var users: [String]
+    var userIds: [String]
     var lastDate: Timestamp
+    
     func toModel() -> ChatRoomInfo {
         ChatRoomInfo(
+            documentId: documentId,
             mateName: mateName,
             mateProfileImage: nil,
             latestChatContent: lastMessage,

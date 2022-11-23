@@ -23,7 +23,6 @@ final class AppCoordinator: Coordinator {
     }
     
     func start() {
-        try! Auth.auth().signOut()
 
         if let uid = Auth.auth().currentUser?.uid {
             checkRegistration(for: uid)

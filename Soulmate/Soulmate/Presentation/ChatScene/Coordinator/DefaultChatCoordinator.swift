@@ -30,8 +30,8 @@ class DefaultChatCoordinator: ChatCoordinator {
     }
     
     func showChatRoom(with info: ChatRoomInfo) {
-        let sendMessageUseCase = DefaultSendMessageUseCase()
-        let loadChattingsUseCase = DefaultLoadChattingsUseCase()
+        let sendMessageUseCase = DefaultSendMessageUseCase(with: info)
+        let loadChattingsUseCase = DefaultLoadChattingsUseCase(with: info)
         let viewModel = ChattingRoomViewModel(
             sendMessageUseCase: sendMessageUseCase,
             loadChattingsUseCase: loadChattingsUseCase
