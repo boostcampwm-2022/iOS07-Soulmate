@@ -10,16 +10,17 @@ import Combine
 import FirebaseAuth
 
 struct CertificationViewModelActions {
-    var doneSignIn: ((RegisterState) -> Void)?
+    var showRegisterFlow: ((RegisterUserInfo?) -> Void)?
+    var showMainTabFlow: (() -> Void)?
 }
 
 class CertificationViewModel {
     
     var bag = Set<AnyCancellable>()
     
-    var authUseCase: AuthUseCase
+    var phoneSignInUseCase: PhoneSignInUseCase
     var registerStateValidateUseCase: RegisterStateValidateUseCase
-    var loadDetailInfoUseCase: LoadDetailInfoUseCase
+    var downloadDetailInfoUseCase: DownLoadDetailInfoUseCase
     
     var actions: CertificationViewModelActions?
     
@@ -36,13 +37,13 @@ class CertificationViewModel {
     }
     
     init(
-        authUseCase: AuthUseCase,
+        phoneSignInUseCase: PhoneSignInUseCase,
         registerStateValidateUseCase: RegisterStateValidateUseCase,
-        loadDetailInfoUseCase: LoadDetailInfoUseCase
+        downloadDetailInfoUseCase: DownLoadDetailInfoUseCase
     ) {
-        self.authUseCase = authUseCase
+        self.phoneSignInUseCase = phoneSignInUseCase
         self.registerStateValidateUseCase = registerStateValidateUseCase
-        self.loadDetailInfoUseCase = loadDetailInfoUseCase
+        self.downloadDetailInfoUseCase = downloadDetailInfoUseCase
     }
     
     func setActions(actions: CertificationViewModelActions) {
@@ -75,15 +76,22 @@ class CertificationViewModel {
         Task { [weak self] in
             do {
                 guard let self else { return }
-                try await authUseCase.certifyWithSMSCode(certificationCode: self.certificationNumber)
-                let registerUserInfo = try await loadDetailInfoUseCase.loadDetailInfo(userUid: Auth.auth().currentUser!.uid)
+                try await phoneSignInUseCase.certifyWithSMSCode(certificationCode: self.certificationNumber)
+                let registerUserInfo = try await downloadDetailInfoUseCase.downloadDetailInfo(userUid: Auth.auth().currentUser!.uid)
                 let state = registerStateValidateUseCase.validateRegisterState(registerUserInfo: registerUserInfo)
-                await MainActor.run { actions?.doneSignIn?(state) }
+
+                switch state {
+                case .part:
+                    await MainActor.run { actions?.showRegisterFlow?(registerUserInfo) }
+                case .done:
+                    await MainActor.run { actions?.showMainTabFlow?() }
+                }
             } catch DecodingError.valueNotFound {
-                await MainActor.run { actions?.doneSignIn?(.none) }
+                await MainActor.run { actions?.showRegisterFlow?(nil) }
             } catch {
-                print(error)
+                print(error.localizedDescription)
             }
         }
+
     }
 }

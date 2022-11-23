@@ -9,8 +9,7 @@ import Foundation
 
 class DefaultRegisterStateValidateUseCase: RegisterStateValidateUseCase {
     func validateRegisterState(registerUserInfo: RegisterUserInfo) -> RegisterState {
-        guard let _ = registerUserInfo.id,
-              let _ = registerUserInfo.gender,
+        guard let _ = registerUserInfo.gender,
               let _ = registerUserInfo.nickName,
               let _ = registerUserInfo.birthDay,
               let _ = registerUserInfo.height,
@@ -18,7 +17,7 @@ class DefaultRegisterStateValidateUseCase: RegisterStateValidateUseCase {
               let _ = registerUserInfo.smokingType,
               let _ = registerUserInfo.drinkingType,
               let _ = registerUserInfo.aboutMe,
-              let _ = registerUserInfo.imageList else { return .part(registerUserInfo) }
+              let _ = registerUserInfo.imageList else { return .part }
         return .done
     }
 }

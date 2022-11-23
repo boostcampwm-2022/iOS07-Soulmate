@@ -45,7 +45,7 @@ class RegisterViewController: UIViewController {
     
     private lazy var prevButton: UIButton = {
         let button = UIButton(frame: .zero)
-        button.setImage(UIImage(named: "chevron.left"), for: .normal)
+        button.setImage(UIImage(named: "back"), for: .normal)
         return button
     }()
     
@@ -69,7 +69,7 @@ class RegisterViewController: UIViewController {
         
         currentPage = targetPage()
         configurePageLayout()
-        
+        configureHistory()
         bind()
     }
     
@@ -142,6 +142,60 @@ private extension RegisterViewController {
 
 private extension RegisterViewController {
     
+    // FIXME: 너무 지저분한데 이게 맞나? 뷰 안에 메서드를 만들어줘야하나??
+    
+    func configureHistory() { // 이전에 했던 부분까지 셋팅
+        guard let viewModel = viewModel,
+              let genderView = childView[0] as? RegisterSelectableView,
+              let nickNameView = childView[1] as? RegisterNickNameView,
+              let birthView = childView[2] as? RegisterBirthView,
+              let heightView = childView[3] as? RegisterHeightView,
+              let mbtiView = childView[4] as? RegisterMbtiView,
+              let smokingView = childView[5] as? RegisterSelectableView,
+              let drinkingView = childView[6] as? RegisterSelectableView,
+              let introductionView = childView[7] as? RegisterIntroductionView else { return }
+        
+        if let gender = viewModel.genderType,
+           let index = GenderType.allCases.firstIndex(of: gender) {
+            genderView.collectionView.selectItem(at: IndexPath(row: index, section: 0), animated: false, scrollPosition: .top)
+            genderView.selectedIndex = index
+        }
+        
+        if let nickName = viewModel.nickName {
+            nickNameView.nicknameTextField.text = nickName
+        }
+
+        birthView.birthPicker.date = viewModel.birth
+        heightView.selectedHeight = String(viewModel.height)
+        
+        if let mbti = viewModel.mbti,
+           let innerIndex = InnerType.allCases.firstIndex(of: mbti.innerType),
+           let recogIndex = RecognizeType.allCases.firstIndex(of: mbti.recognizeType),
+           let judgeIndex = JudgementType.allCases.firstIndex(of: mbti.judgementType),
+           let lifeIndex = LifeStyleType.allCases.firstIndex(of: mbti.lifeStyleType) {
+            innerIndex == 0 ? mbtiView.innerTypeView.leftButtonTapped() : mbtiView.innerTypeView.rightButtonTapped()
+            recogIndex == 0 ? mbtiView.recognizeTypeView.leftButtonTapped() : mbtiView.recognizeTypeView.rightButtonTapped()
+            judgeIndex == 0 ? mbtiView.judgementTypeView.leftButtonTapped() : mbtiView.judgementTypeView.rightButtonTapped()
+            lifeIndex == 0 ? mbtiView.lifeStyleTypeView.leftButtonTapped() : mbtiView.lifeStyleTypeView.rightButtonTapped()
+        }
+        
+        if let smoking = viewModel.smokingType,
+           let index = SmokingType.allCases.firstIndex(of: smoking) {
+            smokingView.collectionView.selectItem(at: IndexPath(row: index, section: 0), animated: false, scrollPosition: .top)
+            smokingView.selectedIndex = index
+        }
+        
+        if let drinking = viewModel.drinkingType,
+           let index = DrinkingType.allCases.firstIndex(of: drinking) {
+            drinkingView.collectionView.selectItem(at: IndexPath(row: index, section: 0), animated: false, scrollPosition: .top)
+            drinkingView.selectedIndex = index
+        }
+        
+        if let introduction = viewModel.introduction {
+            introductionView.introductionTextView.text = introduction
+        }
+    }
+    
     func bind() {
         guard let viewModel = viewModel,
               let genderView = childView[0] as? RegisterSelectableView,
@@ -152,13 +206,13 @@ private extension RegisterViewController {
               let smokingView = childView[5] as? RegisterSelectableView,
               let drinkingView = childView[6] as? RegisterSelectableView,
               let introductionView = childView[7] as? RegisterIntroductionView,
-              let photoView = childView[8] as? RegisterPhotoView else { return }
+              let photoView = childView[8] as? RegisterPhotoView,
+              let congratulationView = childView[9] as? RegisterCongraturationsView else { return }
                 
         nextButton.tapPublisher()
             .sink { [weak self] _ in
                 guard let self else { return }
-                if self.currentPage < 10 {
-                    print(self.currentPage)
+                if self.currentPage < 9 {
                     self.nextPage()
                 }
             }
@@ -171,12 +225,18 @@ private extension RegisterViewController {
             .store(in: &bag)
         
         $currentPage
-            .sink { value in
-                if value != 0 {
-                    self.navigationItem.setLeftBarButton(UIBarButtonItem(customView: self.prevButton), animated: true)
-                }
-                else {
-                    self.navigationItem.setLeftBarButton(nil, animated: true)
+            .sink { [weak self] value in
+                switch value {
+                case 0:
+                    self?.navigationItem.setLeftBarButton(nil, animated: true)
+                case 1...8:
+                    self?.navigationItem.setLeftBarButton(UIBarButtonItem(customView: self?.prevButton ?? UIView()), animated: true)
+                case 9:
+                    self?.navigationItem.setLeftBarButton(nil, animated: true)
+                    self?.navigationItem.hidesBackButton = true
+                    self?.nextButton.isHidden = true
+                default:
+                    return
                 }
             }
             .store(in: &bag)
@@ -201,6 +261,23 @@ private extension RegisterViewController {
             .sink { [weak self] value in
                 DispatchQueue.main.async {
                     self?.nextButton.isEnabled = value
+                }
+            }
+            .store(in: &bag)
+        
+        output.isProfilImageSetted
+            .sink { value in
+                guard let value = value else { return }
+                DispatchQueue.main.async {
+                    congratulationView.profileImage.image = UIImage(data: value)
+                }
+            }
+            .store(in: &bag)
+        
+        output.isAllInfoUploaded
+            .sink { [weak self] in
+                DispatchQueue.main.async {
+                    self?.viewModel?.actions?.finishRegister?()
                 }
             }
             .store(in: &bag)

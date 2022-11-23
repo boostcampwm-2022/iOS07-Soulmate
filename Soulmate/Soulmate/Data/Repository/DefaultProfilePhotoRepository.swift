@@ -9,14 +9,18 @@ import Foundation
 import FirebaseStorage
 
 class DefaultProfilePhotoRepository: ProfilePhotoRepository {
-    let storage = Storage.storage()
+    
+    let networkKeyValueStorageApi: NetworkKeyValueStorageApi
+    
+    init(networkKeyValueStorageApi: NetworkKeyValueStorageApi) {
+        self.networkKeyValueStorageApi = networkKeyValueStorageApi
+    }
     
     func downloadPicture(fileName: String) async throws -> Data {
-        let url = try await storage.reference().child(fileName).downloadURL()
-        return try NSData(contentsOf: url) as Data
+        return try await networkKeyValueStorageApi.get(key: fileName)
     }
     
     func uploadPicture(fileName: String, data: Data) async throws {
-        try await storage.reference().child(fileName).putDataAsync(data)
+        try await networkKeyValueStorageApi.set(key: fileName, value: data)
     }
 }

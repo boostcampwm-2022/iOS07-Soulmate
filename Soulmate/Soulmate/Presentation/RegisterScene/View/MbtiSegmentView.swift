@@ -67,6 +67,24 @@ class MbtiSegmentView: UIView {
     
 }
 
+extension MbtiSegmentView {
+    func leftButtonTapped() {
+        leftButton.backgroundColor = .mainPurple
+        leftButton.setTitleColor(.white, for: .normal)
+        rightButton.backgroundColor = .symbolGrey
+        rightButton.setTitleColor(.black, for: .normal)
+        self.seletedMbti = self.leftButton.titleLabel?.text ?? ""
+    }
+
+    func rightButtonTapped() {
+        rightButton.backgroundColor = .mainPurple
+        rightButton.setTitleColor(.white, for: .normal)
+        leftButton.backgroundColor = .symbolGrey
+        leftButton.setTitleColor(.black, for: .normal)
+        self.seletedMbti = self.rightButton.titleLabel?.text ?? ""
+    }
+}
+
 private extension MbtiSegmentView {
     
     func configureLayout() {
@@ -86,33 +104,4 @@ private extension MbtiSegmentView {
         }
     }
     
-    func leftButtonTapped() {
-        leftButton.backgroundColor = .mainPurple
-        leftButton.setTitleColor(.white, for: .normal)
-        rightButton.backgroundColor = .symbolGrey
-        rightButton.setTitleColor(.black, for: .normal)
-        self.seletedMbti = self.leftButton.titleLabel?.text ?? ""
-    }
-
-    func rightButtonTapped() {
-        rightButton.backgroundColor = .mainPurple
-        rightButton.setTitleColor(.white, for: .normal)
-        leftButton.backgroundColor = .symbolGrey
-        leftButton.setTitleColor(.black, for: .normal)
-        self.seletedMbti = self.rightButton.titleLabel?.text ?? ""
-    }
-    
 }
-
-#if canImport(SwiftUI) && DEBUG
-import SwiftUI
-
-struct MbtiSegmentViewPreview: PreviewProvider {
-    static var previews: some View {
-        UIViewPreview {
-            let preview = MbtiSegmentView(titles: ("I", "E"))
-            return preview
-        }.previewLayout(.fixed(width: 350, height: 50))
-    }
-}
-#endif

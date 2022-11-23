@@ -86,6 +86,12 @@ final class PhoneNumberViewController: UIViewController {
         phoneNumberTextField.addUnderLine()
         nationCodeDropDown.addUnderLine()
     }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        if self.isMovingFromParent {
+            viewModel?.actions?.quitPhoneLoginFlow?()
+        }
+    }
 }
 
 // MARK: - View Generators

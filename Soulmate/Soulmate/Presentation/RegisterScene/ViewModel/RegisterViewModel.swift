@@ -23,11 +23,13 @@ class RegisterViewModel {
     var uploadDetailInfoUseCase: UploadDetailInfoUseCase
     var uploadPictureUseCase: UploadPictureUseCase
     
+    var didAllInfoUploaded = PassthroughSubject<Void, Never>()
+    
     @Published var genderType: GenderType?
     @Published var nickName: String?
     @Published var height: Int = Int()
     @Published var birth: Date = Date()
-    @Published var mbti: String?
+    @Published var mbti: Mbti?
     @Published var smokingType: SmokingType?
     @Published var drinkingType: DrinkingType?
     @Published var introduction: String?
@@ -39,7 +41,7 @@ class RegisterViewModel {
         var didChangedNickNameValue: AnyPublisher<String?, Never>
         var didChangedHeightValue: AnyPublisher<Int, Never>
         var didChangedBirthValue: AnyPublisher<Date, Never>
-        var didChangedMbtiValue: AnyPublisher<String?, Never>
+        var didChangedMbtiValue: AnyPublisher<Mbti?, Never>
         var didChangedSmokingType: AnyPublisher<SmokingType?, Never>
         var didChangedDrinkingType: AnyPublisher<DrinkingType?, Never>
         var didChangedIntroductionValue: AnyPublisher<String?, Never>
@@ -49,6 +51,8 @@ class RegisterViewModel {
     
     struct Output {
         var isNextButtonEnabled: AnyPublisher<Bool, Never>
+        var isProfilImageSetted: AnyPublisher<Data?, Never>
+        var isAllInfoUploaded: AnyPublisher<Void, Never>
     }
     
     init(
@@ -64,7 +68,7 @@ class RegisterViewModel {
         self.nickName = registerUserInfo.nickName
         self.height = registerUserInfo.height == nil ? Int() : registerUserInfo.height!
         self.birth = registerUserInfo.birthDay == nil ? Date() : registerUserInfo.birthDay!
-        self.mbti = registerUserInfo.mbti == nil ? nil : registerUserInfo.mbti!.toString()
+        self.mbti = registerUserInfo.mbti
         self.smokingType = registerUserInfo.smokingType
         self.drinkingType = registerUserInfo.drinkingType
         self.introduction = registerUserInfo.aboutMe
@@ -152,9 +156,14 @@ class RegisterViewModel {
         
         input.didTappedNextButton.combineLatest(input.didChangedPageIndex)
             .sink { [weak self] (_, index) in
-                self?.register()
-                if index == 10 {
-                    self?.actions?.finishRegister?()
+                print(index)
+                switch index {
+                case 0...8:
+                    self?.register()
+                case 9:
+                    self?.uploadPhoto()
+                default:
+                    return
                 }
             }
             .store(in: &bag)
@@ -162,34 +171,58 @@ class RegisterViewModel {
         let isNextButtonEnabled = valueChangedInCurrentPage.merge(with: valueInChangedPage).eraseToAnyPublisher()
 
         
-        return Output(isNextButtonEnabled: isNextButtonEnabled)
+        return Output(
+            isNextButtonEnabled: isNextButtonEnabled,
+            isProfilImageSetted: $photoData.map { $0[0] }.eraseToAnyPublisher(),
+            isAllInfoUploaded: didAllInfoUploaded.eraseToAnyPublisher()
+        )
     }
     
     func quit() {
         actions?.quitRegister?()
     }
     
-    func register() {
-        Task {
+    func uploadPhoto() {
+        Task { [weak self] in
+            let start = CFAbsoluteTimeGetCurrent()
             
-            // 이부분을 따로 떼서 해야할거같음
             let keys = try await uploadPictureUseCase.uploadPhotoData(photoData: photoData)
 
             let userInfo = RegisterUserInfo(
-                id: "hihi",
-                gender: genderType,
-                nickName: nickName,
-                birthDay: birth,
-                height: Int(height),
-                mbti: mbti == nil ? nil : Mbti.toDomain(target: mbti!),
-                smokingType: smokingType,
-                drinkingType: drinkingType,
-                aboutMe: introduction,
+                gender: self?.genderType,
+                nickName: self?.nickName,
+                birthDay: self?.birth,
+                height: self?.height,
+                mbti: self?.mbti,
+                smokingType: self?.smokingType,
+                drinkingType: self?.drinkingType,
+                aboutMe: self?.introduction,
                 imageList: keys
+            )
+
+            try await uploadDetailInfoUseCase.uploadDetailInfo(registerUserInfo: userInfo)
+            let diff = CFAbsoluteTimeGetCurrent() - start
+            try await Task.sleep(nanoseconds: UInt64((5 > diff ? 5 - diff : 0) * 1_000_000_000))
+            self?.didAllInfoUploaded.send(())
+
+        }
+    }
+    
+    func register() {
+        Task { [weak self] in
+            
+            let userInfo = RegisterUserInfo(
+                gender: self?.genderType,
+                nickName: self?.nickName,
+                birthDay: self?.birth,
+                height: self?.height,
+                mbti: self?.mbti,
+                smokingType: self?.smokingType,
+                drinkingType: self?.drinkingType,
+                aboutMe: self?.introduction
             )
             
             try await uploadDetailInfoUseCase.uploadDetailInfo(registerUserInfo: userInfo)
-
         }
     }
 }

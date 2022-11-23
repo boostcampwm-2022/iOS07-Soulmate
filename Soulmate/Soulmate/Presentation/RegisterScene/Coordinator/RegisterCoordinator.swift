@@ -21,52 +21,46 @@ class RegisterCoordinator: Coordinator {
         self.navigationController = navigationController
     }
     
-    func start() {
-        let profilePhotoRepository = DefaultProfilePhotoRepository()
+    func start(with registerUserInfo: RegisterUserInfo? = nil) {
+        let networkDatabaseApi = FireStoreNetworkDatabaseApi()
+        let networkKeyValueStorageApi = FirebaseNetworkKeyValueStorageApi()
         
-        let uploadDetailInfoUseCase = DefaultUploadDetailInfoUseCase()
+        let profilePhotoRepository = DefaultProfilePhotoRepository(networkKeyValueStorageApi: networkKeyValueStorageApi)
+        let userDetailInfoRepository = DefaultUserDetailInfoRepository(networkDatabaseApi: networkDatabaseApi)
+        
+        let uploadDetailInfoUseCase = DefaultUploadDetailInfoUseCase(userDetailInfoRepository: userDetailInfoRepository)
         let uploadPhotoUseCase = DefaultUpLoadPictureUseCase(profilePhotoRepository: profilePhotoRepository)
+        
         let vm = RegisterViewModel(
             uploadDetailInfoUseCase: uploadDetailInfoUseCase,
             uploadPictureUseCase: uploadPhotoUseCase
         )
+        
         vm.setActions(
             actions: RegisterViewModelAction(
                 quitRegister: quitRegister,
                 finishRegister: finishRegister
             )
         )
-        let vc = RegisterViewController(viewModel: vm)
         
-        navigationController.pushViewController(vc, animated: true)
-    }
-    
-    // 스타트 메서드 하나로 통합하기
-    func start(registerUserInfo: RegisterUserInfo) {
-        let profilePhotoRepository = DefaultProfilePhotoRepository()
-        
-        let uploadDetailInfoUseCase = DefaultUploadDetailInfoUseCase()
-        let uploadPhotoUseCase = DefaultUpLoadPictureUseCase(profilePhotoRepository: profilePhotoRepository)
-        let vm = RegisterViewModel(
-            uploadDetailInfoUseCase: uploadDetailInfoUseCase,
-            uploadPictureUseCase: uploadPhotoUseCase
-        )
-        
-        vm.setPrevRegisterInfo(registerUserInfo: registerUserInfo)
-        
-        let vc = RegisterViewController(viewModel: vm)
-        
-        navigationController.pushViewController(vc, animated: true)
-    }
+        if let registerUserInfo = registerUserInfo {
+            vm.setPrevRegisterInfo(registerUserInfo: registerUserInfo)
+        }
 
+        let vc = RegisterViewController(viewModel: vm)
+        
+        navigationController.pushViewController(vc, animated: true)
+    }
     
     lazy var finishRegister: () -> Void = { [weak self] in
+        guard let authCoordinator = self?.finishDelegate as? AuthCoordinator else { return }
         self?.finish()
+        authCoordinator.showMainTabFlow()
     }
     
-    lazy var quitRegister: () -> Void = { [weak self] in
+    lazy var quitRegister: () -> Void = { [weak self] in // 애는 중간에 종료하는 경우, 이 경우는 그냥 원래 페이지로 옮겨주자
         self?.finish()
-        
-        // 실패했으니 그냥 로그인 초기화면으로 이동하기
+        let signoutUseCase = DefaultSignOutUseCase()
+        guard let _ = try? signoutUseCase.signOut() else { return }
     }
 }
