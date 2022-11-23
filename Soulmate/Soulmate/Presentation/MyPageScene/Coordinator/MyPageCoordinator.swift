@@ -24,4 +24,8 @@ class MyPageCoordinator: Coordinator {
         let vc = MyPageViewController()
         navigationController.pushViewController(vc, animated: true)
     }
+    
+//    lazy var showPersonalInfoPage: () -> Void = { [weak self] in
+//        let viewModel = MyPageViewModel()
+//    }()
 }

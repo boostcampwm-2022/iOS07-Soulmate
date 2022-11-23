@@ -114,9 +114,9 @@
 		B31A68272919F5D2001D35E9 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = B31A68262919F5D2001D35E9 /* .swiftlint.yml */; };
 		B31A682A291A4257001D35E9 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = B31A6829291A4257001D35E9 /* Then */; };
 		B31A682D291A42BC001D35E9 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = B31A682C291A42BC001D35E9 /* SnapKit */; };
-		B3B03B44292C8C5E000AF283 /* MyPageMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B03B43292C8C5E000AF283 /* MyPageMenuView.swift */; };
 		B331CED0292B854500F17AED /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B331CECF292B854500F17AED /* UIImage.swift */; };
 		B3B03B48292CB877000AF283 /* MyPageMenuCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B03B47292CB877000AF283 /* MyPageMenuCollectionViewCell.swift */; };
+		B3B03B4A292DECFF000AF283 /* MyPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B03B49292DECFF000AF283 /* MyPageViewModel.swift */; };
 		B3E029A9291DDC1500931FA2 /* GradientButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3E029A8291DDC1500931FA2 /* GradientButton.swift */; };
 /* End PBXBuildFile section */
 
@@ -226,6 +226,7 @@
 		B31A68262919F5D2001D35E9 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		B331CECF292B854500F17AED /* UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
 		B3B03B47292CB877000AF283 /* MyPageMenuCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageMenuCollectionViewCell.swift; sourceTree = "<group>"; };
+		B3B03B49292DECFF000AF283 /* MyPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MyPageViewModel.swift; path = Soulmate/Presentation/MyPageScene/ViewController/MyPageViewModel.swift; sourceTree = SOURCE_ROOT; };
 		B3E029A8291DDC1500931FA2 /* GradientButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -383,6 +384,7 @@
 		6A0041F92919EE250042E02F /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				B3B03B49292DECFF000AF283 /* MyPageViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -880,6 +882,7 @@
 				6A0042032919EEED0042E02F /* ChatCoordinator.swift in Sources */,
 				6A0041E02919EB230042E02F /* LoginViewController.swift in Sources */,
 				6A34C1EB292B30FC00A3E57F /* KeyboardInfo.swift in Sources */,
+				B3B03B4A292DECFF000AF283 /* MyPageViewModel.swift in Sources */,
 				07EE0F18292C893D00E761C4 /* PhotoFooterView.swift in Sources */,
 				6A3F91A72924A45300F1D901 /* RegisterSelectableView.swift in Sources */,
 				6A34C1FF292C944D00A3E57F /* ChatRoomInfoCell.swift in Sources */,
