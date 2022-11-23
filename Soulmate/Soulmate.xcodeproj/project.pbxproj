@@ -113,6 +113,7 @@
 		6AB6B9BB292D81DF00A029BD /* DefaultSignOutUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB6B9BA292D81DF00A029BD /* DefaultSignOutUseCase.swift */; };
 		6AB6B9BD292D82F800A029BD /* SignOutUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB6B9BC292D82F800A029BD /* SignOutUseCase.swift */; };
 		6AB6B9C1292DCBE800A029BD /* PhoneLoginCoorinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB6B9C0292DCBE800A029BD /* PhoneLoginCoorinator.swift */; };
+		6AB6B9C6292E257A00A029BD /* ChatRoomInfoDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB6B9C5292E257A00A029BD /* ChatRoomInfoDTO.swift */; };
 		6ADEE4E72922198200AD328B /* UIControl+Publisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ADEE4E62922198200AD328B /* UIControl+Publisher.swift */; };
 		6ADEE4EA29221CB800AD328B /* UIButton+Publisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ADEE4E929221CB800AD328B /* UIButton+Publisher.swift */; };
 		6ADEE4EC29221CD900AD328B /* UITextField+Publisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ADEE4EB29221CD900AD328B /* UITextField+Publisher.swift */; };
@@ -245,6 +246,7 @@
 		6AB6B9BA292D81DF00A029BD /* DefaultSignOutUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultSignOutUseCase.swift; sourceTree = "<group>"; };
 		6AB6B9BC292D82F800A029BD /* SignOutUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignOutUseCase.swift; sourceTree = "<group>"; };
 		6AB6B9C0292DCBE800A029BD /* PhoneLoginCoorinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneLoginCoorinator.swift; sourceTree = "<group>"; };
+		6AB6B9C5292E257A00A029BD /* ChatRoomInfoDTO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatRoomInfoDTO.swift; sourceTree = "<group>"; };
 		6ADEE4E62922198200AD328B /* UIControl+Publisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIControl+Publisher.swift"; sourceTree = "<group>"; };
 		6ADEE4E929221CB800AD328B /* UIButton+Publisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Publisher.swift"; sourceTree = "<group>"; };
 		6ADEE4EB29221CD900AD328B /* UITextField+Publisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Publisher.swift"; sourceTree = "<group>"; };
@@ -541,14 +543,6 @@
 			path = Notification;
 			sourceTree = "<group>";
 		};
-		6A34C20A292DB9B600A3E57F /* DTO */ = {
-			isa = PBXGroup;
-			children = (
-				6A34C20B292DB9E900A3E57F /* ChatRoomInfoDTO.swift */,
-			);
-			path = DTO;
-			sourceTree = "<group>";
-		};
 		6A34C20F292DD33D00A3E57F /* Protocol */ = {
 			isa = PBXGroup;
 			children = (
@@ -621,6 +615,7 @@
 				6A8C888E2919031A009EDBBB /* Soulmate */,
 				6A8C888D2919031A009EDBBB /* Products */,
 				6AB6B962292BE1EA00A029BD /* Frameworks */,
+				6AB6B9C4292E24A200A029BD /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};
@@ -747,6 +742,7 @@
 		6AB6B99D292D716200A029BD /* DataTransferObject */ = {
 			isa = PBXGroup;
 			children = (
+				6AB6B9C5292E257A00A029BD /* ChatRoomInfoDTO.swift */,
 				6AB6B99E292D718500A029BD /* RegisterUserInfoDTO.swift */,
 			);
 			path = DataTransferObject;
@@ -768,6 +764,14 @@
 				6AB6B9B4292D7DA100A029BD /* UserDefaultsLocalKeyValueStorage.swift */,
 			);
 			path = LocalKeyValueStorage;
+			sourceTree = "<group>";
+		};
+		6AB6B9C4292E24A200A029BD /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				6A34C20B292DB9E900A3E57F /* ChatRoomInfoDTO.swift */,
+			);
+			name = "Recovered References";
 			sourceTree = "<group>";
 		};
 		6ADEE4E829221C6600AD328B /* Combine */ = {
@@ -913,7 +917,6 @@
 				6A34C1F7292B501500A3E57F /* DefaultLoadChattingsUseCase.swift in Sources */,
 				6A34C1DB292B216A00A3E57F /* OtherChatCell.swift in Sources */,
 				6A34C20C292DB9E900A3E57F /* ChatRoomInfoDTO.swift in Sources */,
-				B3B03B44292C8C5E000AF283 /* MyPageMenuView.swift in Sources */,
 				6A97FE66291CE29E006F6DD9 /* LoginViewModel.swift in Sources */,
 				6AB6B95F292BDE7A00A029BD /* FireStoreNetworkDatabaseApi.swift in Sources */,
 				6AB6B970292C2C7500A029BD /* DefaultUpLoadPictureUseCase.swift in Sources */,
@@ -1021,6 +1024,7 @@
 				074F3B0B292261EA00D36C89 /* PartnerCell.swift in Sources */,
 				6A45AA5F292794B500F85D2C /* ReigsterViewController.swift in Sources */,
 				07DDDF272924A7C600CB398C /* RegisterBirthView.swift in Sources */,
+				6AB6B9C6292E257A00A029BD /* ChatRoomInfoDTO.swift in Sources */,
 				6AB6B95D292BDE7A00A029BD /* NetworkDatabaseApi.swift in Sources */,
 				6A34C211292DD38000A3E57F /* DefaultChatCoordinator.swift in Sources */,
 				07B61AC2292B6C510009BC8A /* DetailViewModel.swift in Sources */,
