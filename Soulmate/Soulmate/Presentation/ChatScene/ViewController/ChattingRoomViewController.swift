@@ -40,11 +40,6 @@ final class ChattingRoomViewController: UIViewController {
         return messageInputView
     }()
     
-//    override var inputAccessoryView: UIView? {
-//
-//        return composeBar
-//    }
-    
     override var canBecomeFirstResponder: Bool {
         return true
     }
