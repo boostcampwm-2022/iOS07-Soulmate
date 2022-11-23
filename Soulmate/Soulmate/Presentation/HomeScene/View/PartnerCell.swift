@@ -98,20 +98,21 @@ final class PartnerCell: UICollectionViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     override func prepareForReuse() {
         super.prepareForReuse()
-        
+
         partnerImageView.image = UIImage(systemName: "photo")
         partnerName.text = ""
         partnerAge.text = ""
         partnerDistance.text = ""
     }
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
+    override func layoutSublayers(of layer: CALayer) {
+        super.layoutSublayers(of: layer)
         gradientLayer.frame = partnerSubview.bounds
     }
+    
     
 }
 
