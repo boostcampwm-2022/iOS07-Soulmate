@@ -151,7 +151,7 @@ private extension ChattingRoomViewController {
         }
         
         chatTableView.snp.makeConstraints {
-            $0.top.equalTo(view.snp.top)
+            $0.top.equalTo(view.safeAreaLayoutGuide.snp.top)
             $0.leading.equalTo(view.safeAreaLayoutGuide.snp.leading)
             $0.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing)
             $0.bottom.equalTo(composeBar.snp.top)

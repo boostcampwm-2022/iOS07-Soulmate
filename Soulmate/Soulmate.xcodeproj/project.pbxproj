@@ -433,11 +433,11 @@
 				6A03B7232923DE7200AC15A6 /* DefaultAuthUseCase.swift */,
 				6A34C1F2292B48C700A3E57F /* DefaultSendMessageUseCase.swift */,
 				6A34C1F6292B501500A3E57F /* DefaultLoadChattingsUseCase.swift */,
+				6A34C206292C99BB00A3E57F /* DefaultLoadChattingRoomListUseCase.swift */,
 				6AB6B960292BDEEB00A029BD /* DefaultLoadDetailInfoUseCase.swift */,
 				6AB6B967292BEC3900A029BD /* DefaultRegisterStateValidateUseCase.swift */,
 				6AB6B96D292BF2F300A029BD /* DefaultUploadDetailInfoUseCase.swift */,
 				6AB6B96F292C2C7500A029BD /* DefaultUpLoadPictureUseCase.swift */,
-				6A34C206292C99BB00A3E57F /* DefaultLoadChattingRoomListUseCase.swift */,
 			);
 			path = UseCase;
 			sourceTree = "<group>";

@@ -16,7 +16,7 @@ final class DefaultLoadChattingRoomListUseCase: LoadChattingRoomListUseCase {
     func loadChattingRooms() {
         let db = Firestore.firestore()
         
-        let listner = db.collection("ChatRooms").addSnapshotListener { [weak self] snapshot, err in
+        let _ = db.collection("ChatRooms").addSnapshotListener { [weak self] snapshot, err in
             
             guard let snapshot, err == nil else { return }
             

@@ -105,5 +105,6 @@ extension ChatListViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         rowSelectSubject.send(indexPath.row)
+        tableView.deselectRow(at: indexPath, animated: false)
     }
 }
