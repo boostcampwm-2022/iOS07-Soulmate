@@ -10,6 +10,8 @@ import SnapKit
 
 class MyPageMenuCollectionViewCell: UICollectionViewCell {
     
+    static let identifier = "MyPageMenuCollectionViewCell"
+    
     lazy var symbol: UIImageView = {
         let image = UIImage(named: "AppIcon")
         let imageView = UIImageView(image: image)

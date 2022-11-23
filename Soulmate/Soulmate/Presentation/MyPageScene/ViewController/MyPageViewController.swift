@@ -10,6 +10,10 @@ import SnapKit
 
 final class MyPageView: UIView {
     
+    let symbols = ["myPageHeart", "myPagePersonalInfo", "myPagePin"]
+    let titles = ["하트샵 가기", "개인정보 처리방침", "버전정보"]
+    let subTexts = ["", "", "v 3.2.20"]
+    
     lazy var contentView: UIView = {
         let view = UIView()
         view.backgroundColor = .white
@@ -101,20 +105,13 @@ final class MyPageView: UIView {
         return view
     }()
     
-    lazy var heartShopView: MyPageMenuView = {
-        let view = MyPageMenuView(symbolName: "myPageHeart", titleName: "하트샵 가기", trailingText: "")
-        self.addSubview(view)
-        return view
-    }()
-    
-    lazy var personalInfoView: MyPageMenuView = {
-        let view = MyPageMenuView(symbolName: "myPagePersonalInfo", titleName: "개인정보 처리방침", trailingText: "")
-        self.addSubview(view)
-        return view
-    }()
-    
-    lazy var versionInfoView: MyPageMenuView = {
-        let view = MyPageMenuView(symbolName: "myPagePin", titleName: "버전정보", trailingText: "v 3.2.20")
+    lazy var collectionView: UICollectionView = {
+        var layout = UICollectionViewFlowLayout()
+        let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.delegate = self
+        view.dataSource = self
+        view.register(MyPageMenuCollectionViewCell.self, forCellWithReuseIdentifier: MyPageMenuCollectionViewCell.identifier)
         self.addSubview(view)
         return view
     }()
@@ -167,45 +164,40 @@ final class MyPageView: UIView {
             $0.edges.equalToSuperview().inset(20)
         }
         
-        heartShopView.snp.makeConstraints {
+        collectionView.snp.makeConstraints {
             $0.top.equalTo(remainingHeartView.snp.bottom).offset(32)
             $0.leading.trailing.equalToSuperview()
-            $0.height.equalTo(68)
-        }
-        
-        personalInfoView.snp.makeConstraints {
-            $0.top.equalTo(heartShopView.snp.bottom)
-            $0.leading.trailing.equalToSuperview()
-            $0.height.equalTo(68)
-        }
-        
-        versionInfoView.snp.makeConstraints {
-            $0.top.equalTo(personalInfoView.snp.bottom)
-            $0.leading.trailing.equalToSuperview()
-            $0.height.equalTo(68)
+            $0.height.equalTo(300)
         }
     }
     
 }
 
+extension MyPageView: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 3
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MyPageMenuCollectionViewCell.identifier, for: indexPath) as? MyPageMenuCollectionViewCell else {
+            return UICollectionViewCell()
+        }
+    
+        cell.symbol.image = UIImage(named: symbols[indexPath.row])
+        cell.title.text = titles[indexPath.row]
+        cell.trailingDescription.text = subTexts[indexPath.row]
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: self.collectionView.frame.width, height: 68)
+    }
+}
+
 final class MyPageViewController: UIViewController {
     
-    let symbols = ["myPageHeart", "myPagePersonalInfo", "myPagePin"]
-    let titles = ["하트샵 가기", "개인정보 처리방침", "버전정보"]
-    let subTexts = ["", "", "v 3.2.20"]
-    
     lazy var contentView = MyPageView()
-    
-    lazy var collectionView: UICollectionView = {
-        var layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .vertical
-        layout.sectionInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
-        layout.itemSize = CGSize(width: view.frame.size.width, height: 68)
-        let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        view.register(MyPageMenuCollectionViewCell.self, forCellWithReuseIdentifier: "MyPageMenuCollectionViewCell")
-        self.view.addSubview(view)
-        return view
-    }()
     
     override func loadView() {
         view = contentView
@@ -213,46 +205,11 @@ final class MyPageViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureView()
-        configureLayout()
+
         // binding
         // viewModel -> view
         // view -> viewModel
     }
     
-    
-}
-
-extension MyPageViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    
-    func configureView() {
-        collectionView.delegate = self
-        collectionView.dataSource = self
-    }
-    
-    func configureLayout() {
-        collectionView.snp.makeConstraints {
-            $0.top.equalTo(contentView.contentView.snp.bottom)
-            $0.leading.trailing.bottom.equalToSuperview()
-        }
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        // TODO: 메뉴리스트 수 전달
-        return 3
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MyPageMenuCollectionViewCell", for: indexPath) as? MyPageMenuCollectionViewCell else {
-            print("안나왔어요")
-            return UICollectionViewCell()
-        }
-        print("나오고있어요")
-        cell.symbol.image = UIImage(named: symbols[indexPath.row])
-        cell.title.text = titles[indexPath.row]
-        cell.trailingDescription.text = subTexts[indexPath.row]
-        return cell
-        
-    }
     
 }
