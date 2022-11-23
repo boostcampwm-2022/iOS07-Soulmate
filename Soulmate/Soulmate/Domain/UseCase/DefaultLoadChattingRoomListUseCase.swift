@@ -16,20 +16,18 @@ final class DefaultLoadChattingRoomListUseCase: LoadChattingRoomListUseCase {
     func loadChattingRooms() {
         let db = Firestore.firestore()
         
-        let listener = db.collection("Users").document("A").collection("Messages").addSnapshotListener { [weak self] snapshot, _ in
+        let _ = db.collection("ChatRooms").addSnapshotListener { [weak self] snapshot, err in
             
-            if let latesChatContents = snapshot?.documents.map({ $0["text"] }) {
+            guard let snapshot, err == nil else { return }
+            
+            let chatRoomInfoDTOs = snapshot.documents.compactMap { try? $0.data(as: ChatRoomInfoDTO.self) }
+            let chatRoomInfos = chatRoomInfoDTOs.map { $0.toModel() }.sorted { l, r in
+                guard let lDate = l.lastChatDate, let rDate = r.lastChatDate else { return true }
                 
-                var newList: [ChatRoomInfo] = []
-                
-                latesChatContents.forEach { content in
-                    if let chat = content as? String {
-                        newList.append(ChatRoomInfo(mateName: "광고ㅋ", mateProfileImage: nil, latestChatContent: chat, lastChatDate: "오전 1:11"))
-                    }
-                }
-                
-                self?.chattingRoomList.send(newList)
+                return lDate > rDate
             }
+            
+            self?.chattingRoomList.send(chatRoomInfos)
         }
     }
 }

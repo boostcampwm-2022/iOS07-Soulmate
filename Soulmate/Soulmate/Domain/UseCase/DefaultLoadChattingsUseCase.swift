@@ -10,25 +10,7 @@ import Combine
 final class DefaultLoadChattingsUseCase: LoadChattingsUseCase {
     
     private var data: [Chat] = [
-        Chat(isMe: false, text: "Cupcake!"),
-        Chat(isMe: true, text: "VI?"),
-        Chat(isMe: false, text: "Cupcake!"),
-        Chat(isMe: true, text: "VI?"),
-        Chat(isMe: false, text: "Cupcake!"),
-        Chat(isMe: true, text: "VI?"),
-        Chat(isMe: false, text: "Cupcake!"),
-        Chat(isMe: true, text: "VI?"),
-        Chat(isMe: false, text: "Cupcake!"),
-        Chat(isMe: true, text: "VI?"),
-        Chat(isMe: false, text: "Cupcake!"),
-        Chat(isMe: true, text: "VI?"),
-        Chat(isMe: false, text: "Cupcake!"),
-        Chat(isMe: true, text: "VI?"),
-        Chat(isMe: false, text: "Cupcake!"),
-        Chat(isMe: true, text: "VI?"),
-        Chat(isMe: false, text: "Cupcake!"),
-        Chat(isMe: true, text: "VI?"),
-        Chat(isMe: false, text: "Cupcake!\nCupcake!"),
+        Chat(isMe: false, text: "Cupcake?"),
         Chat(isMe: true, text: "VI?")
     ]
     

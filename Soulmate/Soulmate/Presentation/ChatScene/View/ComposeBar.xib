@@ -31,7 +31,7 @@
                             </constraints>
                         </view>
                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="HTP-vV-AcX">
-                            <rect key="frame" x="16" y="10" width="315" height="40"/>
+                            <rect key="frame" x="16" y="5" width="315" height="50"/>
                             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             <constraints>
                                 <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="36" id="JEf-RZ-dZj"/>
@@ -57,8 +57,8 @@
                         <constraint firstItem="bjm-ql-Yyf" firstAttribute="leading" secondItem="HTP-vV-AcX" secondAttribute="trailing" constant="10" id="Scc-m0-haM"/>
                         <constraint firstAttribute="trailing" secondItem="sPi-Z1-2N0" secondAttribute="trailing" id="eq8-Qy-gsh"/>
                         <constraint firstItem="HTP-vV-AcX" firstAttribute="leading" secondItem="shT-SB-K2r" secondAttribute="leading" constant="16" id="gJb-e4-n4m"/>
-                        <constraint firstAttribute="bottom" secondItem="HTP-vV-AcX" secondAttribute="bottom" constant="10" id="i6m-7D-S6H"/>
-                        <constraint firstItem="HTP-vV-AcX" firstAttribute="top" secondItem="shT-SB-K2r" secondAttribute="top" constant="10" id="nLT-5b-uv0"/>
+                        <constraint firstAttribute="bottom" secondItem="HTP-vV-AcX" secondAttribute="bottom" constant="5" id="i6m-7D-S6H"/>
+                        <constraint firstItem="HTP-vV-AcX" firstAttribute="top" secondItem="shT-SB-K2r" secondAttribute="top" constant="5" id="nLT-5b-uv0"/>
                         <constraint firstAttribute="trailing" secondItem="bjm-ql-Yyf" secondAttribute="trailing" constant="16" id="sc7-1r-zBU"/>
                         <constraint firstItem="sPi-Z1-2N0" firstAttribute="leading" secondItem="shT-SB-K2r" secondAttribute="leading" id="vyK-PJ-WzR"/>
                     </constraints>

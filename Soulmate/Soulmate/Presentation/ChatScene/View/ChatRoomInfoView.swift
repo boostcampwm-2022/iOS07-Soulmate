@@ -100,7 +100,7 @@ final class ChatRoomInfoView: UIView {
     
     func configure(with info: ChatRoomInfo) {
         mateNameLabel.text = info.mateName
-        latestChatTime.text = info.lastChatDate
+        latestChatTime.text = info.lastChatDate?.aHmm()
         latestChatContentLabel.text = info.latestChatContent
     }
 }
