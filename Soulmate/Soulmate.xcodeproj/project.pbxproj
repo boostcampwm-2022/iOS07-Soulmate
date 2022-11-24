@@ -117,6 +117,8 @@
 		6ADEE4EA29221CB800AD328B /* UIButton+Publisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ADEE4E929221CB800AD328B /* UIButton+Publisher.swift */; };
 		6ADEE4EC29221CD900AD328B /* UITextField+Publisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ADEE4EB29221CD900AD328B /* UITextField+Publisher.swift */; };
 		6AE21021291DE06600A32280 /* SelectableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AE21020291DE06600A32280 /* SelectableCell.swift */; };
+		B3010251292F1A2000481C6C /* MyPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3010250292F1A2000481C6C /* MyPageView.swift */; };
+		B3010253292F26F700481C6C /* UIView+Publisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3010252292F26F700481C6C /* UIView+Publisher.swift */; };
 		B303D651292367CF00414293 /* ProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B303D650292367CF00414293 /* ProgressBar.swift */; };
 		B30A8ECE291C953F00ED4906 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = B30A8ECD291C953F00ED4906 /* FirebaseAnalytics */; };
 		B30A8ED0291C953F00ED4906 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = B30A8ECF291C953F00ED4906 /* FirebaseAuth */; };
@@ -249,6 +251,8 @@
 		6ADEE4E929221CB800AD328B /* UIButton+Publisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Publisher.swift"; sourceTree = "<group>"; };
 		6ADEE4EB29221CD900AD328B /* UITextField+Publisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Publisher.swift"; sourceTree = "<group>"; };
 		6AE21020291DE06600A32280 /* SelectableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectableCell.swift; sourceTree = "<group>"; };
+		B3010250292F1A2000481C6C /* MyPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageView.swift; sourceTree = "<group>"; };
+		B3010252292F26F700481C6C /* UIView+Publisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Publisher.swift"; sourceTree = "<group>"; };
 		B303D650292367CF00414293 /* ProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBar.swift; sourceTree = "<group>"; };
 		B30A8F0E291CB4AC00ED4906 /* PhoneNumberViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneNumberViewController.swift; sourceTree = "<group>"; };
 		B30A8F10291CB4F100ED4906 /* CertificationNumberViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CertificationNumberViewController.swift; sourceTree = "<group>"; };
@@ -398,6 +402,7 @@
 			children = (
 				6A0042042919EF130042E02F /* Coordinator */,
 				6A0041F92919EE250042E02F /* ViewModel */,
+				B301024F292F19F100481C6C /* View */,
 				6A0041F82919EE1E0042E02F /* ViewController */,
 			);
 			path = MyPageScene;
@@ -771,8 +776,17 @@
 				6ADEE4EB29221CD900AD328B /* UITextField+Publisher.swift */,
 				6A45AA3C2925701200F85D2C /* UIDatePicker+Publisher.swift */,
 				6AB6B94F292B155A00A029BD /* UILabel+Publisher.swift */,
+				B3010252292F26F700481C6C /* UIView+Publisher.swift */,
 			);
 			path = Combine;
+			sourceTree = "<group>";
+		};
+		B301024F292F19F100481C6C /* View */ = {
+			isa = PBXGroup;
+			children = (
+				B3010250292F1A2000481C6C /* MyPageView.swift */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 		B303D64F292366DC00414293 /* View */ = {
@@ -938,6 +952,7 @@
 				6A34C1E2292B233300A3E57F /* MyChatCell.swift in Sources */,
 				6AB6B9B5292D7DA100A029BD /* UserDefaultsLocalKeyValueStorage.swift in Sources */,
 				6A0041EE2919ED7F0042E02F /* DetailViewController.swift in Sources */,
+				B3010253292F26F700481C6C /* UIView+Publisher.swift in Sources */,
 				6A34C1F3292B48C700A3E57F /* DefaultSendMessageUseCase.swift in Sources */,
 				6A34C1F5292B4FE500A3E57F /* LoadChattingsUseCase.swift in Sources */,
 				B3B03B48292CB877000AF283 /* MyPageMenuCollectionViewCell.swift in Sources */,
@@ -1005,6 +1020,7 @@
 				07EE0F15292C870400E761C4 /* GreetingCell.swift in Sources */,
 				6A0041FF2919EE920042E02F /* ModificationViewController.swift in Sources */,
 				6AB6B9B7292D807B00A029BD /* DefaultUserDefaultsRepository.swift in Sources */,
+				B3010251292F1A2000481C6C /* MyPageView.swift in Sources */,
 				6A03B7272923E5E300AC15A6 /* PhoneSignInUseCase.swift in Sources */,
 				6AB6B968292BEC3900A029BD /* DefaultRegisterStateValidateUseCase.swift in Sources */,
 				6AB6B966292BE4F500A029BD /* DownLoadDetailInfoUseCase.swift in Sources */,
