@@ -66,6 +66,7 @@
 		6A34C21F292E559C00A3E57F /* MessageInfoDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A34C21E292E559B00A3E57F /* MessageInfoDTO.swift */; };
 		6A34C221292E55EA00A3E57F /* MessageInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A34C220292E55EA00A3E57F /* MessageInfo.swift */; };
 		6A34C223292E654F00A3E57F /* MessageToSendDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A34C222292E654F00A3E57F /* MessageToSendDTO.swift */; };
+		6A34C22C292F209A00A3E57F /* ChatScenePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A34C22B292F209A00A3E57F /* ChatScenePageViewController.swift */; };
 		6A3F91A72924A45300F1D901 /* RegisterSelectableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A3F91A62924A45300F1D901 /* RegisterSelectableView.swift */; };
 		6A444533291EA23F009AE2E5 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A444532291EA23F009AE2E5 /* UIColor.swift */; };
 		6A45AA212925595700F85D2C /* RegisterCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A45AA202925595700F85D2C /* RegisterCoordinator.swift */; };
@@ -199,6 +200,7 @@
 		6A34C21E292E559B00A3E57F /* MessageInfoDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageInfoDTO.swift; sourceTree = "<group>"; };
 		6A34C220292E55EA00A3E57F /* MessageInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageInfo.swift; sourceTree = "<group>"; };
 		6A34C222292E654F00A3E57F /* MessageToSendDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageToSendDTO.swift; sourceTree = "<group>"; };
+		6A34C22B292F209A00A3E57F /* ChatScenePageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatScenePageViewController.swift; sourceTree = "<group>"; };
 		6A3F91A62924A45300F1D901 /* RegisterSelectableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterSelectableView.swift; sourceTree = "<group>"; };
 		6A444532291EA23F009AE2E5 /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		6A45AA202925595700F85D2C /* RegisterCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterCoordinator.swift; sourceTree = "<group>"; };
@@ -395,6 +397,7 @@
 			children = (
 				6A34C1FA292C8F8F00A3E57F /* ChatListViewController.swift */,
 				6A34C1D2292B202B00A3E57F /* ChattingRoomViewController.swift */,
+				6A34C22B292F209A00A3E57F /* ChatScenePageViewController.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -978,6 +981,7 @@
 				6AB6B95E292BDE7A00A029BD /* FireStoreQuery+Ext.swift in Sources */,
 				6A8377A92924A3FC00BC7112 /* RegisterNickNameView.swift in Sources */,
 				6A34C213292DD39000A3E57F /* ChatCoordinator.swift in Sources */,
+				6A34C22C292F209A00A3E57F /* ChatScenePageViewController.swift in Sources */,
 				6A34C1D8292B211700A3E57F /* Chat.swift in Sources */,
 				6A0041D92919E6B60042E02F /* CoordinatorInterface.swift in Sources */,
 				6A0041E02919EB230042E02F /* LoginViewController.swift in Sources */,

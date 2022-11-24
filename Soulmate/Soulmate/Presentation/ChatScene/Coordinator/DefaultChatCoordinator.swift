@@ -25,8 +25,11 @@ class DefaultChatCoordinator: ChatCoordinator {
             coordinator: self,
             loadChattingRoomListUseCase: loadChattingRoomListUseCase
         )
-        let viewController = ChatListViewController(viewModel: viewModel)
-        self.navigationController.pushViewController(viewController, animated: true)
+        let chatRoomListVC = ChatListViewController(viewModel: viewModel)
+        
+        let pageViewController = ChatScenePageViewController(chatRoomListViewController: chatRoomListVC)
+        
+        self.navigationController.pushViewController(pageViewController, animated: true)
     }
     
     func showChatRoom(with info: ChatRoomInfo) {
