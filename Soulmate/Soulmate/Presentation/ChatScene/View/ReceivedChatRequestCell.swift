@@ -19,9 +19,19 @@ final class ReceivedChatRequestCell: UITableViewCell {
         return requestView
     }()
     
+    private lazy var separator: UIView = {
+        let line = UIView()
+        contentView.addSubview(line)
+        line.translatesAutoresizingMaskIntoConstraints = false
+        line.backgroundColor = .labelGrey
+        line.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
+        
+        return line
+    }()
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
+        contentView.backgroundColor = .lightPurple
         configureLayout()
     }
     
@@ -42,6 +52,12 @@ private extension ReceivedChatRequestCell {
             $0.leading.equalTo(contentView.snp.leading).offset(20)
             $0.bottom.equalTo(contentView.snp.bottom).offset(-14)
             $0.trailing.equalTo(contentView.snp.trailing).offset(-20)
+        }
+        
+        separator.snp.makeConstraints {
+            $0.bottom.equalTo(contentView.snp.bottom)
+            $0.leading.equalTo(contentView.snp.leading)
+            $0.trailing.equalTo(contentView.snp.trailing)
         }
     }
 }

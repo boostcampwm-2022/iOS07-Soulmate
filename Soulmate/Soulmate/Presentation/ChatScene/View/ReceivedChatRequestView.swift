@@ -11,7 +11,7 @@ final class ReceivedChatRequestView: UIView {
     
     private lazy var mateProfileImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.backgroundColor = .secondarySystemBackground
+        imageView.backgroundColor = .white
         imageView.contentMode = .scaleAspectFill
         imageView.layer.cornerRadius = 31
         imageView.clipsToBounds = true
