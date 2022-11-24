@@ -60,6 +60,7 @@ final class MainTabCoordinator: NSObject, Coordinator {
         let pages = TabBarPage.allCases
         let controllers: [UINavigationController] = pages.map { getTabController($0) }
     
+        self.navigationController.setNavigationBarHidden(true, animated: false)
         prepareTabBarController(withTabControllers: controllers)
     }
     

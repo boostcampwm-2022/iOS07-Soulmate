@@ -11,4 +11,5 @@ protocol SendMessageUseCase {
     var sendButtonEnabled: CurrentValueSubject<Bool, Never> { get }
     
     func updateMessage(_ text: String)
+    func sendMessage()
 }

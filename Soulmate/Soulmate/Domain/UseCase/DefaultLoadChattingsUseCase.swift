@@ -6,27 +6,39 @@
 //
 
 import Combine
+import FirebaseAuth
+import FirebaseFirestore
+import FirebaseFirestoreSwift
 
 final class DefaultLoadChattingsUseCase: LoadChattingsUseCase {
     
-    private var data: [Chat] = [
-        Chat(isMe: false, text: "Cupcake?"),
-        Chat(isMe: true, text: "VI?")
-    ]
+    private let info: ChatRoomInfo
+    private let uid = Auth.auth().currentUser?.uid
+    var chattings = CurrentValueSubject<[Chat], Never>([])
     
-    var loadedNewChattings = PassthroughSubject<Bool, Never>()
-    var loadedChattings = CurrentValueSubject<[Chat], Never>([])
-    
-    func loadChattings() {
-        loadedChattings.send(data)
-        loadedNewChattings.send(true)
+    init(with info: ChatRoomInfo) {
+        self.info = info
     }
     
-    func testLoad() {
-        var current = loadedChattings.value
-        let new = current + [Chat(isMe: false, text: "Cupcake!")]
+    func listenChattings() {
+        let db = Firestore.firestore()
         
-        loadedChattings.send(new)
-        loadedNewChattings.send(true)
+        guard let chatRoomId = info.documentId else { return }
+        
+        let _ = db.collection("ChatRooms").document(chatRoomId).collection("Messages").order(by: "date", descending: true).addSnapshotListener { [weak self] snapshot, err in
+            
+            guard let snapshot, err == nil, let uid = self?.uid else { return }
+            
+            let messageInfoDTOs = snapshot.documents.compactMap { try? $0.data(as: MessageInfoDTO.self) }
+            let infos = messageInfoDTOs.map { return $0.toModel() }.reversed()
+            let chats = infos.map { info in
+                let isMe = info.userId == uid
+                let text = info.text
+                
+                return Chat(isMe: isMe, text: text)
+            }
+
+            self?.chattings.send(chats)
+        }
     }
 }

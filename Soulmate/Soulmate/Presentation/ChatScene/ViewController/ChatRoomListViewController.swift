@@ -1,5 +1,5 @@
 //
-//  ChatListViewController.swift
+//  ChatRoomListViewController.swift
 //  Soulmate
 //
 //  Created by Hoen on 2022/11/22.
@@ -9,9 +9,9 @@ import UIKit
 import SnapKit
 import Combine
 
-final class ChatListViewController: UIViewController {
+final class ChatRoomListViewController: UIViewController {
     
-    private var viewModel: ChatListViewModel?
+    private var viewModel: ChatRoomListViewModel?
     private var cancellables = Set<AnyCancellable>()
     private let rowSelectSubject = PassthroughSubject<Int, Never>()
     
@@ -35,7 +35,7 @@ final class ChatListViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    convenience init(viewModel: ChatListViewModel) {
+    convenience init(viewModel: ChatRoomListViewModel) {
         self.init(nibName: nil, bundle: nil)
         self.viewModel = viewModel
     }
@@ -47,13 +47,19 @@ final class ChatListViewController: UIViewController {
         configureView()
         configureLayout()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        navigationController?.setNavigationBarHidden(true, animated: false)
+    }
 }
 
-private extension ChatListViewController {
+private extension ChatRoomListViewController {
     
     func bind() {
         let output = viewModel?.transform(
-            input: ChatListViewModel.Input(
+            input: ChatRoomListViewModel.Input(
                 viewDidLoad: Just(()).eraseToAnyPublisher(),
                 didSelectRowAt: rowSelectSubject.eraseToAnyPublisher()
             ),
@@ -68,6 +74,7 @@ private extension ChatListViewController {
     }
     
     func configureView() {
+        self.title = "채팅 목록"
         view.backgroundColor = .white
     }
     
@@ -81,7 +88,7 @@ private extension ChatListViewController {
     }
 }
 
-extension ChatListViewController: UITableViewDelegate, UITableViewDataSource {
+extension ChatRoomListViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewModel?.chattingList.count ?? 0
     }
