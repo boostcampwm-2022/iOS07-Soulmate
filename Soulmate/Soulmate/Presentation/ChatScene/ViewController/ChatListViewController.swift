@@ -68,6 +68,7 @@ private extension ChatListViewController {
     }
     
     func configureView() {
+        self.title = "채팅 목록"
         view.backgroundColor = .white
     }
     

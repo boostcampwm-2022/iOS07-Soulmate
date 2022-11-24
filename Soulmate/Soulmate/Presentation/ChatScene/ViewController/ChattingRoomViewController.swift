@@ -135,6 +135,7 @@ extension ChattingRoomViewController: UITableViewDelegate, UITableViewDataSource
 // MARK: - UI Configure
 private extension ChattingRoomViewController {
     func configureView() {
+        self.title = "메이트 이름"
         view.backgroundColor = .white
     }
     
