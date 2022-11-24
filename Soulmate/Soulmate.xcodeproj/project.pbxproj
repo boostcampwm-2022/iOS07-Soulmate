@@ -70,6 +70,11 @@
 		6A34C230292F273C00A3E57F /* ReceivedChatRequestsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A34C22F292F273C00A3E57F /* ReceivedChatRequestsViewController.swift */; };
 		6A34C232292F29EA00A3E57F /* ReceivedChatRequestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A34C231292F29EA00A3E57F /* ReceivedChatRequestView.swift */; };
 		6A34C234292F29F800A3E57F /* ReceivedChatRequestCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A34C233292F29F800A3E57F /* ReceivedChatRequestCell.swift */; };
+		6A34C236292F372E00A3E57F /* ReceivedChatRequestsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A34C235292F372E00A3E57F /* ReceivedChatRequestsViewModel.swift */; };
+		6A34C238292F392100A3E57F /* LoadReceivedChatRequestsUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A34C237292F392100A3E57F /* LoadReceivedChatRequestsUseCase.swift */; };
+		6A34C23A292F393E00A3E57F /* DefaultLoadReceivedChatRequestsUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A34C239292F393E00A3E57F /* DefaultLoadReceivedChatRequestsUseCase.swift */; };
+		6A34C23C292F40B000A3E57F /* ReceivedRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A34C23B292F40B000A3E57F /* ReceivedRequestDTO.swift */; };
+		6A34C23E292F415700A3E57F /* ReceivedRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A34C23D292F415700A3E57F /* ReceivedRequest.swift */; };
 		6A3F91A72924A45300F1D901 /* RegisterSelectableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A3F91A62924A45300F1D901 /* RegisterSelectableView.swift */; };
 		6A444533291EA23F009AE2E5 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A444532291EA23F009AE2E5 /* UIColor.swift */; };
 		6A45AA212925595700F85D2C /* RegisterCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A45AA202925595700F85D2C /* RegisterCoordinator.swift */; };
@@ -207,6 +212,11 @@
 		6A34C22F292F273C00A3E57F /* ReceivedChatRequestsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceivedChatRequestsViewController.swift; sourceTree = "<group>"; };
 		6A34C231292F29EA00A3E57F /* ReceivedChatRequestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceivedChatRequestView.swift; sourceTree = "<group>"; };
 		6A34C233292F29F800A3E57F /* ReceivedChatRequestCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceivedChatRequestCell.swift; sourceTree = "<group>"; };
+		6A34C235292F372E00A3E57F /* ReceivedChatRequestsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceivedChatRequestsViewModel.swift; sourceTree = "<group>"; };
+		6A34C237292F392100A3E57F /* LoadReceivedChatRequestsUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadReceivedChatRequestsUseCase.swift; sourceTree = "<group>"; };
+		6A34C239292F393E00A3E57F /* DefaultLoadReceivedChatRequestsUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultLoadReceivedChatRequestsUseCase.swift; sourceTree = "<group>"; };
+		6A34C23B292F40B000A3E57F /* ReceivedRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceivedRequestDTO.swift; sourceTree = "<group>"; };
+		6A34C23D292F415700A3E57F /* ReceivedRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceivedRequest.swift; sourceTree = "<group>"; };
 		6A3F91A62924A45300F1D901 /* RegisterSelectableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterSelectableView.swift; sourceTree = "<group>"; };
 		6A444532291EA23F009AE2E5 /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		6A45AA202925595700F85D2C /* RegisterCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterCoordinator.swift; sourceTree = "<group>"; };
@@ -485,6 +495,7 @@
 				6AB6B967292BEC3900A029BD /* DefaultRegisterStateValidateUseCase.swift */,
 				6AB6B96D292BF2F300A029BD /* DefaultUploadDetailInfoUseCase.swift */,
 				6AB6B96F292C2C7500A029BD /* DefaultUpLoadPictureUseCase.swift */,
+				6A34C239292F393E00A3E57F /* DefaultLoadReceivedChatRequestsUseCase.swift */,
 			);
 			path = UseCase;
 			sourceTree = "<group>";
@@ -501,6 +512,7 @@
 				6AB6B972292C2E5E00A029BD /* UploadPictureUseCase.swift */,
 				6A34C202292C982500A3E57F /* LoadChattingRoomListUseCase.swift */,
 				6AB6B9BC292D82F800A029BD /* SignOutUseCase.swift */,
+				6A34C237292F392100A3E57F /* LoadReceivedChatRequestsUseCase.swift */,
 			);
 			path = Interface;
 			sourceTree = "<group>";
@@ -510,6 +522,7 @@
 			children = (
 				6A34C200292C97BC00A3E57F /* ChatRoomListViewModel.swift */,
 				6A34C1EC292B3A3A00A3E57F /* ChattingRoomViewModel.swift */,
+				6A34C235292F372E00A3E57F /* ReceivedChatRequestsViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -522,6 +535,7 @@
 				6A34C204292C98D300A3E57F /* ChatRoomInfo.swift */,
 				6A34C220292E55EA00A3E57F /* MessageInfo.swift */,
 				6AB6B97B292D380A00A029BD /* Mbti.swift */,
+				6A34C23D292F415700A3E57F /* ReceivedRequest.swift */,
 			);
 			path = Entity;
 			sourceTree = "<group>";
@@ -762,6 +776,7 @@
 				6AB6B9C9292E28BA00A029BD /* ChatRoomInfoDTO.swift */,
 				6A34C21E292E559B00A3E57F /* MessageInfoDTO.swift */,
 				6A34C222292E654F00A3E57F /* MessageToSendDTO.swift */,
+				6A34C23B292F40B000A3E57F /* ReceivedRequestDTO.swift */,
 			);
 			path = DataTransferObject;
 			sourceTree = "<group>";
@@ -940,6 +955,7 @@
 				6A34C221292E55EA00A3E57F /* MessageInfo.swift in Sources */,
 				6AB6B9BB292D81DF00A029BD /* DefaultSignOutUseCase.swift in Sources */,
 				6A97FE63291CE0C2006F6DD9 /* UIImage+shadow.swift in Sources */,
+				6A34C23E292F415700A3E57F /* ReceivedRequest.swift in Sources */,
 				6A45AA4629257E1E00F85D2C /* RegisterHeaderStackView.swift in Sources */,
 				6AB6B9AE292D7B0300A029BD /* NetworkKeyValueStorageApi.swift in Sources */,
 				6AB6B9A1292D71EC00A029BD /* DefaultUserDetailInfoRepository.swift in Sources */,
@@ -995,6 +1011,7 @@
 				6A34C22C292F209A00A3E57F /* ChatScenePageViewController.swift in Sources */,
 				6A34C1D8292B211700A3E57F /* Chat.swift in Sources */,
 				6A0041D92919E6B60042E02F /* CoordinatorInterface.swift in Sources */,
+				6A34C236292F372E00A3E57F /* ReceivedChatRequestsViewModel.swift in Sources */,
 				6A0041E02919EB230042E02F /* LoginViewController.swift in Sources */,
 				6A34C21F292E559C00A3E57F /* MessageInfoDTO.swift in Sources */,
 				6A34C1EB292B30FC00A3E57F /* KeyboardInfo.swift in Sources */,
@@ -1003,10 +1020,12 @@
 				6A34C232292F29EA00A3E57F /* ReceivedChatRequestView.swift in Sources */,
 				6AB6B9BD292D82F800A029BD /* SignOutUseCase.swift in Sources */,
 				6A3F91A72924A45300F1D901 /* RegisterSelectableView.swift in Sources */,
+				6A34C238292F392100A3E57F /* LoadReceivedChatRequestsUseCase.swift in Sources */,
 				6A34C1FF292C944D00A3E57F /* ChatRoomInfoCell.swift in Sources */,
 				6AB6B9B3292D7D9300A029BD /* LocalKeyValueStorage.swift in Sources */,
 				6A0041EB2919ED5F0042E02F /* HomeViewController.swift in Sources */,
 				6A34C205292C98D300A3E57F /* ChatRoomInfo.swift in Sources */,
+				6A34C23C292F40B000A3E57F /* ReceivedRequestDTO.swift in Sources */,
 				6A45AA4B2925C68300F85D2C /* RegisterUserInfo.swift in Sources */,
 				6A34C1F1292B48AE00A3E57F /* SendMessageUseCase.swift in Sources */,
 				6A34C223292E654F00A3E57F /* MessageToSendDTO.swift in Sources */,
@@ -1018,6 +1037,7 @@
 				B30A8F0F291CB4AC00ED4906 /* PhoneNumberViewController.swift in Sources */,
 				07EE0F13292C86FA00E761C4 /* BasicInfoCell.swift in Sources */,
 				6A8C88922919031A009EDBBB /* SceneDelegate.swift in Sources */,
+				6A34C23A292F393E00A3E57F /* DefaultLoadReceivedChatRequestsUseCase.swift in Sources */,
 				6AB6B9C1292DCBE800A029BD /* PhoneLoginCoorinator.swift in Sources */,
 				B303D651292367CF00414293 /* ProgressBar.swift in Sources */,
 				6A0041FB2919EE600042E02F /* MyPageViewController.swift in Sources */,

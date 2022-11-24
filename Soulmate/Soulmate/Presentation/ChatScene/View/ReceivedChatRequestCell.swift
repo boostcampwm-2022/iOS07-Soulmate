@@ -28,6 +28,11 @@ final class ReceivedChatRequestCell: UITableViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    func configure(with request: ReceivedRequest) {
+        receivedChatRequestView.configure(with: request)
+        
+    }
 }
 
 private extension ReceivedChatRequestCell {

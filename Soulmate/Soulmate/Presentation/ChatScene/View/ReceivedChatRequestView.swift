@@ -98,6 +98,10 @@ final class ReceivedChatRequestView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    func configure(with request: ReceivedRequest) {
+        mateNameLabel.text = request.mateName        
+    }
 }
 
 private extension ReceivedChatRequestView {

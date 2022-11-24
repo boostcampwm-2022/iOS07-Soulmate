@@ -21,13 +21,18 @@ class DefaultChatCoordinator: ChatCoordinator {
     
     func start() {
         let loadChattingRoomListUseCase = DefaultLoadChattingRoomListUseCase()
-        let viewModel = ChatRoomListViewModel(
+        let chatRoomListViewModel = ChatRoomListViewModel(
             coordinator: self,
             loadChattingRoomListUseCase: loadChattingRoomListUseCase
         )
-        let chatRoomListVC = ChatRoomListViewController(viewModel: viewModel)
+        let chatRoomListVC = ChatRoomListViewController(viewModel: chatRoomListViewModel)
         
-        let receivedChatRequestsVC = ReceivedChatRequestsViewController()
+        let loadReceivedChatRequestsUseCase = DefaultLoadReceivedChatRequestsUseCase()
+        let receivedChatRequestsViewModel = ReceivedChatRequestsViewModel(
+            coordinator: self,
+            loadReceivedChatRequestsUseCase: loadReceivedChatRequestsUseCase
+        )
+        let receivedChatRequestsVC = ReceivedChatRequestsViewController(viewModel: receivedChatRequestsViewModel)
         
         let pageViewController = ChatScenePageViewController(
             chatRoomListViewController: chatRoomListVC,
