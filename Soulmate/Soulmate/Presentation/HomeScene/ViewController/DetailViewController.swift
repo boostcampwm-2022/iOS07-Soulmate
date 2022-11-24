@@ -12,6 +12,15 @@ import SnapKit
 
 final class DetailViewController: UIViewController {
     private let pagingInfoSubject = PassthroughSubject<Int, Never>()
+    private let photosPublisher = PassthroughSubject<[String], Never>()
+    private let nicknamePublisher = PassthroughSubject<String, Never>()
+    private let agePublisher = PassthroughSubject<Date, Never>()
+    private let distancePublisher = PassthroughSubject<Int, Never>()
+    private let greetingMessagePublisher = PassthroughSubject<String, Never>()
+    private let heightPublisher = PassthroughSubject<Int, Never>()
+    private let mbtiPublisher = PassthroughSubject<Mbti, Never>()
+    private let drinkingPublisher = PassthroughSubject<DrinkingType, Never>()
+    private let smokingPublisher = PassthroughSubject<SmokingType, Never>()
 
     private var viewModel: DetailViewModel?
     private var cancellables = Set<AnyCancellable>()
@@ -62,14 +71,34 @@ final class DetailViewController: UIViewController {
         configureLayout()
         
         bind()
-
     }
 }
 
 // MARK: - configure
 private extension DetailViewController {
     private func bind() {
-
+        let _ = viewModel?.transform(input: DetailViewModel.Input(
+            setPhotos: photosPublisher.eraseToAnyPublisher(),
+            setNickname: nicknamePublisher.eraseToAnyPublisher(),
+            setAge: agePublisher.eraseToAnyPublisher(),
+            setDistance: distancePublisher.eraseToAnyPublisher(),
+            setGreetingMessage: greetingMessagePublisher.eraseToAnyPublisher(),
+            setHeight: heightPublisher.eraseToAnyPublisher(),
+            setMbti: mbtiPublisher.eraseToAnyPublisher(),
+            setDrinking: drinkingPublisher.eraseToAnyPublisher(),
+            setSmoking: smokingPublisher.eraseToAnyPublisher(),
+            didTouchedTalkButton: applyButton.tapPublisher()))
+        
+        photosPublisher.send(viewModel?.userInfo?.imageList ?? [])
+        nicknamePublisher.send(viewModel?.userInfo?.nickName ?? "")
+        agePublisher.send(viewModel?.userInfo?.birthDay ?? Date())
+        distancePublisher.send(viewModel?.distance ?? 0)
+        greetingMessagePublisher.send(viewModel?.userInfo?.aboutMe ?? "")
+        heightPublisher.send(viewModel?.userInfo?.height ?? 0)
+        mbtiPublisher.send(viewModel?.userInfo?.mbti ?? Mbti(innerType: .i, recognizeType: .n, judgementType: .t, lifeStyleType: .p))
+        drinkingPublisher.send(viewModel?.userInfo?.drinkingType ?? DrinkingType.none)
+        smokingPublisher.send(viewModel?.userInfo?.smokingType ?? SmokingType.none)
+        
     }
     
     private func configureView() {
@@ -99,7 +128,7 @@ extension DetailViewController: UICollectionViewDataSource, UICollectionViewDele
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if section == 0 {
-            return viewModel?.userInfo.imageList?.count ?? 1
+            return viewModel?.photos?.count ?? 1
         } else {
             return 1
         }
@@ -111,31 +140,31 @@ extension DetailViewController: UICollectionViewDataSource, UICollectionViewDele
             guard let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: "PhotoCell",
                 for: indexPath) as? PhotoCell else { return PhotoCell() }
-            cell.loadImage(image: viewModel?.userInfo.imageList?[indexPath.item] ?? "")
+            cell.loadImage(image: viewModel?.photos?[indexPath.item] ?? "")
             return cell
             
         case 1:
             guard let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: "ProfileCell",
                 for: indexPath) as? ProfileCell else { return ProfileCell() }
-            cell.configure(nickName: viewModel?.userInfo.nickName ?? "", birthDay: viewModel?.userInfo.birthDay ?? Date(), distance: viewModel?.distance ?? 0)
+            cell.configure(nickName: viewModel?.nickname ?? "", age: viewModel?.age ?? 0, distance: viewModel?.distance ?? 0)
             return cell
             
         case 2:
             guard let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: "GreetingCell",
                 for: indexPath) as? GreetingCell else { return GreetingCell() }
-            cell.configure(message: viewModel?.userInfo.aboutMe ?? "")
+            cell.configure(message: viewModel?.greetingMessage ?? "[등록된 인사말이 없습니다🥲]")
             return cell
             
         case 3:
             guard let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: "BasicInfoCell",
                 for: indexPath) as? BasicInfoCell,
-                  let height = viewModel?.userInfo.height,
-                  let mbti = viewModel?.userInfo.mbti,
-                  let drink = viewModel?.userInfo.drinkingType,
-                  let smoke = viewModel?.userInfo.smokingType else { return BasicInfoCell() }
+                  let height = viewModel?.height,
+                  let mbti = viewModel?.mbti,
+                  let drink = viewModel?.drinking,
+                  let smoke = viewModel?.smoking else { return BasicInfoCell() }
             cell.configure(height: height, mbti: mbti, drink: drink, smoke: smoke)
             return cell
             
