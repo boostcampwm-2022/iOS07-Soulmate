@@ -47,6 +47,12 @@ final class ChatRoomListViewController: UIViewController {
         configureView()
         configureLayout()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        navigationController?.setNavigationBarHidden(true, animated: false)
+    }
 }
 
 private extension ChatRoomListViewController {

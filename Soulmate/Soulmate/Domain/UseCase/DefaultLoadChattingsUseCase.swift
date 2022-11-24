@@ -25,7 +25,7 @@ final class DefaultLoadChattingsUseCase: LoadChattingsUseCase {
         
         guard let chatRoomId = info.documentId else { return }
         
-        let _ = db.collection("ChatRooms").document(chatRoomId).collection("Messages").order(by: "date", descending: true).limit(to: 20).addSnapshotListener { [weak self] snapshot, err in
+        let _ = db.collection("ChatRooms").document(chatRoomId).collection("Messages").order(by: "date", descending: true).addSnapshotListener { [weak self] snapshot, err in
             
             guard let snapshot, err == nil, let uid = self?.uid else { return }
             

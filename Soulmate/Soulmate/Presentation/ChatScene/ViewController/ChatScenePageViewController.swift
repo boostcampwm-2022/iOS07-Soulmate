@@ -54,7 +54,7 @@ final class ChatScenePageViewController: UIViewController {
         configureView()
         configureLayout()
         setPageViewController()
-    }
+    }        
 }
 
 private extension ChatScenePageViewController {
@@ -63,7 +63,7 @@ private extension ChatScenePageViewController {
         
     }
     
-    func configureView() {
+    func configureView() {        
         view.backgroundColor = .white
         addChild(pageViewController)
         pageViewController.didMove(toParent: self)
