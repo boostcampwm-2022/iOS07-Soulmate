@@ -11,7 +11,7 @@ import SnapKit
 final class ChatScenePageViewController: UIViewController {
     
     
-    private var chatRoomListViewController: ChatListViewController?
+    private var chatRoomListViewController: ChatRoomListViewController?
     
     private lazy var viewControllers: [UIViewController] = {
         
@@ -37,7 +37,7 @@ final class ChatScenePageViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    convenience init(chatRoomListViewController: ChatListViewController) {
+    convenience init(chatRoomListViewController: ChatRoomListViewController) {
         self.init(nibName: nil, bundle: nil)
         self.chatRoomListViewController = chatRoomListViewController
     }

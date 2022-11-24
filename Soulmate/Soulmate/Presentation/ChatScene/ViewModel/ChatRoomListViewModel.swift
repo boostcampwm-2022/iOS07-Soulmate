@@ -1,5 +1,5 @@
 //
-//  ChatListViewModel.swift
+//  ChatRoomListViewModel.swift
 //  Soulmate
 //
 //  Created by Hoen on 2022/11/22.
@@ -7,7 +7,7 @@
 
 import Combine
 
-final class ChatListViewModel {
+final class ChatRoomListViewModel {
     
     private weak var coordinator: ChatCoordinator?
     private let loadChattingRoomListUseCase: LoadChattingRoomListUseCase

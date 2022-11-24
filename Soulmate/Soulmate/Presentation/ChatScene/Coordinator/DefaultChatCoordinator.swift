@@ -21,11 +21,11 @@ class DefaultChatCoordinator: ChatCoordinator {
     
     func start() {
         let loadChattingRoomListUseCase = DefaultLoadChattingRoomListUseCase()
-        let viewModel = ChatListViewModel(
+        let viewModel = ChatRoomListViewModel(
             coordinator: self,
             loadChattingRoomListUseCase: loadChattingRoomListUseCase
         )
-        let chatRoomListVC = ChatListViewController(viewModel: viewModel)
+        let chatRoomListVC = ChatRoomListViewController(viewModel: viewModel)
         
         let pageViewController = ChatScenePageViewController(chatRoomListViewController: chatRoomListVC)
         
