@@ -110,15 +110,9 @@ final class ProfileCell: UICollectionViewCell {
         }
     }
     
-    func configure(nickName: String, birthDay: Date, distance: Int) {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy"
-        let year = dateFormatter.string(from: birthDay)
-        let now = dateFormatter.string(from: Date())
-        
-        // TODO: 나이 계산기 만들기
+    func configure(nickName: String, age: Int, distance: Int) {
         partnerName.text = nickName
-        partnerAge.text = String(Int(now)! - Int(year)!)
+        partnerAge.text = String(age)
         partnerDistance.text = String(distance) + "km"
     }
 }
