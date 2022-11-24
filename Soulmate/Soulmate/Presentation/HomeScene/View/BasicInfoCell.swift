@@ -135,10 +135,10 @@ final class BasicInfoCell: UICollectionViewCell {
         }
     }
     
-    func configure(height: Int, mbti: Mbti, drink: DrinkingType, smoke: SmokingType) {
+    func configure(height: Int, mbti: String, drink: String, smoke: String) {
         heightInput.text = String(height)
-        mbtiInput.text = mbti.toString()
-        drinkInput.text = drink.rawValue
-        smokeInput.text = smoke.rawValue
+        mbtiInput.text = mbti
+        drinkInput.text = drink
+        smokeInput.text = smoke
     }
 }

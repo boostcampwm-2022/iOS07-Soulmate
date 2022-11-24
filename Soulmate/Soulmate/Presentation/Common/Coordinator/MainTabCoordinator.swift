@@ -68,6 +68,7 @@ final class MainTabCoordinator: NSObject, Coordinator {
         tabBarController.setViewControllers(tabControllers, animated: true)
         tabBarController.selectedIndex = TabBarPage.home.rawValue
         tabBarController.tabBar.isTranslucent = false
+        tabBarController.tabBar.backgroundColor = .systemBackground
         tabBarController.delegate = self
         
         navigationController.viewControllers = [tabBarController]
