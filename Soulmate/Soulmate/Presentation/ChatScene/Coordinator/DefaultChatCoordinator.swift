@@ -27,7 +27,12 @@ class DefaultChatCoordinator: ChatCoordinator {
         )
         let chatRoomListVC = ChatRoomListViewController(viewModel: viewModel)
         
-        let pageViewController = ChatScenePageViewController(chatRoomListViewController: chatRoomListVC)
+        let receivedChatRequestsVC = ReceivedChatRequestsViewController()
+        
+        let pageViewController = ChatScenePageViewController(
+            chatRoomListViewController: chatRoomListVC,
+            receivedChatRequestsViewController: receivedChatRequestsVC
+        )
         
         self.navigationController.pushViewController(pageViewController, animated: true)
     }

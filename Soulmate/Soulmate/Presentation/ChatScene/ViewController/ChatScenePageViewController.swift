@@ -12,12 +12,13 @@ final class ChatScenePageViewController: UIViewController {
     
     
     private var chatRoomListViewController: ChatRoomListViewController?
+    private var receivedChatRequestsViewController: ReceivedChatRequestsViewController?
     
     private lazy var viewControllers: [UIViewController] = {
         
-        guard let chatRoomListViewController else { return [] }
+        guard let chatRoomListViewController, let receivedChatRequestsViewController else { return [] }
         
-        return [chatRoomListViewController]
+        return [chatRoomListViewController, receivedChatRequestsViewController]
     }()
     
     private lazy var pageViewController: UIPageViewController = {
@@ -37,9 +38,13 @@ final class ChatScenePageViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    convenience init(chatRoomListViewController: ChatRoomListViewController) {
+    convenience init(
+        chatRoomListViewController: ChatRoomListViewController,
+        receivedChatRequestsViewController: ReceivedChatRequestsViewController
+    ) {
         self.init(nibName: nil, bundle: nil)
         self.chatRoomListViewController = chatRoomListViewController
+        self.receivedChatRequestsViewController = receivedChatRequestsViewController
     }
     
     override func viewDidLoad() {
@@ -87,7 +92,7 @@ extension ChatScenePageViewController: UIPageViewControllerDelegate, UIPageViewC
         guard let index = viewControllers.firstIndex(of: viewController) else { return nil }
         
         let prevIndex = index - 1
-        if prevIndex < 0 { return nil }
+        if prevIndex < 0 { return viewControllers[viewControllers.count - 1] }
         
         return viewControllers[prevIndex]
     }
@@ -96,7 +101,7 @@ extension ChatScenePageViewController: UIPageViewControllerDelegate, UIPageViewC
         guard let index = viewControllers.firstIndex(of: viewController) else { return nil }
         
         let nextIndex = index + 1
-        if nextIndex == viewControllers.count { return nil }
+        if nextIndex == viewControllers.count { return viewControllers[0] }
         
         return viewControllers[nextIndex]
     }
