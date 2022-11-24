@@ -12,7 +12,7 @@ final class ChattingRoomViewModel {
     private let sendMessageUseCase: SendMessageUseCase
     private let loadChattingsUseCase: LoadChattingsUseCase
     var chattings: [Chat] {
-        return loadChattingsUseCase.loadedChattings.value
+        return loadChattingsUseCase.chattings.value
     }
     
     init(
@@ -31,7 +31,7 @@ final class ChattingRoomViewModel {
     
     struct Output {
         var sendButtonEnabled = CurrentValueSubject<Bool, Never>(false)
-        var reloadTableView = PassthroughSubject<Bool, Never>()
+        var chattingsLoaded = PassthroughSubject<Void, Never>()
     }
     
     func transform(input: Input, cancellables: inout Set<AnyCancellable>) -> Output {
@@ -39,7 +39,7 @@ final class ChattingRoomViewModel {
         
         input.viewDidLoad
             .sink { [weak self] _ in
-                self?.loadChattingsUseCase.loadChattings()
+                self?.loadChattingsUseCase.listenChattings()
             }
             .store(in: &cancellables)
         
@@ -52,7 +52,7 @@ final class ChattingRoomViewModel {
         
         input.sendButtonDidTap
             .sink { [weak self] _ in
-                self?.loadChattingsUseCase.testLoad()
+                self?.sendMessageUseCase.sendMessage()
             }
             .store(in: &cancellables)
         
@@ -62,10 +62,9 @@ final class ChattingRoomViewModel {
             }
             .store(in: &cancellables)
         
-        self.loadChattingsUseCase.loadedNewChattings
-            .filter { $0 }
+        self.loadChattingsUseCase.chattings
             .sink { _ in
-                output.reloadTableView.send(true)
+                output.chattingsLoaded.send(())
             }
             .store(in: &cancellables)
         

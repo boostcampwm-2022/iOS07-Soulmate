@@ -129,13 +129,13 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         
         recommendAgainButton.snp.makeConstraints {
             $0.left.right.equalToSuperview().inset(20)
-            $0.bottom.equalToSuperview().inset(40)
+            $0.bottom.equalToSuperview().inset(20)
             $0.height.equalTo(54)
         }
         
         collectionView.snp.makeConstraints {
-            $0.top.equalTo(logo.snp.bottom).offset(29)
-            $0.bottom.equalTo(recommendAgainButton.snp.top).offset(-36)
+            $0.top.equalTo(logo.snp.bottom).offset(20)
+            $0.bottom.equalTo(recommendAgainButton.snp.top).offset(-20)
             $0.centerX.equalToSuperview()
             $0.width.equalToSuperview().inset(20)
         }
@@ -156,7 +156,8 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
+        guard let vc = viewModel?.coordinator?.showDetailVC() else { return }
+        self.present(vc, animated: true)
     }
     
 }

@@ -71,6 +71,12 @@ final class ChattingRoomViewController: UIViewController {
         registerKeyboardNotifications()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        navigationController?.setNavigationBarHidden(false, animated: false)
+    }
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
@@ -105,28 +111,28 @@ extension ChattingRoomViewController: UITableViewDelegate, UITableViewDataSource
         guard let chat = viewModel?.chattings[indexPath.row] else {
             return UITableViewCell()
         }
-        
+
         if chat.isMe {
             guard let cell = tableView.dequeueReusableCell(
                 withIdentifier: MyChatCell.id,
                 for: indexPath) as? MyChatCell else {
-                
+
                 return UITableViewCell()
             }
-            
+
             cell.configure(from: chat)
-            
+
             return cell
         } else {
             guard let cell = tableView.dequeueReusableCell(
                 withIdentifier: OtherChatCell.id,
                 for: indexPath) as? OtherChatCell else {
-                
+
                 return UITableViewCell()
             }
-            
+
             cell.configure(from: chat)
-            
+
             return cell
         }
     }
@@ -135,6 +141,7 @@ extension ChattingRoomViewController: UITableViewDelegate, UITableViewDataSource
 // MARK: - UI Configure
 private extension ChattingRoomViewController {
     func configureView() {
+        self.title = "메이트 이름"
         view.backgroundColor = .white
     }
     
@@ -186,17 +193,10 @@ private extension ChattingRoomViewController {
             }
             .store(in: &cancellabels)
         
-        output.reloadTableView
+        output.chattingsLoaded
             .sink { [weak self] _ in
-                
-                let bottomOffset = self?.bottomOffset().y
-                let tableViewOffset = self?.chatTableView.contentOffset.y
-                
                 self?.chatTableView.reloadData()
-                                
-                if bottomOffset ?? 1 <= (tableViewOffset ?? 0) + 10 {
-                    self?.scrollToBottom(animated: false)
-                }
+                self?.scrollToBottom(animated: false)
             }
             .store(in: &cancellabels)
     }

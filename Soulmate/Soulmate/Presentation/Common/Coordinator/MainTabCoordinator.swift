@@ -71,6 +71,7 @@ final class MainTabCoordinator: NSObject, Coordinator {
         let pages = TabBarPage.allCases
         let controllers: [UINavigationController] = pages.map { getTabController($0) }
     
+        self.navigationController.setNavigationBarHidden(true, animated: false)
         prepareTabBarController(withTabControllers: controllers)
     }
     
@@ -78,6 +79,7 @@ final class MainTabCoordinator: NSObject, Coordinator {
         tabBarController.setViewControllers(tabControllers, animated: true)
         tabBarController.selectedIndex = TabBarPage.home.rawValue
         tabBarController.tabBar.isTranslucent = false
+        tabBarController.tabBar.backgroundColor = .systemBackground
         tabBarController.delegate = self
         
         navigationController.viewControllers = [tabBarController]

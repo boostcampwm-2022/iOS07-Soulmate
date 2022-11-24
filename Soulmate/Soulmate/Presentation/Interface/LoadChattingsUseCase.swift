@@ -8,9 +8,7 @@
 import Combine
 
 protocol LoadChattingsUseCase {
-    var loadedNewChattings: PassthroughSubject<Bool, Never> { get }
-    var loadedChattings: CurrentValueSubject<[Chat], Never> { get }
+    var chattings: CurrentValueSubject<[Chat], Never> { get }
     
-    func loadChattings()
-    func testLoad()
+    func listenChattings()
 }

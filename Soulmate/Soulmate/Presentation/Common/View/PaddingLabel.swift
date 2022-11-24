@@ -8,7 +8,7 @@
 import UIKit
 
 final class PaddingLabel: UILabel {
-    private var padding = UIEdgeInsets(top: 8, left: 14, bottom: 8, right: 14)
+    private var padding = UIEdgeInsets(top: 8, left: 10, bottom: 8, right: 10)
     
     convenience init(padding: UIEdgeInsets) {
         self.init()

@@ -21,17 +21,30 @@ class DefaultChatCoordinator: ChatCoordinator {
     
     func start() {
         let loadChattingRoomListUseCase = DefaultLoadChattingRoomListUseCase()
-        let viewModel = ChatListViewModel(
+        let chatRoomListViewModel = ChatRoomListViewModel(
             coordinator: self,
             loadChattingRoomListUseCase: loadChattingRoomListUseCase
         )
-        let viewController = ChatListViewController(viewModel: viewModel)
-        self.navigationController.pushViewController(viewController, animated: true)
+        let chatRoomListVC = ChatRoomListViewController(viewModel: chatRoomListViewModel)
+        
+        let loadReceivedChatRequestsUseCase = DefaultLoadReceivedChatRequestsUseCase()
+        let receivedChatRequestsViewModel = ReceivedChatRequestsViewModel(
+            coordinator: self,
+            loadReceivedChatRequestsUseCase: loadReceivedChatRequestsUseCase
+        )
+        let receivedChatRequestsVC = ReceivedChatRequestsViewController(viewModel: receivedChatRequestsViewModel)
+        
+        let pageViewController = ChatScenePageViewController(
+            chatRoomListViewController: chatRoomListVC,
+            receivedChatRequestsViewController: receivedChatRequestsVC
+        )
+        
+        self.navigationController.pushViewController(pageViewController, animated: true)
     }
     
     func showChatRoom(with info: ChatRoomInfo) {
-        let sendMessageUseCase = DefaultSendMessageUseCase()
-        let loadChattingsUseCase = DefaultLoadChattingsUseCase()
+        let sendMessageUseCase = DefaultSendMessageUseCase(with: info)
+        let loadChattingsUseCase = DefaultLoadChattingsUseCase(with: info)
         let viewModel = ChattingRoomViewModel(
             sendMessageUseCase: sendMessageUseCase,
             loadChattingsUseCase: loadChattingsUseCase
