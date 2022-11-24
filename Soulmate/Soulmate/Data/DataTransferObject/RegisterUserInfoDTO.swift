@@ -6,8 +6,10 @@
 //
 
 import Foundation
+import FirebaseFirestoreSwift
 
 struct RegisterUserInfoDTO: Codable {
+    @DocumentID var uid: String?
     var gender: String?
     var nickName: String?
     var birthDay: Date?
@@ -38,6 +40,7 @@ extension RegisterUserInfoDTO {
         }
         
         return RegisterUserInfo(
+            uid: self.uid,
             gender: genderInstance,
             nickName: self.nickName,
             birthDay: self.birthDay,

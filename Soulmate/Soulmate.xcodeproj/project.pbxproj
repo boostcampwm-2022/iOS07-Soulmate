@@ -126,6 +126,19 @@
 		6AB6B9BD292D82F800A029BD /* SignOutUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB6B9BC292D82F800A029BD /* SignOutUseCase.swift */; };
 		6AB6B9C1292DCBE800A029BD /* PhoneLoginCoorinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB6B9C0292DCBE800A029BD /* PhoneLoginCoorinator.swift */; };
 		6AB6B9CA292E28BA00A029BD /* ChatRoomInfoDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB6B9C9292E28BA00A029BD /* ChatRoomInfoDTO.swift */; };
+		6AB6B9CE292EC15300A029BD /* DefaultMateRecommendationUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB6B9CD292EC15300A029BD /* DefaultMateRecommendationUseCase.swift */; };
+		6AB6B9D0292EC1E700A029BD /* UserPreviewRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB6B9CF292EC1E700A029BD /* UserPreviewRepository.swift */; };
+		6AB6B9D2292EC24100A029BD /* DefaultUserPreviewRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB6B9D1292EC24100A029BD /* DefaultUserPreviewRepository.swift */; };
+		6AB6B9D4292EC51400A029BD /* MateRecommendationUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB6B9D3292EC51400A029BD /* MateRecommendationUseCase.swift */; };
+		6AB6B9D6292EC59B00A029BD /* DefaultDownLoadPictureUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB6B9D5292EC59B00A029BD /* DefaultDownLoadPictureUseCase.swift */; };
+		6AB6B9DA292EC87200A029BD /* DownLoadPictureUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB6B9D9292EC87200A029BD /* DownLoadPictureUseCase.swift */; };
+		6AB6B9DC292F23C600A029BD /* UserPreviewDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB6B9DB292F23C500A029BD /* UserPreviewDTO.swift */; };
+		6AB6B9DE292F259500A029BD /* UserPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB6B9DD292F259500A029BD /* UserPreview.swift */; };
+		6AB6B9E0292F2D3700A029BD /* DefaultUpLoadPreviewCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB6B9DF292F2D3700A029BD /* DefaultUpLoadPreviewCase.swift */; };
+		6AB6B9E2292F2DB900A029BD /* UpLoadPreviewUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB6B9E1292F2DB900A029BD /* UpLoadPreviewUseCase.swift */; };
+		6AB6B9E4292F336F00A029BD /* DefaultUpLoadLocationUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB6B9E3292F336F00A029BD /* DefaultUpLoadLocationUseCase.swift */; };
+		6AB6B9E6292F3D9C00A029BD /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB6B9E5292F3D9C00A029BD /* Location.swift */; };
+		6AB6B9E9292F3F6400A029BD /* CLLocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB6B9E8292F3F6400A029BD /* CLLocationService.swift */; };
 		6ADEE4E72922198200AD328B /* UIControl+Publisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ADEE4E62922198200AD328B /* UIControl+Publisher.swift */; };
 		6ADEE4EA29221CB800AD328B /* UIButton+Publisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ADEE4E929221CB800AD328B /* UIButton+Publisher.swift */; };
 		6ADEE4EC29221CD900AD328B /* UITextField+Publisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ADEE4EB29221CD900AD328B /* UITextField+Publisher.swift */; };
@@ -273,6 +286,19 @@
 		6AB6B9BC292D82F800A029BD /* SignOutUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignOutUseCase.swift; sourceTree = "<group>"; };
 		6AB6B9C0292DCBE800A029BD /* PhoneLoginCoorinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneLoginCoorinator.swift; sourceTree = "<group>"; };
 		6AB6B9C9292E28BA00A029BD /* ChatRoomInfoDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomInfoDTO.swift; sourceTree = "<group>"; };
+		6AB6B9CD292EC15300A029BD /* DefaultMateRecommendationUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultMateRecommendationUseCase.swift; sourceTree = "<group>"; };
+		6AB6B9CF292EC1E700A029BD /* UserPreviewRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPreviewRepository.swift; sourceTree = "<group>"; };
+		6AB6B9D1292EC24100A029BD /* DefaultUserPreviewRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultUserPreviewRepository.swift; sourceTree = "<group>"; };
+		6AB6B9D3292EC51400A029BD /* MateRecommendationUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MateRecommendationUseCase.swift; sourceTree = "<group>"; };
+		6AB6B9D5292EC59B00A029BD /* DefaultDownLoadPictureUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultDownLoadPictureUseCase.swift; sourceTree = "<group>"; };
+		6AB6B9D9292EC87200A029BD /* DownLoadPictureUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownLoadPictureUseCase.swift; sourceTree = "<group>"; };
+		6AB6B9DB292F23C500A029BD /* UserPreviewDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPreviewDTO.swift; sourceTree = "<group>"; };
+		6AB6B9DD292F259500A029BD /* UserPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPreview.swift; sourceTree = "<group>"; };
+		6AB6B9DF292F2D3700A029BD /* DefaultUpLoadPreviewCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultUpLoadPreviewCase.swift; sourceTree = "<group>"; };
+		6AB6B9E1292F2DB900A029BD /* UpLoadPreviewUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpLoadPreviewUseCase.swift; sourceTree = "<group>"; };
+		6AB6B9E3292F336F00A029BD /* DefaultUpLoadLocationUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultUpLoadLocationUseCase.swift; sourceTree = "<group>"; };
+		6AB6B9E5292F3D9C00A029BD /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
+		6AB6B9E8292F3F6400A029BD /* CLLocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLLocationService.swift; sourceTree = "<group>"; };
 		6ADEE4E62922198200AD328B /* UIControl+Publisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIControl+Publisher.swift"; sourceTree = "<group>"; };
 		6ADEE4E929221CB800AD328B /* UIButton+Publisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Publisher.swift"; sourceTree = "<group>"; };
 		6ADEE4EB29221CD900AD328B /* UITextField+Publisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Publisher.swift"; sourceTree = "<group>"; };
@@ -502,6 +528,10 @@
 				6AB6B967292BEC3900A029BD /* DefaultRegisterStateValidateUseCase.swift */,
 				6AB6B96D292BF2F300A029BD /* DefaultUploadDetailInfoUseCase.swift */,
 				6AB6B96F292C2C7500A029BD /* DefaultUpLoadPictureUseCase.swift */,
+				6AB6B9CD292EC15300A029BD /* DefaultMateRecommendationUseCase.swift */,
+				6AB6B9D5292EC59B00A029BD /* DefaultDownLoadPictureUseCase.swift */,
+				6AB6B9DF292F2D3700A029BD /* DefaultUpLoadPreviewCase.swift */,
+				6AB6B9E3292F336F00A029BD /* DefaultUpLoadLocationUseCase.swift */,
 				6A34C239292F393E00A3E57F /* DefaultLoadReceivedChatRequestsUseCase.swift */,
 			);
 			path = UseCase;
@@ -519,6 +549,9 @@
 				6AB6B972292C2E5E00A029BD /* UploadPictureUseCase.swift */,
 				6A34C202292C982500A3E57F /* LoadChattingRoomListUseCase.swift */,
 				6AB6B9BC292D82F800A029BD /* SignOutUseCase.swift */,
+				6AB6B9D3292EC51400A029BD /* MateRecommendationUseCase.swift */,
+				6AB6B9D9292EC87200A029BD /* DownLoadPictureUseCase.swift */,
+				6AB6B9E1292F2DB900A029BD /* UpLoadPreviewUseCase.swift */,
 				6A34C237292F392100A3E57F /* LoadReceivedChatRequestsUseCase.swift */,
 			);
 			path = Interface;
@@ -542,6 +575,8 @@
 				6A34C204292C98D300A3E57F /* ChatRoomInfo.swift */,
 				6A34C220292E55EA00A3E57F /* MessageInfo.swift */,
 				6AB6B97B292D380A00A029BD /* Mbti.swift */,
+				6AB6B9DD292F259500A029BD /* UserPreview.swift */,
+				6AB6B9E5292F3D9C00A029BD /* Location.swift */,
 				6A34C23D292F415700A3E57F /* ReceivedRequest.swift */,
 			);
 			path = Entity;
@@ -668,6 +703,7 @@
 		6A8C888E2919031A009EDBBB /* Soulmate */ = {
 			isa = PBXGroup;
 			children = (
+				6AB6B9E7292F3F4000A029BD /* Service */,
 				6A8B07222923274400492123 /* Soulmate.entitlements */,
 				6A97FE61291CE0A4006F6DD9 /* Util */,
 				6AB6B951292BDDF500A029BD /* Data */,
@@ -745,6 +781,7 @@
 				6AB6B976292C3DD500A029BD /* DefaultProfilePhotoRepository.swift */,
 				6AB6B9A0292D71EC00A029BD /* DefaultUserDetailInfoRepository.swift */,
 				6AB6B9B6292D807B00A029BD /* DefaultUserDefaultsRepository.swift */,
+				6AB6B9D1292EC24100A029BD /* DefaultUserPreviewRepository.swift */,
 			);
 			path = Repository;
 			sourceTree = "<group>";
@@ -773,6 +810,7 @@
 				6AB6B979292C3E5800A029BD /* ProfilePhotoRepository.swift */,
 				6AB6B9A3292D733700A029BD /* UserDetailInfoRepository.swift */,
 				6AB6B9B8292D814E00A029BD /* UserDefaultsRepository.swift */,
+				6AB6B9CF292EC1E700A029BD /* UserPreviewRepository.swift */,
 			);
 			path = Interface;
 			sourceTree = "<group>";
@@ -782,6 +820,7 @@
 			children = (
 				6AB6B99E292D718500A029BD /* RegisterUserInfoDTO.swift */,
 				6AB6B9C9292E28BA00A029BD /* ChatRoomInfoDTO.swift */,
+				6AB6B9DB292F23C500A029BD /* UserPreviewDTO.swift */,
 				6A34C21E292E559B00A3E57F /* MessageInfoDTO.swift */,
 				6A34C222292E654F00A3E57F /* MessageToSendDTO.swift */,
 				6A34C23B292F40B000A3E57F /* ReceivedRequestDTO.swift */,
@@ -805,6 +844,14 @@
 				6AB6B9B4292D7DA100A029BD /* UserDefaultsLocalKeyValueStorage.swift */,
 			);
 			path = LocalKeyValueStorage;
+			sourceTree = "<group>";
+		};
+		6AB6B9E7292F3F4000A029BD /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				6AB6B9E8292F3F6400A029BD /* CLLocationService.swift */,
+			);
+			path = Service;
 			sourceTree = "<group>";
 		};
 		6ADEE4E829221C6600AD328B /* Combine */ = {
@@ -959,7 +1006,9 @@
 				6A34C1F7292B501500A3E57F /* DefaultLoadChattingsUseCase.swift in Sources */,
 				6A34C1DB292B216A00A3E57F /* OtherChatCell.swift in Sources */,
 				6A97FE66291CE29E006F6DD9 /* LoginViewModel.swift in Sources */,
+				6AB6B9E0292F2D3700A029BD /* DefaultUpLoadPreviewCase.swift in Sources */,
 				6AB6B95F292BDE7A00A029BD /* FireStoreNetworkDatabaseApi.swift in Sources */,
+				6AB6B9E2292F2DB900A029BD /* UpLoadPreviewUseCase.swift in Sources */,
 				6AB6B970292C2C7500A029BD /* DefaultUpLoadPictureUseCase.swift in Sources */,
 				B3E029A9291DDC1500931FA2 /* GradientButton.swift in Sources */,
 				6ADEE4EC29221CD900AD328B /* UITextField+Publisher.swift in Sources */,
@@ -969,6 +1018,8 @@
 				6A34C20E292DBCD500A3E57F /* Date+toString.swift in Sources */,
 				6A34C1FB292C8F8F00A3E57F /* ChatRoomListViewController.swift in Sources */,
 				6A0041FD2919EE7B0042E02F /* ServiceTermViewController.swift in Sources */,
+				6AB6B9D6292EC59B00A029BD /* DefaultDownLoadPictureUseCase.swift in Sources */,
+				6AB6B9CE292EC15300A029BD /* DefaultMateRecommendationUseCase.swift in Sources */,
 				6A34C221292E55EA00A3E57F /* MessageInfo.swift in Sources */,
 				6AB6B9BB292D81DF00A029BD /* DefaultSignOutUseCase.swift in Sources */,
 				6A97FE63291CE0C2006F6DD9 /* UIImage+shadow.swift in Sources */,
@@ -980,6 +1031,7 @@
 				6A34C1E8292B279000A3E57F /* ComposeBar.swift in Sources */,
 				6AB6B946292AAD7600A029BD /* RegisterViewModel.swift in Sources */,
 				B311F4A72925E82400806E86 /* MbtiPreview.swift in Sources */,
+				6AB6B9D0292EC1E700A029BD /* UserPreviewRepository.swift in Sources */,
 				6AB6B9B9292D814F00A029BD /* UserDefaultsRepository.swift in Sources */,
 				6AB6B97C292D380A00A029BD /* Mbti.swift in Sources */,
 				6A34C1FD292C905200A3E57F /* ChatRoomInfoView.swift in Sources */,
@@ -987,10 +1039,12 @@
 				6AB6B99F292D718500A029BD /* RegisterUserInfoDTO.swift in Sources */,
 				6AE21021291DE06600A32280 /* SelectableCell.swift in Sources */,
 				6A0041DB2919E9420042E02F /* AppCoordinator.swift in Sources */,
+				6AB6B9E9292F3F6400A029BD /* CLLocationService.swift in Sources */,
 				07EE0F1C292CEEDC00E761C4 /* HomeViewModel.swift in Sources */,
 				6A03B6EC2923BD8C00AC15A6 /* PhoneNumberViewModel.swift in Sources */,
 				07EAD6FB2925F6B5001AE220 /* AddPhotoCell.swift in Sources */,
 				6A34C1E2292B233300A3E57F /* MyChatCell.swift in Sources */,
+				6AB6B9DA292EC87200A029BD /* DownLoadPictureUseCase.swift in Sources */,
 				6AB6B9B5292D7DA100A029BD /* UserDefaultsLocalKeyValueStorage.swift in Sources */,
 				6A0041EE2919ED7F0042E02F /* DetailViewController.swift in Sources */,
 				B3010253292F26F700481C6C /* UIView+Publisher.swift in Sources */,
@@ -1000,6 +1054,7 @@
 				6A34C207292C99BB00A3E57F /* DefaultLoadChattingRoomListUseCase.swift in Sources */,
 				6AB6B9B0292D7B8A00A029BD /* FirebaseNetworkKeyValueStorageApi.swift in Sources */,
 				6A45AA212925595700F85D2C /* RegisterCoordinator.swift in Sources */,
+				6AB6B9DE292F259500A029BD /* UserPreview.swift in Sources */,
 				6A444533291EA23F009AE2E5 /* UIColor.swift in Sources */,
 				B311F4AA2925EC7100806E86 /* RegisterMbtiView.swift in Sources */,
 				6A34C1E0292B220500A3E57F /* PaddingLabel.swift in Sources */,
@@ -1023,6 +1078,7 @@
 				6A03B6F22923C00900AC15A6 /* UIFont.swift in Sources */,
 				6A34C1DD292B21D800A3E57F /* OtherChatView.swift in Sources */,
 				6AB6B95E292BDE7A00A029BD /* FireStoreQuery+Ext.swift in Sources */,
+				6AB6B9D4292EC51400A029BD /* MateRecommendationUseCase.swift in Sources */,
 				6A8377A92924A3FC00BC7112 /* RegisterNickNameView.swift in Sources */,
 				6A34C213292DD39000A3E57F /* ChatCoordinator.swift in Sources */,
 				6A34C234292F29F800A3E57F /* ReceivedChatRequestCell.swift in Sources */,
@@ -1031,6 +1087,7 @@
 				6A0041D92919E6B60042E02F /* CoordinatorInterface.swift in Sources */,
 				6A34C236292F372E00A3E57F /* ReceivedChatRequestsViewModel.swift in Sources */,
 				6A0041E02919EB230042E02F /* LoginViewController.swift in Sources */,
+				6AB6B9E6292F3D9C00A029BD /* Location.swift in Sources */,
 				6A34C21F292E559C00A3E57F /* MessageInfoDTO.swift in Sources */,
 				6A34C1EB292B30FC00A3E57F /* KeyboardInfo.swift in Sources */,
 				B3B03B4A292DECFF000AF283 /* MyPageViewModel.swift in Sources */,
@@ -1040,9 +1097,11 @@
 				6A3F91A72924A45300F1D901 /* RegisterSelectableView.swift in Sources */,
 				6A34C238292F392100A3E57F /* LoadReceivedChatRequestsUseCase.swift in Sources */,
 				6A34C1FF292C944D00A3E57F /* ChatRoomInfoCell.swift in Sources */,
+				6AB6B9E4292F336F00A029BD /* DefaultUpLoadLocationUseCase.swift in Sources */,
 				6AB6B9B3292D7D9300A029BD /* LocalKeyValueStorage.swift in Sources */,
 				6A0041EB2919ED5F0042E02F /* HomeViewController.swift in Sources */,
 				6A34C205292C98D300A3E57F /* ChatRoomInfo.swift in Sources */,
+				6AB6B9D2292EC24100A029BD /* DefaultUserPreviewRepository.swift in Sources */,
 				6A34C23C292F40B000A3E57F /* ReceivedRequestDTO.swift in Sources */,
 				6A45AA4B2925C68300F85D2C /* RegisterUserInfo.swift in Sources */,
 				6A34C1F1292B48AE00A3E57F /* SendMessageUseCase.swift in Sources */,
@@ -1077,6 +1136,7 @@
 				6AB6B968292BEC3900A029BD /* DefaultRegisterStateValidateUseCase.swift in Sources */,
 				6AB6B966292BE4F500A029BD /* DownLoadDetailInfoUseCase.swift in Sources */,
 				6A34C1D3292B202B00A3E57F /* ChattingRoomViewController.swift in Sources */,
+				6AB6B9DC292F23C600A029BD /* UserPreviewDTO.swift in Sources */,
 				6A45AA3D2925701200F85D2C /* UIDatePicker+Publisher.swift in Sources */,
 				074F3B0B292261EA00D36C89 /* PartnerCell.swift in Sources */,
 				6A45AA5F292794B500F85D2C /* ReigsterViewController.swift in Sources */,

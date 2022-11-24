@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Combine
 
 struct HomeViewModelAction {
     var showDetailVC: (() -> Void)?
@@ -13,24 +14,9 @@ struct HomeViewModelAction {
 
 final class HomeViewModel {
     var actions: HomeViewModelAction?
-    weak var coordinator: HomeCoordinator?
     
     func setActions(actions: HomeViewModelAction) {
         self.actions = actions
     }
-    
-    init(coordinator: HomeCoordinator) {
-        self.coordinator = coordinator
-    }
-    
-}
 
-extension HomeViewModel {
-    struct Input { }
-    
-    struct Output { }
-    
-    func transform(input: Input) -> Output {
-        return Output()
-    }
 }

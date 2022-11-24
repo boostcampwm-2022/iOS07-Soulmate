@@ -42,6 +42,8 @@ final class AppCoordinator: Coordinator {
             do {
                 let userInfo = try await downloadDetailInfoUseCase.downloadDetailInfo(userUid: uid)
                 let state = registerStateValidateUseCase.validateRegisterState(registerUserInfo: userInfo)
+                
+                print(userInfo)
 
                 switch state {
                 case .part:
@@ -55,13 +57,6 @@ final class AppCoordinator: Coordinator {
             }
         }
     }
-    
-//    private func chattingRoomListTest() {
-//        let loadChattingRoomListUseCase = DefaultLoadChattingRoomListUseCase()
-//        let viewModel = ChatListViewModel(loadChattingRoomListUseCase: loadChattingRoomListUseCase)
-//        let viewController = ChatListViewController(viewModel: viewModel)
-//        self.navigationController.pushViewController(viewController, animated: true)
-//    }
     
     private func showAuthSignInFlow() {
         let navigation = UINavigationController()
