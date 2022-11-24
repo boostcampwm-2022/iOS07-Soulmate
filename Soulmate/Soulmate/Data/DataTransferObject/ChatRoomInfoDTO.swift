@@ -10,9 +10,9 @@ import FirebaseFirestore
 struct ChatRoomInfoDTO: Decodable {
     var documentId: String?
     var mateName: String
-    var lastMessage: String
+    var lastMessage: String?
     var userIds: [String]
-    var lastDate: Timestamp
+    var lastDate: Timestamp?
     
     func toModel() -> ChatRoomInfo {
         ChatRoomInfo(
@@ -20,7 +20,7 @@ struct ChatRoomInfoDTO: Decodable {
             mateName: mateName,
             mateProfileImage: nil,
             latestChatContent: lastMessage,
-            lastChatDate: lastDate.dateValue()
+            lastChatDate: lastDate?.dateValue()
         )
     }
 }
