@@ -39,6 +39,8 @@ enum TabBarPage: Int, CaseIterable {
 
 final class MainTabCoordinator: NSObject, Coordinator {
     
+    var locationService: CLLocationService?
+    
     weak var finishDelegate: CoordinatorFinishDelegate?
     
     var navigationController: UINavigationController
@@ -56,7 +58,16 @@ final class MainTabCoordinator: NSObject, Coordinator {
         self.tabBarController = UITabBarController()
     }
     
+    func configureLocationService() {
+        let networkDatabaseApi = FireStoreNetworkDatabaseApi()
+        let userPreviewRepository = DefaultUserPreviewRepository(networkDatabaseApi: networkDatabaseApi)
+        let uploadLocationUseCase = DefaultUpLoadLocationUseCase(userPreviewRepository: userPreviewRepository)
+        self.locationService = CLLocationService(upLoadLocationUseCase: uploadLocationUseCase)
+    }
+    
     func start() {
+        configureLocationService()
+        
         let pages = TabBarPage.allCases
         let controllers: [UINavigationController] = pages.map { getTabController($0) }
     

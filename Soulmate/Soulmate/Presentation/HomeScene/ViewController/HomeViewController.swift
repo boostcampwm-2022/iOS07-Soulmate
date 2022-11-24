@@ -143,6 +143,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // TODO: 추천 인원수 전달하기
+        guard let viewModel = viewModel else { return 0 }
         return 2
     }
     
@@ -155,7 +156,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        viewModel?.coordinator?.showDetailVC()
+        
     }
     
 }

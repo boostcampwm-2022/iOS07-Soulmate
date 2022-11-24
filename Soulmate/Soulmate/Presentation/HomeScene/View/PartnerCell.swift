@@ -113,6 +113,14 @@ final class PartnerCell: UICollectionViewCell {
         gradientLayer.frame = partnerSubview.bounds
     }
     
+    func fill(with: RegisterUserInfo) {
+        self.partnerName.text = with.nickName
+        
+        let ageComponents = Calendar.current.dateComponents([.year], from: with.birthDay!, to: Date())
+        let age = ageComponents.year
+        
+        self.partnerAge.text = String(age!)
+    }
     
 }
 

@@ -37,6 +37,11 @@ class FireStoreNetworkDatabaseApi: NetworkDatabaseApi {
             try $0.data(as: T.self)
         }
     }
+    
+    func update(table: String, documentID: String, with fields: [AnyHashable: Any]) async throws {
+        let snapshot = try await db.collection(table).document(documentID).getDocument()
+        try await snapshot.reference.updateData(fields)
+    }
 
     func update(table: String, constraints: [QueryEntity], with fields: [AnyHashable: Any]) async throws {
         var query = db.collection(table) as Query

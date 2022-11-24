@@ -22,6 +22,7 @@ class RegisterViewModel {
     
     var uploadDetailInfoUseCase: UploadDetailInfoUseCase
     var uploadPictureUseCase: UploadPictureUseCase
+    var uploadPreviewUseCase: UploadPreviewUseCase
     
     var didAllInfoUploaded = PassthroughSubject<Void, Never>()
     
@@ -57,10 +58,12 @@ class RegisterViewModel {
     
     init(
         uploadDetailInfoUseCase: UploadDetailInfoUseCase,
-        uploadPictureUseCase: UploadPictureUseCase
+        uploadPictureUseCase: UploadPictureUseCase,
+        uploadPreviewUseCase: UploadPreviewUseCase
     ) {
         self.uploadDetailInfoUseCase = uploadDetailInfoUseCase
         self.uploadPictureUseCase = uploadPictureUseCase
+        self.uploadPreviewUseCase = uploadPreviewUseCase
     }
     
     func setPrevRegisterInfo(registerUserInfo: RegisterUserInfo) {
@@ -161,7 +164,7 @@ class RegisterViewModel {
                 case 0...8:
                     self?.register()
                 case 9:
-                    self?.uploadPhoto()
+                    self?.finalRegister()
                 default:
                     return
                 }
@@ -182,11 +185,17 @@ class RegisterViewModel {
         actions?.quitRegister?()
     }
     
-    func uploadPhoto() {
+    func finalRegister() {
         Task { [weak self] in
             let start = CFAbsoluteTimeGetCurrent()
             
             let keys = try await uploadPictureUseCase.uploadPhotoData(photoData: photoData)
+            
+            let userPreview = UserPreview(
+                name: self?.nickName,
+                birth: self?.birth
+            )
+            try await uploadPreviewUseCase.uploadPreview(userPreview: userPreview)
 
             let userInfo = RegisterUserInfo(
                 gender: self?.genderType,
@@ -199,18 +208,18 @@ class RegisterViewModel {
                 aboutMe: self?.introduction,
                 imageList: keys
             )
-
             try await uploadDetailInfoUseCase.uploadDetailInfo(registerUserInfo: userInfo)
+            
             let diff = CFAbsoluteTimeGetCurrent() - start
             try await Task.sleep(nanoseconds: UInt64((5 > diff ? 5 - diff : 0) * 1_000_000_000))
+            
             self?.didAllInfoUploaded.send(())
-
         }
     }
     
     func register() {
         Task { [weak self] in
-            
+                        
             let userInfo = RegisterUserInfo(
                 gender: self?.genderType,
                 nickName: self?.nickName,

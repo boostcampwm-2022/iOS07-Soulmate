@@ -25,9 +25,14 @@ final class HomeCoordinator: Coordinator {
     }
     
     func showHomeVC() {
-        let vm = HomeViewModel(coordinator: self)
+//        let vm = HomeViewModel(coordinator: self)
+//        let vc = HomeViewController(viewModel: vm)
+//        //navigationController.viewControllers.removeAll()
+//        navigationController.pushViewController(vc, animated: true)
+        
+        let vm = HomeViewModel()
         let vc = HomeViewController(viewModel: vm)
-        //navigationController.viewControllers.removeAll()
+        
         navigationController.pushViewController(vc, animated: true)
     }
     

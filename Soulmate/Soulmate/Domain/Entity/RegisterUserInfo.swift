@@ -8,6 +8,7 @@
 import Foundation
 
 struct RegisterUserInfo {
+    var uid: String?
     var gender: GenderType?
     var nickName: String?
     var birthDay: Date?
@@ -22,6 +23,7 @@ struct RegisterUserInfo {
 extension RegisterUserInfo {
     func toDTO() -> RegisterUserInfoDTO {
         RegisterUserInfoDTO(
+            uid: self.uid,
             gender: self.gender?.rawValue,
             nickName: self.nickName,
             birthDay: self.birthDay,
