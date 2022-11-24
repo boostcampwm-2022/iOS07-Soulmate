@@ -14,13 +14,12 @@ final class ChattingRoomViewController: UIViewController {
     private var cancellabels = Set<AnyCancellable>()
     private var messageSubject = PassthroughSubject<String?, Never>()
     
-    private var shouldScrollToBottom = true
+    private var isInitLoad = true
     
     private lazy var chatTableView: UITableView = {
         let tableView = UITableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.rowHeight = UITableView.automaticDimension
-        tableView.estimatedRowHeight = 60
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(MyChatCell.self, forCellReuseIdentifier: MyChatCell.id)
@@ -74,16 +73,7 @@ final class ChattingRoomViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        navigationController?.setNavigationBarHidden(false, animated: false)
-    }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        
-        if shouldScrollToBottom {
-            shouldScrollToBottom = false
-            scrollToBottom(animated: false)
-        }
+        navigationController?.setNavigationBarHidden(false, animated: true)
     }
 }
 
@@ -195,8 +185,18 @@ private extension ChattingRoomViewController {
         
         output.chattingsLoaded
             .sink { [weak self] _ in
+                let diff = (self?.bottomOffset().y ?? 0) - (self?.chatTableView.contentOffset.y ?? 0)
                 self?.chatTableView.reloadData()
-                self?.scrollToBottom(animated: false)
+                
+                if self?.isInitLoad ?? false {
+                    self?.isInitLoad = false
+                    self?.scrollToBottom()
+                } else {
+                    
+                    if diff < 10 {
+                        self?.scrollToBottom()
+                    }
+                }
             }
             .store(in: &cancellabels)
     }
@@ -205,12 +205,18 @@ private extension ChattingRoomViewController {
 // MARK: - 가장 아래로 스크롤
 private extension ChattingRoomViewController {
     
-    func scrollToBottom(animated: Bool) {
-        view.layoutIfNeeded()
-        chatTableView.setContentOffset(bottomOffset(), animated: animated)
+    func scrollToBottom() {
+        chatTableView.scrollToRow(
+            at: IndexPath(
+                row: (viewModel?.chattings.count ?? 1) - 1,
+                section: 0
+            ),
+            at: .bottom, animated: false
+        )
     }
-    
+
     func bottomOffset() -> CGPoint {
+        
         return CGPoint(
             x: 0,
             y: max(-chatTableView.contentInset.top, chatTableView.contentSize.height - (chatTableView.bounds.size.height - chatTableView.contentInset.bottom))

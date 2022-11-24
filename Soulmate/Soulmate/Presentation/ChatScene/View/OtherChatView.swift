@@ -31,6 +31,7 @@ final class OtherChatView: UIView {
         label.layer.cornerRadius = 12
         label.clipsToBounds = true
         label.textColor = .black
+        label.lineBreakMode = .byCharWrapping
         
         return label
     }()
