@@ -7,7 +7,7 @@
 
 import Foundation
 
-class DefaultDownLoadPictureUseCase {
+class DefaultDownLoadPictureUseCase: DownLoadPictureUseCase {
     let profilePhotoRepository: ProfilePhotoRepository
     
     init(profilePhotoRepository: ProfilePhotoRepository) {

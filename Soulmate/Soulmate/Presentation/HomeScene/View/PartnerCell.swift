@@ -6,7 +6,7 @@
 //
 
 import UIKit
-
+import CoreLocation
 import SnapKit
 
 final class PartnerCell: UICollectionViewCell {
@@ -23,7 +23,9 @@ final class PartnerCell: UICollectionViewCell {
         let imageView = UIImageView()
         // TODO: 프로필 사진으로 교체
         imageView.image = UIImage(named: "emoji")
-        imageView.contentMode = .scaleAspectFit
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
+        imageView.layer.cornerRadius = 14
         partnerView.addSubview(imageView)
         return imageView
     }()
@@ -113,19 +115,33 @@ final class PartnerCell: UICollectionViewCell {
         gradientLayer.frame = partnerSubview.bounds
     }
     
-    func fill(with: RegisterUserInfo) {
-        self.partnerName.text = with.nickName
+    func fill(with userPreview: UserPreview, imageData: Data? = nil) {
+        self.partnerName.text = userPreview.name
+        self.partnerAge.text = String(userPreview.birth!.toAge())
         
-        let ageComponents = Calendar.current.dateComponents([.year], from: with.birthDay!, to: Date())
-        let age = ageComponents.year
+        // 지금은 하드코딩입니다 ㅠㅠ 수정할게요!!
+        if let location = userPreview.location {
+            let from = CLLocation(latitude: UserDefaults.standard.double(forKey: "latestLatitude"), longitude: UserDefaults.standard.double(forKey: "latestLongitude"))
+            
+            let to = CLLocation(latitude: location.latitude, longitude: location.longitude)
+            self.partnerDistance.text = "\(to.distance(from: from))km"
+        }
         
-        self.partnerAge.text = String(age!)
+        guard let imageData = imageData else { return }
+        self.partnerImageView.image = UIImage(data: imageData)
+        
+        
     }
     
 }
 
 private extension PartnerCell {
     func configureLayout() {
+        
+        partnerImageView.snp.makeConstraints {
+            $0.width.height.equalToSuperview()
+        }
+        
         partnerName.snp.makeConstraints {
             $0.top.equalToSuperview().inset(24)
             $0.left.equalToSuperview().inset(20)
@@ -156,13 +172,22 @@ private extension PartnerCell {
             $0.height.equalTo(100)
         }
         
-        partnerImageView.snp.makeConstraints {
-            $0.width.height.equalToSuperview()
-        }
-        
         partnerView.snp.makeConstraints {
             $0.width.equalToSuperview()
             $0.height.equalTo(partnerView.snp.width)
         }
     }
 }
+
+#if canImport(SwiftUI) && DEBUG
+import SwiftUI
+
+struct PartenerCellPreview: PreviewProvider {
+    static var previews: some View {
+        UIViewPreview {
+            let preview = PartnerCell()
+            return preview
+        }.previewLayout(.fixed(width: 350, height: 50))
+    }
+}
+#endif

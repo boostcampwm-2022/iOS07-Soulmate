@@ -60,8 +60,13 @@ final class MainTabCoordinator: NSObject, Coordinator {
     
     func configureLocationService() {
         let networkDatabaseApi = FireStoreNetworkDatabaseApi()
+        let localKeyValueStorage = UserDefaulsLocalKeyValueStorage()
         let userPreviewRepository = DefaultUserPreviewRepository(networkDatabaseApi: networkDatabaseApi)
-        let uploadLocationUseCase = DefaultUpLoadLocationUseCase(userPreviewRepository: userPreviewRepository)
+        let userDefaultsRepository = DefaultUserDefaultsRepository(localKeyValueStorage: localKeyValueStorage)
+        let uploadLocationUseCase = DefaultUpLoadLocationUseCase(
+            userPreviewRepository: userPreviewRepository,
+            userDefaultsRepository: userDefaultsRepository
+        )
         self.locationService = CLLocationService(upLoadLocationUseCase: uploadLocationUseCase)
     }
     

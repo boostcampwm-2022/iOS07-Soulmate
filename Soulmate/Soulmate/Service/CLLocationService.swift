@@ -40,7 +40,6 @@ extension CLLocationService: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         Task {
             guard let location = locations.last else { return }
-            print(location)
             var locationInstance = Location(
                 latitude: location.coordinate.latitude,
                 longitude: location.coordinate.longitude
