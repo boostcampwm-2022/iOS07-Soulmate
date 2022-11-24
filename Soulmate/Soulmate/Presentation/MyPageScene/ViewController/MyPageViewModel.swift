@@ -8,16 +8,39 @@
 import Foundation
 import Combine
 
-struct MyPageViewModelAction {
-    
+struct MyPageViewModelActions {
+    var showMyInfoEditFlow: ((RegisterUserInfo) -> Void)?
+    var showPersonalInfoFlow: (() -> Void)?
 }
 
 class MyPageViewModel {
     
-    var actions: MyPageViewModelAction?
+    private weak var coordinator: MyPageCoordinator?
     
-    var bag = Set<AnyCancellable>()
+    struct Input {
+        var didTappedMyInfoEditButton: AnyPublisher<Void, Never>
+        var didTappedHeartShopButton: AnyPublisher<Void, Never>
+//        var didTappedPersonalInfoButton: AnyPublisher<Void, Never>
+    }
     
+    struct Output {
+        
+    }
     
+    var actions: MyPageViewModelActions?
+    
+    var cancellables = Set<AnyCancellable>()
+    
+    func setActions(actions: MyPageViewModelActions) {
+        self.actions = actions
+    }
+    
+    func transform(input: Input) -> Output {
+        input.didTappedHeartShopButton
+            .sink {
+            }
+            .store(in: &cancellables)
+        return Output()
+    }
     
 }

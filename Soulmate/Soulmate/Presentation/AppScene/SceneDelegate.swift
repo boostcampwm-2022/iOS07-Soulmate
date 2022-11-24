@@ -23,7 +23,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let appCoordinator = AppCoordinator(window: window)
 
         appCoordinator.start()
-//
+        
         guard let _ = (scene as? UIWindowScene) else { return }
     }
 
