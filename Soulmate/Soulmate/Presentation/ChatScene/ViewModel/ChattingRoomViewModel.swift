@@ -32,6 +32,7 @@ final class ChattingRoomViewModel {
     struct Output {
         var sendButtonEnabled = CurrentValueSubject<Bool, Never>(false)
         var chattingsLoaded = PassthroughSubject<Void, Never>()
+        var keyboardHeight = KeyboardMonitor().$keyboardHeight
     }
     
     func transform(input: Input, cancellables: inout Set<AnyCancellable>) -> Output {

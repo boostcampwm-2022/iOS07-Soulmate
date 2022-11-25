@@ -64,10 +64,9 @@ final class ChattingRoomViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        bind()
         configureView()
         configureLayout()
-        registerKeyboardNotifications()
+        bind()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -137,8 +136,19 @@ extension ChattingRoomViewController: UITableViewDelegate, UITableViewDataSource
 // MARK: - UI Configure
 private extension ChattingRoomViewController {
     func configureView() {
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(
+            image: UIImage(systemName: "xmark"),
+            style: .plain,
+            target: self,
+            action: #selector(hideKeyboard)
+        )
         self.title = "메이트 이름"
         view.backgroundColor = .white
+    }
+    
+    @objc
+    func hideKeyboard() {
+        view.endEditing(true)
     }
     
     func configureLayout() {
@@ -157,7 +167,7 @@ private extension ChattingRoomViewController {
             $0.top.equalTo(view.safeAreaLayoutGuide.snp.top)
             $0.leading.equalTo(view.safeAreaLayoutGuide.snp.leading)
             $0.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing)
-            $0.bottom.equalTo(composeBar.snp.top)
+            $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-50)
         }
     }
 }
@@ -177,6 +187,12 @@ private extension ChattingRoomViewController {
             ),
             cancellables: &cancellabels
         )
+        
+        output.keyboardHeight
+            .sink { [weak self] height in
+                self?.adjustContentForKeyboard(with: height)
+            }
+            .store(in: &cancellabels)
         
         output.sendButtonEnabled
             .sink { [weak self] isEnabled in
@@ -232,53 +248,23 @@ private extension ChattingRoomViewController {
 
 // MARK: - 키보트 높이에 따라 TableView 변경
 private extension ChattingRoomViewController {
-    func registerKeyboardNotifications() {
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(keyboardWillShow(_:)),
-            name: UIResponder.keyboardWillShowNotification,
-            object: nil
-        )
-     
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(keyboardWillHide(_:)),
-            name: UIResponder.keyboardWillHideNotification,
-            object: nil
-        )
-    }
     
-    @objc
-    func keyboardWillShow(_ notification: NSNotification) {
-        adjustContentForKeyboard(shown: true, notification: notification)
-    }
-     
-    @objc
-    func keyboardWillHide(_ notification: NSNotification) {
-        adjustContentForKeyboard(shown: false, notification: notification)
-    }
-     
-    func adjustContentForKeyboard(shown: Bool, notification: NSNotification) {
-        guard let payload = KeyboardInfo(notification as Notification) else { return }
-        
+    func adjustContentForKeyboard(with height: CGFloat) {
         let safeLayoutBottomHeight = view.frame.maxY - view.safeAreaLayoutGuide.layoutFrame.maxY
-        let keyboardHeight = shown ? payload.frameEnd.size.height - safeLayoutBottomHeight : 0
+        let keyboardHeight = height == 0 ? 0 : height - safeLayoutBottomHeight
         
-        if chatTableView.contentInset.bottom == keyboardHeight {
-            return
-        }
-     
         let distanceFromBottom = bottomOffset().y - chatTableView.contentOffset.y
-     
+        
         var insets = chatTableView.contentInset
         insets.bottom = keyboardHeight
-     
-        UIView.animate(withDuration: payload.animationDuration, delay: 0, options: [], animations: {
+        
+        UIView.animate(withDuration: 0.3, delay: 0, options: [], animations: {
             
             self.composeBar.snp.updateConstraints {
                 $0.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom).offset(-keyboardHeight)
             }
-            
+            self.chatTableView.contentInset = insets
+            self.chatTableView.scrollIndicatorInsets = insets            
             self.view.layoutIfNeeded()
             
             if distanceFromBottom < 10 {
