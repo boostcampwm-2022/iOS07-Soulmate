@@ -74,6 +74,12 @@ final class ChattingRoomViewController: UIViewController {
         super.viewWillAppear(animated)
         
         navigationController?.setNavigationBarHidden(false, animated: true)
+        
+        let backImage = UIImage(named: "back")
+        self.navigationController?.navigationBar.backIndicatorImage = backImage
+        self.navigationController?.navigationBar.backIndicatorTransitionMaskImage = backImage
+        self.navigationController?.navigationBar.backItem?.title = " "
+        self.navigationController?.navigationBar.tintColor = .black
     }
 }
 
