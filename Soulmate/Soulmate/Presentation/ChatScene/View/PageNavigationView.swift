@@ -8,6 +8,10 @@
 import UIKit
 import SnapKit
 
+protocol PageChangeDelegate: AnyObject {
+    func goToPage(by index: Int)
+}
+
 final class PageNavigationView: UIView {
     
     private lazy var pageStackView: UIStackView = {
@@ -29,9 +33,16 @@ final class PageNavigationView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure(with titles: [String]) {
-        titles.forEach { title in
-            let navItem = PageNavItemView(with: title)
+    func configure(
+        with titles: [String],
+        delegate: PageChangeDelegate) {
+        
+        for (index, title) in titles.enumerated() {
+            let navItem = PageNavItemView(
+                with: title,
+                index: index
+            )
+            navItem.delegate = delegate
             pageStackView.addArrangedSubview(navItem)
         }
     }
@@ -65,7 +76,10 @@ private extension PageNavigationView {
 
 final class PageNavItemView: UIView {
     
+    weak var delegate: PageChangeDelegate?
+    
     private var title: String?
+    private var index: Int?
     
     private var itemButton: UIButton?
     
@@ -96,9 +110,10 @@ final class PageNavItemView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    convenience init(with string: String) {
+    convenience init(with string: String, index: Int) {
         self.init()
         self.title = string
+        self.index = index
         itemButton = UIButton()
         var config = UIButton.Configuration.plain()
         let attributes = [
@@ -113,6 +128,12 @@ final class PageNavItemView: UIView {
             )
         )
         itemButton?.configuration = config
+        itemButton?.addAction(
+            UIAction { [weak self] _ in
+                self?.delegate?.goToPage(by: index)
+            },
+            for: .touchUpInside
+        )
         
         guard let itemButton else { return }
 

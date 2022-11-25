@@ -25,7 +25,10 @@ final class ChatScenePageViewController: UIViewController {
         let navView = PageNavigationView()
         view.addSubview(navView)
         navView.translatesAutoresizingMaskIntoConstraints = false
-        navView.configure(with: ["채팅 목록", "받은 요청"])
+        navView.configure(
+            with: ["채팅 목록", "받은 요청"],
+            delegate: self
+        )
         navView.setPage(index: 0)
         
         return navView
@@ -111,6 +114,21 @@ extension ChatScenePageViewController {
                   let index = viewControllers.firstIndex(of: currentViewController) else { return }
             
             pageNavigationView.setPage(index: index)
+    }
+}
+
+extension ChatScenePageViewController: PageChangeDelegate {
+    func goToPage(by index: Int) {
+        
+        if 0..<viewControllers.count ~= index {
+            let vc = viewControllers[index]
+            pageViewController.setViewControllers(
+                [vc],
+                direction: index == 1 ? .forward : .reverse,
+                animated: true
+            )
+            pageNavigationView.setPage(index: index)
+        }
     }
 }
 
