@@ -40,7 +40,7 @@ final class ChattingRoomViewModel {
         
         input.viewDidLoad
             .sink { [weak self] _ in
-                self?.loadChattingsUseCase.listenChattings()
+                self?.loadChattingsUseCase.loadChattings()
             }
             .store(in: &cancellables)
         

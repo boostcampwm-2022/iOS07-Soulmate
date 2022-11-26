@@ -10,5 +10,5 @@ import Combine
 protocol LoadChattingsUseCase {
     var chattings: CurrentValueSubject<[Chat], Never> { get }
     
-    func listenChattings()
+    func loadChattings()
 }

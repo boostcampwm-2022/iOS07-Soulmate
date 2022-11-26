@@ -20,24 +20,25 @@ final class DefaultLoadChattingsUseCase: LoadChattingsUseCase {
         self.info = info
     }
     
-    func listenChattings() {
+    func loadChattings() {
         let db = Firestore.firestore()
         
         guard let chatRoomId = info.documentId else { return }
         
-        let _ = db.collection("ChatRooms").document(chatRoomId).collection("Messages").order(by: "date", descending: true).addSnapshotListener { [weak self] snapshot, err in
+        let _ = db.collection("ChatRooms").document(chatRoomId).collection("Messages").order(by: "date", descending: true).getDocuments { [weak self] snapshot, err in
             
             guard let snapshot, err == nil, let uid = self?.uid else { return }
             
             let messageInfoDTOs = snapshot.documents.compactMap { try? $0.data(as: MessageInfoDTO.self) }
             let infos = messageInfoDTOs.map { return $0.toModel() }.reversed()
             let chats = infos.map { info in
+                let date = info.date
                 let isMe = info.userId == uid
                 let text = info.text
                 
-                return Chat(isMe: isMe, text: text)
+                return Chat(isMe: isMe, text: text, date: date)
             }
-
+            
             self?.chattings.send(chats)
         }
     }
