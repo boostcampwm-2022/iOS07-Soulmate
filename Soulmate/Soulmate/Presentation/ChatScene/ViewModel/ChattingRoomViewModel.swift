@@ -6,13 +6,14 @@
 //
 
 import Combine
+import Foundation
 
 final class ChattingRoomViewModel {
     
     private let sendMessageUseCase: SendMessageUseCase
     private let loadChattingsUseCase: LoadChattingsUseCase
     var chattings: [Chat] {
-        return loadChattingsUseCase.chattings.value
+        return loadChattingsUseCase.prevChattings.value + loadChattingsUseCase.initLoadedchattings.value
     }
     
     init(
@@ -27,11 +28,13 @@ final class ChattingRoomViewModel {
         var viewDidLoad: AnyPublisher<Void, Never>
         var message: AnyPublisher<String?, Never>
         var sendButtonDidTap: AnyPublisher<Void, Never>
+        var loadPrevChattings: AnyPublisher<Void, Never>
     }
     
     struct Output {
         var sendButtonEnabled = CurrentValueSubject<Bool, Never>(false)
-        var chattingsLoaded = PassthroughSubject<Void, Never>()
+        var chattingInitLoaded = PassthroughSubject<Void, Never>()
+        var prevChattingLoaded = PassthroughSubject<Int, Never>()
         var keyboardHeight = KeyboardMonitor().$keyboardHeight
     }
     
@@ -57,15 +60,28 @@ final class ChattingRoomViewModel {
             }
             .store(in: &cancellables)
         
+        input.loadPrevChattings            
+            .sink { [weak self] _ in
+                self?.loadChattingsUseCase.loadPrevChattings()
+            }
+            .store(in: &cancellables)
+        
         self.sendMessageUseCase.sendButtonEnabled
             .sink { isEnabled in
                 output.sendButtonEnabled.send(isEnabled)
             }
             .store(in: &cancellables)
         
-        self.loadChattingsUseCase.chattings
+        self.loadChattingsUseCase.initLoadedchattings
             .sink { _ in
-                output.chattingsLoaded.send(())
+                output.chattingInitLoaded.send(())
+            }
+            .store(in: &cancellables)
+        
+        self.loadChattingsUseCase.loadedPrevChattingCount
+            .sink { count in
+                
+                output.prevChattingLoaded.send(count)
             }
             .store(in: &cancellables)
         

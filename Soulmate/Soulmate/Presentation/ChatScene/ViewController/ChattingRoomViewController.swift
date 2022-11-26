@@ -13,8 +13,10 @@ final class ChattingRoomViewController: UIViewController {
     private var viewModel: ChattingRoomViewModel?
     private var cancellabels = Set<AnyCancellable>()
     private var messageSubject = PassthroughSubject<String?, Never>()
+    private var loadPrevChattingsSubject = PassthroughSubject<Void, Never>()
     
     private var isInitLoad = true
+    private var isLoading = false
     
     private lazy var chatTableView: UITableView = {
         let tableView = UITableView()
@@ -131,17 +133,40 @@ extension ChattingRoomViewController: UITableViewDelegate, UITableViewDataSource
             return cell
         }
     }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        guard !isInitLoad, !isLoading else { return }
+                
+        if scrollView.contentOffset.y < self.chatTableView.bounds.size.height * 3 {
+            
+            loadPrevChattings()
+        }
+    }
 }
 
 // MARK: - UI Configure
 private extension ChattingRoomViewController {
     func configureView() {
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(
+        
+        let hideKeyboardButton = UIBarButtonItem(
             image: UIImage(systemName: "xmark"),
             style: .plain,
             target: self,
             action: #selector(hideKeyboard)
         )
+        
+        let loadPrevChattingsButton = UIBarButtonItem(
+            image: UIImage(systemName: "plus.message"),
+            style: .plain,
+            target: self,
+            action: #selector(loadPrevChattings)
+        )
+        
+        self.navigationItem.rightBarButtonItems = [
+            hideKeyboardButton,
+            loadPrevChattingsButton
+        ]
+        
         self.title = "메이트 이름"
         view.backgroundColor = .white
     }
@@ -149,6 +174,12 @@ private extension ChattingRoomViewController {
     @objc
     func hideKeyboard() {
         view.endEditing(true)
+    }
+    
+    @objc
+    func loadPrevChattings() {
+        isLoading = true
+        loadPrevChattingsSubject.send(())
     }
     
     func configureLayout() {
@@ -183,7 +214,8 @@ private extension ChattingRoomViewController {
             input: ChattingRoomViewModel.Input(
                 viewDidLoad: Just(()).eraseToAnyPublisher(),
                 message: messageSubject.eraseToAnyPublisher(),
-                sendButtonDidTap: composeBar.sendButtonPublisher()
+                sendButtonDidTap: composeBar.sendButtonPublisher(),
+                loadPrevChattings: loadPrevChattingsSubject.eraseToAnyPublisher()
             ),
             cancellables: &cancellabels
         )
@@ -206,20 +238,29 @@ private extension ChattingRoomViewController {
             }
             .store(in: &cancellabels)
         
-        output.chattingsLoaded
+        output.chattingInitLoaded
             .sink { [weak self] _ in
-                let diff = (self?.bottomOffset().y ?? 0) - (self?.chatTableView.contentOffset.y ?? 0)
-                self?.chatTableView.reloadData()
                 
                 if self?.isInitLoad ?? false {
+                    self?.chatTableView.reloadData()
                     self?.isInitLoad = false
                     self?.scrollToBottom()
-                } else {
-                    
-                    if diff < 10 {
-                        self?.scrollToBottom()
-                    }
                 }
+            }
+            .store(in: &cancellabels)
+        
+        output.prevChattingLoaded
+            .sink { [weak self] count in
+                
+                let indexPathes = (0..<count).map { row in
+                    return IndexPath(row: row, section: 0)
+                }
+                
+                self?.chatTableView.performBatchUpdates({
+                    self?.chatTableView.insertRows(at: indexPathes, with: .top)
+                }, completion: { _ in
+                    self?.isLoading = false
+                })
             }
             .store(in: &cancellabels)
     }
