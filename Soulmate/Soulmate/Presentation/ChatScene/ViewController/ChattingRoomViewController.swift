@@ -190,6 +190,7 @@ private extension ChattingRoomViewController {
         
         output.keyboardHeight
             .sink { [weak self] height in
+                if self?.isInitLoad ?? false { return }
                 self?.adjustContentForKeyboard(with: height)
             }
             .store(in: &cancellabels)
@@ -228,6 +229,7 @@ private extension ChattingRoomViewController {
 private extension ChattingRoomViewController {
     
     func scrollToBottom() {
+        if viewModel?.chattings.isEmpty ?? true { return }
         chatTableView.scrollToRow(
             at: IndexPath(
                 row: (viewModel?.chattings.count ?? 1) - 1,
@@ -264,7 +266,7 @@ private extension ChattingRoomViewController {
                 $0.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom).offset(-keyboardHeight)
             }
             self.chatTableView.contentInset = insets
-            self.chatTableView.scrollIndicatorInsets = insets            
+            self.chatTableView.scrollIndicatorInsets = insets
             self.view.layoutIfNeeded()
             
             if distanceFromBottom < 10 {
