@@ -13,7 +13,7 @@ final class ChattingRoomViewModel {
     private let sendMessageUseCase: SendMessageUseCase
     private let loadChattingsUseCase: LoadChattingsUseCase
     var chattings: [Chat] {
-        return loadChattingsUseCase.prevChattings.value + loadChattingsUseCase.initLoadedchattings.value
+        return loadChattingsUseCase.prevChattings.value + loadChattingsUseCase.initLoadedchattings.value + loadChattingsUseCase.newChattings.value
     }
     
     init(
@@ -35,7 +35,8 @@ final class ChattingRoomViewModel {
         var sendButtonEnabled = CurrentValueSubject<Bool, Never>(false)
         var chattingInitLoaded = PassthroughSubject<Void, Never>()
         var prevChattingLoaded = PassthroughSubject<Int, Never>()
-        var keyboardHeight = KeyboardMonitor().$keyboardHeight
+        var newChattingLoaded = PassthroughSubject<Int, Never>()
+        var keyboardHeight = KeyboardMonitor().$keyboardHeight        
     }
     
     func transform(input: Input, cancellables: inout Set<AnyCancellable>) -> Output {
@@ -73,8 +74,9 @@ final class ChattingRoomViewModel {
             .store(in: &cancellables)
         
         self.loadChattingsUseCase.initLoadedchattings
-            .sink { _ in
+            .sink { [weak self] _ in
                 output.chattingInitLoaded.send(())
+                self?.loadChattingsUseCase.listenNewChattings()
             }
             .store(in: &cancellables)
         
@@ -85,6 +87,12 @@ final class ChattingRoomViewModel {
             }
             .store(in: &cancellables)
         
+        self.loadChattingsUseCase.loadedNewChattingCount
+            .sink { count in
+                output.newChattingLoaded.send(count)
+            }
+            .store(in: &cancellables)
+
         return output
     }
 }

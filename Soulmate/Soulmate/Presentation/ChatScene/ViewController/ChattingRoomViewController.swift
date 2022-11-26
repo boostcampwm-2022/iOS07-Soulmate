@@ -16,7 +16,7 @@ final class ChattingRoomViewController: UIViewController {
     private var loadPrevChattingsSubject = PassthroughSubject<Void, Never>()
     
     private var isInitLoad = true
-    private var isLoading = false
+    private var isLoading = false    
     
     private lazy var chatTableView: UITableView = {
         let tableView = UITableView()
@@ -91,7 +91,7 @@ extension ChattingRoomViewController: NSTextStorageDelegate {
         didProcessEditing editedMask: NSTextStorage.EditActions,
         range editedRange: NSRange,
         changeInLength delta: Int) {
-            
+            print(textStorage.string == "\n")
             messageSubject.send(textStorage.string)
     }
 }
@@ -244,7 +244,7 @@ private extension ChattingRoomViewController {
                 if self?.isInitLoad ?? false {
                     self?.chatTableView.reloadData()
                     self?.isInitLoad = false
-                    self?.scrollToBottom()
+                    self?.scrollToBottom()                    
                 }
             }
             .store(in: &cancellabels)
@@ -260,6 +260,27 @@ private extension ChattingRoomViewController {
                     self?.chatTableView.insertRows(at: indexPathes, with: .top)
                 }, completion: { _ in
                     self?.isLoading = false
+                })
+            }
+            .store(in: &cancellabels)
+        
+        output.newChattingLoaded
+            .sink { [weak self] count in
+                
+                guard let currentCount = self?.viewModel?.chattings.count else { return }
+                let diff = (self?.bottomOffset().y ?? 0) - (self?.chatTableView.contentOffset.y ?? 0)
+                
+                let indexPathes = ((currentCount - 1)..<(currentCount - 1) + count).map { row in
+                    return IndexPath(row: row, section: 0)
+                }
+                
+                self?.chatTableView.performBatchUpdates({
+                    self?.chatTableView.insertRows(at: indexPathes, with: .bottom)
+                }, completion: { _ in
+                                        
+                    if diff < 10 {
+                        self?.scrollToBottom()
+                    }
                 })
             }
             .store(in: &cancellabels)
