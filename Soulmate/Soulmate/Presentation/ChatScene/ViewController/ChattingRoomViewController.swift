@@ -14,6 +14,8 @@ final class ChattingRoomViewController: UIViewController {
     private var cancellabels = Set<AnyCancellable>()
     private var messageSubject = PassthroughSubject<String?, Never>()
     private var loadPrevChattingsSubject = PassthroughSubject<Void, Never>()
+    private var newLineInputSubject = PassthroughSubject<Void, Never>()
+    private var messageSendSubject: AnyPublisher<Void, Never>?
     
     private var isInitLoad = true
     private var isLoading = false    
@@ -68,6 +70,7 @@ final class ChattingRoomViewController: UIViewController {
         
         configureView()
         configureLayout()
+        setPublishers()
         bind()
     }
     
@@ -91,7 +94,6 @@ extension ChattingRoomViewController: NSTextStorageDelegate {
         didProcessEditing editedMask: NSTextStorage.EditActions,
         range editedRange: NSRange,
         changeInLength delta: Int) {
-            print(textStorage.string == "\n")
             messageSubject.send(textStorage.string)
     }
 }
@@ -136,11 +138,20 @@ extension ChattingRoomViewController: UITableViewDelegate, UITableViewDataSource
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         guard !isInitLoad, !isLoading else { return }
-                
-        if scrollView.contentOffset.y < self.chatTableView.bounds.size.height * 3 {
-            
+                        
+        if scrollView.contentOffset.y < 100 {
             loadPrevChattings()
         }
+    }
+}
+
+// MARK: - Set Publishers
+private extension ChattingRoomViewController {
+    
+    func setPublishers() {
+        messageSendSubject = newLineInputSubject
+            .merge(with: composeBar.sendButtonPublisher())
+            .eraseToAnyPublisher()
     }
 }
 
@@ -214,7 +225,7 @@ private extension ChattingRoomViewController {
             input: ChattingRoomViewModel.Input(
                 viewDidLoad: Just(()).eraseToAnyPublisher(),
                 message: messageSubject.eraseToAnyPublisher(),
-                sendButtonDidTap: composeBar.sendButtonPublisher(),
+                messageSendEvent: messageSendSubject,
                 loadPrevChattings: loadPrevChattingsSubject.eraseToAnyPublisher()
             ),
             cancellables: &cancellabels
@@ -267,21 +278,11 @@ private extension ChattingRoomViewController {
         output.newChattingLoaded
             .sink { [weak self] count in
                 
-                guard let currentCount = self?.viewModel?.chattings.count else { return }
                 let diff = (self?.bottomOffset().y ?? 0) - (self?.chatTableView.contentOffset.y ?? 0)
-                
-                let indexPathes = ((currentCount - 1)..<(currentCount - 1) + count).map { row in
-                    return IndexPath(row: row, section: 0)
+                self?.chatTableView.reloadData()
+                if diff < 10 {
+                    self?.scrollToBottom()
                 }
-                
-                self?.chatTableView.performBatchUpdates({
-                    self?.chatTableView.insertRows(at: indexPathes, with: .bottom)
-                }, completion: { _ in
-                                        
-                    if diff < 10 {
-                        self?.scrollToBottom()
-                    }
-                })
             }
             .store(in: &cancellabels)
     }

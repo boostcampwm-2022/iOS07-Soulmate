@@ -27,7 +27,7 @@ final class ChattingRoomViewModel {
     struct Input {
         var viewDidLoad: AnyPublisher<Void, Never>
         var message: AnyPublisher<String?, Never>
-        var sendButtonDidTap: AnyPublisher<Void, Never>
+        var messageSendEvent: AnyPublisher<Void, Never>?
         var loadPrevChattings: AnyPublisher<Void, Never>
     }
     
@@ -55,7 +55,7 @@ final class ChattingRoomViewModel {
             }
             .store(in: &cancellables)
         
-        input.sendButtonDidTap
+        input.messageSendEvent?
             .sink { [weak self] _ in
                 self?.sendMessageUseCase.sendMessage()
             }
