@@ -23,7 +23,7 @@ final class AppCoordinator: Coordinator {
     }
     
     func start() {
-
+        try? Auth.auth().signOut()
         if let uid = Auth.auth().currentUser?.uid {
             checkRegistration(for: uid)
         }
@@ -44,8 +44,6 @@ final class AppCoordinator: Coordinator {
                 let userInfo = try await downloadDetailInfoUseCase.downloadDetailInfo(userUid: uid)
                 let state = registerStateValidateUseCase.validateRegisterState(registerUserInfo: userInfo)
                 
-                print(userInfo)
-
                 switch state {
                 case .part:
                     await MainActor.run { showAuthRegisterFlow(registerUserInfo: userInfo) }

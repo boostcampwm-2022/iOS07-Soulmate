@@ -6,10 +6,13 @@
 //
 
 import UIKit
-
 import SnapKit
+import Combine
 
 final class HomeViewController: UIViewController {
+    
+    var bag = Set<AnyCancellable>()
+    
     private var viewModel: HomeViewModel?
     
     // MARK: - UI
@@ -95,12 +98,34 @@ final class HomeViewController: UIViewController {
         
         configureView()
         configureLayout()
+        
+        bind()
     }
 }
 
 // MARK: - View Generators
 
-extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+private extension HomeViewController {
+    func bind() {
+        guard let viewModel = viewModel else { return }
+        let output = viewModel.transform(input: HomeViewModel.Input())
+        output.didRefreshedImageList
+            .sink { [weak self] _ in
+                DispatchQueue.main.async {
+                    self?.collectionView.reloadData()
+                }
+            }
+            .store(in: &bag)
+        
+        output.didRefreshedPreviewList
+            .sink { [weak self] _ in
+                DispatchQueue.main.async {
+                    self?.collectionView.reloadData()
+                }
+            }
+            .store(in: &bag)
+    }
+    
     func configureView() {
         view.backgroundColor = .white
         collectionView.delegate = self
@@ -140,18 +165,29 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
             $0.width.equalToSuperview().inset(20)
         }
     }
+}
+
+extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // TODO: 추천 인원수 전달하기
         guard let viewModel = viewModel else { return 0 }
-        return 2
+        return viewModel.recommendedMatePreviewList.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PartnerCell", for: indexPath) as? PartnerCell else {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PartnerCell", for: indexPath) as? PartnerCell,
+              let viewModel = viewModel else {
             return UICollectionViewCell()
         }
+        
+        cell.fill(
+            with: viewModel.recommendedMatePreviewList[indexPath.row],
+            imageData: viewModel.recommendedMatePreviewList.count == viewModel.recommendedMateImageList.count
+            ? viewModel.recommendedMateImageList[indexPath.row] : nil
+        )
+        
         return cell
     }
     
@@ -161,26 +197,3 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     }
     
 }
-
-#if DEBUG
-import SwiftUI
-struct HomeViewControllerRepresentable: UIViewControllerRepresentable {
-    func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {
-        // leave this empty
-    }
-    @available(iOS 13.0.0, *)
-    func makeUIViewController(context: Context) -> some UIViewController {
-        HomeViewController()
-    }
-    @available(iOS 13.0, *)
-    struct SnapKitVCRepresentable_PreviewProvider: PreviewProvider {
-        static var previews: some View {
-            Group {
-                HomeViewControllerRepresentable()
-                    .ignoresSafeArea()
-                    .previewDisplayName("Preview")
-                    .previewDevice(PreviewDevice(rawValue: "iPhone 14"))
-            }
-        }
-    }
-} #endif

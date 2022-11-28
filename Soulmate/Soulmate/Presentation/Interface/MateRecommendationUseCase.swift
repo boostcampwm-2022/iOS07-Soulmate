@@ -8,5 +8,7 @@
 import Foundation
 
 protocol MateRecommendationUseCase {
-    func mateRecommendate() async throws -> [RegisterUserInfo]
+    func fetchRecommendedMate() async throws -> [UserPreview]
+    func fetchDistanceFilteredRecommendedMate(distance: Double) async throws -> [UserPreview]
 }
+

@@ -12,6 +12,7 @@ struct UserPreview {
     var uid: String?
     var name: String?
     var birth: Date?
+    var imageKey: String?
     var location: Location?
 }
 
@@ -21,6 +22,7 @@ extension UserPreview {
             uid: self.uid,
             name: self.name,
             birth: self.birth,
+            imageKey: self.imageKey,
             location: self.location?.toGeoPoint() ?? nil
         )
     }

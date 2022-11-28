@@ -16,12 +16,12 @@ class DefaultUpLoadPictureUseCase: UploadPictureUseCase {
         self.profilePhotoRepository = profilePhotoRepository
     }
     
-    func uploadPhotoData(photoData: [Data?]) async throws -> [String]? {
-        guard photoData.allSatisfy{ $0 != nil } == true else { return nil }
+    func uploadPhotoData(photoData: [Data?]) async throws -> [String] {
+        guard photoData.allSatisfy{ $0 != nil } == true else { return [] }
         let photoData = photoData.compactMap { $0 }
         
         let uid = Auth.auth().currentUser!.uid
-        return try await withThrowingTaskGroup(of:[String].self) { [weak self] group throws in
+        return try await withThrowingTaskGroup(of: [String].self) { [weak self] group throws in
             for i in 0..<photoData.count {
                 let key = "\(uid)_profile\(i)"
                 group.addTask { [weak self] in
