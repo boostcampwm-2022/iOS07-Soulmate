@@ -144,7 +144,8 @@
 		6ADEE4EC29221CD900AD328B /* UITextField+Publisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ADEE4EB29221CD900AD328B /* UITextField+Publisher.swift */; };
 		6AE21021291DE06600A32280 /* SelectableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AE21020291DE06600A32280 /* SelectableCell.swift */; };
 		B3010251292F1A2000481C6C /* MyPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3010250292F1A2000481C6C /* MyPageView.swift */; };
-		B3010253292F26F700481C6C /* UIView+Publisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3010252292F26F700481C6C /* UIView+Publisher.swift */; };
+		B301025529322FB500481C6C /* HeartShopViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B301025429322FB500481C6C /* HeartShopViewController.swift */; };
+		B301025729329E8A00481C6C /* HeartShopCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B301025629329E8A00481C6C /* HeartShopCell.swift */; };
 		B303D651292367CF00414293 /* ProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B303D650292367CF00414293 /* ProgressBar.swift */; };
 		B30A8ECE291C953F00ED4906 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = B30A8ECD291C953F00ED4906 /* FirebaseAnalytics */; };
 		B30A8ED0291C953F00ED4906 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = B30A8ECF291C953F00ED4906 /* FirebaseAuth */; };
@@ -304,7 +305,8 @@
 		6ADEE4EB29221CD900AD328B /* UITextField+Publisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Publisher.swift"; sourceTree = "<group>"; };
 		6AE21020291DE06600A32280 /* SelectableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectableCell.swift; sourceTree = "<group>"; };
 		B3010250292F1A2000481C6C /* MyPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageView.swift; sourceTree = "<group>"; };
-		B3010252292F26F700481C6C /* UIView+Publisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Publisher.swift"; sourceTree = "<group>"; };
+		B301025429322FB500481C6C /* HeartShopViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartShopViewController.swift; sourceTree = "<group>"; };
+		B301025629329E8A00481C6C /* HeartShopCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartShopCell.swift; sourceTree = "<group>"; };
 		B303D650292367CF00414293 /* ProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBar.swift; sourceTree = "<group>"; };
 		B30A8F0E291CB4AC00ED4906 /* PhoneNumberViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneNumberViewController.swift; sourceTree = "<group>"; };
 		B30A8F10291CB4F100ED4906 /* CertificationNumberViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CertificationNumberViewController.swift; sourceTree = "<group>"; };
@@ -466,6 +468,7 @@
 			isa = PBXGroup;
 			children = (
 				6A0041FA2919EE600042E02F /* MyPageViewController.swift */,
+				B301025429322FB500481C6C /* HeartShopViewController.swift */,
 				B3B03B47292CB877000AF283 /* MyPageMenuCollectionViewCell.swift */,
 				6A0041FC2919EE7B0042E02F /* ServiceTermViewController.swift */,
 				6A0041FE2919EE920042E02F /* ModificationViewController.swift */,
@@ -862,7 +865,6 @@
 				6ADEE4EB29221CD900AD328B /* UITextField+Publisher.swift */,
 				6A45AA3C2925701200F85D2C /* UIDatePicker+Publisher.swift */,
 				6AB6B94F292B155A00A029BD /* UILabel+Publisher.swift */,
-				B3010252292F26F700481C6C /* UIView+Publisher.swift */,
 			);
 			path = Combine;
 			sourceTree = "<group>";
@@ -888,6 +890,7 @@
 			children = (
 				B3E029A8291DDC1500931FA2 /* GradientButton.swift */,
 				6AE21020291DE06600A32280 /* SelectableCell.swift */,
+				B301025629329E8A00481C6C /* HeartShopCell.swift */,
 				07EAD6FA2925F6B5001AE220 /* AddPhotoCell.swift */,
 			);
 			path = Components;
@@ -1047,7 +1050,6 @@
 				6AB6B9DA292EC87200A029BD /* DownLoadPictureUseCase.swift in Sources */,
 				6AB6B9B5292D7DA100A029BD /* UserDefaultsLocalKeyValueStorage.swift in Sources */,
 				6A0041EE2919ED7F0042E02F /* DetailViewController.swift in Sources */,
-				B3010253292F26F700481C6C /* UIView+Publisher.swift in Sources */,
 				6A34C1F3292B48C700A3E57F /* DefaultSendMessageUseCase.swift in Sources */,
 				6A34C1F5292B4FE500A3E57F /* LoadChattingsUseCase.swift in Sources */,
 				B3B03B48292CB877000AF283 /* MyPageMenuCollectionViewCell.swift in Sources */,
@@ -1059,6 +1061,7 @@
 				B311F4AA2925EC7100806E86 /* RegisterMbtiView.swift in Sources */,
 				6A34C1E0292B220500A3E57F /* PaddingLabel.swift in Sources */,
 				07EAD6F92925EBB0001AE220 /* RegisterPhotoView.swift in Sources */,
+				B301025529322FB500481C6C /* HeartShopViewController.swift in Sources */,
 				6AB6B977292C3DD500A029BD /* DefaultProfilePhotoRepository.swift in Sources */,
 				07DDDF292924B2D500CB398C /* RegisterHeightView.swift in Sources */,
 				6A8C88942919031A009EDBBB /* ViewController.swift in Sources */,
@@ -1083,6 +1086,7 @@
 				6A34C213292DD39000A3E57F /* ChatCoordinator.swift in Sources */,
 				6A34C234292F29F800A3E57F /* ReceivedChatRequestCell.swift in Sources */,
 				6A34C22C292F209A00A3E57F /* ChatScenePageViewController.swift in Sources */,
+				B301025729329E8A00481C6C /* HeartShopCell.swift in Sources */,
 				6A34C1D8292B211700A3E57F /* Chat.swift in Sources */,
 				6A0041D92919E6B60042E02F /* CoordinatorInterface.swift in Sources */,
 				6A34C236292F372E00A3E57F /* ReceivedChatRequestsViewModel.swift in Sources */,

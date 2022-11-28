@@ -21,7 +21,8 @@ class MyPageCoordinator: Coordinator {
     }
     
     func start() {
-        let vc = MyPageViewController()
+        let vm = MyPageViewModel()
+        let vc = MyPageViewController(viewModel: vm)
         navigationController.pushViewController(vc, animated: true)
     }
     

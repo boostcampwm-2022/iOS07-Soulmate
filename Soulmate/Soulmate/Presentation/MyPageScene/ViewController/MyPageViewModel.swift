@@ -15,32 +15,29 @@ struct MyPageViewModelActions {
 
 class MyPageViewModel {
     
+    let symbols = ["myPageHeart", "myPagePersonalInfo", "myPagePin"]
+    let titles = ["하트샵 가기", "개인정보 처리방침", "버전정보"]
+    let subTexts = ["", "", "v 3.2.20"]
+    
     private weak var coordinator: MyPageCoordinator?
+    var actions: MyPageViewModelActions?
+    var cancellables = Set<AnyCancellable>()
     
     struct Input {
         var didTappedMyInfoEditButton: AnyPublisher<Void, Never>
         var didTappedHeartShopButton: AnyPublisher<Void, Never>
-//        var didTappedPersonalInfoButton: AnyPublisher<Void, Never>
     }
     
     struct Output {
-        
+        var heartShopButtonTapped: AnyPublisher<Void, Never>
     }
-    
-    var actions: MyPageViewModelActions?
-    
-    var cancellables = Set<AnyCancellable>()
     
     func setActions(actions: MyPageViewModelActions) {
         self.actions = actions
     }
     
     func transform(input: Input) -> Output {
-        input.didTappedHeartShopButton
-            .sink {
-            }
-            .store(in: &cancellables)
-        return Output()
+        return Output(heartShopButtonTapped: input.didTappedHeartShopButton)
     }
     
 }

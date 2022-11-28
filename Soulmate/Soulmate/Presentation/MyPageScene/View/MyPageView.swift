@@ -12,13 +12,7 @@ import Combine
 
 final class MyPageView: UIView {
     
-    private var viewModel: MyPageViewModel?
-    private var cancellables = Set<AnyCancellable>()
-    private var rowSelectSubject = PassthroughSubject<Int, Never>()
-    
-    let symbols = ["myPageHeart", "myPagePersonalInfo", "myPagePin"]
-    let titles = ["하트샵 가기", "개인정보 처리방침", "버전정보"]
-    let subTexts = ["", "", "v 3.2.20"]
+    var cancellables = Set<AnyCancellable>()
     
     lazy var contentView: UIView = {
         let view = UIView()
@@ -43,18 +37,18 @@ final class MyPageView: UIView {
         return imageView
     }()
     
-    lazy var editImageView: UIImageView = {
+    lazy var editButton: UIButton = {
+        let button = UIButton()
         let image = UIImage(systemName: "pencil", withConfiguration: UIImage.SymbolConfiguration(pointSize: 23, weight: .heavy))
-        
-        let imageView = UIImageView(image: image?.resized(to: CGSize(width: 23, height: 23)).withTintColor(.gray))
-        imageView.contentMode = .center
-        imageView.backgroundColor = .white
-        imageView.layer.cornerRadius = 23
-        imageView.layer.cornerCurve = .continuous
-        imageView.layer.borderWidth = 2
-        imageView.layer.borderColor = UIColor.symbolGrey?.cgColor
-        self.addSubview(imageView)
-        return imageView
+        button.setImage(image, for: .normal)
+        button.tintColor = .black
+        button.backgroundColor = .white
+        button.layer.cornerRadius = 23
+        button.layer.cornerCurve = .continuous
+        button.layer.borderWidth = 2
+        button.layer.borderColor = UIColor.symbolGrey?.cgColor
+        self.addSubview(button)
+        return button
     }()
     
     lazy var profileInfoStackView: UIStackView = {
@@ -77,46 +71,38 @@ final class MyPageView: UIView {
         return stackView
     }()
     
-    lazy var remainingHeartsStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.axis = .horizontal
-        stackView.spacing = 6
-        stackView.backgroundColor = .lightPurple
+    lazy var remainingHeartButton: UIButton = {
+        var config = UIButton.Configuration.plain()
+        config.image = UIImage(systemName: "chevron.right")?.resized(to: CGSize(width: 15, height: 15)).withTintColor(.borderPurple ?? .purple)
+        config.imagePlacement = .trailing
+        config.titleAlignment = .automatic
+        config.imagePadding = UIScreen.main.bounds.width - 160
+        config.baseForegroundColor = .black
+        config.title = "보유 하트"
         
-        let titleLabel = UILabel()
-        titleLabel.text = "보유 하트"
-        titleLabel.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 15)
+        let button = UIButton(configuration: config)
+        button.backgroundColor = .lightPurple
+        button.layer.cornerCurve = .continuous
+        button.layer.cornerRadius = 10
         
-        let heartCountLabel = UILabel()
-        heartCountLabel.text = "30개"
-        heartCountLabel.textColor = .mainPurple
-        heartCountLabel.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 18)
-        
-        let rightArrowImage = UIImage(systemName: "chevron.right")
-        let rightArrowView = UIImageView(image: rightArrowImage?.resized(to: CGSize(width: 15, height: 15)).withTintColor(.borderPurple ?? .purple))
-        rightArrowView.contentMode = .center
-        
-        [titleLabel, heartCountLabel, rightArrowView].forEach { stackView.addArrangedSubview($0) }
-        self.addSubview(stackView)
-        return stackView
+        self.addSubview(button)
+        return button
     }()
     
-    lazy var remainingHeartView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .lightPurple
-        view.layer.cornerCurve = .continuous
-        view.layer.cornerRadius = 10
-        view.addSubview(remainingHeartsStackView)
-        self.addSubview(view)
-        return view
+    lazy var remainingHeartLabel: UILabel = {
+        let label = UILabel()
+        label.text = "30개"
+        label.textColor = .mainPurple
+        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 18)
+        label.isUserInteractionEnabled = false
+        self.addSubview(label)
+        return label
     }()
     
     lazy var collectionView: UICollectionView = {
         var layout = UICollectionViewFlowLayout()
         let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.delegate = self
-        view.dataSource = self
         view.register(MyPageMenuCollectionViewCell.self, forCellWithReuseIdentifier: MyPageMenuCollectionViewCell.identifier)
         self.addSubview(view)
         return view
@@ -145,7 +131,7 @@ final class MyPageView: UIView {
             $0.width.height.equalTo(156)
         }
         
-        editImageView.snp.makeConstraints {
+        editButton.snp.makeConstraints {
             $0.trailing.equalTo(profileImageView.snp.trailing)
             $0.bottom.equalTo(profileImageView.snp.bottom)
             $0.width.height.equalTo(46)
@@ -156,70 +142,23 @@ final class MyPageView: UIView {
             $0.centerX.equalToSuperview()
         }
         
-        remainingHeartView.snp.makeConstraints {
+        remainingHeartButton.snp.makeConstraints {
             $0.top.equalTo(profileInfoStackView.snp.bottom).offset(40)
             $0.centerX.equalToSuperview()
             $0.leading.trailing.equalToSuperview().inset(20)
             $0.height.equalTo(62)
         }
         
-        remainingHeartsStackView.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(20)
-            $0.centerX.equalToSuperview()
-            $0.height.equalTo(22)
-            $0.edges.equalToSuperview().inset(20)
+        remainingHeartLabel.snp.makeConstraints {
+            $0.centerY.equalTo(remainingHeartButton.snp.centerY)
+            $0.trailing.equalTo(remainingHeartButton.snp.trailing).inset(40)
         }
         
         collectionView.snp.makeConstraints {
-            $0.top.equalTo(remainingHeartView.snp.bottom).offset(32)
+            $0.top.equalTo(remainingHeartButton.snp.bottom).offset(32)
             $0.leading.trailing.equalToSuperview()
             $0.height.equalTo(300)
         }
     }
     
-}
-
-private extension MyPageView {
-    
-    func bind() {
-        let output = viewModel?.transform(
-            input: MyPageViewModel.Input(
-                didTappedMyInfoEditButton: editImageView.tapPublisher,
-                didTappedHeartShopButton: remainingHeartView.tapPublisher
-            )
-        )
-        
-    }
-    
-}
-
-extension MyPageView: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 3
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MyPageMenuCollectionViewCell.identifier, for: indexPath) as? MyPageMenuCollectionViewCell else {
-            return UICollectionViewCell()
-        }
-    
-        cell.symbol.image = UIImage(named: symbols[indexPath.row])
-        cell.title.text = titles[indexPath.row]
-        cell.trailingDescription.text = subTexts[indexPath.row]
-        return cell
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: self.collectionView.frame.width, height: 68)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        switch indexPath.row {
-        case 0:
-            break
-        default:
-            break
-        }
-    }
 }
