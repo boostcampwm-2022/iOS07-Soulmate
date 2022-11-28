@@ -156,8 +156,8 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let vc = viewModel?.coordinator?.showDetailVC() else { return }
-        self.present(vc, animated: true)
+//        guard let vc = viewModel?.coordinator?.showDetailVC() else { return }
+//        self.present(vc, animated: true)
     }
     
 }
