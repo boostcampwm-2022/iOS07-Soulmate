@@ -48,6 +48,7 @@ final class PartnerCell: UICollectionViewCell {
         l.locations = [0, 1]
         l.startPoint = CGPoint(x: 0.25, y: 0.5)
         l.endPoint = CGPoint(x: 0.75, y: 0.5)
+        l.transform = CATransform3DMakeAffineTransform(CGAffineTransform(a: 0, b: 1, c: -1, d: 0, tx: 1, ty: 0))
         l.cornerRadius = 14
         l.cornerCurve = .continuous
         return l
