@@ -13,8 +13,11 @@ final class ChattingRoomViewModel {
     private let sendMessageUseCase: SendMessageUseCase
     private let loadChattingsUseCase: LoadChattingsUseCase
     private let loadPrevChattingsUseCase: LoadPrevChattingsUseCase
+    private var meSendedChattings: [Chat] = []
     var chattings: [Chat] {
-        return loadPrevChattingsUseCase.prevChattings.value + loadChattingsUseCase.initLoadedchattings.value
+        return loadPrevChattingsUseCase.prevChattings.value
+        + loadChattingsUseCase.initLoadedchattings.value
+        + meSendedChattings
     }
     
     init(
@@ -38,7 +41,8 @@ final class ChattingRoomViewModel {
         var sendButtonEnabled = CurrentValueSubject<Bool, Never>(false)
         var chattingInitLoaded = PassthroughSubject<Void, Never>()
         var prevChattingLoaded = PassthroughSubject<Int, Never>()
-        var newChattingLoaded = PassthroughSubject<Int, Never>()
+        var chatUpdated = PassthroughSubject<Int, Never>()
+        var newMessageArrived = PassthroughSubject<Void, Never>()
         var keyboardHeight = KeyboardMonitor().$keyboardHeight        
     }
     
@@ -60,7 +64,7 @@ final class ChattingRoomViewModel {
         
         input.messageSendEvent?
             .sink { [weak self] _ in
-                self?.sendMessageUseCase.sendMessage()
+                self?.sendMessageUseCase.uSendMessage()
             }
             .store(in: &cancellables)
         
@@ -85,6 +89,37 @@ final class ChattingRoomViewModel {
         self.loadPrevChattingsUseCase.loadedPrevChattingCount
             .sink { count in
                 output.prevChattingLoaded.send(count)
+            }
+            .store(in: &cancellables)
+        
+        self.sendMessageUseCase.newMessage
+            .sink { [weak self] chat in
+                self?.meSendedChattings.append(chat)
+                output.newMessageArrived.send(())
+            }
+            .store(in: &cancellables)
+        
+        self.sendMessageUseCase.messageSended
+            .sink { [weak self] result in
+                let id = result.id
+                let date = result.date
+                let success = result.success
+                
+                if let index = self?.meSendedChattings.firstIndex(
+                    where: { chat in
+                    chat.id == id
+                    }) {
+                    
+                    self?.meSendedChattings[index].updateState(success, date)
+                    
+                    if let row = self?.chattings.firstIndex(
+                        where: { chat in
+                        chat.id == id
+                    }) {
+                     
+                        output.chatUpdated.send(row)
+                    }
+                }
             }
             .store(in: &cancellables)
 

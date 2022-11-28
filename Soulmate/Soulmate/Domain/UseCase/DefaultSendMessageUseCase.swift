@@ -12,7 +12,9 @@ import FirebaseFirestoreSwift
 
 final class DefaultSendMessageUseCase: SendMessageUseCase {
     var messageToSend = CurrentValueSubject<String, Never>("")
-    var sendButtonEnabled = CurrentValueSubject<Bool, Never>(false)    
+    var sendButtonEnabled = CurrentValueSubject<Bool, Never>(false)
+    var newMessage = PassthroughSubject<Chat, Never>()
+    var messageSended = PassthroughSubject<(id: String, date: Date?, success: Bool), Never>()
     
     let db = Firestore.firestore()
     private let info: ChatRoomInfo
@@ -31,6 +33,52 @@ final class DefaultSendMessageUseCase: SendMessageUseCase {
             sendButtonEnabled.send(true)
         } else {
             sendButtonEnabled.send(false)
+        }
+    }
+    
+    func uSendMessage() {
+        guard let documentId = info.documentId, let uid = self.uid else { return }
+        
+        let chat = Chat(isMe: true, text: messageToSend.value, date: nil, state: .sending)
+        newMessage.send(chat)
+        
+        if let docRef = try? db
+            .collection("ChatRooms")
+            .document(documentId)
+            .collection("Messages")
+            .addDocument(
+                from: MessageToSendDTO(
+                    docId: documentId,
+                    text: messageToSend.value,
+                    userId: uid
+                ),
+                completion: { [weak self] err in
+                    if err != nil {
+                        self?.messageSended.send((id: chat.id, date: nil, success: false))
+                    }
+                }
+            ) {
+            
+            Task {
+                do {
+                    try await docRef.updateData(["date": FieldValue.serverTimestamp()])
+                    let messageDoc = try await docRef.getDocument()
+                    
+                    guard let messageTime = messageDoc.data()?["date"] as? Timestamp else { return }
+                    
+                    try await db.collection("ChatRooms").document(documentId).updateData(
+                        [
+                            "lastMessage": messageToSend.value,
+                            "lastDate": messageTime
+                        ]
+                    )
+                    
+                    messageSended.send((id: chat.id, date: messageTime.dateValue(), success: true))
+                    
+                } catch {
+                    print("Error update last data")
+                }
+            }
         }
     }
     

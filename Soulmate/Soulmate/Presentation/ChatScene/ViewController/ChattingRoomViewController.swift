@@ -275,13 +275,26 @@ private extension ChattingRoomViewController {
             }
             .store(in: &cancellabels)
         
-        output.newChattingLoaded
-            .sink { [weak self] count in
+        output.newMessageArrived
+            .sink { [weak self] _ in
                 
                 let diff = (self?.bottomOffset().y ?? 0) - (self?.chatTableView.contentOffset.y ?? 0)
+                
                 self?.chatTableView.reloadData()
+                
                 if diff < 10 {
                     self?.scrollToBottom()
+                }
+            }
+            .store(in: &cancellabels)
+        
+        output.chatUpdated
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] row in
+                let indexPath = IndexPath(row: row, section: 0)
+                
+                self?.chatTableView.performBatchUpdates {
+                    self?.chatTableView.reloadRows(at: [indexPath], with: .none)
                 }
             }
             .store(in: &cancellabels)

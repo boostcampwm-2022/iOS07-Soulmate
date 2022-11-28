@@ -32,7 +32,9 @@ final class DefaultLoadPrevChattingsUseCase: LoadPrevChattingsUseCase {
         let db = Firestore.firestore()
         
         guard let chatRoomId = info.documentId,
-              let startDocument = loadChattingRepository.startDocument else { return }
+              let startDocument = loadChattingRepository.startDocument else {
+            return
+        }
         
         let _ = db.collection("ChatRooms")
             .document(chatRoomId)
@@ -51,7 +53,7 @@ final class DefaultLoadPrevChattingsUseCase: LoadPrevChattingsUseCase {
                     let isMe = info.userId == uid
                     let text = info.text
                     
-                    return Chat(isMe: isMe, text: text, date: date)
+                    return Chat(isMe: isMe, text: text, date: date, state: .validated)
                 }
                 
                 guard let lastDocument = snapshot.documents.last else { return }
