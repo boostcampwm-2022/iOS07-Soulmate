@@ -8,101 +8,95 @@
 import Foundation
 import Combine
 
+struct DetailViewModelActions {
+}
+
 final class DetailViewModel {
-    private weak var coordinator: HomeCoordinator?
     var cancellables = Set<AnyCancellable>()
-    var userInfo: RegisterUserInfo?
     
-    @Published var photos: [String]?
-    @Published var nickname: String?
-    @Published var age: Int?
+    var actions: DetailViewModelActions?
+    
+    let downLoadPictureUseCase: DownLoadPictureUseCase
+    let downloadDetailInfoUseCase: DownLoadDetailInfoUseCase
+    
+    @Published var preview: UserPreview?
     @Published var distance: Int?
     @Published var greetingMessage: String?
     @Published var height: Int?
-    @Published var mbti: String?
-    @Published var drinking: String?
-    @Published var smoking: String?
+    @Published var mbti: Mbti?
+    @Published var drinking: DrinkingType?
+    @Published var smoking: SmokingType?
     
-    func talkButtonTouched() {
-        
+    @Published var imageDataList: [Data]?
+    
+    init(
+        downLoadPictureUseCase: DownLoadPictureUseCase,
+        downloadDetailInfoUseCase: DownLoadDetailInfoUseCase
+    ) {
+        self.downLoadPictureUseCase = downLoadPictureUseCase
+        self.downloadDetailInfoUseCase = downloadDetailInfoUseCase
     }
     
-    init(userInfo: RegisterUserInfo, distance: Int, coordinator: HomeCoordinator) {
-        self.coordinator = coordinator
-        self.userInfo = userInfo
-        self.distance = distance
+    func setUser(userPreview: UserPreview) {
+        Task { [weak self] in
+            guard let uid = userPreview.uid else { return }
+            
+            self?.preview = userPreview
+            
+            let detailInfo = try await downloadDetailInfoUseCase.downloadDetailInfo(userUid: uid)
+            self?.height = detailInfo.height
+            self?.mbti = detailInfo.mbti
+            self?.drinking = detailInfo.drinkingType
+            self?.smoking = detailInfo.smokingType
+            self?.greetingMessage = detailInfo.aboutMe
+            
+            if let imageKeyList = detailInfo.imageList {
+                self?.imageDataList = try await downLoadPictureUseCase.downloadPhotoData(keyList: imageKeyList)
+            }
+        }
+    }
+    
+    func setActions(actions: DetailViewModelActions) {
+        self.actions = actions
     }
 
 }
 
 extension DetailViewModel {
     struct Input {
-        var setPhotos: AnyPublisher<[String], Never>
-        var setNickname: AnyPublisher<String, Never>
-        var setAge: AnyPublisher<Date, Never>
-        var setDistance: AnyPublisher<Int, Never>
-        var setGreetingMessage: AnyPublisher<String, Never>
-        var setHeight: AnyPublisher<Int, Never>
-        var setMbti: AnyPublisher<Mbti, Never>
-        var setDrinking: AnyPublisher<DrinkingType, Never>
-        var setSmoking: AnyPublisher<SmokingType, Never>
-        var didTouchedTalkButton: AnyPublisher<Void, Never>
+        var didTappedMateRegistrationButton: AnyPublisher<Void, Never>
     }
 
-    struct Output { }
+    struct Output {
+        var didFetchedImageDataList: AnyPublisher<[Data]?, Never>
+        var didFetchedPreview: AnyPublisher<UserPreview?, Never>
+        var didFetchedHeight: AnyPublisher<Int?, Never>
+        var didFetchedMbti: AnyPublisher<Mbti?, Never>
+        var didFetchedDrinking: AnyPublisher<DrinkingType?, Never>
+        var didFetchedSmoking: AnyPublisher<SmokingType?, Never>
+        var didFetchedGreeting: AnyPublisher<String?, Never>
+    }
     
     func transform(input: Input) -> Output {
-        input.setPhotos
-            .compactMap { $0 }
-            .assign(to: \.photos, on: self)
-            .store(in: &cancellables)
         
-        input.setNickname
-            .compactMap { $0 }
-            .assign(to: \.nickname, on: self)
-            .store(in: &cancellables)
-        
-        input.setAge
-            .compactMap { $0.toAge() }
-            .assign(to: \.age, on: self)
-            .store(in: &cancellables)
-        
-        input.setDistance
-            .compactMap { $0 }
-            .assign(to: \.distance, on: self)
-            .store(in: &cancellables)
-        
-        input.setGreetingMessage
-            .compactMap { $0 }
-            .assign(to: \.greetingMessage, on: self)
-            .store(in: &cancellables)
-        
-        input.setHeight
-            .compactMap { $0 }
-            .assign(to: \.height, on: self)
-            .store(in: &cancellables)
-        
-        input.setMbti
-            .compactMap { $0.toString() }
-            .assign(to: \.mbti, on: self)
-            .store(in: &cancellables)
-        
-        input.setDrinking
-            .compactMap { $0.rawValue }
-            .assign(to: \.drinking, on: self)
-            .store(in: &cancellables)
-        
-        input.setSmoking
-            .compactMap { $0.rawValue }
-            .assign(to: \.smoking, on: self)
-            .store(in: &cancellables)
-        
-        input.didTouchedTalkButton
+        input.didTappedMateRegistrationButton
             .sink { [weak self] _ in
-                self?.talkButtonTouched()
+                self?.registerMate()
             }
             .store(in: &cancellables)
         
-        return Output()
+        return Output(
+            didFetchedImageDataList: $imageDataList.eraseToAnyPublisher(),
+            didFetchedPreview: $preview.eraseToAnyPublisher(),
+            didFetchedHeight: $height.eraseToAnyPublisher(),
+            didFetchedMbti: $mbti.eraseToAnyPublisher(),
+            didFetchedDrinking: $drinking.eraseToAnyPublisher(),
+            didFetchedSmoking: $smoking.eraseToAnyPublisher(),
+            didFetchedGreeting: $greetingMessage.eraseToAnyPublisher()
+        )
+    }
+    
+    func registerMate() {
+        // 대화 친구 신청 시 처리하는 로직 부분
     }
 }

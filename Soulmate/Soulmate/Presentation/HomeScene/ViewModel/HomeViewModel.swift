@@ -9,7 +9,7 @@ import Foundation
 import Combine
 
 struct HomeViewModelAction {
-    var showDetailVC: ((String) -> Void)?
+    var showDetailVC: ((UserPreview) -> Void)?
 }
 
 final class HomeViewModel {
@@ -60,6 +60,10 @@ final class HomeViewModel {
             let imageKeyList = self.recommendedMatePreviewList.compactMap { $0.imageKey }
             self.recommendedMateImageList = try await downloadPictureUseCase.downloadPhotoData(keyList: imageKeyList)
         }
+    }
+    
+    func mateSelected(index: Int) {
+        actions?.showDetailVC?(recommendedMatePreviewList[index])
     }
 
 }

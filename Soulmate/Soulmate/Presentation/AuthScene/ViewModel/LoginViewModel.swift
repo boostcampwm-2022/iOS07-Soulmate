@@ -54,7 +54,8 @@ class LoginViewModel {
     func doneAppleLogin() {
         Task {
             do {
-                let registerUserInfo = try await downLoadDetailInfoUseCase.downloadDetailInfo(userUid: Auth.auth().currentUser!.uid)
+                guard let uid = Auth.auth().currentUser?.uid else { return }
+                let registerUserInfo = try await downLoadDetailInfoUseCase.downloadDetailInfo(userUid: uid)
                 let state = registerStateValidateUseCase.validateRegisterState(registerUserInfo: registerUserInfo)
                 switch state {
                 case .part:

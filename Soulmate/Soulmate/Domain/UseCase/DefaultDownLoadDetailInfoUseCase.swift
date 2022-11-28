@@ -17,7 +17,6 @@ class DefaultDownLoadDetailInfoUseCase: DownLoadDetailInfoUseCase {
     }
     
     func downloadDetailInfo(userUid: String) async throws -> RegisterUserInfo {
-        guard let uid = Auth.auth().currentUser?.uid else { throw AuthError.noCurrentUserError}
-        return try await userDetailInfoRepository.downloadDetailInfo(userUid: uid)
+        return try await userDetailInfoRepository.downloadDetailInfo(userUid: userUid)
     }
 }

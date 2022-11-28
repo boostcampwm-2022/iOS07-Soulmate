@@ -55,7 +55,23 @@ final class HomeCoordinator: Coordinator {
         navigationController.pushViewController(vc, animated: true)
     }
     
-    lazy var showDetailVC: (String) -> Void = { [weak self] uid in
+    lazy var showDetailVC: (UserPreview) -> Void = { [weak self] userPreview in
+        let networkDatabaseApi = FireStoreNetworkDatabaseApi()
+        let networkKeyValueStorageApi = FirebaseNetworkKeyValueStorageApi()
+        let userDetailInfoRepository = DefaultUserDetailInfoRepository(networkDatabaseApi: networkDatabaseApi)
+        let profilePhotoRepository = DefaultProfilePhotoRepository(networkKeyValueStorageApi: networkKeyValueStorageApi)
+        let downloadDetailInfoUseCase = DefaultDownLoadDetailInfoUseCase(userDetailInfoRepository: userDetailInfoRepository)
+        let downloadPictureUseCase = DefaultDownLoadPictureUseCase(profilePhotoRepository: profilePhotoRepository)
         
+        let vm = DetailViewModel(
+            downLoadPictureUseCase: downloadPictureUseCase,
+            downloadDetailInfoUseCase: downloadDetailInfoUseCase
+        )
+        vm.setActions(actions: DetailViewModelActions())
+        vm.setUser(userPreview: userPreview)
+        
+        let vc = DetailViewController(viewModel: vm)
+        
+        self?.navigationController.present(vc, animated: true)
     }
 }
