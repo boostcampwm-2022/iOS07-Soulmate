@@ -71,6 +71,10 @@ class SelectableCell: UICollectionViewCell {
         self.titleLabel.text = title
     }
     
+    func hideCheckView() {
+        self.checkImageView.isHidden = true
+    }
+    
 }
 
 
@@ -102,9 +106,8 @@ import SwiftUI
 struct MyYellowButtonPreview: PreviewProvider{
     static var previews: some View {
         UIViewPreview {
-            let button = SelectableCell(frame: .zero)
-            //button.setTitle("buttonTest", for: .normal)
-            return button
+            let cell = SelectableCell(frame: .zero)
+            return cell
         }.previewLayout(.fixed(width: 350, height: 72))
     }
 }

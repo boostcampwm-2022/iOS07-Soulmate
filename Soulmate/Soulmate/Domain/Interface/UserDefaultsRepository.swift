@@ -12,3 +12,7 @@ protocol UserDefaultsRepository {
     func get<T>(key: String) -> T?
     func remove(key: String)
 }
+
+enum UserDefaultsError: Error {
+    case noSuchKeyMatchedValue
+}

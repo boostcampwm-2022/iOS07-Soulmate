@@ -8,7 +8,8 @@
 import Foundation
 
 protocol UserPreviewRepository {
-    //func downloadFilteredUserPreviews() async throws -> [RegisterUserInfo]
     func uploadPreview(userUid: String, userPreview: UserPreview) async throws
     func updateLocation(userUid: String, location: Location) async throws
+    func fetchDistanceFilteredRecommendedPreviewList(userLocation: Location, distance: Double) async throws -> [UserPreview]
+    func fetchRecommendedPreviewList() async throws -> [UserPreview]
 }

@@ -23,13 +23,14 @@ final class AppCoordinator: Coordinator {
     }
     
     func start() {
-
+        try? Auth.auth().signOut()
         if let uid = Auth.auth().currentUser?.uid {
             checkRegistration(for: uid)
         }
         else {
             showAuthSignInFlow()
         }
+//        showMyPageFlow()
     }
     
     private func checkRegistration(for uid: String) {
@@ -43,8 +44,6 @@ final class AppCoordinator: Coordinator {
                 let userInfo = try await downloadDetailInfoUseCase.downloadDetailInfo(userUid: uid)
                 let state = registerStateValidateUseCase.validateRegisterState(registerUserInfo: userInfo)
                 
-                print(userInfo)
-
                 switch state {
                 case .part:
                     await MainActor.run { showAuthRegisterFlow(registerUserInfo: userInfo) }
@@ -56,6 +55,18 @@ final class AppCoordinator: Coordinator {
                 await MainActor.run { showAuthRegisterFlow() }
             }
         }
+    }
+    
+    private func showMyPageFlow() {
+        let navigation = UINavigationController()
+        window.rootViewController = navigation
+        
+        let authCoordinator = MyPageCoordinator(navigationController: navigation)
+        authCoordinator.finishDelegate = self
+        authCoordinator.start()
+        childCoordinators.append(authCoordinator)
+        
+        window.makeKeyAndVisible()
     }
     
     private func showAuthSignInFlow() {

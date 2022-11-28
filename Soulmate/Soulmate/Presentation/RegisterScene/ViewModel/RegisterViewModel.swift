@@ -193,7 +193,8 @@ class RegisterViewModel {
             
             let userPreview = UserPreview(
                 name: self?.nickName,
-                birth: self?.birth
+                birth: self?.birth,
+                imageKey: keys.first
             )
             try await uploadPreviewUseCase.uploadPreview(userPreview: userPreview)
 
