@@ -32,7 +32,7 @@ final class PartnerCell: UICollectionViewCell {
     
     private lazy var partnerSubview: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor.labelGrey
+        view.backgroundColor = UIColor.clear
         view.layer.cornerRadius = 14
         view.layer.addSublayer(gradientLayer)
         partnerView.addSubview(view)

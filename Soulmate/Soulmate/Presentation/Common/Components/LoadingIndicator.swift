@@ -7,14 +7,40 @@
 
 import UIKit
 
-class LoadingIndicator: UIActivityIndicatorView {
+final class LoadingIndicator: UIActivityIndicatorView {
 
-    /*
-    // Only override draw() if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func draw(_ rect: CGRect) {
-        // Drawing code
+    override init(frame: CGRect) {
+        super.init(frame: frame)
     }
-    */
+    
+    required init(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
+    convenience init() {
+        self.init(frame: .zero)
+        configure()
+    }
+    
+    private func configure() {
+        self.color = UIColor.mainPurple
+        self.hidesWhenStopped = true
+        self.style = .large
+        // self.stopAnimating()
+        self.startAnimating()
+    }
+    
 }
+
+#if canImport(SwiftUI) && DEBUG
+import SwiftUI
+
+struct LoadingIndicatorPreview: PreviewProvider {
+    static var previews: some View {
+        UIViewPreview {
+            let preview = LoadingIndicator()
+            return preview
+        }.previewLayout(.device)
+    }
+}
+#endif
