@@ -20,6 +20,7 @@ final class MyChatView: UIView {
         label.layer.cornerRadius = 12
         label.clipsToBounds = true
         label.textColor = .white
+        label.lineBreakMode = .byCharWrapping
         
         return label
     }()
@@ -47,6 +48,7 @@ final class MyChatView: UIView {
     
     func configure(with chat: Chat) {
         chatLabel.text = chat.text
+        timeLabel.text = chat.date.aHmm()
     }
     
     func layout() {

@@ -12,7 +12,7 @@ import FirebaseFirestoreSwift
 
 final class DefaultSendMessageUseCase: SendMessageUseCase {
     var messageToSend = CurrentValueSubject<String, Never>("")
-    var sendButtonEnabled = CurrentValueSubject<Bool, Never>(false)
+    var sendButtonEnabled = CurrentValueSubject<Bool, Never>(false)    
     
     let db = Firestore.firestore()
     private let info: ChatRoomInfo

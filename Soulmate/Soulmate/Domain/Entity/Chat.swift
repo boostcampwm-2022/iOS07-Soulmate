@@ -10,4 +10,5 @@ import Foundation
 struct Chat {
     var isMe: Bool
     var text: String
+    var date: Date
 }

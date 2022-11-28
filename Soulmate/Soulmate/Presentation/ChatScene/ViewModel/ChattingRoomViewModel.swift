@@ -6,13 +6,14 @@
 //
 
 import Combine
+import Foundation
 
 final class ChattingRoomViewModel {
     
     private let sendMessageUseCase: SendMessageUseCase
     private let loadChattingsUseCase: LoadChattingsUseCase
     var chattings: [Chat] {
-        return loadChattingsUseCase.chattings.value
+        return loadChattingsUseCase.prevChattings.value + loadChattingsUseCase.initLoadedchattings.value + loadChattingsUseCase.newChattings.value
     }
     
     init(
@@ -26,12 +27,16 @@ final class ChattingRoomViewModel {
     struct Input {
         var viewDidLoad: AnyPublisher<Void, Never>
         var message: AnyPublisher<String?, Never>
-        var sendButtonDidTap: AnyPublisher<Void, Never>
+        var messageSendEvent: AnyPublisher<Void, Never>?
+        var loadPrevChattings: AnyPublisher<Void, Never>
     }
     
     struct Output {
         var sendButtonEnabled = CurrentValueSubject<Bool, Never>(false)
-        var chattingsLoaded = PassthroughSubject<Void, Never>()
+        var chattingInitLoaded = PassthroughSubject<Void, Never>()
+        var prevChattingLoaded = PassthroughSubject<Int, Never>()
+        var newChattingLoaded = PassthroughSubject<Int, Never>()
+        var keyboardHeight = KeyboardMonitor().$keyboardHeight        
     }
     
     func transform(input: Input, cancellables: inout Set<AnyCancellable>) -> Output {
@@ -39,7 +44,7 @@ final class ChattingRoomViewModel {
         
         input.viewDidLoad
             .sink { [weak self] _ in
-                self?.loadChattingsUseCase.listenChattings()
+                self?.loadChattingsUseCase.loadChattings()
             }
             .store(in: &cancellables)
         
@@ -50,9 +55,15 @@ final class ChattingRoomViewModel {
             }
             .store(in: &cancellables)
         
-        input.sendButtonDidTap
+        input.messageSendEvent?
             .sink { [weak self] _ in
                 self?.sendMessageUseCase.sendMessage()
+            }
+            .store(in: &cancellables)
+        
+        input.loadPrevChattings            
+            .sink { [weak self] _ in
+                self?.loadChattingsUseCase.loadPrevChattings()
             }
             .store(in: &cancellables)
         
@@ -62,12 +73,26 @@ final class ChattingRoomViewModel {
             }
             .store(in: &cancellables)
         
-        self.loadChattingsUseCase.chattings
-            .sink { _ in
-                output.chattingsLoaded.send(())
+        self.loadChattingsUseCase.initLoadedchattings
+            .sink { [weak self] _ in
+                output.chattingInitLoaded.send(())
+                self?.loadChattingsUseCase.listenNewChattings()
             }
             .store(in: &cancellables)
         
+        self.loadChattingsUseCase.loadedPrevChattingCount
+            .sink { count in
+                
+                output.prevChattingLoaded.send(count)
+            }
+            .store(in: &cancellables)
+        
+        self.loadChattingsUseCase.loadedNewChattingCount
+            .sink { count in
+                output.newChattingLoaded.send(count)
+            }
+            .store(in: &cancellables)
+
         return output
     }
 }

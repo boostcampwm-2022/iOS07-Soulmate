@@ -8,7 +8,7 @@
 import Combine
 
 protocol SendMessageUseCase {
-    var sendButtonEnabled: CurrentValueSubject<Bool, Never> { get }
+    var sendButtonEnabled: CurrentValueSubject<Bool, Never> { get }    
     
     func updateMessage(_ text: String)
     func sendMessage()

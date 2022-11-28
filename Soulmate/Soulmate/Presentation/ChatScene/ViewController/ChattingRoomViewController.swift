@@ -13,14 +13,17 @@ final class ChattingRoomViewController: UIViewController {
     private var viewModel: ChattingRoomViewModel?
     private var cancellabels = Set<AnyCancellable>()
     private var messageSubject = PassthroughSubject<String?, Never>()
+    private var loadPrevChattingsSubject = PassthroughSubject<Void, Never>()
+    private var newLineInputSubject = PassthroughSubject<Void, Never>()
+    private var messageSendSubject: AnyPublisher<Void, Never>?
     
-    private var shouldScrollToBottom = true
+    private var isInitLoad = true
+    private var isLoading = false    
     
     private lazy var chatTableView: UITableView = {
         let tableView = UITableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.rowHeight = UITableView.automaticDimension
-        tableView.estimatedRowHeight = 60
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(MyChatCell.self, forCellReuseIdentifier: MyChatCell.id)
@@ -65,25 +68,22 @@ final class ChattingRoomViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        bind()
         configureView()
         configureLayout()
-        registerKeyboardNotifications()
+        setPublishers()
+        bind()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        navigationController?.setNavigationBarHidden(false, animated: false)
-    }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
+        navigationController?.setNavigationBarHidden(false, animated: true)
         
-        if shouldScrollToBottom {
-            shouldScrollToBottom = false
-            scrollToBottom(animated: false)
-        }
+        let backImage = UIImage(named: "back")
+        self.navigationController?.navigationBar.backIndicatorImage = backImage
+        self.navigationController?.navigationBar.backIndicatorTransitionMaskImage = backImage
+        self.navigationController?.navigationBar.backItem?.title = " "
+        self.navigationController?.navigationBar.tintColor = .black
     }
 }
 
@@ -94,7 +94,6 @@ extension ChattingRoomViewController: NSTextStorageDelegate {
         didProcessEditing editedMask: NSTextStorage.EditActions,
         range editedRange: NSRange,
         changeInLength delta: Int) {
-            
             messageSubject.send(textStorage.string)
     }
 }
@@ -136,13 +135,62 @@ extension ChattingRoomViewController: UITableViewDelegate, UITableViewDataSource
             return cell
         }
     }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        guard !isInitLoad, !isLoading else { return }
+                        
+        if scrollView.contentOffset.y < 100 {
+            loadPrevChattings()
+        }
+    }
+}
+
+// MARK: - Set Publishers
+private extension ChattingRoomViewController {
+    
+    func setPublishers() {
+        messageSendSubject = newLineInputSubject
+            .merge(with: composeBar.sendButtonPublisher())
+            .eraseToAnyPublisher()
+    }
 }
 
 // MARK: - UI Configure
 private extension ChattingRoomViewController {
     func configureView() {
+        
+        let hideKeyboardButton = UIBarButtonItem(
+            image: UIImage(systemName: "xmark"),
+            style: .plain,
+            target: self,
+            action: #selector(hideKeyboard)
+        )
+        
+        let loadPrevChattingsButton = UIBarButtonItem(
+            image: UIImage(systemName: "plus.message"),
+            style: .plain,
+            target: self,
+            action: #selector(loadPrevChattings)
+        )
+        
+        self.navigationItem.rightBarButtonItems = [
+            hideKeyboardButton,
+            loadPrevChattingsButton
+        ]
+        
         self.title = "메이트 이름"
         view.backgroundColor = .white
+    }
+    
+    @objc
+    func hideKeyboard() {
+        view.endEditing(true)
+    }
+    
+    @objc
+    func loadPrevChattings() {
+        isLoading = true
+        loadPrevChattingsSubject.send(())
     }
     
     func configureLayout() {
@@ -161,7 +209,7 @@ private extension ChattingRoomViewController {
             $0.top.equalTo(view.safeAreaLayoutGuide.snp.top)
             $0.leading.equalTo(view.safeAreaLayoutGuide.snp.leading)
             $0.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing)
-            $0.bottom.equalTo(composeBar.snp.top)
+            $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-50)
         }
     }
 }
@@ -177,10 +225,18 @@ private extension ChattingRoomViewController {
             input: ChattingRoomViewModel.Input(
                 viewDidLoad: Just(()).eraseToAnyPublisher(),
                 message: messageSubject.eraseToAnyPublisher(),
-                sendButtonDidTap: composeBar.sendButtonPublisher()
+                messageSendEvent: messageSendSubject,
+                loadPrevChattings: loadPrevChattingsSubject.eraseToAnyPublisher()
             ),
             cancellables: &cancellabels
         )
+        
+        output.keyboardHeight
+            .sink { [weak self] height in
+                if self?.isInitLoad ?? false { return }
+                self?.adjustContentForKeyboard(with: height)
+            }
+            .store(in: &cancellabels)
         
         output.sendButtonEnabled
             .sink { [weak self] isEnabled in
@@ -193,10 +249,40 @@ private extension ChattingRoomViewController {
             }
             .store(in: &cancellabels)
         
-        output.chattingsLoaded
+        output.chattingInitLoaded
             .sink { [weak self] _ in
+                
+                if self?.isInitLoad ?? false {
+                    self?.chatTableView.reloadData()
+                    self?.isInitLoad = false
+                    self?.scrollToBottom()                    
+                }
+            }
+            .store(in: &cancellabels)
+        
+        output.prevChattingLoaded
+            .sink { [weak self] count in
+                
+                let indexPathes = (0..<count).map { row in
+                    return IndexPath(row: row, section: 0)
+                }
+                
+                self?.chatTableView.performBatchUpdates({
+                    self?.chatTableView.insertRows(at: indexPathes, with: .top)
+                }, completion: { _ in
+                    self?.isLoading = false
+                })
+            }
+            .store(in: &cancellabels)
+        
+        output.newChattingLoaded
+            .sink { [weak self] count in
+                
+                let diff = (self?.bottomOffset().y ?? 0) - (self?.chatTableView.contentOffset.y ?? 0)
                 self?.chatTableView.reloadData()
-                self?.scrollToBottom(animated: false)
+                if diff < 10 {
+                    self?.scrollToBottom()
+                }
             }
             .store(in: &cancellabels)
     }
@@ -205,12 +291,19 @@ private extension ChattingRoomViewController {
 // MARK: - 가장 아래로 스크롤
 private extension ChattingRoomViewController {
     
-    func scrollToBottom(animated: Bool) {
-        view.layoutIfNeeded()
-        chatTableView.setContentOffset(bottomOffset(), animated: animated)
+    func scrollToBottom() {
+        if viewModel?.chattings.isEmpty ?? true { return }
+        chatTableView.scrollToRow(
+            at: IndexPath(
+                row: (viewModel?.chattings.count ?? 1) - 1,
+                section: 0
+            ),
+            at: .bottom, animated: false
+        )
     }
-    
+
     func bottomOffset() -> CGPoint {
+        
         return CGPoint(
             x: 0,
             y: max(-chatTableView.contentInset.top, chatTableView.contentSize.height - (chatTableView.bounds.size.height - chatTableView.contentInset.bottom))
@@ -220,53 +313,23 @@ private extension ChattingRoomViewController {
 
 // MARK: - 키보트 높이에 따라 TableView 변경
 private extension ChattingRoomViewController {
-    func registerKeyboardNotifications() {
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(keyboardWillShow(_:)),
-            name: UIResponder.keyboardWillShowNotification,
-            object: nil
-        )
-     
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(keyboardWillHide(_:)),
-            name: UIResponder.keyboardWillHideNotification,
-            object: nil
-        )
-    }
     
-    @objc
-    func keyboardWillShow(_ notification: NSNotification) {
-        adjustContentForKeyboard(shown: true, notification: notification)
-    }
-     
-    @objc
-    func keyboardWillHide(_ notification: NSNotification) {
-        adjustContentForKeyboard(shown: false, notification: notification)
-    }
-     
-    func adjustContentForKeyboard(shown: Bool, notification: NSNotification) {
-        guard let payload = KeyboardInfo(notification as Notification) else { return }
-        
+    func adjustContentForKeyboard(with height: CGFloat) {
         let safeLayoutBottomHeight = view.frame.maxY - view.safeAreaLayoutGuide.layoutFrame.maxY
-        let keyboardHeight = shown ? payload.frameEnd.size.height - safeLayoutBottomHeight : 0
+        let keyboardHeight = height == 0 ? 0 : height - safeLayoutBottomHeight
         
-        if chatTableView.contentInset.bottom == keyboardHeight {
-            return
-        }
-     
         let distanceFromBottom = bottomOffset().y - chatTableView.contentOffset.y
-     
+        
         var insets = chatTableView.contentInset
         insets.bottom = keyboardHeight
-     
-        UIView.animate(withDuration: payload.animationDuration, delay: 0, options: [], animations: {
+        
+        UIView.animate(withDuration: 0.3, delay: 0, options: [], animations: {
             
             self.composeBar.snp.updateConstraints {
                 $0.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom).offset(-keyboardHeight)
             }
-            
+            self.chatTableView.contentInset = insets
+            self.chatTableView.scrollIndicatorInsets = insets
             self.view.layoutIfNeeded()
             
             if distanceFromBottom < 10 {
