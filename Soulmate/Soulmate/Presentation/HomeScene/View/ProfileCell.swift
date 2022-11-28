@@ -6,7 +6,7 @@
 //
 
 import UIKit
-
+import CoreLocation
 import SnapKit
 
 final class ProfileCell: UICollectionViewCell {
@@ -110,9 +110,17 @@ final class ProfileCell: UICollectionViewCell {
         }
     }
     
-    func configure(nickName: String, age: Int, distance: Int) {
-        partnerName.text = nickName
-        partnerAge.text = String(age)
-        partnerDistance.text = String(distance) + "km"
+    func configure(userPreview: UserPreview) {
+        partnerName.text = userPreview.name
+        if let location = userPreview.location {
+            let from = CLLocation(latitude: UserDefaults.standard.double(forKey: "latestLatitude"), longitude: UserDefaults.standard.double(forKey: "latestLongitude"))
+            
+            let to = CLLocation(latitude: location.latitude, longitude: location.longitude)
+            partnerDistance.text = "\(to.distance(from: from))km"
+        }
+        
+        if let birth = userPreview.birth {
+            partnerAge.text = String(birth.toAge())
+        }
     }
 }

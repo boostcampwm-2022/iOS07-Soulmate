@@ -40,13 +40,7 @@ final class PhotoCell: UICollectionViewCell {
         }
     }
     
-    func loadImage(image: String) {
-        // TODO: 이미지 불러오기 수정해야함
-        if image.isEmpty {
-            imageView.image = UIImage(systemName: "person")
-        } else {
-            imageView.image = UIImage(named: image)
-        }
-        
+    func loadImage(imageData: Data) {
+        imageView.image = UIImage(data: imageData)
     }
 }

@@ -75,9 +75,10 @@ class CertificationViewModel {
     func nextButtonTouched() {
         Task { [weak self] in
             do {
-                guard let self else { return }
+                guard let self,
+                      let uid = Auth.auth().currentUser?.uid else { return }
                 try await phoneSignInUseCase.certifyWithSMSCode(certificationCode: self.certificationNumber)
-                let registerUserInfo = try await downloadDetailInfoUseCase.downloadDetailInfo(userUid: Auth.auth().currentUser!.uid)
+                let registerUserInfo = try await downloadDetailInfoUseCase.downloadDetailInfo(userUid: uid)
                 let state = registerStateValidateUseCase.validateRegisterState(registerUserInfo: registerUserInfo)
 
                 switch state {
