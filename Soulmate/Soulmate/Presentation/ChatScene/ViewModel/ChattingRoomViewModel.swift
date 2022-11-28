@@ -12,16 +12,19 @@ final class ChattingRoomViewModel {
     
     private let sendMessageUseCase: SendMessageUseCase
     private let loadChattingsUseCase: LoadChattingsUseCase
+    private let loadPrevChattingsUseCase: LoadPrevChattingsUseCase
     var chattings: [Chat] {
-        return loadChattingsUseCase.prevChattings.value + loadChattingsUseCase.initLoadedchattings.value + loadChattingsUseCase.newChattings.value
+        return loadPrevChattingsUseCase.prevChattings.value + loadChattingsUseCase.initLoadedchattings.value
     }
     
     init(
         sendMessageUseCase: SendMessageUseCase,
-        loadChattingsUseCase: LoadChattingsUseCase
+        loadChattingsUseCase: LoadChattingsUseCase,
+        loadPrevChattingsUseCase: LoadPrevChattingsUseCase
     ) {
         self.sendMessageUseCase = sendMessageUseCase
-        self.loadChattingsUseCase = loadChattingsUseCase        
+        self.loadChattingsUseCase = loadChattingsUseCase
+        self.loadPrevChattingsUseCase = loadPrevChattingsUseCase
     }
     
     struct Input {
@@ -63,7 +66,7 @@ final class ChattingRoomViewModel {
         
         input.loadPrevChattings            
             .sink { [weak self] _ in
-                self?.loadChattingsUseCase.loadPrevChattings()
+                self?.loadPrevChattingsUseCase.loadPrevChattings()
             }
             .store(in: &cancellables)
         
@@ -74,22 +77,14 @@ final class ChattingRoomViewModel {
             .store(in: &cancellables)
         
         self.loadChattingsUseCase.initLoadedchattings
-            .sink { [weak self] _ in
+            .sink { _ in
                 output.chattingInitLoaded.send(())
-                self?.loadChattingsUseCase.listenNewChattings()
             }
             .store(in: &cancellables)
         
-        self.loadChattingsUseCase.loadedPrevChattingCount
+        self.loadPrevChattingsUseCase.loadedPrevChattingCount
             .sink { count in
-                
                 output.prevChattingLoaded.send(count)
-            }
-            .store(in: &cancellables)
-        
-        self.loadChattingsUseCase.loadedNewChattingCount
-            .sink { count in
-                output.newChattingLoaded.send(count)
             }
             .store(in: &cancellables)
 

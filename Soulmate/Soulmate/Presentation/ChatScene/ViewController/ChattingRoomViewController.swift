@@ -139,7 +139,7 @@ extension ChattingRoomViewController: UITableViewDelegate, UITableViewDataSource
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         guard !isInitLoad, !isLoading else { return }
                         
-        if scrollView.contentOffset.y < 100 {
+        if scrollView.contentOffset.y < chatTableView.bounds.size.height {
             loadPrevChattings()
         }
     }
@@ -268,7 +268,7 @@ private extension ChattingRoomViewController {
                 }
                 
                 self?.chatTableView.performBatchUpdates({
-                    self?.chatTableView.insertRows(at: indexPathes, with: .top)
+                    self?.chatTableView.insertRows(at: indexPathes, with: .none)
                 }, completion: { _ in
                     self?.isLoading = false
                 })

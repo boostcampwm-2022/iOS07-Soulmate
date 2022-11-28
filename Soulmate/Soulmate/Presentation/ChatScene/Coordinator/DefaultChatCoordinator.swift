@@ -43,11 +43,20 @@ class DefaultChatCoordinator: ChatCoordinator {
     }
     
     func showChatRoom(with info: ChatRoomInfo) {
+        let loadChattingRepository = DefaultLoadChattingsRepository()
         let sendMessageUseCase = DefaultSendMessageUseCase(with: info)
-        let loadChattingsUseCase = DefaultLoadChattingsUseCase(with: info)
+        let loadChattingsUseCase = DefaultLoadChattingsUseCase(
+            with: info,
+            loadChattingRepository: loadChattingRepository
+        )
+        let loadPrevChattingsUseCase = DefaultLoadPrevChattingsUseCase(
+            with: info,
+            loadChattingRepository: loadChattingRepository
+        )
         let viewModel = ChattingRoomViewModel(
             sendMessageUseCase: sendMessageUseCase,
-            loadChattingsUseCase: loadChattingsUseCase
+            loadChattingsUseCase: loadChattingsUseCase,
+            loadPrevChattingsUseCase: loadPrevChattingsUseCase
         )
         let viewController = ChattingRoomViewController(viewModel: viewModel)
         self.navigationController.pushViewController(viewController, animated: true)
