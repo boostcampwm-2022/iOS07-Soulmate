@@ -138,8 +138,10 @@ extension ChattingRoomViewController: UITableViewDelegate, UITableViewDataSource
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         guard !isInitLoad, !isLoading else { return }
-                        
-        if scrollView.contentOffset.y < chatTableView.bounds.size.height {
+                                
+        if scrollView.contentOffset.y < chatTableView.bounds.size.height &&
+            !chatTableView.isTracking &&
+            scrollView.contentOffset.y > 0 {
             loadPrevChattings()
         }
     }

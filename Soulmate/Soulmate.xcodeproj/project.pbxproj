@@ -82,6 +82,8 @@
 		6A34C26D29346A3000A3E57F /* DefaultLoadChattingsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A34C26C29346A3000A3E57F /* DefaultLoadChattingsRepository.swift */; };
 		6A34C26F29346A4800A3E57F /* LoadChattingsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A34C26E29346A4800A3E57F /* LoadChattingsRepository.swift */; };
 		6A34C27129346F2700A3E57F /* LoadPrevChattingsUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A34C27029346F2700A3E57F /* LoadPrevChattingsUseCase.swift */; };
+		6A34C2732934952800A3E57F /* DefaultListenOthersChattingUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A34C2722934952800A3E57F /* DefaultListenOthersChattingUseCase.swift */; };
+		6A34C27529349B7A00A3E57F /* ListenOthersChattingUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A34C27429349B7A00A3E57F /* ListenOthersChattingUseCase.swift */; };
 		6A3F91A72924A45300F1D901 /* RegisterSelectableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A3F91A62924A45300F1D901 /* RegisterSelectableView.swift */; };
 		6A444533291EA23F009AE2E5 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A444532291EA23F009AE2E5 /* UIColor.swift */; };
 		6A45AA212925595700F85D2C /* RegisterCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A45AA202925595700F85D2C /* RegisterCoordinator.swift */; };
@@ -247,6 +249,8 @@
 		6A34C26C29346A3000A3E57F /* DefaultLoadChattingsRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultLoadChattingsRepository.swift; sourceTree = "<group>"; };
 		6A34C26E29346A4800A3E57F /* LoadChattingsRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadChattingsRepository.swift; sourceTree = "<group>"; };
 		6A34C27029346F2700A3E57F /* LoadPrevChattingsUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadPrevChattingsUseCase.swift; sourceTree = "<group>"; };
+		6A34C2722934952800A3E57F /* DefaultListenOthersChattingUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultListenOthersChattingUseCase.swift; sourceTree = "<group>"; };
+		6A34C27429349B7A00A3E57F /* ListenOthersChattingUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListenOthersChattingUseCase.swift; sourceTree = "<group>"; };
 		6A3F91A62924A45300F1D901 /* RegisterSelectableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterSelectableView.swift; sourceTree = "<group>"; };
 		6A444532291EA23F009AE2E5 /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		6A45AA202925595700F85D2C /* RegisterCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterCoordinator.swift; sourceTree = "<group>"; };
@@ -538,6 +542,7 @@
 				6A34C1F2292B48C700A3E57F /* DefaultSendMessageUseCase.swift */,
 				6A34C1F6292B501500A3E57F /* DefaultLoadChattingsUseCase.swift */,
 				6A34C26A2934691800A3E57F /* DefaultLoadPrevChattingsUseCase.swift */,
+				6A34C2722934952800A3E57F /* DefaultListenOthersChattingUseCase.swift */,
 				6AB6B960292BDEEB00A029BD /* DefaultDownLoadDetailInfoUseCase.swift */,
 				6AB6B9BA292D81DF00A029BD /* DefaultSignOutUseCase.swift */,
 				6A34C206292C99BB00A3E57F /* DefaultLoadChattingRoomListUseCase.swift */,
@@ -560,6 +565,7 @@
 				6A34C1F0292B48AE00A3E57F /* SendMessageUseCase.swift */,
 				6A34C1F4292B4FE500A3E57F /* LoadChattingsUseCase.swift */,
 				6A34C27029346F2700A3E57F /* LoadPrevChattingsUseCase.swift */,
+				6A34C27429349B7A00A3E57F /* ListenOthersChattingUseCase.swift */,
 				6AB6B965292BE4F500A029BD /* DownLoadDetailInfoUseCase.swift */,
 				6AB6B969292BEEC200A029BD /* RegisterStateValidateUseCase.swift */,
 				6AB6B96B292BF2E600A029BD /* UploadDetailInfoUseCase.swift */,
@@ -1045,6 +1051,7 @@
 				6A34C221292E55EA00A3E57F /* MessageInfo.swift in Sources */,
 				6AB6B9BB292D81DF00A029BD /* DefaultSignOutUseCase.swift in Sources */,
 				6A97FE63291CE0C2006F6DD9 /* UIImage+shadow.swift in Sources */,
+				6A34C2732934952800A3E57F /* DefaultListenOthersChattingUseCase.swift in Sources */,
 				6A34C23E292F415700A3E57F /* ReceivedRequest.swift in Sources */,
 				6A45AA4629257E1E00F85D2C /* RegisterHeaderStackView.swift in Sources */,
 				6AB6B9AE292D7B0300A029BD /* NetworkKeyValueStorageApi.swift in Sources */,
@@ -1113,6 +1120,7 @@
 				6A34C236292F372E00A3E57F /* ReceivedChatRequestsViewModel.swift in Sources */,
 				6A0041E02919EB230042E02F /* LoginViewController.swift in Sources */,
 				6AB6B9E6292F3D9C00A029BD /* Location.swift in Sources */,
+				6A34C27529349B7A00A3E57F /* ListenOthersChattingUseCase.swift in Sources */,
 				6A34C21F292E559C00A3E57F /* MessageInfoDTO.swift in Sources */,
 				6A34C1EB292B30FC00A3E57F /* KeyboardInfo.swift in Sources */,
 				B3B03B4A292DECFF000AF283 /* MyPageViewModel.swift in Sources */,

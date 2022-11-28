@@ -35,7 +35,7 @@ final class DefaultLoadChattingsUseCase: LoadChattingsUseCase {
             .document(chatRoomId)
             .collection("Messages")
             .order(by: "date")
-            .limit(toLast: 50)
+            .limit(toLast: 100)
             .getDocuments { [weak self] snapshot, err in
                 
                 guard let snapshot, err == nil, let uid = self?.uid else { return }

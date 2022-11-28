@@ -13,7 +13,6 @@ protocol SendMessageUseCase {
     var newMessage: PassthroughSubject<Chat, Never> { get }
     var messageSended: PassthroughSubject<(id: String, date: Date?, success: Bool), Never> { get }
     
-    func updateMessage(_ text: String)
-    func uSendMessage()
+    func updateMessage(_ text: String)    
     func sendMessage()
 }

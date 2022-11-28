@@ -36,7 +36,7 @@ final class DefaultSendMessageUseCase: SendMessageUseCase {
         }
     }
     
-    func uSendMessage() {
+    func sendMessage() {
         guard let documentId = info.documentId, let uid = self.uid else { return }
         
         let chat = Chat(isMe: true, text: messageToSend.value, date: nil, state: .sending)
@@ -50,7 +50,8 @@ final class DefaultSendMessageUseCase: SendMessageUseCase {
                 from: MessageToSendDTO(
                     docId: documentId,
                     text: messageToSend.value,
-                    userId: uid
+                    userId: uid,
+                    date: .init(date: Date.now)
                 ),
                 completion: { [weak self] err in
                     if err != nil {
@@ -61,7 +62,8 @@ final class DefaultSendMessageUseCase: SendMessageUseCase {
             
             Task {
                 do {
-                    try await docRef.updateData(["date": FieldValue.serverTimestamp()])
+                    // FIXME: - 서버에 올라간 시점에 다시 Date를 업데이트 하면, date로 order할 때 문제가 생김.
+                    // try await docRef.updateData(["date": FieldValue.serverTimestamp()])
                     let messageDoc = try await docRef.getDocument()
                     
                     guard let messageTime = messageDoc.data()?["date"] as? Timestamp else { return }
@@ -79,39 +81,6 @@ final class DefaultSendMessageUseCase: SendMessageUseCase {
                     print("Error update last data")
                 }
             }
-        }
-    }
-    
-    func sendMessage() {
-        guard let documentId = info.documentId, let uid = self.uid else { return }
-        
-        if let docRef = try? db.collection("ChatRooms").document(documentId).collection("Messages").addDocument(
-            from: MessageToSendDTO(
-                docId: documentId,
-                text: messageToSend.value,
-                userId: uid
-            )
-        ) {
-            Task {
-                do {
-                    try await docRef.updateData(["date": FieldValue.serverTimestamp()])
-                    let messageDoc = try await docRef.getDocument()                    
-                    
-                    guard let messageTime = messageDoc.data()?["date"] as? Timestamp else { return }
-                    
-                    try await db.collection("ChatRooms").document(documentId).updateData(
-                        [
-                            "lastMessage": messageToSend.value,
-                            "lastDate": messageTime
-                        ]
-                    )
-                    
-                } catch {
-                    print("Error update last data")
-                }
-            }
-        } else {
-            print("Error sending message document")
         }
     }
 }

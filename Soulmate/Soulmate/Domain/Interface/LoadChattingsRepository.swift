@@ -9,6 +9,7 @@ import FirebaseFirestore
 
 protocol LoadChattingsRepository {
     var startDocument: QueryDocumentSnapshot? { get }
+    var lastDocument: QueryDocumentSnapshot? { get }
     
     func setStartDocument(_ doc: QueryDocumentSnapshot)
     func setLastDocument(_ doc: QueryDocumentSnapshot)

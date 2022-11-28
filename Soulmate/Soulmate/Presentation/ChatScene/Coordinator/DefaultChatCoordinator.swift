@@ -53,10 +53,16 @@ class DefaultChatCoordinator: ChatCoordinator {
             with: info,
             loadChattingRepository: loadChattingRepository
         )
+        let listenOthersChattingsUseCase = DefaultListenOthersChattingUseCase(
+            with: info,
+            loadChattingRepository: loadChattingRepository
+        )
+        
         let viewModel = ChattingRoomViewModel(
             sendMessageUseCase: sendMessageUseCase,
             loadChattingsUseCase: loadChattingsUseCase,
-            loadPrevChattingsUseCase: loadPrevChattingsUseCase
+            loadPrevChattingsUseCase: loadPrevChattingsUseCase,
+            listenOthersChattingsUseCase: listenOthersChattingsUseCase
         )
         let viewController = ChattingRoomViewController(viewModel: viewModel)
         self.navigationController.pushViewController(viewController, animated: true)
