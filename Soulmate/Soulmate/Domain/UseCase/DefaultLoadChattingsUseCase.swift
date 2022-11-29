@@ -52,6 +52,9 @@ final class DefaultLoadChattingsUseCase: LoadChattingsUseCase {
                 
                 guard let startDocument = snapshot.documents.first,
                       let lastDocument = snapshot.documents.last else {
+                    
+                    self?.initLoadedchattings.send([])
+                    
                     return                    
                 }
                 
