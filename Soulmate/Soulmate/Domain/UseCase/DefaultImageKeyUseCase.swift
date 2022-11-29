@@ -18,7 +18,7 @@ final class DefaultImageKeyUseCase: ImageKeyUseCase {
             .document(uid)
             .getDocument() else { return nil }
         
-        let key = doc.data()?["imageKey"] as? String
+        let key = doc.data()?["chatImageKey"] as? String
         
         return key
     }

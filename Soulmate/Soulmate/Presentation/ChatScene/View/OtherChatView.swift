@@ -56,14 +56,14 @@ final class OtherChatView: UIView {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
+    }        
     
     func configure(with chat: Chat) {
         chatLabel.text = chat.text
         timeLabel.text = chat.date?.aHmm() ?? "..."
     }
     
-    func set(image: UIImage) {
+    func set(image: UIImage?) {
         self.profileImage.image = image
     }
     
