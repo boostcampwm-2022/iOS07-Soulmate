@@ -44,6 +44,8 @@ final class HomeViewModel {
         return Output(
             didRefreshedPreviewList: $recommendedMatePreviewList.eraseToAnyPublisher()
         )
+        
+        
     }
     
     func refresh() {

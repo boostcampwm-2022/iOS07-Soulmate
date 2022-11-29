@@ -26,7 +26,13 @@ class MyPageCoordinator: Coordinator {
         navigationController.pushViewController(vc, animated: true)
     }
     
-//    lazy var showPersonalInfoPage: () -> Void = { [weak self] in
-//        let viewModel = MyPageViewModel()
-//    }()
+    func presentModal() {
+        let heartShopVC = HeartShopViewController()
+        let nav = UINavigationController(rootViewController: heartShopVC)
+        nav.modalPresentationStyle = .pageSheet
+        if let sheet = nav.sheetPresentationController {
+            sheet.detents = [.medium()]
+        }
+        self.navigationController.topViewController?.present(nav, animated: true, completion: nil)
+    }
 }

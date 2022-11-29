@@ -59,7 +59,7 @@ final class OtherChatView: UIView {
     
     func configure(with chat: Chat) {
         chatLabel.text = chat.text
-        timeLabel.text = chat.date.aHmm()
+        timeLabel.text = chat.date?.aHmm() ?? "..."
     }
     
     func layout() {

@@ -54,7 +54,7 @@ final class HomeViewController: UIViewController {
         
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.register(PartnerCell.self, forCellWithReuseIdentifier: "PartnerCell")
-        cv.contentInset = UIEdgeInsets(top: -64, left: 0, bottom: 0, right: 0)
+        cv.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         cv.showsVerticalScrollIndicator = false
         cv.bounces = true
         cv.isPagingEnabled = false
@@ -183,6 +183,8 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
             
             await MainActor.run { cell.fill(userImage: uiImage) }
         }
+        
+        
         
         return cell
     }
