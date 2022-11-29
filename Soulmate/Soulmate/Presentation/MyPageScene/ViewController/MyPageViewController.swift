@@ -40,17 +40,19 @@ final class MyPageViewController: UIViewController {
 
 private extension MyPageViewController {
     
+    func presentServiceTerm() {
+        let serviceTermVC = ServiceTermViewController()
+        self.navigationController?.pushViewController(serviceTermVC, animated: true)
+    }
+    
     func presentModal() {
         let heartShopVC = HeartShopViewController()
         let nav = UINavigationController(rootViewController: heartShopVC)
         nav.modalPresentationStyle = .pageSheet
-
         if let sheet = nav.sheetPresentationController {
-
             sheet.detents = [.medium()]
-
         }
-        present(nav, animated: true, completion: nil)
+        self.present(nav, animated: true, completion: nil)
     }
     
     func bind() {
@@ -62,7 +64,6 @@ private extension MyPageViewController {
         
         output?.heartShopButtonTapped
             .sink { [weak self] _ in
-                print("하트샵눌렀음")
                 self?.presentModal()
             }
             .store(in: &cancellables)
@@ -94,7 +95,11 @@ extension MyPageViewController: UICollectionViewDataSource, UICollectionViewDele
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         switch indexPath.row {
         case 0:
-            break
+            presentModal()
+        case 1:
+            presentServiceTerm()
+        case 2:
+            print("버전정보")
         default:
             break
         }
