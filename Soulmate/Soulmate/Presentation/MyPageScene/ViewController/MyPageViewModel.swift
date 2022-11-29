@@ -11,6 +11,7 @@ import Combine
 struct MyPageViewModelActions {
     var showMyInfoEditFlow: ((RegisterUserInfo) -> Void)?
     var showPersonalInfoFlow: (() -> Void)?
+    var showHeartShopFlow: (() -> Void)?
 }
 
 class MyPageViewModel {
