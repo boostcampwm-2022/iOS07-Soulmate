@@ -115,22 +115,22 @@ final class PartnerCell: UICollectionViewCell {
         gradientLayer.frame = partnerSubview.bounds
     }
     
-    func fill(with userPreview: UserPreview, imageData: Data? = nil) {
+    func fill(userPreview: UserPreview) {
         self.partnerName.text = userPreview.name
         self.partnerAge.text = String(userPreview.birth!.toAge())
         
-        // 지금은 하드코딩입니다 ㅠㅠ 수정할게요!!
         if let location = userPreview.location {
             let from = CLLocation(latitude: UserDefaults.standard.double(forKey: "latestLatitude"), longitude: UserDefaults.standard.double(forKey: "latestLongitude"))
             
             let to = CLLocation(latitude: location.latitude, longitude: location.longitude)
-            self.partnerDistance.text = "\(to.distance(from: from))km"
+            self.partnerDistance.text = String(format: "%.2fkm", to.distance(from: from)*0.001)
         }
-        
-        guard let imageData = imageData else { return }
-        self.partnerImageView.image = UIImage(data: imageData)
-        
-        
+    }
+    
+    func fill(userImage: UIImage) {
+        let ratio = userImage.size.width / self.contentView.frame.width
+
+        self.partnerImageView.image = userImage.resized(to: CGSize(width: self.contentView.frame.width, height: self.contentView.frame.height * ratio))
     }
     
 }

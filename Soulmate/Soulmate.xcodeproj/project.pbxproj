@@ -95,6 +95,12 @@
 		6A8C88972919031A009EDBBB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6A8C88952919031A009EDBBB /* Main.storyboard */; };
 		6A8C88992919031D009EDBBB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6A8C88982919031D009EDBBB /* Assets.xcassets */; };
 		6A8C889C2919031D009EDBBB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6A8C889A2919031D009EDBBB /* LaunchScreen.storyboard */; };
+		6A9452C429349AA70041B71D /* NSCacheStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A9452C329349AA70041B71D /* NSCacheStorage.swift */; };
+		6A9452C729349BF60041B71D /* ImageCacheStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A9452C629349BF60041B71D /* ImageCacheStorage.swift */; };
+		6A9452C929349CE90041B71D /* DefaultImageCacheRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A9452C829349CE90041B71D /* DefaultImageCacheRepository.swift */; };
+		6A9452CB29349EB40041B71D /* ImageCacheRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A9452CA29349EB40041B71D /* ImageCacheRepository.swift */; };
+		6A9452CD293579A30041B71D /* DistanceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A9452CC293579A30041B71D /* DistanceViewController.swift */; };
+		6A9452EF293584410041B71D /* UISlider+Publisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A9452EE293584410041B71D /* UISlider+Publisher.swift */; };
 		6A97FE63291CE0C2006F6DD9 /* UIImage+shadow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A97FE62291CE0C2006F6DD9 /* UIImage+shadow.swift */; };
 		6A97FE66291CE29E006F6DD9 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A97FE65291CE29E006F6DD9 /* LoginViewModel.swift */; };
 		6AB6B946292AAD7600A029BD /* RegisterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB6B945292AAD7600A029BD /* RegisterViewModel.swift */; };
@@ -259,6 +265,12 @@
 		6A8C88982919031D009EDBBB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		6A8C889B2919031D009EDBBB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		6A8C889D2919031D009EDBBB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6A9452C329349AA70041B71D /* NSCacheStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSCacheStorage.swift; sourceTree = "<group>"; };
+		6A9452C629349BF60041B71D /* ImageCacheStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCacheStorage.swift; sourceTree = "<group>"; };
+		6A9452C829349CE90041B71D /* DefaultImageCacheRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultImageCacheRepository.swift; sourceTree = "<group>"; };
+		6A9452CA29349EB40041B71D /* ImageCacheRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCacheRepository.swift; sourceTree = "<group>"; };
+		6A9452CC293579A30041B71D /* DistanceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DistanceViewController.swift; sourceTree = "<group>"; };
+		6A9452EE293584410041B71D /* UISlider+Publisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UISlider+Publisher.swift"; sourceTree = "<group>"; };
 		6A97FE62291CE0C2006F6DD9 /* UIImage+shadow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+shadow.swift"; sourceTree = "<group>"; };
 		6A97FE65291CE29E006F6DD9 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		6AB6B945292AAD7600A029BD /* RegisterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewModel.swift; sourceTree = "<group>"; };
@@ -476,6 +488,7 @@
 				B3B03B47292CB877000AF283 /* MyPageMenuCollectionViewCell.swift */,
 				6A0041FC2919EE7B0042E02F /* ServiceTermViewController.swift */,
 				6A0041FE2919EE920042E02F /* ModificationViewController.swift */,
+				6A9452CC293579A30041B71D /* DistanceViewController.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -752,6 +765,15 @@
 			path = AppScene;
 			sourceTree = "<group>";
 		};
+		6A9452C529349B740041B71D /* NSCacheStorage */ = {
+			isa = PBXGroup;
+			children = (
+				6A9452C329349AA70041B71D /* NSCacheStorage.swift */,
+				6A9452C629349BF60041B71D /* ImageCacheStorage.swift */,
+			);
+			path = NSCacheStorage;
+			sourceTree = "<group>";
+		};
 		6A97FE61291CE0A4006F6DD9 /* Util */ = {
 			isa = PBXGroup;
 			children = (
@@ -774,6 +796,7 @@
 		6AB6B951292BDDF500A029BD /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				6A9452C529349B740041B71D /* NSCacheStorage */,
 				6AB6B99D292D716200A029BD /* DataTransferObject */,
 				6AB6B9B1292D7D7A00A029BD /* LocalKeyValueStorage */,
 				6AB6B9AC292D7AF500A029BD /* NetworkKeyValueStorageApi */,
@@ -790,6 +813,7 @@
 				6AB6B9A0292D71EC00A029BD /* DefaultUserDetailInfoRepository.swift */,
 				6AB6B9B6292D807B00A029BD /* DefaultUserDefaultsRepository.swift */,
 				6AB6B9D1292EC24100A029BD /* DefaultUserPreviewRepository.swift */,
+				6A9452C829349CE90041B71D /* DefaultImageCacheRepository.swift */,
 			);
 			path = Repository;
 			sourceTree = "<group>";
@@ -819,6 +843,7 @@
 				6AB6B9A3292D733700A029BD /* UserDetailInfoRepository.swift */,
 				6AB6B9B8292D814E00A029BD /* UserDefaultsRepository.swift */,
 				6AB6B9CF292EC1E700A029BD /* UserPreviewRepository.swift */,
+				6A9452CA29349EB40041B71D /* ImageCacheRepository.swift */,
 			);
 			path = Interface;
 			sourceTree = "<group>";
@@ -871,6 +896,7 @@
 				6ADEE4EB29221CD900AD328B /* UITextField+Publisher.swift */,
 				6A45AA3C2925701200F85D2C /* UIDatePicker+Publisher.swift */,
 				6AB6B94F292B155A00A029BD /* UILabel+Publisher.swift */,
+				6A9452EE293584410041B71D /* UISlider+Publisher.swift */,
 			);
 			path = Combine;
 			sourceTree = "<group>";
@@ -1022,6 +1048,7 @@
 				B3E029A9291DDC1500931FA2 /* GradientButton.swift in Sources */,
 				6ADEE4EC29221CD900AD328B /* UITextField+Publisher.swift in Sources */,
 				6AB6B97A292C3E5800A029BD /* ProfilePhotoRepository.swift in Sources */,
+				6A9452C729349BF60041B71D /* ImageCacheStorage.swift in Sources */,
 				6A0041E42919EBA40042E02F /* AuthCoordinator.swift in Sources */,
 				6A03B6F02923BF8900AC15A6 /* CertificationTextField.swift in Sources */,
 				6A34C20E292DBCD500A3E57F /* Date+toString.swift in Sources */,
@@ -1034,6 +1061,7 @@
 				6A97FE63291CE0C2006F6DD9 /* UIImage+shadow.swift in Sources */,
 				6A34C23E292F415700A3E57F /* ReceivedRequest.swift in Sources */,
 				6A45AA4629257E1E00F85D2C /* RegisterHeaderStackView.swift in Sources */,
+				6A9452CD293579A30041B71D /* DistanceViewController.swift in Sources */,
 				6AB6B9AE292D7B0300A029BD /* NetworkKeyValueStorageApi.swift in Sources */,
 				6AB6B9A1292D71EC00A029BD /* DefaultUserDetailInfoRepository.swift in Sources */,
 				6A03B6EE2923BF2300AC15A6 /* CertificationViewModel.swift in Sources */,
@@ -1051,6 +1079,7 @@
 				6AB6B9E9292F3F6400A029BD /* CLLocationService.swift in Sources */,
 				07EE0F1C292CEEDC00E761C4 /* HomeViewModel.swift in Sources */,
 				6A03B6EC2923BD8C00AC15A6 /* PhoneNumberViewModel.swift in Sources */,
+				6A9452C929349CE90041B71D /* DefaultImageCacheRepository.swift in Sources */,
 				07EAD6FB2925F6B5001AE220 /* AddPhotoCell.swift in Sources */,
 				6A34C1E2292B233300A3E57F /* MyChatCell.swift in Sources */,
 				6AB6B9DA292EC87200A029BD /* DownLoadPictureUseCase.swift in Sources */,
@@ -1083,6 +1112,7 @@
 				6A8377AB2924B0D700BC7112 /* RegisterIntroductionView.swift in Sources */,
 				6A8C88902919031A009EDBBB /* AppDelegate.swift in Sources */,
 				6A34C209292CA1A800A3E57F /* UnreadMessageCountBadge.swift in Sources */,
+				6A9452C429349AA70041B71D /* NSCacheStorage.swift in Sources */,
 				6AB6B9CA292E28BA00A029BD /* ChatRoomInfoDTO.swift in Sources */,
 				6ADEE4E72922198200AD328B /* UIControl+Publisher.swift in Sources */,
 				6A34C2422931096E00A3E57F /* KeyboardMonitor.swift in Sources */,
@@ -1100,6 +1130,7 @@
 				6A34C236292F372E00A3E57F /* ReceivedChatRequestsViewModel.swift in Sources */,
 				6A0041E02919EB230042E02F /* LoginViewController.swift in Sources */,
 				6AB6B9E6292F3D9C00A029BD /* Location.swift in Sources */,
+				6A9452EF293584410041B71D /* UISlider+Publisher.swift in Sources */,
 				6A34C21F292E559C00A3E57F /* MessageInfoDTO.swift in Sources */,
 				6A34C1EB292B30FC00A3E57F /* KeyboardInfo.swift in Sources */,
 				B3B03B4A292DECFF000AF283 /* MyPageViewModel.swift in Sources */,
@@ -1152,6 +1183,7 @@
 				6A45AA3D2925701200F85D2C /* UIDatePicker+Publisher.swift in Sources */,
 				074F3B0B292261EA00D36C89 /* PartnerCell.swift in Sources */,
 				6A45AA5F292794B500F85D2C /* ReigsterViewController.swift in Sources */,
+				6A9452CB29349EB40041B71D /* ImageCacheRepository.swift in Sources */,
 				07DDDF272924A7C600CB398C /* RegisterBirthView.swift in Sources */,
 				6AB6B95D292BDE7A00A029BD /* NetworkDatabaseApi.swift in Sources */,
 				6A34C211292DD38000A3E57F /* DefaultChatCoordinator.swift in Sources */,

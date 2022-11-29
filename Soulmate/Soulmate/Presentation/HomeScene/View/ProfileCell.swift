@@ -116,7 +116,8 @@ final class ProfileCell: UICollectionViewCell {
             let from = CLLocation(latitude: UserDefaults.standard.double(forKey: "latestLatitude"), longitude: UserDefaults.standard.double(forKey: "latestLongitude"))
             
             let to = CLLocation(latitude: location.latitude, longitude: location.longitude)
-            partnerDistance.text = "\(to.distance(from: from))km"
+            partnerDistance.text = String(format: "%.2fkm", to.distance(from: from)*0.001)
+
         }
         
         if let birth = userPreview.birth {

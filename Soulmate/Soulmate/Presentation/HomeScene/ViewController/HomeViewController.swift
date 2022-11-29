@@ -109,13 +109,6 @@ private extension HomeViewController {
     func bind() {
         guard let viewModel = viewModel else { return }
         let output = viewModel.transform(input: HomeViewModel.Input())
-        output.didRefreshedImageList
-            .sink { [weak self] _ in
-                DispatchQueue.main.async {
-                    self?.collectionView.reloadData()
-                }
-            }
-            .store(in: &bag)
         
         output.didRefreshedPreviewList
             .sink { [weak self] _ in
@@ -170,7 +163,6 @@ private extension HomeViewController {
 extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        // TODO: 추천 인원수 전달하기
         guard let viewModel = viewModel else { return 0 }
         return viewModel.recommendedMatePreviewList.count
     }
@@ -182,11 +174,15 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
             return UICollectionViewCell()
         }
         
-        cell.fill(
-            with: viewModel.recommendedMatePreviewList[indexPath.row],
-            imageData: viewModel.recommendedMatePreviewList.count == viewModel.recommendedMateImageList.count
-            ? viewModel.recommendedMateImageList[indexPath.row] : nil
-        )
+        cell.fill(userPreview: viewModel.recommendedMatePreviewList[indexPath.row])
+        
+        Task {
+            guard let imageKey = viewModel.recommendedMatePreviewList[indexPath.row].imageKey,
+                  let imageData = try await viewModel.fetchImage(key: imageKey),
+                  let uiImage = UIImage(data: imageData) else { return }
+            
+            await MainActor.run { cell.fill(userImage: uiImage) }
+        }
         
         return cell
     }

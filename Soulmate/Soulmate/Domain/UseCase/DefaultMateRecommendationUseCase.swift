@@ -22,7 +22,7 @@ class DefaultMateRecommendationUseCase: MateRecommendationUseCase {
     }
     
     func fetchRecommendedMate() async throws -> [UserPreview] {
-        return try await userPreviewRepository.fetchRecommendedPreviewList()
+        return try await userPreviewRepository.fetchRecommendedPreviewList(userGender: GenderType.female)
     }
     
     func fetchDistanceFilteredRecommendedMate(distance: Double) async throws -> [UserPreview] {
@@ -30,7 +30,9 @@ class DefaultMateRecommendationUseCase: MateRecommendationUseCase {
               let longitude: Double = userDefaultsRepository.get(key: "latestLongitude") else {
             throw UserDefaultsError.noSuchKeyMatchedValue
         }
+        
         return try await userPreviewRepository.fetchDistanceFilteredRecommendedPreviewList(
+            userGender: .female,
             userLocation: Location(
                 latitude: latitude,
                 longitude: longitude

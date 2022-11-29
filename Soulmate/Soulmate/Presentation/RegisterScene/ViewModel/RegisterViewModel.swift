@@ -192,6 +192,7 @@ class RegisterViewModel {
             let keys = try await uploadPictureUseCase.uploadPhotoData(photoData: photoData)
             
             let userPreview = UserPreview(
+                gender: self?.genderType,
                 name: self?.nickName,
                 birth: self?.birth,
                 imageKey: keys.first

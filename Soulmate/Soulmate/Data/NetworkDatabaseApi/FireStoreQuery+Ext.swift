@@ -27,7 +27,7 @@ extension Query {
             return self.whereField(entity.field, isNotEqualTo: entity.value)
         case .isLessThanOrEqual:
             return self.whereField(entity.field, isLessThanOrEqualTo: entity.value)
-        case .isGreaterOrEqual:
+        case .isGreaterThanOrEqualTo:
             return self.whereField(entity.field, isGreaterThanOrEqualTo: entity.value)
         }
     }
