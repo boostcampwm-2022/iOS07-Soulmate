@@ -41,7 +41,7 @@ final class LaunchViewController: UIViewController {
     private func animatedLayout() {
         logoImage.snp.makeConstraints {
             $0.top.equalToSuperview().inset(-60)
-            $0.leading.equalToSuperview().inset(-100)
+            $0.leading.equalToSuperview().inset(-140)
         }
         
         confettiImage.snp.makeConstraints {
