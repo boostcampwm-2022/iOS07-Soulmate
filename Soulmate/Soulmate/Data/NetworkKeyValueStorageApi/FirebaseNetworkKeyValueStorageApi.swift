@@ -18,9 +18,9 @@ class FirebaseNetworkKeyValueStorageApi: NetworkKeyValueStorageApi {
     
     func get(key: String) async throws -> Data {
         let url = try await storage.reference().child(key).downloadURL()
-        let result = try await URLSession.shared.data(from: url)
+        let (data, _) = try await URLSession.shared.data(from: url)
         
-        return try NSData(contentsOf: url) as Data
+        return data
     }
     
     func remove(key: String) async throws {

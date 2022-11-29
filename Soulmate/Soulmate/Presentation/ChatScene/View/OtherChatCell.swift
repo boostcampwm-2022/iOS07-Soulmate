@@ -35,7 +35,11 @@ final class OtherChatCell: UITableViewCell {
         otherChatView.configure(with: chat)
     }
     
-    func layout() {
+    func set(image: UIImage) {
+        otherChatView.set(image: image)
+    }
+    
+    private func layout() {
         otherChatView.snp.makeConstraints {
             $0.top.equalTo(contentView.snp.top)
             $0.leading.equalTo(contentView.snp.leading)

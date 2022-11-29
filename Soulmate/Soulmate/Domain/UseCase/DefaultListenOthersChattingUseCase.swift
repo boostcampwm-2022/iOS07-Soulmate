@@ -51,7 +51,7 @@ final class DefaultListenOthersChattingUseCase: ListenOthersChattingUseCase {
                     let isMe = info.userId == uid
                     let text = info.text
                     
-                    return Chat(isMe: isMe, text: text, date: date, state: .validated)
+                    return Chat(isMe: isMe, userId: info.userId, text: text, date: date, state: .validated)
                 }
                 
                 

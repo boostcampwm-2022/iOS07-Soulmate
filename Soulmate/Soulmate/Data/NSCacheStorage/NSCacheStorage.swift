@@ -19,7 +19,7 @@ struct ImageCache {
     private var cache = NSCache<NSString, CacheableData>()
     
     init() {
-        self.cache.countLimit = 30
+        self.cache.countLimit = 50
     }
     
     mutating func save(data: CacheableData, with key: String) {

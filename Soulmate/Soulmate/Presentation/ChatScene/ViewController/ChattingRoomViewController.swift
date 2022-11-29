@@ -131,6 +131,18 @@ extension ChattingRoomViewController: UITableViewDelegate, UITableViewDataSource
             }
 
             cell.configure(from: chat)
+            
+            Task {
+                guard let profileImageData = await viewModel?.fetchProfileImage(of: chat.userId) else { return }
+                guard let image = UIImage(data: profileImageData) else { return }
+                
+                if chatTableView.cellForRow(at: indexPath) != nil {                                        
+                    await MainActor.run {
+                        
+                        cell.set(image: image)
+                    }
+                }
+            }
 
             return cell
         }
@@ -258,7 +270,7 @@ private extension ChattingRoomViewController {
                 if self?.isInitLoad ?? false {
                     self?.chatTableView.reloadData()
                     self?.isInitLoad = false
-                    self?.scrollToBottom()                    
+                    self?.scrollToBottom()
                 }
             }
             .store(in: &cancellabels)

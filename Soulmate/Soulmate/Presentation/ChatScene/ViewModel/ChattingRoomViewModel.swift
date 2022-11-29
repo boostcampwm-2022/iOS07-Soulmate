@@ -14,6 +14,8 @@ final class ChattingRoomViewModel {
     private let loadChattingsUseCase: LoadChattingsUseCase
     private let loadPrevChattingsUseCase: LoadPrevChattingsUseCase
     private let listenOthersChattingsUseCase: ListenOthersChattingUseCase
+    private let imageKeyUseCase: ImageKeyUseCase
+    private let fetchImageUseCase: FetchImageUseCase
     private var newChattings: [Chat] = []
     var chattings: [Chat] {
         return loadPrevChattingsUseCase.prevChattings.value
@@ -25,12 +27,16 @@ final class ChattingRoomViewModel {
         sendMessageUseCase: SendMessageUseCase,
         loadChattingsUseCase: LoadChattingsUseCase,
         loadPrevChattingsUseCase: LoadPrevChattingsUseCase,
-        listenOthersChattingsUseCase: ListenOthersChattingUseCase
+        listenOthersChattingsUseCase: ListenOthersChattingUseCase,
+        imageKeyUseCase: ImageKeyUseCase,
+        fetchImageUseCase: FetchImageUseCase
     ) {
         self.sendMessageUseCase = sendMessageUseCase
         self.loadChattingsUseCase = loadChattingsUseCase
         self.loadPrevChattingsUseCase = loadPrevChattingsUseCase
         self.listenOthersChattingsUseCase = listenOthersChattingsUseCase
+        self.imageKeyUseCase = imageKeyUseCase
+        self.fetchImageUseCase = fetchImageUseCase
     }
     
     struct Input {
@@ -47,6 +53,13 @@ final class ChattingRoomViewModel {
         var chatUpdated = PassthroughSubject<Int, Never>()
         var newMessageArrived = PassthroughSubject<Void, Never>()
         var keyboardHeight = KeyboardMonitor().$keyboardHeight        
+    }
+    
+    func fetchProfileImage(of uid: String) async -> Data? {
+        guard let key = await imageKeyUseCase.imageKey(from: uid) else { return nil }
+        guard let data = await fetchImageUseCase.fetchImage(for: key) else { return nil }
+        
+        return data
     }
     
     func transform(input: Input, cancellables: inout Set<AnyCancellable>) -> Output {

@@ -44,6 +44,12 @@ class DefaultChatCoordinator: ChatCoordinator {
     
     func showChatRoom(with info: ChatRoomInfo) {
         let loadChattingRepository = DefaultLoadChattingsRepository()
+        let profilePhotoRepository = DefaultProfilePhotoRepository(
+            networkKeyValueStorageApi: FirebaseNetworkKeyValueStorageApi()
+        )
+        let imageCacheRepository = DefaultImageCacheRepository(
+            imageCacheStorage: NSCacheImageCacheStorage.shared
+        )
         let sendMessageUseCase = DefaultSendMessageUseCase(with: info)
         let loadChattingsUseCase = DefaultLoadChattingsUseCase(
             with: info,
@@ -57,12 +63,19 @@ class DefaultChatCoordinator: ChatCoordinator {
             with: info,
             loadChattingRepository: loadChattingRepository
         )
+        let imageKeyUseCase = DefaultImageKeyUseCase()
+        let fetchImageUseCase = DefaultFetchImageUseCase(
+            profilePhotoRepository: profilePhotoRepository,
+            imageCacheRepository: imageCacheRepository
+        )
         
         let viewModel = ChattingRoomViewModel(
             sendMessageUseCase: sendMessageUseCase,
             loadChattingsUseCase: loadChattingsUseCase,
             loadPrevChattingsUseCase: loadPrevChattingsUseCase,
-            listenOthersChattingsUseCase: listenOthersChattingsUseCase
+            listenOthersChattingsUseCase: listenOthersChattingsUseCase,
+            imageKeyUseCase: imageKeyUseCase,
+            fetchImageUseCase: fetchImageUseCase
         )
         let viewController = ChattingRoomViewController(viewModel: viewModel)
         self.navigationController.pushViewController(viewController, animated: true)

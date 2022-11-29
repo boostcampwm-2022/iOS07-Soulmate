@@ -17,6 +17,7 @@ final class OtherChatView: UIView {
         imageView.contentMode = .scaleAspectFill
         imageView.backgroundColor = .secondarySystemBackground
         imageView.layer.cornerRadius = 18
+        imageView.clipsToBounds = true
         
         return imageView
     }()
@@ -62,7 +63,11 @@ final class OtherChatView: UIView {
         timeLabel.text = chat.date?.aHmm() ?? "..."
     }
     
-    func layout() {
+    func set(image: UIImage) {
+        self.profileImage.image = image
+    }
+    
+    private func layout() {
         
         chatLabel.snp.makeConstraints {
             $0.top.equalTo(self.snp.top).offset(5)
