@@ -302,11 +302,13 @@ private extension ChattingRoomViewController {
                 
                 let diff = (self?.bottomOffset().y ?? 0) - (self?.chatTableView.contentOffset.y ?? 0)
                 
-                self?.chatTableView.reloadData()
-                
-                if diff < 10 {
-                    self?.scrollToBottom()
-                }
+                self?.chatTableView.performBatchUpdates({
+                    self?.chatTableView.insertRows(at: [IndexPath(row: viewModel.chattings.count - 1, section: 0)], with: .none)
+                }, completion: { _ in
+                    if diff < 10 {
+                        self?.scrollToBottom()
+                    }
+                })
             }
             .store(in: &cancellabels)
         
