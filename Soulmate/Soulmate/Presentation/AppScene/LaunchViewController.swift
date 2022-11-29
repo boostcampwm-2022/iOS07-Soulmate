@@ -40,8 +40,7 @@ final class LaunchViewController: UIViewController {
     
     private func animatedLayout() {
         logoImage.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(-60)
-            $0.leading.equalToSuperview().inset(-140)
+            $0.centerX.centerY.equalToSuperview()
         }
         
         confettiImage.snp.makeConstraints {
@@ -55,13 +54,8 @@ final class LaunchViewController: UIViewController {
             animations: {
                 self.view.backgroundColor = .white
                 
-                self.logoImage.alpha = 0.1
-                self.logoImage.frame = CGRect(
-                    x: -self.view.bounds.width / 2,
-                    y: -self.view.bounds.height / 2,
-                    width: self.logoImage.bounds.width,
-                    height: self.logoImage.bounds.height)
-                self.logoImage.transform = CGAffineTransform(scaleX: 0.3, y: 0.3)
+                self.logoImage.alpha = 0.05
+                self.logoImage.transform = CGAffineTransform(scaleX: 10, y: 10)
                  
                 self.confettiImage.alpha = 0
             },
