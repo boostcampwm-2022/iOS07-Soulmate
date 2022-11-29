@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		07497021292E7B26002F607D /* Date+toAge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07497020292E7B26002F607D /* Date+toAge.swift */; };
 		074F3B0B292261EA00D36C89 /* PartnerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074F3B0A292261EA00D36C89 /* PartnerCell.swift */; };
+		0788A3C029349965003ADB7D /* LoadingIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0788A3BF29349965003ADB7D /* LoadingIndicator.swift */; };
 		07B61AC2292B6C510009BC8A /* DetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07B61AC1292B6C510009BC8A /* DetailViewModel.swift */; };
 		07DDDF272924A7C600CB398C /* RegisterBirthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DDDF262924A7C600CB398C /* RegisterBirthView.swift */; };
 		07DDDF292924B2D500CB398C /* RegisterHeightView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DDDF282924B2D500CB398C /* RegisterHeightView.swift */; };
@@ -78,6 +79,12 @@
 		6A34C23E292F415700A3E57F /* ReceivedRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A34C23D292F415700A3E57F /* ReceivedRequest.swift */; };
 		6A34C240292FAE8100A3E57F /* PageNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A34C23F292FAE8100A3E57F /* PageNavigationView.swift */; };
 		6A34C2422931096E00A3E57F /* KeyboardMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A34C2412931096E00A3E57F /* KeyboardMonitor.swift */; };
+		6A34C26B2934691900A3E57F /* DefaultLoadPrevChattingsUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A34C26A2934691800A3E57F /* DefaultLoadPrevChattingsUseCase.swift */; };
+		6A34C26D29346A3000A3E57F /* DefaultLoadChattingsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A34C26C29346A3000A3E57F /* DefaultLoadChattingsRepository.swift */; };
+		6A34C26F29346A4800A3E57F /* LoadChattingsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A34C26E29346A4800A3E57F /* LoadChattingsRepository.swift */; };
+		6A34C27129346F2700A3E57F /* LoadPrevChattingsUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A34C27029346F2700A3E57F /* LoadPrevChattingsUseCase.swift */; };
+		6A34C2732934952800A3E57F /* DefaultListenOthersChattingUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A34C2722934952800A3E57F /* DefaultListenOthersChattingUseCase.swift */; };
+		6A34C27529349B7A00A3E57F /* ListenOthersChattingUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A34C27429349B7A00A3E57F /* ListenOthersChattingUseCase.swift */; };
 		6A3F91A72924A45300F1D901 /* RegisterSelectableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A3F91A62924A45300F1D901 /* RegisterSelectableView.swift */; };
 		6A444533291EA23F009AE2E5 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A444532291EA23F009AE2E5 /* UIColor.swift */; };
 		6A45AA212925595700F85D2C /* RegisterCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A45AA202925595700F85D2C /* RegisterCoordinator.swift */; };
@@ -171,6 +178,7 @@
 /* Begin PBXFileReference section */
 		07497020292E7B26002F607D /* Date+toAge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+toAge.swift"; sourceTree = "<group>"; };
 		074F3B0A292261EA00D36C89 /* PartnerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PartnerCell.swift; sourceTree = "<group>"; };
+		0788A3BF29349965003ADB7D /* LoadingIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingIndicator.swift; sourceTree = "<group>"; };
 		07B61AC1292B6C510009BC8A /* DetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewModel.swift; sourceTree = "<group>"; };
 		07DDDF262924A7C600CB398C /* RegisterBirthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterBirthView.swift; sourceTree = "<group>"; };
 		07DDDF282924B2D500CB398C /* RegisterHeightView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterHeightView.swift; sourceTree = "<group>"; };
@@ -240,6 +248,12 @@
 		6A34C23D292F415700A3E57F /* ReceivedRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceivedRequest.swift; sourceTree = "<group>"; };
 		6A34C23F292FAE8100A3E57F /* PageNavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageNavigationView.swift; sourceTree = "<group>"; };
 		6A34C2412931096E00A3E57F /* KeyboardMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardMonitor.swift; sourceTree = "<group>"; };
+		6A34C26A2934691800A3E57F /* DefaultLoadPrevChattingsUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultLoadPrevChattingsUseCase.swift; sourceTree = "<group>"; };
+		6A34C26C29346A3000A3E57F /* DefaultLoadChattingsRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultLoadChattingsRepository.swift; sourceTree = "<group>"; };
+		6A34C26E29346A4800A3E57F /* LoadChattingsRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadChattingsRepository.swift; sourceTree = "<group>"; };
+		6A34C27029346F2700A3E57F /* LoadPrevChattingsUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadPrevChattingsUseCase.swift; sourceTree = "<group>"; };
+		6A34C2722934952800A3E57F /* DefaultListenOthersChattingUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultListenOthersChattingUseCase.swift; sourceTree = "<group>"; };
+		6A34C27429349B7A00A3E57F /* ListenOthersChattingUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListenOthersChattingUseCase.swift; sourceTree = "<group>"; };
 		6A3F91A62924A45300F1D901 /* RegisterSelectableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterSelectableView.swift; sourceTree = "<group>"; };
 		6A444532291EA23F009AE2E5 /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		6A45AA202925595700F85D2C /* RegisterCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterCoordinator.swift; sourceTree = "<group>"; };
@@ -532,6 +546,8 @@
 				6A03B7232923DE7200AC15A6 /* DefaultAuthUseCase.swift */,
 				6A34C1F2292B48C700A3E57F /* DefaultSendMessageUseCase.swift */,
 				6A34C1F6292B501500A3E57F /* DefaultLoadChattingsUseCase.swift */,
+				6A34C26A2934691800A3E57F /* DefaultLoadPrevChattingsUseCase.swift */,
+				6A34C2722934952800A3E57F /* DefaultListenOthersChattingUseCase.swift */,
 				6AB6B960292BDEEB00A029BD /* DefaultDownLoadDetailInfoUseCase.swift */,
 				6AB6B9BA292D81DF00A029BD /* DefaultSignOutUseCase.swift */,
 				6A34C206292C99BB00A3E57F /* DefaultLoadChattingRoomListUseCase.swift */,
@@ -553,6 +569,8 @@
 				6A03B7262923E5E300AC15A6 /* PhoneSignInUseCase.swift */,
 				6A34C1F0292B48AE00A3E57F /* SendMessageUseCase.swift */,
 				6A34C1F4292B4FE500A3E57F /* LoadChattingsUseCase.swift */,
+				6A34C27029346F2700A3E57F /* LoadPrevChattingsUseCase.swift */,
+				6A34C27429349B7A00A3E57F /* ListenOthersChattingUseCase.swift */,
 				6AB6B965292BE4F500A029BD /* DownLoadDetailInfoUseCase.swift */,
 				6AB6B969292BEEC200A029BD /* RegisterStateValidateUseCase.swift */,
 				6AB6B96B292BF2E600A029BD /* UploadDetailInfoUseCase.swift */,
@@ -793,6 +811,7 @@
 				6AB6B9A0292D71EC00A029BD /* DefaultUserDetailInfoRepository.swift */,
 				6AB6B9B6292D807B00A029BD /* DefaultUserDefaultsRepository.swift */,
 				6AB6B9D1292EC24100A029BD /* DefaultUserPreviewRepository.swift */,
+				6A34C26C29346A3000A3E57F /* DefaultLoadChattingsRepository.swift */,
 			);
 			path = Repository;
 			sourceTree = "<group>";
@@ -822,6 +841,7 @@
 				6AB6B9A3292D733700A029BD /* UserDetailInfoRepository.swift */,
 				6AB6B9B8292D814E00A029BD /* UserDefaultsRepository.swift */,
 				6AB6B9CF292EC1E700A029BD /* UserPreviewRepository.swift */,
+				6A34C26E29346A4800A3E57F /* LoadChattingsRepository.swift */,
 			);
 			path = Interface;
 			sourceTree = "<group>";
@@ -901,6 +921,7 @@
 				6AE21020291DE06600A32280 /* SelectableCell.swift */,
 				B301025629329E8A00481C6C /* HeartShopCell.swift */,
 				07EAD6FA2925F6B5001AE220 /* AddPhotoCell.swift */,
+				0788A3BF29349965003ADB7D /* LoadingIndicator.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -1016,6 +1037,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6A34C1F7292B501500A3E57F /* DefaultLoadChattingsUseCase.swift in Sources */,
+				6A34C26F29346A4800A3E57F /* LoadChattingsRepository.swift in Sources */,
 				6A34C1DB292B216A00A3E57F /* OtherChatCell.swift in Sources */,
 				6A97FE66291CE29E006F6DD9 /* LoginViewModel.swift in Sources */,
 				6AB6B9E0292F2D3700A029BD /* DefaultUpLoadPreviewCase.swift in Sources */,
@@ -1035,6 +1057,7 @@
 				6A34C221292E55EA00A3E57F /* MessageInfo.swift in Sources */,
 				6AB6B9BB292D81DF00A029BD /* DefaultSignOutUseCase.swift in Sources */,
 				6A97FE63291CE0C2006F6DD9 /* UIImage+shadow.swift in Sources */,
+				6A34C2732934952800A3E57F /* DefaultListenOthersChattingUseCase.swift in Sources */,
 				6A34C23E292F415700A3E57F /* ReceivedRequest.swift in Sources */,
 				6A45AA4629257E1E00F85D2C /* RegisterHeaderStackView.swift in Sources */,
 				6AB6B9AE292D7B0300A029BD /* NetworkKeyValueStorageApi.swift in Sources */,
@@ -1065,6 +1088,7 @@
 				6A34C207292C99BB00A3E57F /* DefaultLoadChattingRoomListUseCase.swift in Sources */,
 				6AB6B9B0292D7B8A00A029BD /* FirebaseNetworkKeyValueStorageApi.swift in Sources */,
 				6A45AA212925595700F85D2C /* RegisterCoordinator.swift in Sources */,
+				0788A3C029349965003ADB7D /* LoadingIndicator.swift in Sources */,
 				6AB6B9DE292F259500A029BD /* UserPreview.swift in Sources */,
 				6A444533291EA23F009AE2E5 /* UIColor.swift in Sources */,
 				B311F4AA2925EC7100806E86 /* RegisterMbtiView.swift in Sources */,
@@ -1104,6 +1128,7 @@
 				6A34C236292F372E00A3E57F /* ReceivedChatRequestsViewModel.swift in Sources */,
 				6A0041E02919EB230042E02F /* LoginViewController.swift in Sources */,
 				6AB6B9E6292F3D9C00A029BD /* Location.swift in Sources */,
+				6A34C27529349B7A00A3E57F /* ListenOthersChattingUseCase.swift in Sources */,
 				6A34C21F292E559C00A3E57F /* MessageInfoDTO.swift in Sources */,
 				6A34C1EB292B30FC00A3E57F /* KeyboardInfo.swift in Sources */,
 				B3B03B4A292DECFF000AF283 /* MyPageViewModel.swift in Sources */,
@@ -1111,6 +1136,7 @@
 				6A34C232292F29EA00A3E57F /* ReceivedChatRequestView.swift in Sources */,
 				6AB6B9BD292D82F800A029BD /* SignOutUseCase.swift in Sources */,
 				6A3F91A72924A45300F1D901 /* RegisterSelectableView.swift in Sources */,
+				6A34C27129346F2700A3E57F /* LoadPrevChattingsUseCase.swift in Sources */,
 				6A34C238292F392100A3E57F /* LoadReceivedChatRequestsUseCase.swift in Sources */,
 				6A34C1FF292C944D00A3E57F /* ChatRoomInfoCell.swift in Sources */,
 				6AB6B9E4292F336F00A029BD /* DefaultUpLoadLocationUseCase.swift in Sources */,
@@ -1132,6 +1158,7 @@
 				6A8C88922919031A009EDBBB /* SceneDelegate.swift in Sources */,
 				6A34C23A292F393E00A3E57F /* DefaultLoadReceivedChatRequestsUseCase.swift in Sources */,
 				6AB6B9C1292DCBE800A029BD /* PhoneLoginCoorinator.swift in Sources */,
+				6A34C26B2934691900A3E57F /* DefaultLoadPrevChattingsUseCase.swift in Sources */,
 				B303D651292367CF00414293 /* ProgressBar.swift in Sources */,
 				6A0041FB2919EE600042E02F /* MyPageViewController.swift in Sources */,
 				B30A8F11291CB4F100ED4906 /* CertificationNumberViewController.swift in Sources */,
@@ -1158,6 +1185,7 @@
 				6A45AA5F292794B500F85D2C /* ReigsterViewController.swift in Sources */,
 				07DDDF272924A7C600CB398C /* RegisterBirthView.swift in Sources */,
 				6AB6B95D292BDE7A00A029BD /* NetworkDatabaseApi.swift in Sources */,
+				6A34C26D29346A3000A3E57F /* DefaultLoadChattingsRepository.swift in Sources */,
 				6A34C211292DD38000A3E57F /* DefaultChatCoordinator.swift in Sources */,
 				07B61AC2292B6C510009BC8A /* DetailViewModel.swift in Sources */,
 				6A0041D72919E68D0042E02F /* MainTabCoordinator.swift in Sources */,

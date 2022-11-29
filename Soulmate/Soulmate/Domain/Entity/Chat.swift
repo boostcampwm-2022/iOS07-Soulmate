@@ -8,7 +8,20 @@
 import Foundation
 
 struct Chat {
+    enum ChatState {
+        case validated
+        case sending
+        case fail
+    }
+    
+    var id: String = UUID().uuidString
     var isMe: Bool
     var text: String
-    var date: Date
+    var date: Date?
+    var state: ChatState
+    
+    mutating func updateState(_ success: Bool, _ date: Date?) {
+        self.state = success ? .validated : .fail
+        self.date = date
+    }
 }

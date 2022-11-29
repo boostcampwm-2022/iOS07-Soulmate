@@ -12,7 +12,7 @@ import SnapKit
 final class PhotoCell: UICollectionViewCell {
     private lazy var imageView: UIImageView = {
         let photo = UIImageView()
-        photo.contentMode = .scaleAspectFit
+        photo.contentMode = .scaleAspectFill
         contentView.addSubview(photo)
         return photo
     }()

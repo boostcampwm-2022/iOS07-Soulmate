@@ -23,14 +23,13 @@ final class AppCoordinator: Coordinator {
     }
     
     func start() {
-//        try? Auth.auth().signOut()
-//        if let uid = Auth.auth().currentUser?.uid {
-//            checkRegistration(for: uid)
-//        }
-//        else {
-//            showAuthSignInFlow()
-//        }
-        showMyPageFlow()
+        
+        if let uid = Auth.auth().currentUser?.uid {
+            checkRegistration(for: uid)
+        }
+        else {
+            showAuthSignInFlow()
+        }
     }
     
     private func checkRegistration(for uid: String) {
