@@ -77,7 +77,7 @@ private extension DetailViewController {
             )
         )
         
-        output.didFetchedImageDataList
+        output.didFetchedImageKeyList
             .sink { [weak self] _ in
                 DispatchQueue.main.async {
                     self?.collectionView.reloadSections(IndexSet(0...0))
@@ -143,7 +143,7 @@ extension DetailViewController: UICollectionViewDataSource, UICollectionViewDele
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if section == 0 {
-            return viewModel?.imageDataList?.count ?? 1
+            return viewModel?.imageKeyList?.count ?? 1
         } else {
             return 1
         }
@@ -154,9 +154,17 @@ extension DetailViewController: UICollectionViewDataSource, UICollectionViewDele
         case 0:
             guard let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: "PhotoCell",
-                for: indexPath) as? PhotoCell else { return PhotoCell() }
-            
-            cell.loadImage(imageData: viewModel?.imageDataList?[indexPath.item] ?? Data())
+                for: indexPath) as? PhotoCell,
+                let viewModel = viewModel else { return PhotoCell() }
+
+            Task {
+                guard let imageKeyList = viewModel.imageKeyList,
+                      let data = try await viewModel.fetchImage(key: imageKeyList[indexPath.item]),
+                      let uiImage = UIImage(data: data) else { return }
+
+                await MainActor.run { cell.loadImage(image: uiImage) }
+                
+            }
             return cell
             
         case 1:

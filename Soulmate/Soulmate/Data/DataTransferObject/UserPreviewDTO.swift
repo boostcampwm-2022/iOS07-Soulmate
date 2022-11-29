@@ -11,6 +11,7 @@ import FirebaseFirestore
 
 struct UserPreviewDTO: Codable {
     @DocumentID var uid: String?
+    var gender: String?
     var name: String?
     var birth: Date?
     var imageKey: String?
@@ -28,8 +29,14 @@ extension UserPreviewDTO {
             )
         }
         
+        var genderInstance: GenderType? = nil
+        if let gender = self.gender {
+            genderInstance = GenderType(rawValue: gender)
+        }
+        
         return UserPreview(
             uid: self.uid,
+            gender: genderInstance,
             name: self.name,
             birth: self.birth,
             imageKey: self.imageKey,

@@ -22,13 +22,11 @@ final class HomeViewModel {
     let downloadPictureUseCase: DownLoadPictureUseCase
     
     @Published var recommendedMatePreviewList = [UserPreview]()
-    @Published var recommendedMateImageList = [Data]()
     
     struct Input {}
     
     struct Output {
         var didRefreshedPreviewList: AnyPublisher<[UserPreview], Never>
-        var didRefreshedImageList: AnyPublisher<[Data], Never>
     }
     
     init(mateRecommendationUseCase: MateRecommendationUseCase, downloadPictureUseCase: DownLoadPictureUseCase) {
@@ -44,8 +42,7 @@ final class HomeViewModel {
     
     func transform(input: Input) -> Output {
         return Output(
-            didRefreshedPreviewList: $recommendedMatePreviewList.eraseToAnyPublisher(),
-            didRefreshedImageList: $recommendedMateImageList.eraseToAnyPublisher()
+            didRefreshedPreviewList: $recommendedMatePreviewList.eraseToAnyPublisher()
         )
         
         
@@ -58,10 +55,11 @@ final class HomeViewModel {
             // TODO: 지금은 10키로 내의 메이트를 가져오고 있음. 이거 사용자가 선택 가능하도록 수정하자
             self.recommendedMatePreviewList = try await mateRecommendationUseCase.fetchDistanceFilteredRecommendedMate(distance: 10)
             
-            // 이미지를 셀 내부에서 받아올 것인가? 아니면 이런식으로 한번에 받아올 것인가???
-            let imageKeyList = self.recommendedMatePreviewList.compactMap { $0.imageKey }
-            self.recommendedMateImageList = try await downloadPictureUseCase.downloadPhotoData(keyList: imageKeyList)
         }
+    }
+    
+    func fetchImage(key: String) async throws -> Data? {
+        return try await downloadPictureUseCase.downloadPhotoData(keyList: [key]).first
     }
     
     func mateSelected(index: Int) {

@@ -6,7 +6,9 @@
 //
 
 import Foundation
+import CoreLocation
 import FirebaseFirestore
+import FirebaseAuth
 
 class DefaultUserPreviewRepository: UserPreviewRepository {
 
@@ -17,38 +19,40 @@ class DefaultUserPreviewRepository: UserPreviewRepository {
         self.networkDatabaseApi = networkDatabaseApi
     }
     
-    func fetchDistanceFilteredRecommendedPreviewList(userLocation: Location, distance: Double) async throws -> [UserPreview] {
-        let lat = 0.008993614533681
-        let lon = 0.011261261261261 // 경도는 서울 기준으로 1km 당 잡았습니다.
-
-        let lowerLat = userLocation.latitude - (lat * distance)
-        let lowerLon = userLocation.longitude - (lon * distance)
-
-        let greaterLat = userLocation.latitude + (lat * distance)
-        let greaterLon = userLocation.longitude + (lon * distance)
-
-        let lesserGeopoint = GeoPoint(latitude: lowerLat, longitude: lowerLon)
-        let greaterGeopoint = GeoPoint(latitude: greaterLat, longitude: greaterLon)
+    func fetchDistanceFilteredRecommendedPreviewList(userGender: GenderType, userLocation: Location, distance: Double) async throws -> [UserPreview] {
         
+        let fromPoint = CLLocation(latitude: userLocation.latitude, longitude: userLocation.longitude)
+
         return try await networkDatabaseApi.read(
             table: collectionTitle,
-            constraints: [
-                QueryEntity(field: "location", value: lesserGeopoint, comparator: .isGreaterThan),
-                QueryEntity(field: "location", value: greaterGeopoint, comparator: .isLessThan)
-            ],
+            constraints: [QueryEntity(field: "gender", value: userGender.rawValue, comparator: .isNotEqualTo)],
             type: UserPreviewDTO.self
         )
+        .filter { dto in
+            guard let documentID = dto.uid,
+                  documentID != Auth.auth().currentUser!.uid,
+                  let location = dto.location else { return false }
+            
+            let toPoint = CLLocation(latitude: location.latitude, longitude: location.longitude)
+            return toPoint.distance(from: fromPoint) <= distance * 1000
+        }
         .map {
             $0.toDomain()
         }
+        
     }
     
-    func fetchRecommendedPreviewList() async throws -> [UserPreview] {
+    func fetchRecommendedPreviewList(userGender: GenderType) async throws -> [UserPreview] {
         return try await networkDatabaseApi.read(
             table: collectionTitle,
-            constraints: [QueryEntity(field: "gender", value: "여성", comparator: .isEqualTo)],
+            constraints: [QueryEntity(field: "gender", value: userGender.rawValue, comparator: .isNotEqualTo)],
             type: UserPreviewDTO.self
         )
+        .filter { dto in
+            guard let documentID = dto.uid,
+                  documentID != Auth.auth().currentUser!.uid else { return false }
+            return true
+        }
         .map {
             $0.toDomain()
         }

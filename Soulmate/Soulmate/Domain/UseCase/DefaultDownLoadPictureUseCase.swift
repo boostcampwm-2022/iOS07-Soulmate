@@ -9,9 +9,14 @@ import Foundation
 
 class DefaultDownLoadPictureUseCase: DownLoadPictureUseCase {
     let profilePhotoRepository: ProfilePhotoRepository
+    let imageCacheRepository: ImageCacheRepository
     
-    init(profilePhotoRepository: ProfilePhotoRepository) {
+    init(
+        profilePhotoRepository: ProfilePhotoRepository,
+        imageCacheRepository: ImageCacheRepository
+    ) {
         self.profilePhotoRepository = profilePhotoRepository
+        self.imageCacheRepository = imageCacheRepository
     }
     
     // TODO: keyList대로 정렬 구현하기
@@ -20,8 +25,16 @@ class DefaultDownLoadPictureUseCase: DownLoadPictureUseCase {
         return try await withThrowingTaskGroup(of: [(String, Data)].self, returning: [Data].self) { [weak self] group throws in
             for key in keyList {
                 group.addTask { [weak self] in
-                    let imageData = try await self?.profilePhotoRepository.downloadPicture(fileName: key)
-                    return  [(key, imageData ?? Data())]
+                    var imageData: Data = Data()
+                    if let cachedData = self?.imageCacheRepository.get(key: key) {
+                        imageData = cachedData
+                    }
+                    else if let fetchedData = try await self?.profilePhotoRepository.downloadPicture(fileName: key) {
+                        imageData = fetchedData
+                        self?.imageCacheRepository.set(key: key, value: fetchedData)
+                    }
+                    
+                    return  [(key, imageData)]
                 }
             }
             

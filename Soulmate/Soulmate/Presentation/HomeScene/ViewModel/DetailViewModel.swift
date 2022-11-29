@@ -16,8 +16,22 @@ final class DetailViewModel {
     
     var actions: DetailViewModelActions?
     
-    let downLoadPictureUseCase: DownLoadPictureUseCase
+    let downloadPictureUseCase: DownLoadPictureUseCase
     let downloadDetailInfoUseCase: DownLoadDetailInfoUseCase
+    
+    struct Input {
+        var didTappedMateRegistrationButton: AnyPublisher<Void, Never>
+    }
+
+    struct Output {
+        var didFetchedImageKeyList: AnyPublisher<[String]?, Never>
+        var didFetchedPreview: AnyPublisher<UserPreview?, Never>
+        var didFetchedHeight: AnyPublisher<Int?, Never>
+        var didFetchedMbti: AnyPublisher<Mbti?, Never>
+        var didFetchedDrinking: AnyPublisher<DrinkingType?, Never>
+        var didFetchedSmoking: AnyPublisher<SmokingType?, Never>
+        var didFetchedGreeting: AnyPublisher<String?, Never>
+    }
     
     @Published var preview: UserPreview?
     @Published var distance: Int?
@@ -26,14 +40,13 @@ final class DetailViewModel {
     @Published var mbti: Mbti?
     @Published var drinking: DrinkingType?
     @Published var smoking: SmokingType?
-    
-    @Published var imageDataList: [Data]?
+    @Published var imageKeyList: [String]?
     
     init(
-        downLoadPictureUseCase: DownLoadPictureUseCase,
+        downloadPictureUseCase: DownLoadPictureUseCase,
         downloadDetailInfoUseCase: DownLoadDetailInfoUseCase
     ) {
-        self.downLoadPictureUseCase = downLoadPictureUseCase
+        self.downloadPictureUseCase = downloadPictureUseCase
         self.downloadDetailInfoUseCase = downloadDetailInfoUseCase
     }
     
@@ -49,32 +62,8 @@ final class DetailViewModel {
             self?.drinking = detailInfo.drinkingType
             self?.smoking = detailInfo.smokingType
             self?.greetingMessage = detailInfo.aboutMe
-            
-            if let imageKeyList = detailInfo.imageList {
-                self?.imageDataList = try await downLoadPictureUseCase.downloadPhotoData(keyList: imageKeyList)
-            }
+            self?.imageKeyList = detailInfo.imageList
         }
-    }
-    
-    func setActions(actions: DetailViewModelActions) {
-        self.actions = actions
-    }
-
-}
-
-extension DetailViewModel {
-    struct Input {
-        var didTappedMateRegistrationButton: AnyPublisher<Void, Never>
-    }
-
-    struct Output {
-        var didFetchedImageDataList: AnyPublisher<[Data]?, Never>
-        var didFetchedPreview: AnyPublisher<UserPreview?, Never>
-        var didFetchedHeight: AnyPublisher<Int?, Never>
-        var didFetchedMbti: AnyPublisher<Mbti?, Never>
-        var didFetchedDrinking: AnyPublisher<DrinkingType?, Never>
-        var didFetchedSmoking: AnyPublisher<SmokingType?, Never>
-        var didFetchedGreeting: AnyPublisher<String?, Never>
     }
     
     func transform(input: Input) -> Output {
@@ -86,7 +75,7 @@ extension DetailViewModel {
             .store(in: &cancellables)
         
         return Output(
-            didFetchedImageDataList: $imageDataList.eraseToAnyPublisher(),
+            didFetchedImageKeyList: $imageKeyList.eraseToAnyPublisher(),
             didFetchedPreview: $preview.eraseToAnyPublisher(),
             didFetchedHeight: $height.eraseToAnyPublisher(),
             didFetchedMbti: $mbti.eraseToAnyPublisher(),
@@ -96,7 +85,16 @@ extension DetailViewModel {
         )
     }
     
+    func fetchImage(key: String) async throws -> Data? {
+        return try await downloadPictureUseCase.downloadPhotoData(keyList: [key]).first
+    }
+    
     func registerMate() {
         // 대화 친구 신청 시 처리하는 로직 부분
     }
+    
+    func setActions(actions: DetailViewModelActions) {
+        self.actions = actions
+    }
+
 }

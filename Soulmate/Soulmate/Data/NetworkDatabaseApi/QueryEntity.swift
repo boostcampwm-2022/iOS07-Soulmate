@@ -16,5 +16,5 @@ struct QueryEntity {
 enum Comparator {
     case `in`, notIn, isEqualTo, isLessThan,
          arrayContains, isGreaterThan, isNotEqualTo,
-         isLessThanOrEqual, isGreaterOrEqual
+         isLessThanOrEqual, isGreaterThanOrEqualTo
 }
