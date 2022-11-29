@@ -97,6 +97,7 @@ final class ChattingRoomViewModel {
             .store(in: &cancellables)
         
         self.loadChattingsUseCase.initLoadedchattings
+            .dropFirst()
             .sink { [weak self] _ in
                 output.chattingInitLoaded.send(())
                 self?.listenOthersChattingsUseCase.listenOthersChattings()
