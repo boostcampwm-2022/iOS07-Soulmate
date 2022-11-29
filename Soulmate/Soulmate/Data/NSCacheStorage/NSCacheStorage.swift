@@ -15,20 +15,50 @@ class CacheableData {
     }
 }
 
-class NSCacheImageCacheStorage: ImageCacheStorage {
+struct ImageCache {
+    private var cache = NSCache<NSString, CacheableData>()
     
-    let cache = NSCache<NSString, CacheableData>()
+    init() {
+        self.cache.countLimit = 30
+    }
+    
+    mutating func save(data: CacheableData, with key: String) {
+        let key = NSString(string: key)
+        
+        self.cache.setObject(data, forKey: key)
+    }
+    
+    func read(with key: String) -> CacheableData? {
+        let key = NSString(string: key)
+        
+        return self.cache.object(forKey: key)
+    }
+    
+    mutating func remove(with key: String) {
+        let key = NSString(string: key)
+        
+        self.cache.removeObject(forKey: key)
+    }
+}
+
+final class NSCacheImageCacheStorage: ImageCacheStorage {
+    
+    static let shared = NSCacheImageCacheStorage()
+    
+    private var cache = ImageCache()
+    
+    private init() { }
     
     func set(key: String, value: CacheableData) {
-        cache.setObject(value, forKey: key as NSString)
+        cache.save(data: value, with: key)
     }
-    
+
     func get(key: String) -> CacheableData? {
-        return cache.object(forKey: key as NSString)
+        return cache.read(with: key)
     }
-    
+
     func remove(key: String) {
-        cache.removeObject(forKey: key as NSString)
+        cache.remove(with: key)
     }
     
 }
