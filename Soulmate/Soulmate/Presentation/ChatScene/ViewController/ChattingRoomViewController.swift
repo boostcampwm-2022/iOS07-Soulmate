@@ -142,6 +142,7 @@ extension ChattingRoomViewController: UITableViewDelegate, UITableViewDataSource
         if scrollView.contentOffset.y < chatTableView.bounds.size.height &&
             !chatTableView.isTracking &&
             scrollView.contentOffset.y > 0 {
+            print("로드 요청할 때: \(chatTableView.contentOffset.y)")
             loadPrevChattings()
         }
     }
@@ -265,11 +266,18 @@ private extension ChattingRoomViewController {
         output.prevChattingLoaded
             .sink { [weak self] count in
                 
+                guard let yOffset = self?.chatTableView.contentOffset.y else { return }
+                
+                print("로드 되었을 때: \(yOffset)")
+                
                 let indexPathes = (0..<count).map { row in
                     return IndexPath(row: row, section: 0)
                 }
                 
                 self?.chatTableView.performBatchUpdates({
+                    if yOffset < 10 {
+                        self?.chatTableView.setContentOffset(CGPoint(x: 0, y: 10), animated: false)
+                    }
                     self?.chatTableView.insertRows(at: indexPathes, with: .none)
                 }, completion: { _ in
                     self?.isLoading = false
