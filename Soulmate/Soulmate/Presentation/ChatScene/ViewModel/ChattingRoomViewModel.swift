@@ -12,16 +12,25 @@ final class ChattingRoomViewModel {
     
     private let sendMessageUseCase: SendMessageUseCase
     private let loadChattingsUseCase: LoadChattingsUseCase
+    private let loadPrevChattingsUseCase: LoadPrevChattingsUseCase
+    private let listenOthersChattingsUseCase: ListenOthersChattingUseCase
+    private var newChattings: [Chat] = []
     var chattings: [Chat] {
-        return loadChattingsUseCase.prevChattings.value + loadChattingsUseCase.initLoadedchattings.value + loadChattingsUseCase.newChattings.value
+        return loadPrevChattingsUseCase.prevChattings.value
+        + loadChattingsUseCase.initLoadedchattings.value
+        + newChattings
     }
     
     init(
         sendMessageUseCase: SendMessageUseCase,
-        loadChattingsUseCase: LoadChattingsUseCase
+        loadChattingsUseCase: LoadChattingsUseCase,
+        loadPrevChattingsUseCase: LoadPrevChattingsUseCase,
+        listenOthersChattingsUseCase: ListenOthersChattingUseCase
     ) {
         self.sendMessageUseCase = sendMessageUseCase
-        self.loadChattingsUseCase = loadChattingsUseCase        
+        self.loadChattingsUseCase = loadChattingsUseCase
+        self.loadPrevChattingsUseCase = loadPrevChattingsUseCase
+        self.listenOthersChattingsUseCase = listenOthersChattingsUseCase
     }
     
     struct Input {
@@ -35,7 +44,8 @@ final class ChattingRoomViewModel {
         var sendButtonEnabled = CurrentValueSubject<Bool, Never>(false)
         var chattingInitLoaded = PassthroughSubject<Void, Never>()
         var prevChattingLoaded = PassthroughSubject<Int, Never>()
-        var newChattingLoaded = PassthroughSubject<Int, Never>()
+        var chatUpdated = PassthroughSubject<Int, Never>()
+        var newMessageArrived = PassthroughSubject<Void, Never>()
         var keyboardHeight = KeyboardMonitor().$keyboardHeight        
     }
     
@@ -63,7 +73,7 @@ final class ChattingRoomViewModel {
         
         input.loadPrevChattings            
             .sink { [weak self] _ in
-                self?.loadChattingsUseCase.loadPrevChattings()
+                self?.loadPrevChattingsUseCase.loadPrevChattings()
             }
             .store(in: &cancellables)
         
@@ -76,20 +86,79 @@ final class ChattingRoomViewModel {
         self.loadChattingsUseCase.initLoadedchattings
             .sink { [weak self] _ in
                 output.chattingInitLoaded.send(())
-                self?.loadChattingsUseCase.listenNewChattings()
+                self?.listenOthersChattingsUseCase.listenOthersChattings()
             }
             .store(in: &cancellables)
         
-        self.loadChattingsUseCase.loadedPrevChattingCount
+        self.loadPrevChattingsUseCase.loadedPrevChattingCount
             .sink { count in
-                
                 output.prevChattingLoaded.send(count)
             }
             .store(in: &cancellables)
         
-        self.loadChattingsUseCase.loadedNewChattingCount
-            .sink { count in
-                output.newChattingLoaded.send(count)
+        self.sendMessageUseCase.newMessage
+            .sink { [weak self] chat in
+                self?.newChattings.append(chat)
+                output.newMessageArrived.send(())
+            }
+            .store(in: &cancellables)
+        
+        self.sendMessageUseCase.messageSended
+            .sink { [weak self] result in
+                let id = result.id
+                let date = result.date
+                let success = result.success
+                
+                if let index = self?.newChattings.firstIndex(
+                    where: { chat in
+                    chat.id == id
+                    }) {
+                    
+                    self?.newChattings[index].updateState(success, date)
+                    
+                    if let row = self?.chattings.firstIndex(
+                        where: { chat in
+                        chat.id == id
+                    }) {
+                        
+                        output.chatUpdated.send(row)
+                    }
+                }
+            }
+            .store(in: &cancellables)
+        
+        self.listenOthersChattingsUseCase.newMessages
+            .sink { [weak self] chats in
+                
+                chats.forEach { newChat in
+                    guard var index = self?.newChattings.count else { return }
+                    
+                    for chat in self?.newChattings.reversed() ?? [] {
+                        
+                        guard let date = chat.date, let newDate = newChat.date else { return }
+                        
+                        if date > newDate {
+                            index -= 1
+                        } else {
+                            break
+                        }
+                    }
+                    
+                    if index == self?.newChattings.count {
+                        if let endIndex = self?.newChattings.endIndex {
+                            self?.newChattings.insert(newChat, at: endIndex)
+                        }
+                        
+                    } else if 0..<(self?.newChattings.count ?? 0) ~= index {
+                        self?.newChattings.insert(newChat, at: index)
+                        
+                    }
+                    
+                    print(index)
+                    print(self?.newChattings)
+                }
+                
+                output.newMessageArrived.send(())
             }
             .store(in: &cancellables)
 

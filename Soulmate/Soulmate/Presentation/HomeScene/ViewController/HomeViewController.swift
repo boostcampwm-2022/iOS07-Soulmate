@@ -188,6 +188,8 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
             ? viewModel.recommendedMateImageList[indexPath.row] : nil
         )
         
+        
+        
         return cell
     }
     
