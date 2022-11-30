@@ -12,6 +12,7 @@ final class ChattingRoomViewModel {
     
     private let sendMessageUseCase: SendMessageUseCase
     private let loadChattingsUseCase: LoadChattingsUseCase
+    private let loadUnreadChattingsUseCase: LoadUnreadChattingsUseCase
     private let loadPrevChattingsUseCase: LoadPrevChattingsUseCase
     private let listenOthersChattingsUseCase: ListenOthersChattingUseCase
     private let imageKeyUseCase: ImageKeyUseCase
@@ -20,12 +21,14 @@ final class ChattingRoomViewModel {
     var chattings: [Chat] {
         return loadPrevChattingsUseCase.prevChattings.value
         + loadChattingsUseCase.initLoadedchattings.value
+        + loadUnreadChattingsUseCase.unreadChattings.value
         + newChattings
     }
     
     init(
         sendMessageUseCase: SendMessageUseCase,
         loadChattingsUseCase: LoadChattingsUseCase,
+        loadUnreadChattingsUseCase: LoadUnreadChattingsUseCase,
         loadPrevChattingsUseCase: LoadPrevChattingsUseCase,
         listenOthersChattingsUseCase: ListenOthersChattingUseCase,
         imageKeyUseCase: ImageKeyUseCase,
@@ -33,6 +36,7 @@ final class ChattingRoomViewModel {
     ) {
         self.sendMessageUseCase = sendMessageUseCase
         self.loadChattingsUseCase = loadChattingsUseCase
+        self.loadUnreadChattingsUseCase = loadUnreadChattingsUseCase
         self.loadPrevChattingsUseCase = loadPrevChattingsUseCase
         self.listenOthersChattingsUseCase = listenOthersChattingsUseCase
         self.imageKeyUseCase = imageKeyUseCase
@@ -49,6 +53,7 @@ final class ChattingRoomViewModel {
     struct Output {
         var sendButtonEnabled = CurrentValueSubject<Bool, Never>(false)
         var chattingInitLoaded = PassthroughSubject<Void, Never>()
+        var unreadChattingLoaded = PassthroughSubject<Void, Never>()
         var prevChattingLoaded = PassthroughSubject<Int, Never>()
         var chatUpdated = PassthroughSubject<Int, Never>()
         var newMessageArrived = PassthroughSubject<Void, Never>()
@@ -100,6 +105,14 @@ final class ChattingRoomViewModel {
             .dropFirst()
             .sink { [weak self] _ in
                 output.chattingInitLoaded.send(())
+                self?.loadUnreadChattingsUseCase.loadUnreadChattings()
+                
+            }
+            .store(in: &cancellables)
+        
+        self.loadUnreadChattingsUseCase.unreadChattings
+            .sink { [weak self] _ in
+                output.unreadChattingLoaded.send(())
                 self?.listenOthersChattingsUseCase.listenOthersChattings()
             }
             .store(in: &cancellables)

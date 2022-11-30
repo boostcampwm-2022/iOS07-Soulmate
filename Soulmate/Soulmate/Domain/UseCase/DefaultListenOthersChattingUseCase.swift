@@ -43,6 +43,19 @@ final class DefaultListenOthersChattingUseCase: ListenOthersChattingUseCase {
                 
                 guard let snapshot, err == nil else { return }
                 
+                snapshot.documents.forEach { doc in
+                    
+                    let docRef = db
+                        .collection("ChatRooms")
+                        .document(chatRoomId)
+                        .collection("Messages")
+                        .document(doc.documentID)
+                    
+                    let readUsers = (doc.data()["readUsers"] as? [String] ?? []) + [uid]
+                    
+                    docRef.updateData(["readUsers": readUsers])
+                }
+                
                 let messageInfoDTOs = snapshot.documents.compactMap { try? $0.data(as: MessageInfoDTO.self) }
                 let infos = messageInfoDTOs.map { return $0.toModel() }.reversed()
                 let others = infos.filter { $0.userId != uid }

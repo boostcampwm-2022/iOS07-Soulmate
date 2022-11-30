@@ -1,22 +1,23 @@
 //
-//  DefaultLoadChattingsUseCase.swift
+//  DefaultLoadUnreadChattingsUseCase.swift
 //  Soulmate
 //
-//  Created by Hoen on 2022/11/21.
+//  Created by Hoen on 2022/11/29.
 //
+
 
 import Combine
 import FirebaseAuth
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 
-final class DefaultLoadChattingsUseCase: LoadChattingsUseCase {
+final class DefaultLoadUnreadChattingsUseCase: LoadUnreadChattingsUseCase {
     
     private let info: ChatRoomInfo
     private let uid = Auth.auth().currentUser?.uid
     private let loadChattingRepository: LoadChattingsRepository
     
-    var initLoadedchattings = CurrentValueSubject<[Chat], Never>([])
+    var unreadChattings = CurrentValueSubject<[Chat], Never>([])
     
     init(
         with info: ChatRoomInfo,
@@ -26,21 +27,33 @@ final class DefaultLoadChattingsUseCase: LoadChattingsUseCase {
             self.loadChattingRepository = loadChattingRepository
     }
     
-    func loadChattings() {
+    func loadUnreadChattings() {
         let db = Firestore.firestore()
         
-        guard let chatRoomId = info.documentId, let uid else { return }
+        guard let chatRoomId = info.documentId, let uid, let lastDocument = loadChattingRepository.lastDocument else { return }
         
         let _ = db.collection("ChatRooms")
             .document(chatRoomId)
-            .collection("Messages")
-            .whereField("readUsers", arrayContains: "\(uid)")
+            .collection("Messages")            
             .order(by: "date")
-            .limit(toLast: 100)
+            .start(afterDocument: lastDocument)
             .getDocuments { [weak self] snapshot, err in
                 
                 guard let snapshot, err == nil else { return }
                 
+                snapshot.documents.forEach { doc in
+                    
+                    let docRef = db
+                        .collection("ChatRooms")
+                        .document(chatRoomId)
+                        .collection("Messages")
+                        .document(doc.documentID)
+                    
+                    let readUsers = (doc.data()["readUsers"] as? [String] ?? []) + [uid]
+                    
+                    docRef.updateData(["readUsers": readUsers])
+                }
+
                 let messageInfoDTOs = snapshot.documents.compactMap { try? $0.data(as: MessageInfoDTO.self) }
                 let infos = messageInfoDTOs.map { return $0.toModel() }
                 let chats = infos.map { info in
@@ -51,18 +64,16 @@ final class DefaultLoadChattingsUseCase: LoadChattingsUseCase {
                     return Chat(isMe: isMe, userId: info.userId, text: text, date: date, state: .validated)
                 }
                 
-                guard let startDocument = snapshot.documents.first,
-                      let lastDocument = snapshot.documents.last else {
+                guard let lastDocument = snapshot.documents.last else {
                     
-                    self?.initLoadedchattings.send([])
+                    self?.unreadChattings.send([])
                     
-                    return                    
+                    return
                 }
-                
-                self?.loadChattingRepository.setStartDocument(startDocument)
+                                
                 self?.loadChattingRepository.setLastDocument(lastDocument)
                 
-                self?.initLoadedchattings.send(chats)
+                self?.unreadChattings.send(chats)
             }
     }
 }

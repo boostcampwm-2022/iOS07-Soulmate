@@ -55,6 +55,10 @@ class DefaultChatCoordinator: ChatCoordinator {
             with: info,
             loadChattingRepository: loadChattingRepository
         )
+        let loadUnreadChattingsUseCase = DefaultLoadUnreadChattingsUseCase(
+            with: info,
+            loadChattingRepository: loadChattingRepository
+        )
         let loadPrevChattingsUseCase = DefaultLoadPrevChattingsUseCase(
             with: info,
             loadChattingRepository: loadChattingRepository
@@ -72,6 +76,7 @@ class DefaultChatCoordinator: ChatCoordinator {
         let viewModel = ChattingRoomViewModel(
             sendMessageUseCase: sendMessageUseCase,
             loadChattingsUseCase: loadChattingsUseCase,
+            loadUnreadChattingsUseCase: loadUnreadChattingsUseCase,
             loadPrevChattingsUseCase: loadPrevChattingsUseCase,
             listenOthersChattingsUseCase: listenOthersChattingsUseCase,
             imageKeyUseCase: imageKeyUseCase,

@@ -51,6 +51,7 @@ final class DefaultSendMessageUseCase: SendMessageUseCase {
                     docId: documentId,
                     text: messageToSend.value,
                     userId: uid,
+                    readUsers: [uid],
                     date: .init(date: Date.now)
                 ),
                 completion: { [weak self] err in
@@ -62,8 +63,6 @@ final class DefaultSendMessageUseCase: SendMessageUseCase {
             
             Task {
                 do {
-                    // FIXME: - 서버에 올라간 시점에 다시 Date를 업데이트 하면, date로 order할 때 문제가 생김.
-                    // try await docRef.updateData(["date": FieldValue.serverTimestamp()])
                     let messageDoc = try await docRef.getDocument()
                     
                     guard let messageTime = messageDoc.data()?["date"] as? Timestamp else { return }

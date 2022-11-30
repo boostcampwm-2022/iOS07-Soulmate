@@ -89,6 +89,8 @@
 		6A34C2792935D4F900A3E57F /* DefaultImageKeyUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A34C2782935D4F900A3E57F /* DefaultImageKeyUseCase.swift */; };
 		6A34C27B2935E5C200A3E57F /* DefaultFetchImageUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A34C27A2935E5C200A3E57F /* DefaultFetchImageUseCase.swift */; };
 		6A34C27D2935E5E600A3E57F /* FetchImageUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A34C27C2935E5E600A3E57F /* FetchImageUseCase.swift */; };
+		6A34C27F29364AFA00A3E57F /* DefaultLoadUnreadChattingsUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A34C27E29364AF900A3E57F /* DefaultLoadUnreadChattingsUseCase.swift */; };
+		6A34C2812936513200A3E57F /* LoadUnreadChattingsUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A34C2802936513200A3E57F /* LoadUnreadChattingsUseCase.swift */; };
 		6A3F91A72924A45300F1D901 /* RegisterSelectableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A3F91A62924A45300F1D901 /* RegisterSelectableView.swift */; };
 		6A444533291EA23F009AE2E5 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A444532291EA23F009AE2E5 /* UIColor.swift */; };
 		6A45AA212925595700F85D2C /* RegisterCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A45AA202925595700F85D2C /* RegisterCoordinator.swift */; };
@@ -268,6 +270,8 @@
 		6A34C2782935D4F900A3E57F /* DefaultImageKeyUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultImageKeyUseCase.swift; sourceTree = "<group>"; };
 		6A34C27A2935E5C200A3E57F /* DefaultFetchImageUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultFetchImageUseCase.swift; sourceTree = "<group>"; };
 		6A34C27C2935E5E600A3E57F /* FetchImageUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchImageUseCase.swift; sourceTree = "<group>"; };
+		6A34C27E29364AF900A3E57F /* DefaultLoadUnreadChattingsUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultLoadUnreadChattingsUseCase.swift; sourceTree = "<group>"; };
+		6A34C2802936513200A3E57F /* LoadUnreadChattingsUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadUnreadChattingsUseCase.swift; sourceTree = "<group>"; };
 		6A3F91A62924A45300F1D901 /* RegisterSelectableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterSelectableView.swift; sourceTree = "<group>"; };
 		6A444532291EA23F009AE2E5 /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		6A45AA202925595700F85D2C /* RegisterCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterCoordinator.swift; sourceTree = "<group>"; };
@@ -567,6 +571,7 @@
 				6A03B7232923DE7200AC15A6 /* DefaultAuthUseCase.swift */,
 				6A34C1F2292B48C700A3E57F /* DefaultSendMessageUseCase.swift */,
 				6A34C1F6292B501500A3E57F /* DefaultLoadChattingsUseCase.swift */,
+				6A34C27E29364AF900A3E57F /* DefaultLoadUnreadChattingsUseCase.swift */,
 				6A34C26A2934691800A3E57F /* DefaultLoadPrevChattingsUseCase.swift */,
 				6A34C2722934952800A3E57F /* DefaultListenOthersChattingUseCase.swift */,
 				6AB6B960292BDEEB00A029BD /* DefaultDownLoadDetailInfoUseCase.swift */,
@@ -592,6 +597,7 @@
 				6A03B7262923E5E300AC15A6 /* PhoneSignInUseCase.swift */,
 				6A34C1F0292B48AE00A3E57F /* SendMessageUseCase.swift */,
 				6A34C1F4292B4FE500A3E57F /* LoadChattingsUseCase.swift */,
+				6A34C2802936513200A3E57F /* LoadUnreadChattingsUseCase.swift */,
 				6A34C27029346F2700A3E57F /* LoadPrevChattingsUseCase.swift */,
 				6A34C27429349B7A00A3E57F /* ListenOthersChattingUseCase.swift */,
 				6AB6B965292BE4F500A029BD /* DownLoadDetailInfoUseCase.swift */,
@@ -1078,6 +1084,7 @@
 				6A34C26F29346A4800A3E57F /* LoadChattingsRepository.swift in Sources */,
 				6A34C27B2935E5C200A3E57F /* DefaultFetchImageUseCase.swift in Sources */,
 				6A34C1DB292B216A00A3E57F /* OtherChatCell.swift in Sources */,
+				6A34C2812936513200A3E57F /* LoadUnreadChattingsUseCase.swift in Sources */,
 				6A97FE66291CE29E006F6DD9 /* LoginViewModel.swift in Sources */,
 				6AB6B9E0292F2D3700A029BD /* DefaultUpLoadPreviewCase.swift in Sources */,
 				6AB6B95F292BDE7A00A029BD /* FireStoreNetworkDatabaseApi.swift in Sources */,
@@ -1234,6 +1241,7 @@
 				07DDDF272924A7C600CB398C /* RegisterBirthView.swift in Sources */,
 				6AB6B95D292BDE7A00A029BD /* NetworkDatabaseApi.swift in Sources */,
 				6A34C26D29346A3000A3E57F /* DefaultLoadChattingsRepository.swift in Sources */,
+				6A34C27F29364AFA00A3E57F /* DefaultLoadUnreadChattingsUseCase.swift in Sources */,
 				6A34C211292DD38000A3E57F /* DefaultChatCoordinator.swift in Sources */,
 				07B61AC2292B6C510009BC8A /* DetailViewModel.swift in Sources */,
 				6A0041D72919E68D0042E02F /* MainTabCoordinator.swift in Sources */,

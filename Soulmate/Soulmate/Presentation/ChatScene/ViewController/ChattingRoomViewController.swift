@@ -275,6 +275,12 @@ private extension ChattingRoomViewController {
             }
             .store(in: &cancellabels)
         
+        output.unreadChattingLoaded
+            .sink { [weak self] chat in                
+                self?.chatTableView.reloadData()
+            }
+            .store(in: &cancellabels)
+        
         output.prevChattingLoaded
             .sink { [weak self] count in
                 
