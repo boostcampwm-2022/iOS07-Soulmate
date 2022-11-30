@@ -304,12 +304,20 @@ private extension ChattingRoomViewController {
             .store(in: &cancellabels)
         
         output.newMessageArrived
-            .sink { [weak self] _ in
+            .sink { [weak self] count in
+                
+                var indexPathes: [IndexPath] = []
+                
+                (1...count).forEach { i in
+                    let indexPath = IndexPath(row: viewModel.chattings.count - i, section: 0)
+                    
+                    indexPathes.append(indexPath)
+                }
                 
                 let diff = (self?.bottomOffset().y ?? 0) - (self?.chatTableView.contentOffset.y ?? 0)
                 
                 self?.chatTableView.performBatchUpdates({
-                    self?.chatTableView.insertRows(at: [IndexPath(row: viewModel.chattings.count - 1, section: 0)], with: .none)
+                    self?.chatTableView.insertRows(at: indexPathes, with: .none)
                 }, completion: { _ in
                     if diff < 10 {
                         self?.scrollToBottom()

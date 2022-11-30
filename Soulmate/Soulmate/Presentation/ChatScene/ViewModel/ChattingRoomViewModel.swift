@@ -59,7 +59,7 @@ final class ChattingRoomViewModel {
         var unreadChattingLoaded = PassthroughSubject<Void, Never>()
         var prevChattingLoaded = PassthroughSubject<Int, Never>()
         var chatUpdated = PassthroughSubject<Int, Never>()
-        var newMessageArrived = PassthroughSubject<Void, Never>()
+        var newMessageArrived = PassthroughSubject<Int, Never>()
         var keyboardHeight = KeyboardMonitor().$keyboardHeight        
     }
     
@@ -130,7 +130,7 @@ final class ChattingRoomViewModel {
         self.sendMessageUseCase.newMessage
             .sink { [weak self] chat in
                 self?.newChattings.append(chat)
-                output.newMessageArrived.send(())
+                output.newMessageArrived.send(1)
             }
             .store(in: &cancellables)
         
@@ -186,10 +186,10 @@ final class ChattingRoomViewModel {
                     }
                     
                     print(index)
-                    print(self?.newChattings)
+                    print(chats.count)
                 }
                 
-                output.newMessageArrived.send(())
+                output.newMessageArrived.send(chats.count)
             }
             .store(in: &cancellables)
 
