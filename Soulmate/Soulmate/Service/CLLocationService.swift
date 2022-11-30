@@ -50,9 +50,14 @@ extension CLLocationService: CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         switch status {
-        case .authorizedAlways:
+        case .authorizedAlways, .authorizedWhenInUse:
+            UserDefaults.standard.set("yes", forKey: "isLocationAuthorized")
             locationManager.startUpdatingLocation()
-        case .restricted, .notDetermined, .denied, .authorizedWhenInUse:
+        case .notDetermined:
+            UserDefaults.standard.set("yet", forKey: "isLocationAuthorized")
+            locationManager.requestAlwaysAuthorization()
+        case .restricted, .notDetermined, .denied:
+            UserDefaults.standard.set("no", forKey: "isLocationAuthorized")
             locationManager.requestAlwaysAuthorization()
         }
     }

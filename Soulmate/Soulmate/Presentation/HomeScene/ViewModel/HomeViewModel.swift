@@ -26,14 +26,13 @@ final class HomeViewModel {
     struct Input {}
     
     struct Output {
+        var isLocationAuthorized: AnyPublisher<String?, Never>
         var didRefreshedPreviewList: AnyPublisher<[UserPreview], Never>
     }
     
     init(mateRecommendationUseCase: MateRecommendationUseCase, downloadPictureUseCase: DownLoadPictureUseCase) {
         self.mateRecommendationUseCase = mateRecommendationUseCase
         self.downloadPictureUseCase = downloadPictureUseCase
-        
-        refresh()
     }
 
     func setActions(actions: HomeViewModelAction) {
@@ -41,20 +40,54 @@ final class HomeViewModel {
     }
     
     func transform(input: Input) -> Output {
+        
+        let locationAuthPublisher = UserDefaults.standard
+            .publisher(for: \.isLocationAuthorized)
+            .eraseToAnyPublisher()
+        
+        let distancePublisher = UserDefaults.standard
+            .publisher(for: \.distance)
+            .eraseToAnyPublisher()
+        
+        if UserDefaults.standard.double(forKey: "distance") == 0 {
+            UserDefaults.standard.set(20, forKey: "distance") // 초기값 설정
+        }
+        
+        
+        Publishers.CombineLatest(
+            locationAuthPublisher.compactMap { $0 },
+            distancePublisher
+        )
+            .sink { (auth, distance) in
+                if auth == "yes" { // 위치 서비스 이용 설정된 경우
+                    // 근데 여기서 아직 위치 설정이 안된 경우는??
+                    self.refresh(distance: distance)
+                }
+                else { // 설정안된 경우는 앱을 진행 못하게 막아야 하나?
+                    // 이부분은 여기랑 뷰컨에서 바인딩하는데 뷰컨에선 auth에 따라 위치 켜라고 알림
+                    self.recommendedMatePreviewList.removeAll()
+                }
+            }
+            .store(in: &cancellable)
+
+        
         return Output(
+            isLocationAuthorized: locationAuthPublisher,
             didRefreshedPreviewList: $recommendedMatePreviewList.eraseToAnyPublisher()
         )
-        
-        
     }
     
-    func refresh() {
+    func refresh(distance: Double) {
         Task { [weak self] in
             guard let self else { return }
-            
-            // TODO: 지금은 10키로 내의 메이트를 가져오고 있음. 이거 사용자가 선택 가능하도록 수정하자
-            self.recommendedMatePreviewList = try await mateRecommendationUseCase.fetchDistanceFilteredRecommendedMate(distance: 10)
-            
+            do {
+                self.recommendedMatePreviewList = try await mateRecommendationUseCase.fetchDistanceFilteredRecommendedMate(distance: distance)
+            }
+            catch { //초기에 자꾸 위치설정이 안된 경우 에러가 뜸... 초기값이 설정되고 리프레시 하게 어케하지?
+                print(error)
+            }
+
+            print(self.recommendedMatePreviewList)
         }
     }
     
@@ -66,4 +99,15 @@ final class HomeViewModel {
         actions?.showDetailVC?(recommendedMatePreviewList[index])
     }
 
+}
+
+
+extension UserDefaults {
+    @objc dynamic var isLocationAuthorized: String? {
+        return string(forKey: "isLocationAuthorized")
+    }
+    
+    @objc dynamic var distance: Double {
+        return double(forKey: "distance")
+    }
 }

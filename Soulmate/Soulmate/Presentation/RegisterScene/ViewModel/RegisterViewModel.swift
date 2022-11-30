@@ -35,6 +35,7 @@ class RegisterViewModel {
     @Published var drinkingType: DrinkingType?
     @Published var introduction: String?
     @Published var photoData: [Data?] = [nil, nil, nil, nil, nil]
+    var chatImageData: Data?
     
     struct Input {
         var didChangedPageIndex: AnyPublisher<Int, Never>
@@ -159,7 +160,6 @@ class RegisterViewModel {
         
         input.didTappedNextButton.combineLatest(input.didChangedPageIndex)
             .sink { [weak self] (_, index) in
-                print(index)
                 switch index {
                 case 0...8:
                     self?.register()
@@ -189,13 +189,17 @@ class RegisterViewModel {
         Task { [weak self] in
             let start = CFAbsoluteTimeGetCurrent()
             
+            guard let chatImageData = self?.chatImageData else { return }
+            
+            let chatImageKey = try await uploadPictureUseCase.uploadChatImageData(photoData: chatImageData)
             let keys = try await uploadPictureUseCase.uploadPhotoData(photoData: photoData)
             
             let userPreview = UserPreview(
                 gender: self?.genderType,
                 name: self?.nickName,
                 birth: self?.birth,
-                imageKey: keys.first
+                imageKey: keys.first,
+                chatImageKey: chatImageKey
             )
             try await uploadPreviewUseCase.uploadPreview(userPreview: userPreview)
 

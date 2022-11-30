@@ -108,6 +108,8 @@
 		6A9452CB29349EB40041B71D /* ImageCacheRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A9452CA29349EB40041B71D /* ImageCacheRepository.swift */; };
 		6A9452CD293579A30041B71D /* DistanceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A9452CC293579A30041B71D /* DistanceViewController.swift */; };
 		6A9452EF293584410041B71D /* UISlider+Publisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A9452EE293584410041B71D /* UISlider+Publisher.swift */; };
+		6A9452F12935EFDF0041B71D /* ModificationInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A9452F02935EFDF0041B71D /* ModificationInfoCell.swift */; };
+		6A9452F3293699190041B71D /* ModificationPopUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A9452F2293699190041B71D /* ModificationPopUpView.swift */; };
 		6A97FE63291CE0C2006F6DD9 /* UIImage+shadow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A97FE62291CE0C2006F6DD9 /* UIImage+shadow.swift */; };
 		6A97FE66291CE29E006F6DD9 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A97FE65291CE29E006F6DD9 /* LoginViewModel.swift */; };
 		6AB6B946292AAD7600A029BD /* RegisterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB6B945292AAD7600A029BD /* RegisterViewModel.swift */; };
@@ -286,6 +288,8 @@
 		6A9452CA29349EB40041B71D /* ImageCacheRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCacheRepository.swift; sourceTree = "<group>"; };
 		6A9452CC293579A30041B71D /* DistanceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DistanceViewController.swift; sourceTree = "<group>"; };
 		6A9452EE293584410041B71D /* UISlider+Publisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UISlider+Publisher.swift"; sourceTree = "<group>"; };
+		6A9452F02935EFDF0041B71D /* ModificationInfoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModificationInfoCell.swift; sourceTree = "<group>"; };
+		6A9452F2293699190041B71D /* ModificationPopUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModificationPopUpView.swift; sourceTree = "<group>"; };
 		6A97FE62291CE0C2006F6DD9 /* UIImage+shadow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+shadow.swift"; sourceTree = "<group>"; };
 		6A97FE65291CE29E006F6DD9 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		6AB6B945292AAD7600A029BD /* RegisterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewModel.swift; sourceTree = "<group>"; };
@@ -928,6 +932,8 @@
 			isa = PBXGroup;
 			children = (
 				B3010250292F1A2000481C6C /* MyPageView.swift */,
+				6A9452F02935EFDF0041B71D /* ModificationInfoCell.swift */,
+				6A9452F2293699190041B71D /* ModificationPopUpView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1149,6 +1155,7 @@
 				6AB6B95E292BDE7A00A029BD /* FireStoreQuery+Ext.swift in Sources */,
 				6AB6B9D4292EC51400A029BD /* MateRecommendationUseCase.swift in Sources */,
 				6A8377A92924A3FC00BC7112 /* RegisterNickNameView.swift in Sources */,
+				6A9452F12935EFDF0041B71D /* ModificationInfoCell.swift in Sources */,
 				6A34C213292DD39000A3E57F /* ChatCoordinator.swift in Sources */,
 				6A34C234292F29F800A3E57F /* ReceivedChatRequestCell.swift in Sources */,
 				6A34C22C292F209A00A3E57F /* ChatScenePageViewController.swift in Sources */,
@@ -1157,6 +1164,7 @@
 				6A0041D92919E6B60042E02F /* CoordinatorInterface.swift in Sources */,
 				6A34C236292F372E00A3E57F /* ReceivedChatRequestsViewModel.swift in Sources */,
 				6A0041E02919EB230042E02F /* LoginViewController.swift in Sources */,
+				6A9452F3293699190041B71D /* ModificationPopUpView.swift in Sources */,
 				6AB6B9E6292F3D9C00A029BD /* Location.swift in Sources */,
 				6A9452EF293584410041B71D /* UISlider+Publisher.swift in Sources */,
 				6A34C27529349B7A00A3E57F /* ListenOthersChattingUseCase.swift in Sources */,
