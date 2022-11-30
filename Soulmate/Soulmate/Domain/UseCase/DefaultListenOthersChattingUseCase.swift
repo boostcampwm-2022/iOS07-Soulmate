@@ -29,8 +29,7 @@ final class DefaultListenOthersChattingUseCase: ListenOthersChattingUseCase {
     func listenOthersChattings() {
         let db = Firestore.firestore()
         
-        guard let chatRoomId = info.documentId,
-              let lastDocument = loadChattingRepository.lastDocument, let uid else {
+        guard let chatRoomId = info.documentId, let lastDocument = loadChattingRepository.lastDocument, let uid else {
             return
         }
 
@@ -40,21 +39,14 @@ final class DefaultListenOthersChattingUseCase: ListenOthersChattingUseCase {
             .order(by: "date")
             .start(afterDocument: lastDocument)            
             .addSnapshotListener { [weak self] snapshot, err in
+                                
+                guard let snapshot, err == nil, !snapshot.documentChanges.isEmpty else { return }
                 
-                guard let snapshot, err == nil else { return }
-                
-                snapshot.documents.forEach { doc in
-                    
-                    let docRef = db
-                        .collection("ChatRooms")
-                        .document(chatRoomId)
-                        .collection("Messages")
-                        .document(doc.documentID)
-                    
-                    let readUsers = (doc.data()["readUsers"] as? [String] ?? []) + [uid]
-                    
-                    docRef.updateData(["readUsers": readUsers])
+                snapshot.documentChanges.forEach { change in
+                    if change.type != .added { return }
                 }
+                
+                print("여기서 상대방한테 읽어다고 알려줘야 함.")
                 
                 let messageInfoDTOs = snapshot.documents.compactMap { try? $0.data(as: MessageInfoDTO.self) }
                 let infos = messageInfoDTOs.map { return $0.toModel() }.reversed()
@@ -64,12 +56,17 @@ final class DefaultListenOthersChattingUseCase: ListenOthersChattingUseCase {
                     let isMe = info.userId == uid
                     let text = info.text
                     
-                    return Chat(isMe: isMe, userId: info.userId, text: text, date: date, state: .validated)
+                    return Chat(isMe: isMe, userId: info.userId, readUsers: info.readUsers + [uid], text: text, date: date, state: .validated)
                 }
-                
-                
+                                
                 guard !chats.isEmpty else { return }
                 guard let lastDocument = snapshot.documents.last else { return }
+                
+                snapshot.documents.forEach { doc in
+                    
+                    let readUsers = (doc.data()["readUsers"] as? [String] ?? []) + [uid]
+                    doc.reference.updateData(["readUsers": readUsers])
+                }
                 
                 self?.loadChattingRepository.setLastDocument(lastDocument)
                 self?.newMessages.send(chats)

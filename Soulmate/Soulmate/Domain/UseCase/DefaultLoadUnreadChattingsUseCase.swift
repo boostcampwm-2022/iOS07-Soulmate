@@ -43,12 +43,7 @@ final class DefaultLoadUnreadChattingsUseCase: LoadUnreadChattingsUseCase {
                 
                 snapshot.documents.forEach { doc in
                     
-                    let docRef = db
-                        .collection("ChatRooms")
-                        .document(chatRoomId)
-                        .collection("Messages")
-                        .document(doc.documentID)
-                    
+                    let docRef = doc.reference
                     let readUsers = (doc.data()["readUsers"] as? [String] ?? []) + [uid]
                     
                     docRef.updateData(["readUsers": readUsers])
@@ -61,7 +56,7 @@ final class DefaultLoadUnreadChattingsUseCase: LoadUnreadChattingsUseCase {
                     let isMe = info.userId == uid
                     let text = info.text
                     
-                    return Chat(isMe: isMe, userId: info.userId, text: text, date: date, state: .validated)
+                    return Chat(isMe: isMe, userId: info.userId, readUsers: info.readUsers + [uid], text: text, date: date, state: .validated)
                 }
                 
                 guard let lastDocument = snapshot.documents.last else {

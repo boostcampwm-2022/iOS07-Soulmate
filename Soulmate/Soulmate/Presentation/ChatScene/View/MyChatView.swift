@@ -36,6 +36,16 @@ final class MyChatView: UIView {
         return label
     }()
     
+    private lazy var readCount: UILabel = {
+        let label = UILabel()
+        self.addSubview(label)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 11)
+        label.textColor = .messagePurple
+        
+        return label
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -48,10 +58,13 @@ final class MyChatView: UIView {
     
     func configure(with chat: Chat) {
         chatLabel.text = chat.text
-        timeLabel.text = chat.date?.aHmm() ?? "..."
+        timeLabel.text = chat.state == .sending ? "..." : chat.date?.aHmm()
+        if let count = unreadCount(of: chat) {
+            readCount.text = "\(count)"
+        }
     }
     
-    func layout() {
+    private func layout() {
         
         chatLabel.snp.makeConstraints {
             $0.top.equalTo(self.snp.top).offset(5)
@@ -64,5 +77,15 @@ final class MyChatView: UIView {
             $0.trailing.equalTo(chatLabel.snp.leading).offset(-5)
             $0.bottom.equalTo(chatLabel.snp.bottom)
         }
+        
+        readCount.snp.makeConstraints {
+            $0.trailing.equalTo(timeLabel.snp.leading).offset(-5)
+            $0.bottom.equalTo(chatLabel.snp.bottom)
+        }
+    }
+    
+    private func unreadCount(of chat: Chat) -> Int? {
+        guard 0..<2 ~= chat.readUsers.count else { return nil }
+        return 2 - chat.readUsers.count
     }
 }

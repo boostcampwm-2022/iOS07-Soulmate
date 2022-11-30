@@ -39,7 +39,7 @@ final class DefaultSendMessageUseCase: SendMessageUseCase {
     func sendMessage() {
         guard let documentId = info.documentId, let uid = self.uid else { return }
         
-        let chat = Chat(isMe: true, userId: uid, text: messageToSend.value, date: nil, state: .sending)
+        let chat = Chat(isMe: true, userId: uid, readUsers: [uid], text: messageToSend.value, date: nil, state: .sending)
         newMessage.send(chat)
         
         if let docRef = try? db
