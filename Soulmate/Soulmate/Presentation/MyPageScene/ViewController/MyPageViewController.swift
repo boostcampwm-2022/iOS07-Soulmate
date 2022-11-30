@@ -40,33 +40,15 @@ final class MyPageViewController: UIViewController {
 
 private extension MyPageViewController {
     
-    func presentServiceTerm() {
-        let serviceTermVC = ServiceTermViewController()
-        self.navigationController?.pushViewController(serviceTermVC, animated: true)
-    }
-    
-    func presentModal() {
-        let heartShopVC = HeartShopViewController()
-        let nav = UINavigationController(rootViewController: heartShopVC)
-        nav.modalPresentationStyle = .pageSheet
-        if let sheet = nav.sheetPresentationController {
-            sheet.detents = [.medium()]
-        }
-        self.present(nav, animated: true, completion: nil)
-    }
-    
     func bind() {
-        let output = viewModel?.transform(
+        let _ = viewModel?.transform(
             input: MyPageViewModel.Input(
                 didTappedMyInfoEditButton: self.contentView.editButton.tapPublisher(),
-                didTappedHeartShopButton: self.contentView.remainingHeartButton.tapPublisher())
+                didTappedHeartShopButton: self.contentView.remainingHeartButton.tapPublisher(),
+                didTappedMenuCell: self.rowSelectSubject.eraseToAnyPublisher()
+            )
         )
         
-        output?.heartShopButtonTapped
-            .sink { [weak self] _ in
-                self?.presentModal()
-            }
-            .store(in: &cancellables)
     }
     
 }
@@ -74,7 +56,7 @@ private extension MyPageViewController {
 extension MyPageViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 3
+        return 4
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -95,11 +77,11 @@ extension MyPageViewController: UICollectionViewDataSource, UICollectionViewDele
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         switch indexPath.row {
         case 0:
-            presentModal()
+            rowSelectSubject.send(0)
         case 1:
-            presentServiceTerm()
+            rowSelectSubject.send(1)
         case 2:
-            print("버전정보")
+            rowSelectSubject.send(2)
         default:
             break
         }
