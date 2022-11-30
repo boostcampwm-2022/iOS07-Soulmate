@@ -54,6 +54,7 @@ final class HomeViewController: UIViewController {
         
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.register(PartnerCell.self, forCellWithReuseIdentifier: "PartnerCell")
+        cv.register(RecommendFooterView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: "RecommendFooterView")
         cv.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         cv.showsVerticalScrollIndicator = false
         cv.bounces = true
@@ -62,21 +63,6 @@ final class HomeViewController: UIViewController {
         
         self.view.addSubview(cv)
         return cv
-    }()
-    
-    // MARK: - 다시 추천 버튼
-    private lazy var recommendAgainButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 18)
-        button.frame = CGRect(x: 0, y: 0, width: 310, height: 22)
-        button.setTitle("한번 더 추천받기", for: .normal)
-        button.setTitleColor(UIColor.messagePurple, for: .normal)
-        button.layer.cornerRadius = 10
-        button.backgroundColor = .white
-        button.layer.borderWidth = 2
-        button.layer.borderColor = UIColor.borderPurple?.cgColor
-        self.view.addSubview(button)
-        return button
     }()
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
@@ -145,15 +131,9 @@ private extension HomeViewController {
             $0.top.equalTo(view.snp.top).offset(64)
         }
         
-        recommendAgainButton.snp.makeConstraints {
-            $0.left.right.equalToSuperview().inset(20)
-            $0.bottom.equalToSuperview().inset(20)
-            $0.height.equalTo(54)
-        }
-        
         collectionView.snp.makeConstraints {
             $0.top.equalTo(logo.snp.bottom).offset(20)
-            $0.bottom.equalTo(recommendAgainButton.snp.top).offset(-20)
+            $0.bottom.equalToSuperview()
             $0.centerX.equalToSuperview()
             $0.width.equalToSuperview().inset(20)
         }
@@ -196,4 +176,37 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         viewModel.mateSelected(index: indexPath.row)
     }
     
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        guard let footer = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "RecommendFooterView", for: indexPath) as? RecommendFooterView else { return RecommendFooterView() }
+        return footer
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
+        let width: CGFloat = collectionView.frame.width
+        let height: CGFloat = 100
+        return CGSize(width: width, height: height)
+    }
 }
+
+#if DEBUG
+import SwiftUI
+struct HomeViewControllerRepresentable: UIViewControllerRepresentable {
+    func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {
+        // leave this empty
+    }
+    @available(iOS 13.0.0, *)
+    func makeUIViewController(context: Context) -> some UIViewController {
+        HomeViewController()
+    }
+    @available(iOS 13.0, *)
+    struct SnapKitVCRepresentable_PreviewProvider: PreviewProvider {
+        static var previews: some View {
+            Group {
+                HomeViewControllerRepresentable()
+                    .ignoresSafeArea()
+                    .previewDisplayName("Preview")
+                    .previewDevice(PreviewDevice(rawValue: "iPhone 14"))
+            }
+        }
+    }
+} #endif
