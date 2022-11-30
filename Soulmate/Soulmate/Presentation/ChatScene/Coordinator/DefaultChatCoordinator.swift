@@ -44,8 +44,18 @@ class DefaultChatCoordinator: ChatCoordinator {
     
     func showChatRoom(with info: ChatRoomInfo) {
         let loadChattingRepository = DefaultLoadChattingsRepository()
+        let profilePhotoRepository = DefaultProfilePhotoRepository(
+            networkKeyValueStorageApi: FirebaseNetworkKeyValueStorageApi()
+        )
+        let imageCacheRepository = DefaultImageCacheRepository(
+            imageCacheStorage: NSCacheImageCacheStorage.shared
+        )
         let sendMessageUseCase = DefaultSendMessageUseCase(with: info)
         let loadChattingsUseCase = DefaultLoadChattingsUseCase(
+            with: info,
+            loadChattingRepository: loadChattingRepository
+        )
+        let loadUnreadChattingsUseCase = DefaultLoadUnreadChattingsUseCase(
             with: info,
             loadChattingRepository: loadChattingRepository
         )
@@ -57,12 +67,22 @@ class DefaultChatCoordinator: ChatCoordinator {
             with: info,
             loadChattingRepository: loadChattingRepository
         )
+        let listenOtherIsReadingUseCase = DefaultListenOtherIsReadingUseCase(with: info)
+        let imageKeyUseCase = DefaultImageKeyUseCase()
+        let fetchImageUseCase = DefaultFetchImageUseCase(
+            profilePhotoRepository: profilePhotoRepository,
+            imageCacheRepository: imageCacheRepository
+        )
         
         let viewModel = ChattingRoomViewModel(
             sendMessageUseCase: sendMessageUseCase,
             loadChattingsUseCase: loadChattingsUseCase,
+            loadUnreadChattingsUseCase: loadUnreadChattingsUseCase,
             loadPrevChattingsUseCase: loadPrevChattingsUseCase,
-            listenOthersChattingsUseCase: listenOthersChattingsUseCase
+            listenOthersChattingsUseCase: listenOthersChattingsUseCase,
+            listenOtherIsReadingUseCase: listenOtherIsReadingUseCase,
+            imageKeyUseCase: imageKeyUseCase,
+            fetchImageUseCase: fetchImageUseCase
         )
         let viewController = ChattingRoomViewController(viewModel: viewModel)
         self.navigationController.pushViewController(viewController, animated: true)

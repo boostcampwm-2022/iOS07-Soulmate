@@ -41,7 +41,7 @@ final class HomeCoordinator: Coordinator {
         let profilePhotoRepository = DefaultProfilePhotoRepository(networkKeyValueStorageApi: networkKeyValueStorageApi)
         
     
-        let imageCacheStorage = NSCacheImageCacheStorage()
+        let imageCacheStorage = NSCacheImageCacheStorage.shared
         let imageCacheRepository = DefaultImageCacheRepository(imageCacheStorage: imageCacheStorage)
         let downloadPictureUseCase = DefaultDownLoadPictureUseCase(
             profilePhotoRepository: profilePhotoRepository,
@@ -64,7 +64,7 @@ final class HomeCoordinator: Coordinator {
     lazy var showDetailVC: (UserPreview) -> Void = { [weak self] userPreview in
         let networkDatabaseApi = FireStoreNetworkDatabaseApi()
         let networkKeyValueStorageApi = FirebaseNetworkKeyValueStorageApi()
-        let imageCacheStorage = NSCacheImageCacheStorage()
+        let imageCacheStorage = NSCacheImageCacheStorage.shared
         let userDetailInfoRepository = DefaultUserDetailInfoRepository(networkDatabaseApi: networkDatabaseApi)
         let profilePhotoRepository = DefaultProfilePhotoRepository(networkKeyValueStorageApi: networkKeyValueStorageApi)
         let imageCacheRepository = DefaultImageCacheRepository(imageCacheStorage: imageCacheStorage)

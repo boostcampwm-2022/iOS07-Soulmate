@@ -12,25 +12,38 @@ final class ChattingRoomViewModel {
     
     private let sendMessageUseCase: SendMessageUseCase
     private let loadChattingsUseCase: LoadChattingsUseCase
+    private let loadUnreadChattingsUseCase: LoadUnreadChattingsUseCase
     private let loadPrevChattingsUseCase: LoadPrevChattingsUseCase
     private let listenOthersChattingsUseCase: ListenOthersChattingUseCase
+    private let listenOtherIsReadingUseCase: ListenOtherIsReadingUseCase
+    private let imageKeyUseCase: ImageKeyUseCase
+    private let fetchImageUseCase: FetchImageUseCase
     private var newChattings: [Chat] = []
     var chattings: [Chat] {
         return loadPrevChattingsUseCase.prevChattings.value
         + loadChattingsUseCase.initLoadedchattings.value
+        + loadUnreadChattingsUseCase.unreadChattings.value
         + newChattings
     }
     
     init(
         sendMessageUseCase: SendMessageUseCase,
         loadChattingsUseCase: LoadChattingsUseCase,
+        loadUnreadChattingsUseCase: LoadUnreadChattingsUseCase,
         loadPrevChattingsUseCase: LoadPrevChattingsUseCase,
-        listenOthersChattingsUseCase: ListenOthersChattingUseCase
+        listenOthersChattingsUseCase: ListenOthersChattingUseCase,
+        listenOtherIsReadingUseCase: ListenOtherIsReadingUseCase,
+        imageKeyUseCase: ImageKeyUseCase,
+        fetchImageUseCase: FetchImageUseCase
     ) {
         self.sendMessageUseCase = sendMessageUseCase
         self.loadChattingsUseCase = loadChattingsUseCase
+        self.loadUnreadChattingsUseCase = loadUnreadChattingsUseCase
         self.loadPrevChattingsUseCase = loadPrevChattingsUseCase
         self.listenOthersChattingsUseCase = listenOthersChattingsUseCase
+        self.listenOtherIsReadingUseCase = listenOtherIsReadingUseCase
+        self.imageKeyUseCase = imageKeyUseCase
+        self.fetchImageUseCase = fetchImageUseCase
     }
     
     struct Input {
@@ -43,10 +56,18 @@ final class ChattingRoomViewModel {
     struct Output {
         var sendButtonEnabled = CurrentValueSubject<Bool, Never>(false)
         var chattingInitLoaded = PassthroughSubject<Void, Never>()
+        var unreadChattingLoaded = PassthroughSubject<Void, Never>()
         var prevChattingLoaded = PassthroughSubject<Int, Never>()
         var chatUpdated = PassthroughSubject<Int, Never>()
         var newMessageArrived = PassthroughSubject<Void, Never>()
         var keyboardHeight = KeyboardMonitor().$keyboardHeight        
+    }
+    
+    func fetchProfileImage(of uid: String) async -> Data? {
+        guard let key = await imageKeyUseCase.imageKey(from: uid) else { return nil }
+        guard let data = await fetchImageUseCase.fetchImage(for: key) else { return nil }
+        
+        return data
     }
     
     func transform(input: Input, cancellables: inout Set<AnyCancellable>) -> Output {
@@ -84,9 +105,19 @@ final class ChattingRoomViewModel {
             .store(in: &cancellables)
         
         self.loadChattingsUseCase.initLoadedchattings
+            .dropFirst()
             .sink { [weak self] _ in
                 output.chattingInitLoaded.send(())
+                self?.loadUnreadChattingsUseCase.loadUnreadChattings()
+                
+            }
+            .store(in: &cancellables)
+        
+        self.loadUnreadChattingsUseCase.unreadChattings
+            .sink { [weak self] _ in
+                output.unreadChattingLoaded.send(())
                 self?.listenOthersChattingsUseCase.listenOthersChattings()
+                self?.listenOtherIsReadingUseCase.listenOtherIsReading()
             }
             .store(in: &cancellables)
         

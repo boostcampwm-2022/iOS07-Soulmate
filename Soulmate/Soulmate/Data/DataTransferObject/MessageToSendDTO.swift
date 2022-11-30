@@ -11,5 +11,6 @@ struct MessageToSendDTO: Encodable {
     var docId: String
     var text: String
     var userId: String
+    var readUsers: [String]
     var date: Timestamp
 }

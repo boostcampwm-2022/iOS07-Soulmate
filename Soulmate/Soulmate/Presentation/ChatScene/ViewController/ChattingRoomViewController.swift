@@ -131,6 +131,18 @@ extension ChattingRoomViewController: UITableViewDelegate, UITableViewDataSource
             }
 
             cell.configure(from: chat)
+            
+            Task {
+                guard let profileImageData = await viewModel?.fetchProfileImage(of: chat.userId) else { return }
+                guard let image = UIImage(data: profileImageData) else { return }
+                
+                if chatTableView.cellForRow(at: indexPath) != nil {                                        
+                    await MainActor.run {
+                        
+                        cell.set(image: image)
+                    }
+                }
+            }
 
             return cell
         }
@@ -142,6 +154,7 @@ extension ChattingRoomViewController: UITableViewDelegate, UITableViewDataSource
         if scrollView.contentOffset.y < chatTableView.bounds.size.height &&
             !chatTableView.isTracking &&
             scrollView.contentOffset.y > 0 {
+            print("로드 요청할 때: \(chatTableView.contentOffset.y)")
             loadPrevChattings()
         }
     }
@@ -257,19 +270,32 @@ private extension ChattingRoomViewController {
                 if self?.isInitLoad ?? false {
                     self?.chatTableView.reloadData()
                     self?.isInitLoad = false
-                    self?.scrollToBottom()                    
+                    self?.scrollToBottom()
                 }
+            }
+            .store(in: &cancellabels)
+        
+        output.unreadChattingLoaded
+            .sink { [weak self] chat in                
+                self?.chatTableView.reloadData()
             }
             .store(in: &cancellabels)
         
         output.prevChattingLoaded
             .sink { [weak self] count in
                 
+                guard let yOffset = self?.chatTableView.contentOffset.y else { return }
+                
+                print("로드 되었을 때: \(yOffset)")
+                
                 let indexPathes = (0..<count).map { row in
                     return IndexPath(row: row, section: 0)
                 }
                 
                 self?.chatTableView.performBatchUpdates({
+                    if yOffset < 10 {
+                        self?.chatTableView.setContentOffset(CGPoint(x: 0, y: 10), animated: false)
+                    }
                     self?.chatTableView.insertRows(at: indexPathes, with: .none)
                 }, completion: { _ in
                     self?.isLoading = false
@@ -282,11 +308,13 @@ private extension ChattingRoomViewController {
                 
                 let diff = (self?.bottomOffset().y ?? 0) - (self?.chatTableView.contentOffset.y ?? 0)
                 
-                self?.chatTableView.reloadData()
-                
-                if diff < 10 {
-                    self?.scrollToBottom()
-                }
+                self?.chatTableView.performBatchUpdates({
+                    self?.chatTableView.insertRows(at: [IndexPath(row: viewModel.chattings.count - 1, section: 0)], with: .none)
+                }, completion: { _ in
+                    if diff < 10 {
+                        self?.scrollToBottom()
+                    }
+                })
             }
             .store(in: &cancellabels)
         

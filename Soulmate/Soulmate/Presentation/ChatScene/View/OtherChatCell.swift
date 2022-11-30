@@ -30,12 +30,21 @@ final class OtherChatCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        otherChatView.set(image: nil)
+    }
+    
     func configure(from chat: Chat) {
         self.selectionStyle = .none
         otherChatView.configure(with: chat)
     }
     
-    func layout() {
+    func set(image: UIImage) {
+        otherChatView.set(image: image)
+    }
+    
+    private func layout() {
         otherChatView.snp.makeConstraints {
             $0.top.equalTo(contentView.snp.top)
             $0.leading.equalTo(contentView.snp.leading)

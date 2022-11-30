@@ -16,6 +16,8 @@ struct Chat {
     
     var id: String = UUID().uuidString
     var isMe: Bool
+    var userId: String
+    var readUsers: [String]
     var text: String
     var date: Date?
     var state: ChatState

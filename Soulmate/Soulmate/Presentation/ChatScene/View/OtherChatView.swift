@@ -17,6 +17,7 @@ final class OtherChatView: UIView {
         imageView.contentMode = .scaleAspectFill
         imageView.backgroundColor = .secondarySystemBackground
         imageView.layer.cornerRadius = 18
+        imageView.clipsToBounds = true
         
         return imageView
     }()
@@ -42,7 +43,16 @@ final class OtherChatView: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 11)
         label.textColor = .labelGrey
-        label.text = "오전 8:18"
+        
+        return label
+    }()
+    
+    private lazy var readCount: UILabel = {
+        let label = UILabel()
+        self.addSubview(label)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 11)
+        label.textColor = .messagePurple
         
         return label
     }()
@@ -55,14 +65,21 @@ final class OtherChatView: UIView {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
+    }        
     
     func configure(with chat: Chat) {
         chatLabel.text = chat.text
         timeLabel.text = chat.date?.aHmm() ?? "..."
+        if let count = unreadCount(of: chat) {
+            readCount.text = "\(count)"
+        }        
     }
     
-    func layout() {
+    func set(image: UIImage?) {
+        self.profileImage.image = image
+    }
+    
+    private func layout() {
         
         chatLabel.snp.makeConstraints {
             $0.top.equalTo(self.snp.top).offset(5)
@@ -82,5 +99,15 @@ final class OtherChatView: UIView {
             $0.leading.equalTo(chatLabel.snp.trailing).offset(5)
             $0.bottom.equalTo(chatLabel.snp.bottom)
         }
+        
+        readCount.snp.makeConstraints {
+            $0.leading.equalTo(timeLabel.snp.trailing).offset(5)
+            $0.bottom.equalTo(chatLabel.snp.bottom)
+        }
+    }
+    
+    private func unreadCount(of chat: Chat) -> Int? {
+        guard 0..<2 ~= chat.readUsers.count else { return nil }
+        return 2 - chat.readUsers.count
     }
 }

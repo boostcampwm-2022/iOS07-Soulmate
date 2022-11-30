@@ -19,6 +19,7 @@ struct ChatRoomInfoDTO: Decodable {
             documentId: documentId,
             mateName: mateName,
             mateProfileImage: nil,
+            userIds: userIds,
             latestChatContent: lastMessage,
             lastChatDate: lastDate?.dateValue()
         )

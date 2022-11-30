@@ -10,6 +10,7 @@ import FirebaseFirestore
 struct MessageInfoDTO: Decodable {
     var docId: String
     var userId: String
+    var readUsers: [String]
     var text: String
     var date: Timestamp
     
@@ -17,6 +18,7 @@ struct MessageInfoDTO: Decodable {
         return MessageInfo(
             documentId: docId,
             userId: userId,
+            readUsers: readUsers,
             text: text,
             date: date.dateValue()
         )
