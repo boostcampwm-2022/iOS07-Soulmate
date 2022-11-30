@@ -163,7 +163,6 @@ extension DetailViewController: UICollectionViewDataSource, UICollectionViewDele
                       let uiImage = UIImage(data: data) else { return }
 
                 await MainActor.run { cell.loadImage(image: uiImage) }
-                
             }
             return cell
             
@@ -260,11 +259,11 @@ extension DetailViewController: UICollectionViewDataSource, UICollectionViewDele
     }
     
     private func greetingLayoutSection() -> NSCollectionLayoutSection {
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(50))
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(100))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         item.contentInsets = .init(top: 0, leading: 0, bottom: 0, trailing: 0)
         
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(50))
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(100))
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
         
         let section = NSCollectionLayoutSection(group: group)
