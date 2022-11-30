@@ -11,7 +11,7 @@ import FirebaseFirestore
 import FirebaseAuth
 
 class DefaultUserPreviewRepository: UserPreviewRepository {
-
+    
     let networkDatabaseApi: NetworkDatabaseApi
     let collectionTitle = "UserPreview"
     
@@ -74,5 +74,14 @@ class DefaultUserPreviewRepository: UserPreviewRepository {
                 "location": location.toGeoPoint()
             ]
         )
+    }
+    
+    func downloadPreview(userUid: String) async throws -> UserPreview {
+        return try await networkDatabaseApi.read(
+            table: collectionTitle,
+            documentID: userUid,
+            type: UserPreviewDTO.self
+        )
+        .toDomain()
     }
 }

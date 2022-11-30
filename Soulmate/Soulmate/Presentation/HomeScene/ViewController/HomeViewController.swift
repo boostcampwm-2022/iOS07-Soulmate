@@ -98,8 +98,18 @@ private extension HomeViewController {
         
         output.didRefreshedPreviewList
             .sink { [weak self] _ in
+                print(self?.viewModel?.recommendedMatePreviewList.count)
                 DispatchQueue.main.async {
                     self?.collectionView.reloadData()
+                }
+            }
+            .store(in: &bag)
+        
+        output.isLocationAuthorized
+            .compactMap { $0 }
+            .sink { value in
+                if value == "no" {
+                    self.setAuthAlertAction()
                 }
             }
             .store(in: &bag)
@@ -138,6 +148,21 @@ private extension HomeViewController {
             $0.width.equalToSuperview().inset(20)
         }
     }
+    
+    func setAuthAlertAction() {
+         let authAlertController : UIAlertController
+         
+         authAlertController = UIAlertController(title: "위치 사용 권한이 필요합니다.", message: "위치 권한을 허용해야만 앱을 사용하실 수 있습니다.", preferredStyle: .alert)
+         
+         let getAuthAction : UIAlertAction
+         getAuthAction = UIAlertAction(title: "설정", style: .default, handler: { (UIAlertAction) in
+             if let appSettings = URL(string: UIApplication.openSettingsURLString) {
+                 UIApplication.shared.open(appSettings,options: [:],completionHandler: nil)
+             }
+         })
+         authAlertController.addAction(getAuthAction)
+         self.present(authAlertController, animated: true, completion: nil)
+     }
 }
 
 extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {

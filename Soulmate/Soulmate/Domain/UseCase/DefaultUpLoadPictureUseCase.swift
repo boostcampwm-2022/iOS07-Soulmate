@@ -16,6 +16,14 @@ class DefaultUpLoadPictureUseCase: UploadPictureUseCase {
         self.profilePhotoRepository = profilePhotoRepository
     }
     
+    func uploadChatImageData(photoData: Data) async throws -> String {
+        let uid = Auth.auth().currentUser!.uid
+        let key = "\(uid)_low_profile"
+        try await profilePhotoRepository.uploadPicture(fileName: key, data: photoData)
+        
+        return key
+    }
+    
     func uploadPhotoData(photoData: [Data?]) async throws -> [String] {
         guard photoData.allSatisfy{ $0 != nil } == true else { return [] }
         let photoData = photoData.compactMap { $0 }

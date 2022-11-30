@@ -12,4 +12,5 @@ protocol UserPreviewRepository {
     func updateLocation(userUid: String, location: Location) async throws
     func fetchDistanceFilteredRecommendedPreviewList(userGender: GenderType, userLocation: Location, distance: Double) async throws -> [UserPreview]
     func fetchRecommendedPreviewList(userGender: GenderType) async throws -> [UserPreview]
+    func downloadPreview(userUid: String) async throws -> UserPreview
 }

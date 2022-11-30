@@ -209,12 +209,25 @@ private extension RegisterViewController {
               let photoView = childView[8] as? RegisterPhotoView,
               let congratulationView = childView[9] as? RegisterCongraturationsView else { return }
                 
+        
+        photoView.$imageList
+            .compactMap { $0[0] }
+            .sink { value in
+                guard let image = UIImage(data: value) else { return }
+                
+                let ratio = image.size.width / 50
+                let ratioHeight = image.size.height * ratio
+                let newImage = UIImage.resizeImage(image: image, targetSize: CGSize(width: 50, height: ratioHeight))!
+            
+                guard let data = newImage.jpegData(compressionQuality: 1) else { return }
+                viewModel.chatImageData = data
+            }
+            .store(in: &bag)
+        
+        
         nextButton.tapPublisher()
             .sink { [weak self] _ in
-                guard let self else { return }
-                if self.currentPage < 9 {
-                    self.nextPage()
-                }
+                self?.nextPage()
             }
             .store(in: &bag)
         
@@ -366,7 +379,19 @@ extension RegisterViewController: PHPickerViewControllerDelegate { //PHPicker ë
         picker.dismiss(animated: true)
 
         results.first?.itemProvider.loadDataRepresentation(forTypeIdentifier: "public.image") { [weak self] (data, error) in
-            guard let data = data else { return }
+            guard let data = data,
+                  let image = UIImage(data: data) else { return }
+            print(data.count)
+            
+            let ratio = image.size.width / 390
+            let ratioHeight = image.size.height * ratio
+//
+            let newImage = UIImage.resizeImage(image: image, targetSize: CGSize(width: 390, height: ratioHeight))!
+            
+            
+            guard let data = newImage.jpegData(compressionQuality: 0.2) else { return }
+            print(data.count)
+            
             guard let photoView = self?.childView[8] as? RegisterPhotoView,
                   let index = photoView.pickingItem else { return }
             
@@ -381,3 +406,7 @@ extension RegisterViewController: PHPickerViewControllerDelegate { //PHPicker ë
     
     
 }
+
+//extension RegisterViewController {
+//    func
+//}

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import FirebaseAuth
 import FirebaseFirestore
 
 class DefaultMateRecommendationUseCase: MateRecommendationUseCase {
@@ -22,7 +23,10 @@ class DefaultMateRecommendationUseCase: MateRecommendationUseCase {
     }
     
     func fetchRecommendedMate() async throws -> [UserPreview] {
-        return try await userPreviewRepository.fetchRecommendedPreviewList(userGender: GenderType.female)
+        
+        let myGender = try await userPreviewRepository.downloadPreview(userUid: Auth.auth().currentUser!.uid).gender!
+        
+        return try await userPreviewRepository.fetchRecommendedPreviewList(userGender: myGender)
     }
     
     func fetchDistanceFilteredRecommendedMate(distance: Double) async throws -> [UserPreview] {
@@ -31,8 +35,10 @@ class DefaultMateRecommendationUseCase: MateRecommendationUseCase {
             throw UserDefaultsError.noSuchKeyMatchedValue
         }
         
+        let myGender = try await userPreviewRepository.downloadPreview(userUid: Auth.auth().currentUser!.uid).gender!
+        
         return try await userPreviewRepository.fetchDistanceFilteredRecommendedPreviewList(
-            userGender: .female,
+            userGender: myGender,
             userLocation: Location(
                 latitude: latitude,
                 longitude: longitude

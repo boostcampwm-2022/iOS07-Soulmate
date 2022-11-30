@@ -8,5 +8,6 @@
 import Foundation
 
 protocol UploadPictureUseCase {
+    func uploadChatImageData(photoData: Data) async throws -> String
     func uploadPhotoData(photoData: [Data?]) async throws -> [String]
 }
