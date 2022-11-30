@@ -11,6 +11,7 @@ struct ChatRoomInfo {
     var documentId: String?
     var mateName: String?
     var mateProfileImage: Data?
+    var userIds: [String]
     var latestChatContent: String?
     var lastChatDate: Date?
 }

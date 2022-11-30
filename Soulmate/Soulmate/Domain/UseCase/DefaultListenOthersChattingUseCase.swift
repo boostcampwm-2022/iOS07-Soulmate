@@ -46,8 +46,6 @@ final class DefaultListenOthersChattingUseCase: ListenOthersChattingUseCase {
                     if change.type != .added { return }
                 }
                 
-                print("여기서 상대방한테 읽어다고 알려줘야 함.")
-                
                 let messageInfoDTOs = snapshot.documents.compactMap { try? $0.data(as: MessageInfoDTO.self) }
                 let infos = messageInfoDTOs.map { return $0.toModel() }.reversed()
                 let others = infos.filter { $0.userId != uid }

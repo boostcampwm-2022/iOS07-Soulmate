@@ -29,6 +29,7 @@ final class DefaultLoadChattingRoomListUseCase: LoadChattingRoomListUseCase {
                 guard let snapshot, err == nil else { return }
                 
                 let chatRoomInfoDTOs = snapshot.documents.compactMap { doc in
+                    
                     var dto = try? doc.data(as: ChatRoomInfoDTO.self)
                     dto?.documentId = doc.documentID
                     

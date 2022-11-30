@@ -15,6 +15,7 @@ final class ChattingRoomViewModel {
     private let loadUnreadChattingsUseCase: LoadUnreadChattingsUseCase
     private let loadPrevChattingsUseCase: LoadPrevChattingsUseCase
     private let listenOthersChattingsUseCase: ListenOthersChattingUseCase
+    private let listenOtherIsReadingUseCase: ListenOtherIsReadingUseCase
     private let imageKeyUseCase: ImageKeyUseCase
     private let fetchImageUseCase: FetchImageUseCase
     private var newChattings: [Chat] = []
@@ -31,6 +32,7 @@ final class ChattingRoomViewModel {
         loadUnreadChattingsUseCase: LoadUnreadChattingsUseCase,
         loadPrevChattingsUseCase: LoadPrevChattingsUseCase,
         listenOthersChattingsUseCase: ListenOthersChattingUseCase,
+        listenOtherIsReadingUseCase: ListenOtherIsReadingUseCase,
         imageKeyUseCase: ImageKeyUseCase,
         fetchImageUseCase: FetchImageUseCase
     ) {
@@ -39,6 +41,7 @@ final class ChattingRoomViewModel {
         self.loadUnreadChattingsUseCase = loadUnreadChattingsUseCase
         self.loadPrevChattingsUseCase = loadPrevChattingsUseCase
         self.listenOthersChattingsUseCase = listenOthersChattingsUseCase
+        self.listenOtherIsReadingUseCase = listenOtherIsReadingUseCase
         self.imageKeyUseCase = imageKeyUseCase
         self.fetchImageUseCase = fetchImageUseCase
     }
@@ -114,6 +117,7 @@ final class ChattingRoomViewModel {
             .sink { [weak self] _ in
                 output.unreadChattingLoaded.send(())
                 self?.listenOthersChattingsUseCase.listenOthersChattings()
+                self?.listenOtherIsReadingUseCase.listenOtherIsReading()
             }
             .store(in: &cancellables)
         

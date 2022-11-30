@@ -45,7 +45,27 @@ final class ChatRoomInfoView: UIView {
     }()
     
     private lazy var unReadMessageCountBadge: UIView = {
-        return UIView()
+
+        let container = UIView()
+        container.widthAnchor.constraint(equalToConstant: 22).isActive = true
+        container.heightAnchor.constraint(greaterThanOrEqualToConstant: 22).isActive = true
+        
+        let label = UILabel(frame: .zero)
+        container.addSubview(label)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
+        label.textColor = .white
+        label.textAlignment = .center
+        label.text = "2"
+        label.layer.cornerRadius = 9
+        label.backgroundColor = .mainPurple
+        label.clipsToBounds = true
+        label.heightAnchor.constraint(equalToConstant: 18).isActive = true
+        label.widthAnchor.constraint(equalToConstant: 18).isActive = true
+        label.trailingAnchor.constraint(equalTo: container.trailingAnchor).isActive = true
+        label.centerYAnchor.constraint(equalTo: container.centerYAnchor).isActive = true
+        
+        return container
     }()
     
     private lazy var nameTimeStackView: UIStackView = {
@@ -60,9 +80,9 @@ final class ChatRoomInfoView: UIView {
     private lazy var contentStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
-        stackView.distribution = .equalSpacing
         stackView.addArrangedSubview(latestChatContentLabel)
         stackView.addArrangedSubview(unReadMessageCountBadge)
+        stackView.spacing = 5
         
         return stackView
     }()
