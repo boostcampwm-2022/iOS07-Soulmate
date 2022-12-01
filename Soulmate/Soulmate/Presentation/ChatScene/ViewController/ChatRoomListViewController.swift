@@ -27,6 +27,8 @@ final class ChatRoomListViewController: UIViewController {
         return tableView
     }()
     
+    
+    
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
@@ -95,7 +97,8 @@ extension ChatRoomListViewController: UITableViewDelegate, UITableViewDataSource
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        guard let info = viewModel?.chattingList[indexPath.row] else {
+        guard let info = viewModel?.chattingList[indexPath.row],
+              let uid = viewModel?.userUid() else {
             return UITableViewCell()
         }
         
@@ -105,7 +108,7 @@ extension ChatRoomListViewController: UITableViewDelegate, UITableViewDataSource
             return UITableViewCell()
         }
         
-        cell.configure(with: info)
+        cell.configure(with: info, uid: uid)
         
         return cell
     }
