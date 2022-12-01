@@ -26,6 +26,12 @@ final class MyPageViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
+        backBarButtonItem.tintColor = .black
+        backBarButtonItem.image = backBarButtonItem.image?.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: -12, bottom: 0, right: 0))
+        self.navigationItem.backButtonTitle = ""
+        self.navigationItem.backBarButtonItem = backBarButtonItem
+        
         bind()
     }
     
