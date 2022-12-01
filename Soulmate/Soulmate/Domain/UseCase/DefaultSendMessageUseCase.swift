@@ -14,7 +14,7 @@ final class DefaultSendMessageUseCase: SendMessageUseCase {
     var messageToSend = CurrentValueSubject<String, Never>("")
     var sendButtonEnabled = CurrentValueSubject<Bool, Never>(false)
     var newMessage = PassthroughSubject<Chat, Never>()
-    var messageSended = PassthroughSubject<(id: String, date: Date?, success: Bool), Never>()
+    var messageSended = PassthroughSubject<Chat, Never>()
     
     let db = Firestore.firestore()
     private let info: ChatRoomInfo
@@ -56,7 +56,9 @@ final class DefaultSendMessageUseCase: SendMessageUseCase {
                 ),
                 completion: { [weak self] err in
                     if err != nil {
-                        self?.messageSended.send((id: chat.id, date: nil, success: false))
+                        var failedChat = chat
+                        failedChat.updateState(false, nil)
+                        self?.messageSended.send(failedChat)
                     }
                 }
             ) {
@@ -73,8 +75,9 @@ final class DefaultSendMessageUseCase: SendMessageUseCase {
                             "lastDate": messageTime
                         ]
                     )
-                    
-                    messageSended.send((id: chat.id, date: messageTime.dateValue(), success: true))
+                    var sendedChat = chat
+                    sendedChat.updateState(true, messageTime.dateValue())
+                    messageSended.send(sendedChat)
                     
                 } catch {
                     print("Error update last data")
