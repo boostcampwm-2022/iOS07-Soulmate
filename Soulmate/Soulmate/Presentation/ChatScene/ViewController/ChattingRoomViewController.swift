@@ -10,6 +10,7 @@ import UIKit
 
 final class ChattingRoomViewController: UIViewController {
     
+    private var chatRoomInfo: ChatRoomInfo?
     private var viewModel: ChattingRoomViewModel?
     private var cancellabels = Set<AnyCancellable>()
     private var messageSubject = PassthroughSubject<String?, Never>()
@@ -60,9 +61,10 @@ final class ChattingRoomViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    convenience init(viewModel: ChattingRoomViewModel) {
+    convenience init(viewModel: ChattingRoomViewModel, chatRoomInfo: ChatRoomInfo) {
         self.init(nibName: nil, bundle: nil)
         self.viewModel = viewModel
+        self.chatRoomInfo = chatRoomInfo
     }
     
     override func viewDidLoad() {
@@ -193,7 +195,7 @@ private extension ChattingRoomViewController {
             loadPrevChattingsButton
         ]
         
-        self.title = "메이트 이름"
+        self.title = chatRoomInfo?.mateName
         view.backgroundColor = .white
     }
     
