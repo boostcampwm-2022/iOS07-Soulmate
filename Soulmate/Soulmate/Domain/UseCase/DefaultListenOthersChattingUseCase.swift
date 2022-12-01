@@ -26,6 +26,11 @@ final class DefaultListenOthersChattingUseCase: ListenOthersChattingUseCase {
             self.loadChattingRepository = loadChattingRepository
     }
     
+    func removeListen() {
+        listenerRegistration?.remove()
+        listenerRegistration = nil
+    }
+    
     func listenOthersChattings() {
         let db = Firestore.firestore()
         
@@ -47,7 +52,7 @@ final class DefaultListenOthersChattingUseCase: ListenOthersChattingUseCase {
                 }
                 
                 if addedChange.isEmpty { return }
-                print(addedChange.map { $0.document.data() })
+                
                 let messageInfoDTOs = snapshot.documents.compactMap { try? $0.data(as: MessageInfoDTO.self) }
                 let infos = messageInfoDTOs.map { return $0.toModel() }.reversed()
                 let others = infos.filter { $0.userId != uid }
@@ -66,17 +71,29 @@ final class DefaultListenOthersChattingUseCase: ListenOthersChattingUseCase {
                 guard !chats.isEmpty else { return }
                 guard let lastDocument = snapshot.documents.last else { return }
                 
-                snapshot.documents.forEach { doc in
+                for doc in snapshot.documents {
+                    
+                    let userId = doc.data()["userId"] as? String
+                    if userId == uid { continue }
                     
                     let docRef = doc.reference
                     var readUsers = Set(doc.data()["readUsers"] as? [String] ?? [])
                     readUsers.insert(uid)
                     var arrReadUsers = readUsers.map { $0 }
                     
-                    docRef.updateData(["readUsers": arrReadUsers])
+                    
+                    docRef.updateData(["readUsers": arrReadUsers]) { err in
+                        
+                        if err == nil {
+                            print("update 됨")
+                        } else {
+                            print(err)
+                        }
+                    }
+                    
                 }
                 
-                self?.loadChattingRepository.setLastDocument(lastDocument)
+                self?.loadChattingRepository.setLastDocument(lastDocument)                
                 self?.newMessages.send(chats)
                 self?.listenerRegistration?.remove()
                 self?.listenerRegistration = nil

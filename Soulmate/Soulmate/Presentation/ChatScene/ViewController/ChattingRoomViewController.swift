@@ -16,6 +16,7 @@ final class ChattingRoomViewController: UIViewController {
     private var messageSubject = PassthroughSubject<String?, Never>()
     private var loadPrevChattingsSubject = PassthroughSubject<Void, Never>()
     private var newLineInputSubject = PassthroughSubject<Void, Never>()
+    private var viewWillDisappearSubject = PassthroughSubject<Void, Never>()
     private var messageSendSubject: AnyPublisher<Void, Never>?
     
     private var isInitLoad = true
@@ -28,7 +29,6 @@ final class ChattingRoomViewController: UIViewController {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.rowHeight = UITableView.automaticDimension
         tableView.delegate = self
-//        tableView.dataSource = self
         tableView.register(MyChatCell.self, forCellReuseIdentifier: MyChatCell.id)
         tableView.register(OtherChatCell.self, forCellReuseIdentifier: OtherChatCell.id)
         tableView.separatorStyle = .none
@@ -90,6 +90,12 @@ final class ChattingRoomViewController: UIViewController {
         self.navigationController?.navigationBar.backItem?.title = " "
         self.navigationController?.navigationBar.tintColor = .black
     }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        viewWillDisappearSubject.send(())
+    }
 }
 
 extension ChattingRoomViewController {
@@ -97,24 +103,45 @@ extension ChattingRoomViewController {
         case main
     }
     
-    typealias DataSource = UITableViewDiffableDataSource<Section, Chat.ID>
-    typealias Snapshot = NSDiffableDataSourceSnapshot<Section, Chat.ID>
+    typealias DataSource = UITableViewDiffableDataSource<Section, Chat>
+    typealias Snapshot = NSDiffableDataSourceSnapshot<Section, Chat>
     
-    func loadData(_ chats: [Chat]) {        
+    func loadData(_ chats: [Chat]) {
+        
         var snapshot = Snapshot()
         snapshot.appendSections([.main])
-        snapshot.appendItems(chats.map { $0.id })
+        snapshot.appendItems(chats)
+        dataSource?.apply(snapshot, animatingDifferences: false)
+    }
+    
+    func dataInsert(_ chats: [Chat]) {
+        
+        guard var snapshot = dataSource?.snapshot(),
+              let firstItem = snapshot.itemIdentifiers.first else { return }
+        
+        let beforeHeight = chatTableView.contentSize.height
+        
+        print("before: ", chatTableView.contentOffset.y)
+        
+        snapshot.insertItems(chats, beforeItem: firstItem)
+        dataSource?.apply(snapshot, animatingDifferences: false)
+                
+        let afterHeight = chatTableView.contentSize.height
+        
+        print("after: ", chatTableView.contentOffset.y)
+    }
+    
+    func dataAppend(_ chats: [Chat]) {
+        guard var snapshot = dataSource?.snapshot() else { return }
+        
+        snapshot.appendItems(chats)
         dataSource?.apply(snapshot, animatingDifferences: false)
     }
     
     func createDataSource() {
         dataSource = DataSource(
             tableView: chatTableView,
-            cellProvider: { [weak self] tableView, indexPath, itemIdentifier in
-            
-                guard let chat = self?.viewModel?.chattings[indexPath.row] else {
-                    return UITableViewCell()
-                }
+            cellProvider: { [weak self] tableView, indexPath, chat in
 
                 if chat.isMe {
                     guard let cell = tableView.dequeueReusableCell(
@@ -176,7 +203,7 @@ extension ChattingRoomViewController: UITableViewDelegate {
         if scrollView.contentOffset.y < chatTableView.bounds.size.height &&
             !chatTableView.isTracking &&
             scrollView.contentOffset.y > 0 {
-            print("로드 요청할 때: \(chatTableView.contentOffset.y)")
+            
             loadPrevChattings()
         }
     }
@@ -261,6 +288,7 @@ private extension ChattingRoomViewController {
         let output = viewModel.transform(
             input: ChattingRoomViewModel.Input(
                 viewDidLoad: Just(()).eraseToAnyPublisher(),
+                viewWillDisappear: viewWillDisappearSubject.eraseToAnyPublisher(),
                 message: messageSubject.eraseToAnyPublisher(),
                 messageSendEvent: messageSendSubject,
                 loadPrevChattings: loadPrevChattingsSubject.eraseToAnyPublisher()
@@ -287,12 +315,10 @@ private extension ChattingRoomViewController {
             .store(in: &cancellabels)
         
         output.chattingInitLoaded
-            .sink { [weak self] _ in
+            .sink { [weak self] chats in
                 
                 if self?.isInitLoad ?? false {
-                    if let chats = self?.viewModel?.chattings {
-                        self?.loadData(chats)
-                    }
+                    self?.loadData(chats)
                     self?.isInitLoad = false
                     self?.scrollToBottom()
                 }
@@ -300,78 +326,57 @@ private extension ChattingRoomViewController {
             .store(in: &cancellabels)
         
         output.unreadChattingLoaded
-            .sink { [weak self] _ in
-                if let chats = self?.viewModel?.chattings {
-                    self?.loadData(chats)
-                }
+            .sink { [weak self] chats in
+                self?.dataAppend(chats)
             }
             .store(in: &cancellabels)
         
         output.prevChattingLoaded
-            .sink { [weak self] count in
-                
-                guard let yOffset = self?.chatTableView.contentOffset.y else { return }
-                
-//                self?.chatTableView.performBatchUpdates({
-//                    if yOffset < 10 {
-//                        self?.chatTableView.setContentOffset(CGPoint(x: 0, y: 10), animated: false)
-//                    }
-//                    self?.chatTableView.insertRows(at: indexPathes, with: .none)
-//                }, completion: { _ in
-//                    self?.isLoading = false
-//                })
-                
-                if let chats = self?.viewModel?.chattings {
-                    self?.loadData(chats)
-                }
-                
+            .sink { [weak self] chats in
+
+                self?.dataInsert(chats)
                 self?.isLoading = false
             }
             .store(in: &cancellabels)
         
-        output.newMessageArrived
-            .sink { [weak self] count in
-                
-//                var indexPathes: [IndexPath] = []
+//        output.newMessageArrived
+//            .sink { [weak self] count in
 //
-//                (1...count).forEach { i in
-//                    let indexPath = IndexPath(row: viewModel.chattings.count - i, section: 0)
+////                var indexPathes: [IndexPath] = []
+////
+////                (1...count).forEach { i in
+////                    let indexPath = IndexPath(row: viewModel.chattings.count - i, section: 0)
+////
+////                    indexPathes.append(indexPath)
+////                }
 //
-//                    indexPathes.append(indexPath)
+//                let diff = (self?.bottomOffset().y ?? 0) - (self?.chatTableView.contentOffset.y ?? 0)
+//
+////                self?.chatTableView.performBatchUpdates({
+////                    self?.chatTableView.insertRows(at: indexPathes, with: .none)
+////                }, completion: { _ in
+////
+////                })
+//
+//                if let chats = self?.viewModel?.chattings {
+//                    self?.loadData(chats)
 //                }
-                
-                let diff = (self?.bottomOffset().y ?? 0) - (self?.chatTableView.contentOffset.y ?? 0)
-                
-//                self?.chatTableView.performBatchUpdates({
-//                    self?.chatTableView.insertRows(at: indexPathes, with: .none)
-//                }, completion: { _ in
 //
-//                })
-                
-                if let chats = self?.viewModel?.chattings {
-                    self?.loadData(chats)
-                }
-                
-                if diff < 10 {
-                    self?.scrollToBottom()
-                }
-            }
-            .store(in: &cancellabels)
-        
-        output.chatUpdated
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] row in
-//                let indexPath = IndexPath(row: row, section: 0)
-//
-//                self?.chatTableView.performBatchUpdates {
-//                    self?.chatTableView.reloadRows(at: [indexPath], with: .none)
+//                if diff < 10 {
+//                    self?.scrollToBottom()
 //                }
-                
-                if let chats = self?.viewModel?.chattings {
-                    self?.loadData(chats)
-                }
-            }
-            .store(in: &cancellabels)
+//            }
+//            .store(in: &cancellabels)
+//
+//        output.chatUpdated
+//            .receive(on: DispatchQueue.main)
+//            .sink { [weak self] row in
+//
+//                if let chats = self?.viewModel?.chattings {
+//                    self?.loadData(chats)
+//                }
+//            }
+//            .store(in: &cancellabels)
     }
 }
 
@@ -379,10 +384,11 @@ private extension ChattingRoomViewController {
 private extension ChattingRoomViewController {
     
     func scrollToBottom() {
-        if viewModel?.chattings.isEmpty ?? true { return }
+        guard let snapshot = dataSource?.snapshot() else { return }
+        
         chatTableView.scrollToRow(
             at: IndexPath(
-                row: (viewModel?.chattings.count ?? 1) - 1,
+                row: snapshot.itemIdentifiers.count - 1,
                 section: 0
             ),
             at: .bottom, animated: false
