@@ -19,8 +19,23 @@ class HeartShopCoordinator: Coordinator {
         self.navigationController = navigationController
     }
     
+    deinit {
+        print("heartshop deinited")
+    }
+    
     func start() {
-        let vc = HeartShopViewController()
-        navigationController.pushViewController(vc, animated: true)
+        let vm = HeartShopViewModel()
+        vm.setActions(actions: HeartShopViewModelActions(quitHeartShop: quitHeartShop))
+        let vc = HeartShopViewController(viewModel: vm)
+        let nav = UINavigationController(rootViewController: vc)
+        nav.modalPresentationStyle = .pageSheet
+        if let sheet = nav.sheetPresentationController {
+            sheet.detents = [.medium()]
+        }
+        navigationController.topViewController?.present(nav, animated: true)
+    }
+    
+    lazy var quitHeartShop: () -> Void = { [weak self] in
+        self?.finish()
     }
 }

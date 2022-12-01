@@ -51,22 +51,27 @@ final class MyPageView: UIView {
         return button
     }()
     
+    lazy var profileNameLabel: UILabel = {
+        let titleLabel = UILabel()
+        titleLabel.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 22)
+        titleLabel.sizeToFit()
+        return titleLabel
+    }()
+    
+    lazy var profileAgeLabel: UILabel = {
+        let ageLabel = UILabel()
+        ageLabel.font = UIFont(name: "AppleSDGothicNeo-Light", size: 22)
+        ageLabel.sizeToFit()
+        
+        return ageLabel
+    }()
+    
     lazy var profileInfoStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
         stackView.spacing = 6
-        
-        let titleLabel = UILabel()
-        titleLabel.text = "초록잎"
-        titleLabel.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 22)
-        titleLabel.sizeToFit()
-        
-        let ageLabel = UILabel()
-        ageLabel.text = "25"
-        ageLabel.font = UIFont(name: "AppleSDGothicNeo-Light", size: 22)
-        ageLabel.sizeToFit()
-        
-        [titleLabel, ageLabel].forEach { stackView.addArrangedSubview($0) }
+
+        [profileNameLabel, profileAgeLabel].forEach { stackView.addArrangedSubview($0) }
         self.addSubview(stackView)
         return stackView
     }()

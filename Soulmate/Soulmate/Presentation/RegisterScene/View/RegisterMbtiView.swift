@@ -138,33 +138,51 @@ private extension RegisterMbtiView {
             $0.width.equalTo(169)
             $0.centerX.equalToSuperview()
         }
+//        let stack = UIStackView()
+//        stack.axis = .horizontal
+//        stack.spacing = 4
+//        stack.distribution = .fillEqually
+//        self.addSubview(stack)
+//        return stack
+        var vStackView = UIStackView(frame: .zero)
+        vStackView.axis = .vertical
+        vStackView.spacing = 10
+        vStackView.distribution = .fillEqually
+        vStackView.addArrangedSubview(innerTypeView)
+        vStackView.addArrangedSubview(recognizeTypeView)
+        vStackView.addArrangedSubview(judgementTypeView)
+        vStackView.addArrangedSubview(lifeStyleTypeView)
+        
+        self.addSubview(vStackView)
+        vStackView.snp.makeConstraints {
+            $0.top.equalTo(preview.snp.bottom).offset(60)
+            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.bottom.equalToSuperview().inset(140)
+        }
+
         
         innerTypeView.snp.makeConstraints {
-            $0.top.equalTo(preview.snp.bottom).offset(60)
-            $0.width.equalTo(350)
-            $0.height.equalTo(50)
-            $0.centerX.equalTo(self.safeAreaLayoutGuide.snp.centerX)
+//            $0.top.equalTo(preview.snp.bottom).offset(60)
+//            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.height.lessThanOrEqualTo(50)
         }
-        
+
         recognizeTypeView.snp.makeConstraints {
-            $0.top.equalTo(innerTypeView.snp.bottom).offset(24)
-            $0.width.equalTo(350)
-            $0.height.equalTo(50)
-            $0.centerX.equalTo(self.safeAreaLayoutGuide.snp.centerX)
+//            $0.top.equalTo(innerTypeView.snp.bottom).offset(24)
+//            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.height.lessThanOrEqualTo(50)
         }
-        
+
         judgementTypeView.snp.makeConstraints {
-            $0.top.equalTo(recognizeTypeView.snp.bottom).offset(24)
-            $0.width.equalTo(350)
-            $0.height.equalTo(50)
-            $0.centerX.equalTo(self.safeAreaLayoutGuide.snp.centerX)
+//            $0.top.equalTo(recognizeTypeView.snp.bottom).offset(24)
+//            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.height.lessThanOrEqualTo(50)
         }
-        
+
         lifeStyleTypeView.snp.makeConstraints {
-            $0.top.equalTo(judgementTypeView.snp.bottom).offset(24)
-            $0.width.equalTo(350)
-            $0.height.equalTo(50)
-            $0.centerX.equalTo(self.safeAreaLayoutGuide.snp.centerX)
+//            $0.top.equalTo(judgementTypeView.snp.bottom).offset(24)
+//            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.height.lessThanOrEqualTo(50)
         }
     }
     

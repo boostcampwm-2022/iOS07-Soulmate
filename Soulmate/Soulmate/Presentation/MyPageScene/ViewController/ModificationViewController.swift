@@ -25,90 +25,6 @@ enum ModificationSectionKind: Int, CaseIterable {
     }
 }
 
-struct ModificationInfoViewModel: Hashable {
-    var key: String
-    var value: String
-    
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(self.key)
-    }
-}
-
-struct ModificationImageViewModel: Hashable {
-    var uuid = UUID().uuidString
-    var imageData: Data
-    
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(self.uuid)
-    }
-}
-
-
-class ModificationViewModel {
-    
-    var cancelables = Set<AnyCancellable>()
-    
-    @Published var userDetailInfo: RegisterUserInfo?
-    @Published var userDetailImageData: [Data?] = [nil, nil, nil, nil, nil]
-    
-    let downloadDetailInfoUseCase: DownLoadDetailInfoUseCase
-    let downloadPictureUseCase: DownLoadPictureUseCase
-    let uploadDetailInfoUseCase: UploadDetailInfoUseCase
-    
-    struct Input {
-        var didTappedSaveButton: AnyPublisher<Void, Never>
-    }
-    
-    struct Output {
-        var didChangedDetailInfo: AnyPublisher<RegisterUserInfo?, Never>
-        var didChangedImageData: AnyPublisher<[Data?], Never>
-    }
-    
-    init(
-        downloadDetailInfoUseCase: DownLoadDetailInfoUseCase,
-        downloadPictureUseCase: DownLoadPictureUseCase,
-        uploadDetailInfoUseCase: UploadDetailInfoUseCase
-    ) {
-        self.downloadDetailInfoUseCase = downloadDetailInfoUseCase
-        self.downloadPictureUseCase = downloadPictureUseCase
-        self.uploadDetailInfoUseCase = uploadDetailInfoUseCase
-        
-        loadInfo()
-    }
-    
-    func transform(input: Input) -> Output {
-        input.didTappedSaveButton
-            .sink { [weak self] in
-                self?.updateInfo()
-            }
-            .store(in: &cancelables)
-        
-        return Output(
-            didChangedDetailInfo: $userDetailInfo.eraseToAnyPublisher(),
-            didChangedImageData: $userDetailImageData.eraseToAnyPublisher()
-        )
-    }
-    
-    func loadInfo() {
-        Task { [weak self] in
-            guard let uid = Auth.auth().currentUser?.uid else { return }
-            let userDetailInfo = try await downloadDetailInfoUseCase.downloadDetailInfo(userUid: uid)
-            self?.userDetailInfo = userDetailInfo
-            
-            guard let keyList = userDetailInfo.imageList else { return }
-            self?.userDetailImageData = try await downloadPictureUseCase.downloadPhotoData(keyList: keyList)
-        }
-
-    }
-    
-    func updateInfo() {
-        Task { [weak self] in
-            guard let userDetailInfo = self?.userDetailInfo else { return }
-            try await uploadDetailInfoUseCase.uploadDetailInfo(registerUserInfo: userDetailInfo)
-        }
-    }
-}
-
 class ModificationViewController: UIViewController {
     
     var cancelables = Set<AnyCancellable>()
@@ -167,31 +83,51 @@ class ModificationViewController: UIViewController {
         
         output.didChangedDetailInfo
             .compactMap { $0 }
+            .receive(on: DispatchQueue.main)
             .sink { [weak self] value in
-                DispatchQueue.main.async {
-                    var sectionSnapshot = NSDiffableDataSourceSectionSnapshot<AnyHashable>()
-                    sectionSnapshot.append([
-                        ModificationInfoViewModel(key: "성별", value: value.gender?.rawValue ?? ""),
-                        ModificationInfoViewModel(key: "닉네임", value: value.nickName ?? ""),
-                        ModificationInfoViewModel(key: "생년월일", value: value.birthDay?.yyyyMMdd() ?? ""),
-                        ModificationInfoViewModel(key: "키", value: String(value.height ?? 0)),
-                        ModificationInfoViewModel(key: "MBTI", value: value.mbti?.toString() ?? ""),
-                        ModificationInfoViewModel(key: "흡연여부", value: value.smokingType?.rawValue ?? ""),
-                        ModificationInfoViewModel(key: "음주여부", value: value.drinkingType?.rawValue ?? ""),
-                        ModificationInfoViewModel(key: "소개", value: value.aboutMe ?? "")
-                    ])
-                    self?.dataSource.apply(sectionSnapshot, to: .profileInfo)
-                }
+                var sectionSnapshot = NSDiffableDataSourceSectionSnapshot<AnyHashable>()
+                sectionSnapshot.append([
+                    ModificationInfoViewModel(key: "성별", value: value.gender?.rawValue ?? ""),
+                    ModificationInfoViewModel(key: "닉네임", value: value.nickName ?? ""),
+                    ModificationInfoViewModel(key: "생년월일", value: value.birthDay?.yyyyMMdd() ?? ""),
+                    ModificationInfoViewModel(key: "키", value: String(value.height ?? 0)),
+                    ModificationInfoViewModel(key: "MBTI", value: value.mbti?.toString() ?? ""),
+                    ModificationInfoViewModel(key: "흡연여부", value: value.smokingType?.rawValue ?? ""),
+                    ModificationInfoViewModel(key: "음주여부", value: value.drinkingType?.rawValue ?? ""),
+                    ModificationInfoViewModel(key: "소개", value: value.aboutMe ?? "")
+                ])
+                self?.dataSource.apply(sectionSnapshot, to: .profileInfo)
             }
             .store(in: &cancelables)
         
         output.didChangedImageData
+            .receive(on: DispatchQueue.main)
             .sink { [weak self] value in
-                DispatchQueue.main.async {
-                    var sectionSnapshot = NSDiffableDataSourceSectionSnapshot<AnyHashable>()
-                    sectionSnapshot.append(value.map { ModificationImageViewModel(imageData: $0 ?? Data())})
-                    self?.dataSource.apply(sectionSnapshot, to: .profileImage)
-                }
+                var sectionSnapshot = NSDiffableDataSourceSectionSnapshot<AnyHashable>()
+                sectionSnapshot.append(value.map { ModificationImageViewModel(imageData: $0 ?? Data())})
+                self?.dataSource.apply(sectionSnapshot, to: .profileImage)
+            }
+            .store(in: &cancelables)
+        
+        // TODO: 채팅이미지 넣는부분 개선하기
+        output.didChangedImageData
+            .compactMap { $0[0] }
+            .sink { [weak self] value in
+                guard let image = UIImage(data: value) else { return }
+                
+                let ratio = image.size.width / 50
+                let ratioHeight = image.size.height * ratio
+                let newImage = UIImage.resizeImage(image: image, targetSize: CGSize(width: 50, height: ratioHeight))!
+            
+                guard let data = newImage.jpegData(compressionQuality: 1) else { return }
+                self?.viewModel?.userChatImageData = data
+            }
+            .store(in: &cancelables)
+        
+        output.didUploadAllInfo
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                self?.viewModel?.finishModification()
             }
             .store(in: &cancelables)
     }
@@ -302,7 +238,7 @@ extension ModificationViewController {
 
         // MARK: Header Registration
         let headerRegistration = UICollectionView.SupplementaryRegistration
-        <TitleSupplementaryView>(elementKind: ModificationViewController.headerElementKind) {
+        <ModificationTitleSupplementaryView>(elementKind: ModificationViewController.headerElementKind) {
             (supplementaryView, string, indexPath) in
             let sectionKind = ModificationSectionKind(rawValue: indexPath.section)!
             supplementaryView.label.text = sectionKind.headerTitle
@@ -570,7 +506,7 @@ extension ModificationViewController {
 extension ModificationViewController: PHPickerViewControllerDelegate { //PHPicker 델리게이트
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
         picker.dismiss(animated: true)
-
+        
         results.first?.itemProvider.loadDataRepresentation(forTypeIdentifier: "public.image") { [weak self] (data, error) in
             guard let data = data,
                   let selectedIndex = self?.selectedPhotoIndex,
@@ -583,38 +519,14 @@ extension ModificationViewController: PHPickerViewControllerDelegate { //PHPicke
             
             
             guard let data = newImage.jpegData(compressionQuality: 0.2) else { return }
-
+            
             self?.viewModel?.userDetailImageData[selectedIndex] = data
             self?.selectedPhotoIndex = nil
         }
-
+        
     }
     
     
-}
-
-class TitleSupplementaryView: UICollectionReusableView {
-    let label: UILabel = {
-        let label = UILabel(frame: .zero)
-        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 18)
-        return label
-    }()
-    static let reuseIdentifier = "title-supplementary-reuse-identifier"
-
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        configure()
-    }
-    required init?(coder: NSCoder) {
-        fatalError()
-    }
-    
-    func configure() {
-        self.addSubview(label)
-        label.snp.makeConstraints {
-            $0.edges.equalToSuperview().inset(10)
-        }
-    }
 }
 
 

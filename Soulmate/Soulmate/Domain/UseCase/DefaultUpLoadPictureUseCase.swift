@@ -38,8 +38,9 @@ class DefaultUpLoadPictureUseCase: UploadPictureUseCase {
                 }
             }
             
-            var keyList = [String]()
-            return try await group.reduce(into: keyList) { $0 += $1 }
+            let keyList = try await group.reduce(into: [String]()) {$0 += $1}
+            
+            return keyList.sorted { $0 < $1 }
         }
         
     }
