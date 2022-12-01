@@ -16,9 +16,8 @@ final class DefaultLoadPrevChattingsUseCase: LoadPrevChattingsUseCase {
     private let info: ChatRoomInfo
     private let uid = Auth.auth().currentUser?.uid
     private let loadChattingRepository: LoadChattingsRepository
-    
-    var prevChattings = CurrentValueSubject<[Chat], Never>([])
-    var loadedPrevChattingCount = PassthroughSubject<Int, Never>()
+        
+    var loadedPrevChatting = PassthroughSubject<[Chat], Never>()
     
     init(
         with info: ChatRoomInfo,
@@ -31,8 +30,7 @@ final class DefaultLoadPrevChattingsUseCase: LoadPrevChattingsUseCase {
     func loadPrevChattings() {
         let db = Firestore.firestore()
         
-        guard let chatRoomId = info.documentId,
-              let startDocument = loadChattingRepository.startDocument else {
+        guard let chatRoomId = info.documentId, let startDocument = loadChattingRepository.startDocument else {
             return
         }
         
@@ -58,13 +56,8 @@ final class DefaultLoadPrevChattingsUseCase: LoadPrevChattingsUseCase {
                 
                 guard let lastDocument = snapshot.documents.last else { return }
                 
-                self?.loadChattingRepository.setStartDocument(lastDocument)
-                
-                let oldChats = self?.prevChattings.value ?? []
-                let newChats = chats + oldChats
-                
-                self?.prevChattings.send(newChats)
-                self?.loadedPrevChattingCount.send(chats.count)
+                self?.loadChattingRepository.setStartDocument(lastDocument)                                
+                self?.loadedPrevChatting.send(chats)
             }
     }
 }
