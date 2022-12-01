@@ -23,6 +23,7 @@ final class PartnerCell: UICollectionViewCell {
     private lazy var partnerImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
+        imageView.image = nil
         imageView.layer.cornerRadius = 14
         imageView.layer.cornerCurve = .continuous
         imageView.clipsToBounds = true
@@ -105,9 +106,9 @@ final class PartnerCell: UICollectionViewCell {
         super.prepareForReuse()
 
         partnerImageView.image = nil
-        partnerName.text = ""
-        partnerAge.text = ""
-        partnerDistance.text = ""
+        partnerName.text = "-"
+        partnerAge.text = "-"
+        partnerDistance.text = "-"
     }
     
     override func layoutSublayers(of layer: CALayer) {
@@ -123,7 +124,7 @@ final class PartnerCell: UICollectionViewCell {
             let from = CLLocation(latitude: UserDefaults.standard.double(forKey: "latestLatitude"), longitude: UserDefaults.standard.double(forKey: "latestLongitude"))
             
             let to = CLLocation(latitude: location.latitude, longitude: location.longitude)
-            self.partnerDistance.text = String(format: "%.2fkm", to.distance(from: from)*0.001)
+            self.partnerDistance.text = String(format: "%.2fkm", to.distance(from: from) * 0.001)
         }
     }
     

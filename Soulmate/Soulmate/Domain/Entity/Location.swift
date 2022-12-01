@@ -28,4 +28,9 @@ extension Location {
             longitude: self.longitude
         )
     }
+    
+    func toDistance(from: CLLocation) -> CLLocationDistance {
+        let toPoint = CLLocation(latitude: self.latitude, longitude: self.longitude)
+        return toPoint.distance(from: from)
+    }
 }
