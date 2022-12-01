@@ -21,8 +21,6 @@ final class PartnerCell: UICollectionViewCell {
     
     private lazy var partnerImageView: UIImageView = {
         let imageView = UIImageView()
-        // TODO: 프로필 사진으로 교체
-        //imageView.image = UIImage(named: "emoji")
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = 14
@@ -151,31 +149,31 @@ private extension PartnerCell {
         
         partnerName.snp.makeConstraints {
             $0.top.equalToSuperview().inset(24)
-            $0.left.equalToSuperview().inset(20)
+            $0.leading.equalToSuperview().inset(20)
             $0.bottom.equalToSuperview().inset(50)
         }
         
         partnerAge.snp.makeConstraints {
             $0.top.equalToSuperview().inset(24)
-            $0.left.equalToSuperview().inset(84)
+            $0.leading.equalTo(partnerName.snp.trailing).offset(6)
             $0.bottom.equalToSuperview().inset(50)
         }
         
         partnerMapImageView.snp.makeConstraints {
             $0.top.equalToSuperview().inset(57)
-            $0.left.equalToSuperview().inset(22.48)
+            $0.leading.equalToSuperview().inset(22.48)
             $0.bottom.equalToSuperview().inset(25)
         }
         
         partnerDistance.snp.makeConstraints {
             $0.top.equalToSuperview().inset(56)
-            $0.left.equalToSuperview().inset(44)
+            $0.leading.equalToSuperview().inset(44)
             $0.bottom.equalToSuperview().inset(24)
         }
         
         partnerSubview.snp.makeConstraints {
             $0.width.equalToSuperview()
-            $0.left.right.bottom.equalToSuperview()
+            $0.leading.trailing.bottom.equalToSuperview()
             $0.height.equalTo(100)
         }
         
