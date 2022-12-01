@@ -11,7 +11,7 @@ import Foundation
 protocol SendMessageUseCase {
     var sendButtonEnabled: CurrentValueSubject<Bool, Never> { get }
     var newMessage: PassthroughSubject<Chat, Never> { get }
-    var messageSended: PassthroughSubject<(id: String, date: Date?, success: Bool), Never> { get }
+    var messageSended: PassthroughSubject<Chat, Never> { get }
     
     func updateMessage(_ text: String)    
     func sendMessage()

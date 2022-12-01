@@ -114,21 +114,28 @@ extension ChattingRoomViewController {
         dataSource?.apply(snapshot, animatingDifferences: false)
     }
     
+    func reloadData() {
+        guard var snapshot = dataSource?.snapshot() else { return }
+        dataSource?.apply(snapshot, animatingDifferences: false)
+    }
+    
     func dataInsert(_ chats: [Chat]) {
         
         guard var snapshot = dataSource?.snapshot(),
               let firstItem = snapshot.itemIdentifiers.first else { return }
         
         let beforeHeight = chatTableView.contentSize.height
-        
-        print("before: ", chatTableView.contentOffset.y)
-        
+
         snapshot.insertItems(chats, beforeItem: firstItem)
-        dataSource?.apply(snapshot, animatingDifferences: false)
-                
-        let afterHeight = chatTableView.contentSize.height
-        
-        print("after: ", chatTableView.contentOffset.y)
+        dataSource?.apply(snapshot, animatingDifferences: false) { [weak self] in
+            guard let afterHeight = self?.chatTableView.contentSize.height,
+                  let currentYOffset = self?.chatTableView.contentOffset.y else { return }
+            let addedOffset = afterHeight - beforeHeight
+            self?.chatTableView.setContentOffset(
+                CGPoint(x: 0, y: currentYOffset + addedOffset),
+                animated: false
+            )
+        }
     }
     
     func dataAppend(_ chats: [Chat]) {
@@ -203,7 +210,7 @@ extension ChattingRoomViewController: UITableViewDelegate {
         if scrollView.contentOffset.y < chatTableView.bounds.size.height &&
             !chatTableView.isTracking &&
             scrollView.contentOffset.y > 0 {
-            
+                        
             loadPrevChattings()
         }
     }
@@ -339,44 +346,34 @@ private extension ChattingRoomViewController {
             }
             .store(in: &cancellabels)
         
-//        output.newMessageArrived
-//            .sink { [weak self] count in
-//
-////                var indexPathes: [IndexPath] = []
-////
-////                (1...count).forEach { i in
-////                    let indexPath = IndexPath(row: viewModel.chattings.count - i, section: 0)
-////
-////                    indexPathes.append(indexPath)
-////                }
-//
-//                let diff = (self?.bottomOffset().y ?? 0) - (self?.chatTableView.contentOffset.y ?? 0)
-//
-////                self?.chatTableView.performBatchUpdates({
-////                    self?.chatTableView.insertRows(at: indexPathes, with: .none)
-////                }, completion: { _ in
-////
-////                })
-//
-//                if let chats = self?.viewModel?.chattings {
-//                    self?.loadData(chats)
-//                }
-//
-//                if diff < 10 {
-//                    self?.scrollToBottom()
-//                }
-//            }
-//            .store(in: &cancellabels)
-//
-//        output.chatUpdated
-//            .receive(on: DispatchQueue.main)
-//            .sink { [weak self] row in
-//
-//                if let chats = self?.viewModel?.chattings {
-//                    self?.loadData(chats)
-//                }
-//            }
-//            .store(in: &cancellabels)
+        output.newMessageArrived
+            .sink { [weak self] chats in
+
+                let diff = (self?.bottomOffset().y ?? 0) - (self?.chatTableView.contentOffset.y ?? 0)
+
+                self?.dataAppend(chats)
+                
+                if diff < 10 {
+                    self?.scrollToBottom()
+                }
+            }
+            .store(in: &cancellabels)
+
+        output.chatUpdated
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] chat in
+
+                // FIXME: - index 찾는게 굉장히 비효율적
+                guard let index = self?.dataSource?.snapshot().itemIdentifiers.firstIndex(
+                    where: { old in
+                        old.id == chat.id
+                    }) else { return }
+                guard var items = self?.dataSource?.snapshot().itemIdentifiers else { return }
+                items[index] = chat
+                
+                self?.loadData(items)
+            }
+            .store(in: &cancellabels)
     }
 }
 
