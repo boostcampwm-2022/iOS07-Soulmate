@@ -109,6 +109,16 @@ final class DefaultListenOthersChattingUseCase: ListenOthersChattingUseCase {
                     
                 }
                 
+                //                    var unreadCount = try await db.collection("ChatRooms").document(documentId).getDocument().data(as: ChatRoomInfoDTO.self).unreadCount
+                //
+                //                    // FIXME: force unwrapping 수정하기
+                //                    unreadCount[othersId]! += 1
+                
+                guard let othersId = self?.info.userIds.first(where: { $0 != uid }) else { return }
+                
+                db.collection("ChatRooms").document(chatRoomId).updateData(["unreadCount": [uid: 0.0, othersId: 0.0 ]])
+                                    
+                
                 self?.loadChattingRepository.setLastDocument(lastDocument)                
                 self?.newMessages.send(chats)
                 self?.listenerRegistration?.remove()

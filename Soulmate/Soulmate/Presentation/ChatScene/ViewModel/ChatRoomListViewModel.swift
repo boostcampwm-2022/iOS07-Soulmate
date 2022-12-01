@@ -11,6 +11,7 @@ final class ChatRoomListViewModel {
     
     private weak var coordinator: ChatCoordinator?
     private let loadChattingRoomListUseCase: LoadChattingRoomListUseCase
+    private let authUseCase: AuthUseCase
     var chattingList: [ChatRoomInfo] {
         loadChattingRoomListUseCase.chattingRoomList.value
     }
@@ -24,9 +25,10 @@ final class ChatRoomListViewModel {
         var listLoaded = PassthroughSubject<Void, Never>()
     }
     
-    init(coordinator: ChatCoordinator, loadChattingRoomListUseCase: LoadChattingRoomListUseCase) {
+    init(coordinator: ChatCoordinator, loadChattingRoomListUseCase: LoadChattingRoomListUseCase, authUseCase: AuthUseCase) {
         self.coordinator = coordinator
         self.loadChattingRoomListUseCase = loadChattingRoomListUseCase
+        self.authUseCase = authUseCase
     }
     
     func transform(input: Input, cancellables: inout Set<AnyCancellable>) -> Output {
@@ -53,5 +55,9 @@ final class ChatRoomListViewModel {
             .store(in: &cancellables)
         
         return output
+    }
+    
+    func userUid() -> String? {
+        return authUseCase.userUid()
     }
 }

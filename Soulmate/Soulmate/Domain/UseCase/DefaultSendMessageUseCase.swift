@@ -67,7 +67,8 @@ final class DefaultSendMessageUseCase: SendMessageUseCase {
                 do {
                     let messageDoc = try await docRef.getDocument()
                     
-                    guard let messageTime = messageDoc.data()?["date"] as? Timestamp else { return }
+                    guard let messageTime = messageDoc.data()?["date"] as? Timestamp,
+                          let othersId = info.userIds.first(where: { $0 != uid }) else { return }
                     
                     try await db.collection("ChatRooms").document(documentId).updateData(
                         [
@@ -75,6 +76,14 @@ final class DefaultSendMessageUseCase: SendMessageUseCase {
                             "lastDate": messageTime
                         ]
                     )
+                    
+                    var unreadCount = try await db.collection("ChatRooms").document(documentId).getDocument().data(as: ChatRoomInfoDTO.self).unreadCount
+                    
+                    // FIXME: force unwrapping 수정하기
+                    unreadCount[othersId]! += 1
+                    
+                    try await db.collection("ChatRooms").document(documentId).updateData(["unreadCount": unreadCount])
+                    
                     var sendedChat = chat
                     sendedChat.updateState(true, messageTime.dateValue())
                     messageSended.send(sendedChat)
