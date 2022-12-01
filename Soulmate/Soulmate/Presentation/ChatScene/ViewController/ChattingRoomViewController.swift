@@ -120,15 +120,17 @@ extension ChattingRoomViewController {
               let firstItem = snapshot.itemIdentifiers.first else { return }
         
         let beforeHeight = chatTableView.contentSize.height
-        
-        print("before: ", chatTableView.contentOffset.y)
-        
+
         snapshot.insertItems(chats, beforeItem: firstItem)
-        dataSource?.apply(snapshot, animatingDifferences: false)
-                
-        let afterHeight = chatTableView.contentSize.height
-        
-        print("after: ", chatTableView.contentOffset.y)
+        dataSource?.apply(snapshot, animatingDifferences: false) { [weak self] in
+            guard let afterHeight = self?.chatTableView.contentSize.height,
+                  let currentYOffset = self?.chatTableView.contentOffset.y else { return }
+            let addedOffset = afterHeight - beforeHeight
+            self?.chatTableView.setContentOffset(
+                CGPoint(x: 0, y: currentYOffset + addedOffset),
+                animated: false
+            )
+        }
     }
     
     func dataAppend(_ chats: [Chat]) {
@@ -203,7 +205,7 @@ extension ChattingRoomViewController: UITableViewDelegate {
         if scrollView.contentOffset.y < chatTableView.bounds.size.height &&
             !chatTableView.isTracking &&
             scrollView.contentOffset.y > 0 {
-            
+                        
             loadPrevChattings()
         }
     }
