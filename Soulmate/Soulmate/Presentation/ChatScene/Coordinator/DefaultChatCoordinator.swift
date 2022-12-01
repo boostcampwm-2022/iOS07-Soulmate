@@ -84,7 +84,7 @@ class DefaultChatCoordinator: ChatCoordinator {
             imageKeyUseCase: imageKeyUseCase,
             fetchImageUseCase: fetchImageUseCase
         )
-        let viewController = ChattingRoomViewController(viewModel: viewModel)
+        let viewController = ChattingRoomViewController(viewModel: viewModel, chatRoomInfo: info)
         self.navigationController.pushViewController(viewController, animated: true)
     }
 }

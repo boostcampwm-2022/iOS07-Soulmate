@@ -62,8 +62,12 @@ final class DefaultListenOthersChattingUseCase: ListenOthersChattingUseCase {
                 
                 snapshot.documents.forEach { doc in
                     
-                    let readUsers = (doc.data()["readUsers"] as? [String] ?? []) + [uid]
-                    doc.reference.updateData(["readUsers": readUsers])
+                    var readUsers = (doc.data()["readUsers"] as? [String] ?? [])
+                    
+                    if 0..<2 ~= readUsers.count {
+                        readUsers += [uid]
+                        doc.reference.updateData(["readUsers": readUsers])
+                    }
                 }
                 
                 self?.loadChattingRepository.setLastDocument(lastDocument)

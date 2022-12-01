@@ -29,14 +29,20 @@ final class DefaultLoadUnreadChattingsUseCase: LoadUnreadChattingsUseCase {
     
     func loadUnreadChattings() {
         let db = Firestore.firestore()
+                       
+        guard let chatRoomId = info.documentId, let uid else { return }
         
-        guard let chatRoomId = info.documentId, let uid, let lastDocument = loadChattingRepository.lastDocument else { return }
-        
-        let _ = db.collection("ChatRooms")
+        var query = db.collection("ChatRooms")
             .document(chatRoomId)
-            .collection("Messages")            
+            .collection("Messages")
             .order(by: "date")
-            .start(afterDocument: lastDocument)
+        
+        if let lastDocument = loadChattingRepository.lastDocument {
+            query = query
+                .start(afterDocument: lastDocument)
+        }
+        
+        let _ = query
             .getDocuments { [weak self] snapshot, err in
                 
                 guard let snapshot, err == nil else { return }
