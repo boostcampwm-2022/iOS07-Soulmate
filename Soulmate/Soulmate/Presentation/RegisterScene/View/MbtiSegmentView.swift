@@ -89,10 +89,11 @@ private extension MbtiSegmentView {
     
     func configureLayout() {
         hStackView.snp.makeConstraints {
-            $0.top.equalToSuperview()
-            $0.leading.equalToSuperview()
-            $0.width.equalTo(350)
-            $0.height.equalTo(50)
+            $0.edges.equalToSuperview()
+//            $0.leading.equalToSuperview()
+//            //$0.width.equalTo(350)
+//            //$0.height.equalTo(50)
+//            $0.leading.trailing.equalToSuperview().inset(20)
         }
         
         leftButton.snp.makeConstraints {

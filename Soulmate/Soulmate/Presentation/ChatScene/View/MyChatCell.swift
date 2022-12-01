@@ -30,6 +30,10 @@ final class MyChatCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()        
+    }
+    
     func configure(from chat: Chat) {
         self.selectionStyle = .none
         myChatView.configure(with: chat)

@@ -10,6 +10,7 @@ import UIKit
 
 final class ChattingRoomViewController: UIViewController {
     
+    private var chatRoomInfo: ChatRoomInfo?
     private var viewModel: ChattingRoomViewModel?
     private var cancellabels = Set<AnyCancellable>()
     private var messageSubject = PassthroughSubject<String?, Never>()
@@ -60,9 +61,10 @@ final class ChattingRoomViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    convenience init(viewModel: ChattingRoomViewModel) {
+    convenience init(viewModel: ChattingRoomViewModel, chatRoomInfo: ChatRoomInfo) {
         self.init(nibName: nil, bundle: nil)
         self.viewModel = viewModel
+        self.chatRoomInfo = chatRoomInfo
     }
     
     override func viewDidLoad() {
@@ -193,7 +195,7 @@ private extension ChattingRoomViewController {
             loadPrevChattingsButton
         ]
         
-        self.title = "메이트 이름"
+        self.title = chatRoomInfo?.mateName
         view.backgroundColor = .white
     }
     
@@ -304,12 +306,20 @@ private extension ChattingRoomViewController {
             .store(in: &cancellabels)
         
         output.newMessageArrived
-            .sink { [weak self] _ in
+            .sink { [weak self] count in
+                
+                var indexPathes: [IndexPath] = []
+                
+                (1...count).forEach { i in
+                    let indexPath = IndexPath(row: viewModel.chattings.count - i, section: 0)
+                    
+                    indexPathes.append(indexPath)
+                }
                 
                 let diff = (self?.bottomOffset().y ?? 0) - (self?.chatTableView.contentOffset.y ?? 0)
                 
                 self?.chatTableView.performBatchUpdates({
-                    self?.chatTableView.insertRows(at: [IndexPath(row: viewModel.chattings.count - 1, section: 0)], with: .none)
+                    self?.chatTableView.insertRows(at: indexPathes, with: .none)
                 }, completion: { _ in
                     if diff < 10 {
                         self?.scrollToBottom()

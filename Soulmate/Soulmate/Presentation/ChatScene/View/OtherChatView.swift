@@ -72,7 +72,7 @@ final class OtherChatView: UIView {
         timeLabel.text = chat.date?.aHmm() ?? "..."
         if let count = unreadCount(of: chat) {
             readCount.text = "\(count)"
-        }        
+        }
     }
     
     func set(image: UIImage?) {
