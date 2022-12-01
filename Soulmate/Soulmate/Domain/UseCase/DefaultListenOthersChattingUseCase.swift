@@ -114,9 +114,9 @@ final class DefaultListenOthersChattingUseCase: ListenOthersChattingUseCase {
                 //                    // FIXME: force unwrapping 수정하기
                 //                    unreadCount[othersId]! += 1
                 
-                guard let othersId = info.userIds.first(where: { $0 != uid }) else { return }
+                guard let othersId = self?.info.userIds.first(where: { $0 != uid }) else { return }
                 
-                try await db.collection("ChatRooms").document(chatRoomId).updateData(["unreadCount": [uid: 0.0, othersId: 0.0 ]])
+                db.collection("ChatRooms").document(chatRoomId).updateData(["unreadCount": [uid: 0.0, othersId: 0.0 ]])
                                     
                 
                 self?.loadChattingRepository.setLastDocument(lastDocument)                
