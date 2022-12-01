@@ -12,9 +12,10 @@ import SnapKit
 final class PartnerCell: UICollectionViewCell {
     private lazy var partnerView: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor.white
+        view.backgroundColor = UIColor.clear
         view.layer.cornerRadius = 14
         view.layer.cornerCurve = .continuous
+        view.clipsToBounds = true
         addSubview(view)
         return view
     }()
@@ -22,8 +23,9 @@ final class PartnerCell: UICollectionViewCell {
     private lazy var partnerImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
-        imageView.clipsToBounds = true
         imageView.layer.cornerRadius = 14
+        imageView.layer.cornerCurve = .continuous
+        imageView.clipsToBounds = true
         partnerView.addSubview(imageView)
         return imageView
     }()
@@ -60,8 +62,6 @@ final class PartnerCell: UICollectionViewCell {
 
     private lazy var partnerName: UILabel = {
         let label = UILabel()
-        label.text = "초록잎"
-        label.frame = CGRect(x: 0, y: 0, width: 58, height: 26)
         label.textColor = UIColor.white
         label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 22)
         partnerSubview.addSubview(label)
@@ -70,8 +70,6 @@ final class PartnerCell: UICollectionViewCell {
     
     private lazy var partnerAge: UILabel = {
         let label = UILabel()
-        label.text = "25"
-        label.frame = CGRect(x: 0, y: 0, width: 23, height: 26)
         label.textColor = UIColor.white
         label.font = UIFont(name: "AppleSDGothicNeo-Light", size: 22)
         partnerSubview.addSubview(label)
@@ -81,7 +79,6 @@ final class PartnerCell: UICollectionViewCell {
     private lazy var partnerMapImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "mapGrey")
-        imageView.frame = CGRect(x: 0, y: 0, width: 13.04, height: 18)
         imageView.contentMode = .scaleAspectFit
         partnerSubview.addSubview(imageView)
         return imageView
@@ -89,8 +86,6 @@ final class PartnerCell: UICollectionViewCell {
     
     private lazy var partnerDistance: UILabel = {
         let label = UILabel()
-        label.text = "3 km"
-        label.frame = CGRect(x: 0, y: 0, width: 32, height: 20)
         label.textColor = UIColor.white
         label.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 15)
         partnerSubview.addSubview(label)
@@ -109,6 +104,7 @@ final class PartnerCell: UICollectionViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
 
+        partnerImageView.image = nil
         partnerName.text = ""
         partnerAge.text = ""
         partnerDistance.text = ""
