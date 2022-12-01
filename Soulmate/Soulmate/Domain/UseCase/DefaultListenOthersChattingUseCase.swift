@@ -37,14 +37,20 @@ final class DefaultListenOthersChattingUseCase: ListenOthersChattingUseCase {
         guard let chatRoomId = info.documentId, let lastDocument = loadChattingRepository.lastDocument, let uid else {
             return
         }
-
-        listenerRegistration = db.collection("ChatRooms")
+        
+        var query = db.collection("ChatRooms")
             .document(chatRoomId)
-            .collection("Messages")            
+            .collection("Messages")
             .order(by: "date")
-            .start(afterDocument: lastDocument)            
+        
+        if let lastDocument = loadChattingRepository.lastDocument {
+            query = query
+                .start(afterDocument: lastDocument)
+        }
+
+        listenerRegistration = query
             .addSnapshotListener { [weak self] snapshot, err in
-                                
+                
                 guard let snapshot, err == nil, !snapshot.documentChanges.isEmpty else { return }
                 
                 let addedChange = snapshot.documentChanges.filter { change in
@@ -85,7 +91,17 @@ final class DefaultListenOthersChattingUseCase: ListenOthersChattingUseCase {
                     docRef.updateData(["readUsers": arrReadUsers]) { err in
                         
                         if err == nil {
-                            print("update 됨")
+                            
+                            let lastReadDocRef = db
+                                .collection("ChatRooms")
+                                .document(chatRoomId)
+                                .collection("LastRead")
+                                .document("\(uid)")
+                            
+                            lastReadDocRef.updateData(
+                                ["lastReadTime" : Timestamp(date: Date.now)]
+                            )
+                            
                         } else {
                             print(err)
                         }

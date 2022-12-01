@@ -17,7 +17,7 @@ final class DefaultLoadUnreadChattingsUseCase: LoadUnreadChattingsUseCase {
     private let uid = Auth.auth().currentUser?.uid
     private let loadChattingRepository: LoadChattingsRepository
     
-    var unreadChattings = CurrentValueSubject<[Chat], Never>([])
+    var unreadChattings = PassthroughSubject<[Chat], Never>()
     
     init(
         with info: ChatRoomInfo,
@@ -56,6 +56,16 @@ final class DefaultLoadUnreadChattingsUseCase: LoadUnreadChattingsUseCase {
                     
                     docRef.updateData(["readUsers": arrReadUsers])
                 }
+                
+                let lastReadDocRef = db
+                    .collection("ChatRooms")
+                    .document(chatRoomId)
+                    .collection("LastRead")
+                    .document("\(uid)")
+                
+                lastReadDocRef.updateData(
+                    ["lastReadTime" : Timestamp(date: Date.now)]
+                )
 
                 let messageInfoDTOs = snapshot.documents.compactMap { try? $0.data(as: MessageInfoDTO.self) }
                 let infos = messageInfoDTOs.map { return $0.toModel() }
