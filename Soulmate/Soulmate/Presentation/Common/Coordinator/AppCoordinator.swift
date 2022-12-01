@@ -23,7 +23,7 @@ final class AppCoordinator: Coordinator {
     }
     
     func start() {
-        
+        //try? Auth.auth().signOut()
         if let uid = Auth.auth().currentUser?.uid {
             checkRegistration(for: uid)
         }
@@ -110,9 +110,6 @@ extension AppCoordinator: CoordinatorFinishDelegate {
     func coordinatorDidFinish(childCoordinator: Coordinator) {
         childCoordinators = childCoordinators.filter {
             $0.type != childCoordinator.type
-        }
-        if childCoordinator.type == .auth {
-            showMainTabFlow()
         }
     }
 }

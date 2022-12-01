@@ -25,9 +25,12 @@ final class MyPageViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         bind()
-        // viewModel -> view
-        // view -> viewModel
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        print("appear")
     }
     
     convenience init(viewModel: MyPageViewModel) {
@@ -41,13 +44,32 @@ final class MyPageViewController: UIViewController {
 private extension MyPageViewController {
     
     func bind() {
-        let _ = viewModel?.transform(
+        guard let viewModel = viewModel else { return }
+        
+        let output = viewModel.transform(
             input: MyPageViewModel.Input(
                 didTappedMyInfoEditButton: self.contentView.editButton.tapPublisher(),
                 didTappedHeartShopButton: self.contentView.remainingHeartButton.tapPublisher(),
                 didTappedMenuCell: self.rowSelectSubject.eraseToAnyPublisher()
             )
         )
+        
+        output.didUpdatedImage
+            .compactMap { $0 }
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] value in
+                self?.contentView.profileImageView.image = UIImage(data: value)
+            }
+            .store(in: &cancellables)
+        
+        output.didUpdatedPreview
+            .compactMap { $0 }
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] value in
+                self?.contentView.profileNameLabel.text = value.name
+                self?.contentView.profileAgeLabel.text = "\(value.birth?.toAge() ?? 0)"
+            }
+            .store(in: &cancellables)
         
     }
     
