@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Chat {
+struct Chat: Identifiable {
     enum ChatState {
         case validated
         case sending
