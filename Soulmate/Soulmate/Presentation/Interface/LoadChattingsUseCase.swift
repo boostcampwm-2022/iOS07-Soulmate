@@ -9,7 +9,7 @@ import Combine
 import FirebaseFirestore
 
 protocol LoadChattingsUseCase {
-    var initLoadedchattings: CurrentValueSubject<[Chat], Never> { get }        
+    var initLoadedchattings: PassthroughSubject<[Chat], Never> { get }
     
     func loadChattings()     
 }

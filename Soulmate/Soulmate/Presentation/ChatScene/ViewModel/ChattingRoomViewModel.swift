@@ -55,6 +55,7 @@ final class ChattingRoomViewModel {
         var unreadChattingLoaded = PassthroughSubject<[Chat], Never>()
         var prevChattingLoaded = PassthroughSubject<[Chat], Never>()
         var chatUpdated = PassthroughSubject<Chat, Never>()
+        var otherRead = PassthroughSubject<String, Never>()
         var newMessageArrived = PassthroughSubject<[Chat], Never>()
         var keyboardHeight = KeyboardMonitor().$keyboardHeight        
     }
@@ -76,8 +77,9 @@ final class ChattingRoomViewModel {
             .store(in: &cancellables)
         
         input.viewWillDisappear
-            .sink { _ in
-                self.listenOthersChattingsUseCase.removeListen()
+            .sink { [weak self] _ in
+                self?.listenOthersChattingsUseCase.removeListen()
+                self?.listenOtherIsReadingUseCase.removeListen()
             }
             .store(in: &cancellables)
         
@@ -108,7 +110,6 @@ final class ChattingRoomViewModel {
             .store(in: &cancellables)
         
         self.loadChattingsUseCase.initLoadedchattings
-            .dropFirst()
             .sink { [weak self] chats in
                 output.chattingInitLoaded.send(chats)
                 self?.loadUnreadChattingsUseCase.loadUnreadChattings()
@@ -117,9 +118,10 @@ final class ChattingRoomViewModel {
         
         self.loadUnreadChattingsUseCase.unreadChattings
             .sink { [weak self] chats in
-                output.unreadChattingLoaded.send(chats)
+                
+                output.unreadChattingLoaded.send(chats)                
                 self?.listenOthersChattingsUseCase.listenOthersChattings()
-//                self?.listenOtherIsReadingUseCase.listenOtherIsReading()
+                self?.listenOtherIsReadingUseCase.listenOtherIsReading()
             }
             .store(in: &cancellables)
         
@@ -148,6 +150,13 @@ final class ChattingRoomViewModel {
                 output.newMessageArrived.send(chats)
             }
             .store(in: &cancellables)
+        
+        self.listenOtherIsReadingUseCase.otherRead
+            .sink { otherId in
+                output.otherRead.send(otherId)
+            }
+            .store(in: &cancellables)
+            
 
         return output
     }

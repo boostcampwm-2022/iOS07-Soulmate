@@ -374,6 +374,22 @@ private extension ChattingRoomViewController {
                 self?.loadData(items)
             }
             .store(in: &cancellabels)
+        
+        output.otherRead            
+            .sink { [weak self] otherId in
+                guard var items = self?.dataSource?.snapshot().itemIdentifiers else { return }
+                print(items.map { $0.readUsers })
+                for i in (0..<items.count).reversed() {
+                    
+                    if items[i].readUsers.contains(otherId) { break }
+                    var chat = items[i]
+                    chat.readUsers.append(otherId)
+                    items[i] = chat                    
+                }
+                print(items.map { $0.readUsers })
+                self?.loadData(items)
+            }
+            .store(in: &cancellabels)
     }
 }
 
@@ -381,7 +397,7 @@ private extension ChattingRoomViewController {
 private extension ChattingRoomViewController {
     
     func scrollToBottom() {
-        guard let snapshot = dataSource?.snapshot() else { return }
+        guard let snapshot = dataSource?.snapshot(), !snapshot.itemIdentifiers.isEmpty else { return }        
         
         chatTableView.scrollToRow(
             at: IndexPath(
