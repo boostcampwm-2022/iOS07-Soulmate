@@ -22,12 +22,18 @@ final class PartnerCell: UICollectionViewCell {
     private lazy var partnerImageView: UIImageView = {
         let imageView = UIImageView()
         // TODO: 프로필 사진으로 교체
-        imageView.image = UIImage(named: "emoji")
+        //imageView.image = UIImage(named: "emoji")
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = 14
         partnerView.addSubview(imageView)
         return imageView
+    }()
+    
+    private lazy var loadingIndicator: LoadingIndicator = {
+       let loading = LoadingIndicator()
+        partnerImageView.addSubview(loading)
+        return loading
     }()
     
     private lazy var partnerSubview: UIView = {
@@ -105,7 +111,6 @@ final class PartnerCell: UICollectionViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
 
-        partnerImageView.image = UIImage(systemName: "photo")
         partnerName.text = ""
         partnerAge.text = ""
         partnerDistance.text = ""
@@ -132,6 +137,7 @@ final class PartnerCell: UICollectionViewCell {
         let ratio = userImage.size.width / self.contentView.frame.width
 
         self.partnerImageView.image = userImage.resized(to: CGSize(width: self.contentView.frame.width, height: self.contentView.frame.height * ratio))
+        loadingIndicator.stopAnimating()
     }
     
 }
@@ -176,6 +182,10 @@ private extension PartnerCell {
         partnerView.snp.makeConstraints {
             $0.width.equalToSuperview()
             $0.height.equalTo(partnerView.snp.width)
+        }
+        
+        loadingIndicator.snp.makeConstraints {
+            $0.center.equalToSuperview()
         }
     }
 }
