@@ -50,9 +50,11 @@ final class DefaultLoadUnreadChattingsUseCase: LoadUnreadChattingsUseCase {
                 snapshot.documents.forEach { doc in
                     
                     let docRef = doc.reference
-                    let readUsers = (doc.data()["readUsers"] as? [String] ?? []) + [uid]
+                    var readUsers = Set(doc.data()["readUsers"] as? [String] ?? [])
+                    readUsers.insert(uid)
+                    var arrReadUsers = readUsers.map { $0 }
                     
-                    docRef.updateData(["readUsers": readUsers])
+                    docRef.updateData(["readUsers": arrReadUsers])
                 }
 
                 let messageInfoDTOs = snapshot.documents.compactMap { try? $0.data(as: MessageInfoDTO.self) }

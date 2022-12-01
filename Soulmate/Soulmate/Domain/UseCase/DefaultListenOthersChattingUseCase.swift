@@ -42,10 +42,12 @@ final class DefaultListenOthersChattingUseCase: ListenOthersChattingUseCase {
                                 
                 guard let snapshot, err == nil, !snapshot.documentChanges.isEmpty else { return }
                 
-                snapshot.documentChanges.forEach { change in
-                    if change.type != .added { return }
+                let addedChange = snapshot.documentChanges.filter { change in
+                    change.type == .added
                 }
                 
+                if addedChange.isEmpty { return }
+                print(addedChange.map { $0.document.data() })
                 let messageInfoDTOs = snapshot.documents.compactMap { try? $0.data(as: MessageInfoDTO.self) }
                 let infos = messageInfoDTOs.map { return $0.toModel() }.reversed()
                 let others = infos.filter { $0.userId != uid }
@@ -54,7 +56,11 @@ final class DefaultListenOthersChattingUseCase: ListenOthersChattingUseCase {
                     let isMe = info.userId == uid
                     let text = info.text
                     
-                    return Chat(isMe: isMe, userId: info.userId, readUsers: info.readUsers + [uid], text: text, date: date, state: .validated)
+                    var readUsers = Set(info.readUsers)
+                    readUsers.insert(uid)
+                    var arrReadUsers = readUsers.map { $0 }
+                    
+                    return Chat(isMe: isMe, userId: info.userId, readUsers: arrReadUsers, text: text, date: date, state: .validated)
                 }
                                 
                 guard !chats.isEmpty else { return }
@@ -62,12 +68,12 @@ final class DefaultListenOthersChattingUseCase: ListenOthersChattingUseCase {
                 
                 snapshot.documents.forEach { doc in
                     
-                    var readUsers = (doc.data()["readUsers"] as? [String] ?? [])
+                    let docRef = doc.reference
+                    var readUsers = Set(doc.data()["readUsers"] as? [String] ?? [])
+                    readUsers.insert(uid)
+                    var arrReadUsers = readUsers.map { $0 }
                     
-                    if 0..<2 ~= readUsers.count {
-                        readUsers += [uid]
-                        doc.reference.updateData(["readUsers": readUsers])
-                    }
+                    docRef.updateData(["readUsers": arrReadUsers])
                 }
                 
                 self?.loadChattingRepository.setLastDocument(lastDocument)

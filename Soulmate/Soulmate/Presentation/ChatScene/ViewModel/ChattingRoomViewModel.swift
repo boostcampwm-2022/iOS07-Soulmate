@@ -184,9 +184,6 @@ final class ChattingRoomViewModel {
                         self?.newChattings.insert(newChat, at: index)
                         
                     }
-                    
-                    print(index)
-                    print(chats.count)
                 }
                 
                 output.newMessageArrived.send(chats.count)
