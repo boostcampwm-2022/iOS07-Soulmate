@@ -16,7 +16,7 @@ final class DefaultLoadChattingsUseCase: LoadChattingsUseCase {
     private let uid = Auth.auth().currentUser?.uid
     private let loadChattingRepository: LoadChattingsRepository
     
-    var initLoadedchattings = CurrentValueSubject<[Chat], Never>([])
+    var initLoadedchattings = PassthroughSubject<[Chat], Never>()
     
     init(
         with info: ChatRoomInfo,

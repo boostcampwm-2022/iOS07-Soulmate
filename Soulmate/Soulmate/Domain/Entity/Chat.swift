@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Chat {
+struct Chat: Identifiable, Hashable {
     enum ChatState {
         case validated
         case sending
@@ -25,5 +25,12 @@ struct Chat {
     mutating func updateState(_ success: Bool, _ date: Date?) {
         self.state = success ? .validated : .fail
         self.date = date
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+//        hasher.combine(state)
+//        hasher.combine(date)
+//        hasher.combine(readUsers)
     }
 }

@@ -26,25 +26,38 @@ final class DefaultListenOthersChattingUseCase: ListenOthersChattingUseCase {
             self.loadChattingRepository = loadChattingRepository
     }
     
+    func removeListen() {
+        listenerRegistration?.remove()
+        listenerRegistration = nil
+    }
+    
     func listenOthersChattings() {
         let db = Firestore.firestore()
         
         guard let chatRoomId = info.documentId, let lastDocument = loadChattingRepository.lastDocument, let uid else {
             return
         }
-
-        listenerRegistration = db.collection("ChatRooms")
+        
+        var query = db.collection("ChatRooms")
             .document(chatRoomId)
-            .collection("Messages")            
+            .collection("Messages")
             .order(by: "date")
-            .start(afterDocument: lastDocument)            
+        
+        if let lastDocument = loadChattingRepository.lastDocument {
+            query = query
+                .start(afterDocument: lastDocument)
+        }
+
+        listenerRegistration = query
             .addSnapshotListener { [weak self] snapshot, err in
-                                
+                
                 guard let snapshot, err == nil, !snapshot.documentChanges.isEmpty else { return }
                 
-                snapshot.documentChanges.forEach { change in
-                    if change.type != .added { return }
+                let addedChange = snapshot.documentChanges.filter { change in
+                    change.type == .added
                 }
+                
+                if addedChange.isEmpty { return }
                 
                 let messageInfoDTOs = snapshot.documents.compactMap { try? $0.data(as: MessageInfoDTO.self) }
                 let infos = messageInfoDTOs.map { return $0.toModel() }.reversed()
@@ -54,23 +67,53 @@ final class DefaultListenOthersChattingUseCase: ListenOthersChattingUseCase {
                     let isMe = info.userId == uid
                     let text = info.text
                     
-                    return Chat(isMe: isMe, userId: info.userId, readUsers: info.readUsers + [uid], text: text, date: date, state: .validated)
+                    var readUsers = Set(info.readUsers)
+                    readUsers.insert(uid)
+                    var arrReadUsers = readUsers.map { $0 }
+                    
+                    return Chat(isMe: isMe, userId: info.userId, readUsers: arrReadUsers, text: text, date: date, state: .validated)
                 }
                                 
                 guard !chats.isEmpty else { return }
                 guard let lastDocument = snapshot.documents.last else { return }
                 
-                snapshot.documents.forEach { doc in
+                for doc in snapshot.documents {
                     
-                    var readUsers = (doc.data()["readUsers"] as? [String] ?? [])
+                    let userId = doc.data()["userId"] as? String
+                    if userId == uid { continue }
                     
-                    if 0..<2 ~= readUsers.count {
-                        readUsers += [uid]
-                        doc.reference.updateData(["readUsers": readUsers])
+                    let docRef = doc.reference
+                    var readUsers = Set(doc.data()["readUsers"] as? [String] ?? [])
+                    readUsers.insert(uid)
+                    var arrReadUsers = readUsers.map { $0 }
+                    
+                    
+                    docRef.updateData(["readUsers": arrReadUsers]) { err in
+                        
+                        if err == nil {
+                            
+                            let lastReadDocRef = db
+                                .collection("ChatRooms")
+                                .document(chatRoomId)
+                                .collection("LastRead")
+                                .document("\(uid)")
+                            
+                            lastReadDocRef.updateData(
+                                ["lastReadTime" : Timestamp(date: Date.now)]
+                            )
+                            
+                        } else {
+                            print(err)
+                        }
                     }
                 }
                 
-                self?.loadChattingRepository.setLastDocument(lastDocument)
+                
+                
+                guard let othersId = self?.info.userIds.first(where: { $0 != uid }) else { return }
+                db.collection("ChatRooms").document(chatRoomId).updateData(["unreadCount": [uid: 0.0, othersId: 0.0]])
+                
+                self?.loadChattingRepository.setLastDocument(lastDocument)                
                 self?.newMessages.send(chats)
                 self?.listenerRegistration?.remove()
                 self?.listenerRegistration = nil

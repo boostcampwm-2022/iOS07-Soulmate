@@ -50,8 +50,14 @@ final class ChatRoomInfoView: UIView {
         container.widthAnchor.constraint(equalToConstant: 22).isActive = true
         container.heightAnchor.constraint(greaterThanOrEqualToConstant: 22).isActive = true
         
+        container.addSubview(unReadMessageCounterLabel)
+        unReadMessageCounterLabel.trailingAnchor.constraint(equalTo: container.trailingAnchor).isActive = true
+        unReadMessageCounterLabel.centerYAnchor.constraint(equalTo: container.centerYAnchor).isActive = true
+        return container
+    }()
+    
+    private lazy var unReadMessageCounterLabel: UILabel = {
         let label = UILabel(frame: .zero)
-        container.addSubview(label)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
         label.textColor = .white
@@ -62,10 +68,8 @@ final class ChatRoomInfoView: UIView {
         label.clipsToBounds = true
         label.heightAnchor.constraint(equalToConstant: 18).isActive = true
         label.widthAnchor.constraint(equalToConstant: 18).isActive = true
-        label.trailingAnchor.constraint(equalTo: container.trailingAnchor).isActive = true
-        label.centerYAnchor.constraint(equalTo: container.centerYAnchor).isActive = true
         
-        return container
+        return label
     }()
     
     private lazy var nameTimeStackView: UIStackView = {
@@ -118,7 +122,16 @@ final class ChatRoomInfoView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure(with info: ChatRoomInfo) {
+    func configure(with info: ChatRoomInfo, uid: String) {
+        guard let unread = info.unreadCount[uid] else { return }
+        
+        if unread != 0 {
+            unReadMessageCountBadge.isHidden = false
+            unReadMessageCounterLabel.text = String(Int(unread))
+        } else {
+            unReadMessageCountBadge.isHidden = true
+            unReadMessageCounterLabel.text = nil
+        }
         
         mateNameLabel.text = info.mateName
         latestChatTime.text = info.lastChatDate?.passedTime()

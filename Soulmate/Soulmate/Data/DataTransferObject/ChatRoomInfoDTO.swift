@@ -11,6 +11,7 @@ struct ChatRoomInfoDTO: Decodable {
     var documentId: String?
     var mateName: String
     var lastMessage: String?
+    var unreadCount: [String: Double]
     var userIds: [String]
     var lastDate: Timestamp?
     
@@ -20,6 +21,7 @@ struct ChatRoomInfoDTO: Decodable {
             mateName: mateName,
             mateProfileImage: nil,
             userIds: userIds,
+            unreadCount: unreadCount,
             latestChatContent: lastMessage,
             lastChatDate: lastDate?.dateValue()
         )

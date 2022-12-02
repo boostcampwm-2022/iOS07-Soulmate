@@ -9,8 +9,7 @@ import Combine
 import FirebaseFirestore
 
 protocol LoadPrevChattingsUseCase {
-    var prevChattings: CurrentValueSubject<[Chat], Never> { get }
-    var loadedPrevChattingCount: PassthroughSubject<Int, Never> { get }
+    var loadedPrevChatting: PassthroughSubject<[Chat], Never> { get }
     
     func loadPrevChattings()
 }

@@ -17,7 +17,7 @@ final class DefaultLoadUnreadChattingsUseCase: LoadUnreadChattingsUseCase {
     private let uid = Auth.auth().currentUser?.uid
     private let loadChattingRepository: LoadChattingsRepository
     
-    var unreadChattings = CurrentValueSubject<[Chat], Never>([])
+    var unreadChattings = PassthroughSubject<[Chat], Never>()
     
     init(
         with info: ChatRoomInfo,
@@ -50,10 +50,27 @@ final class DefaultLoadUnreadChattingsUseCase: LoadUnreadChattingsUseCase {
                 snapshot.documents.forEach { doc in
                     
                     let docRef = doc.reference
-                    let readUsers = (doc.data()["readUsers"] as? [String] ?? []) + [uid]
+                    var readUsers = Set(doc.data()["readUsers"] as? [String] ?? [])
+                    readUsers.insert(uid)
+                    var arrReadUsers = readUsers.map { $0 }
                     
-                    docRef.updateData(["readUsers": readUsers])
+                    docRef.updateData(["readUsers": arrReadUsers])
                 }
+                
+                let lastReadDocRef = db
+                    .collection("ChatRooms")
+                    .document(chatRoomId)
+                    .collection("LastRead")
+                    .document("\(uid)")
+                
+                lastReadDocRef.updateData(
+                    ["lastReadTime" : Timestamp(date: Date.now)]
+                )
+                
+                guard let othersId = self?.info.userIds.first(where: { $0 != uid }) else { return }
+                
+                db.collection("ChatRooms").document(chatRoomId).updateData(["unreadCount": [uid: 0.0, othersId: 0.0 ]])
+                     
 
                 let messageInfoDTOs = snapshot.documents.compactMap { try? $0.data(as: MessageInfoDTO.self) }
                 let infos = messageInfoDTOs.map { return $0.toModel() }

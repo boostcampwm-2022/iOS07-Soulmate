@@ -23,7 +23,8 @@ class DefaultChatCoordinator: ChatCoordinator {
         let loadChattingRoomListUseCase = DefaultLoadChattingRoomListUseCase()
         let chatRoomListViewModel = ChatRoomListViewModel(
             coordinator: self,
-            loadChattingRoomListUseCase: loadChattingRoomListUseCase
+            loadChattingRoomListUseCase: loadChattingRoomListUseCase,
+            authUseCase: DefaultAuthUseCase()
         )
         let chatRoomListVC = ChatRoomListViewController(viewModel: chatRoomListViewModel)
         
