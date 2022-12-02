@@ -66,6 +66,11 @@ final class DefaultLoadUnreadChattingsUseCase: LoadUnreadChattingsUseCase {
                 lastReadDocRef.updateData(
                     ["lastReadTime" : Timestamp(date: Date.now)]
                 )
+                
+                guard let othersId = self?.info.userIds.first(where: { $0 != uid }) else { return }
+                
+                db.collection("ChatRooms").document(chatRoomId).updateData(["unreadCount": [uid: 0.0, othersId: 0.0 ]])
+                     
 
                 let messageInfoDTOs = snapshot.documents.compactMap { try? $0.data(as: MessageInfoDTO.self) }
                 let infos = messageInfoDTOs.map { return $0.toModel() }
