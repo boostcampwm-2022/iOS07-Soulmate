@@ -14,6 +14,8 @@ final class HomeViewController: UIViewController {
     var bag = Set<AnyCancellable>()
     
     private var viewModel: HomeViewModel?
+    let refreshControl = UIRefreshControl()
+    var data = [UserPreview]()
     
     // MARK: - UI
     private lazy var logo: UIImageView = {
@@ -49,12 +51,11 @@ final class HomeViewController: UIViewController {
     private lazy var collectionView: UICollectionView = {
         var layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
-        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        layout.itemSize = CGSize(width: view.frame.size.width - 40, height: view.frame.size.width - 40)
-        
+        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 30, right: 0)
+
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.register(PartnerCell.self, forCellWithReuseIdentifier: "PartnerCell")
-        cv.register(RecommendFooterView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: "RecommendFooterView")
+        cv.register(RecommendView.self, forCellWithReuseIdentifier: "RecommendView")
         cv.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         cv.showsVerticalScrollIndicator = false
         cv.bounces = true
@@ -119,6 +120,9 @@ private extension HomeViewController {
         view.backgroundColor = .white
         collectionView.delegate = self
         collectionView.dataSource = self
+        refreshControl.tintColor = .mainPurple
+        refreshControl.addTarget(self, action: #selector(self.refreshFunc), for: .valueChanged)
+        collectionView.refreshControl = refreshControl
     }
     
     func configureLayout() {
@@ -149,13 +153,15 @@ private extension HomeViewController {
         }
     }
     
+    @objc func refreshFunc() {
+        collectionView.reloadData()
+        refreshControl.endRefreshing()
+    }
+    
     func setAuthAlertAction() {
-         let authAlertController : UIAlertController
+         let authAlertController = UIAlertController(title: "위치 사용 권한이 필요합니다.", message: "위치 권한을 허용해야만 앱을 사용하실 수 있습니다.", preferredStyle: .alert)
          
-         authAlertController = UIAlertController(title: "위치 사용 권한이 필요합니다.", message: "위치 권한을 허용해야만 앱을 사용하실 수 있습니다.", preferredStyle: .alert)
-         
-         let getAuthAction : UIAlertAction
-         getAuthAction = UIAlertAction(title: "설정", style: .default, handler: { (UIAlertAction) in
+         let getAuthAction = UIAlertAction(title: "설정", style: .default, handler: { (UIAlertAction) in
              if let appSettings = URL(string: UIApplication.openSettingsURLString) {
                  UIApplication.shared.open(appSettings,options: [:],completionHandler: nil)
              }
@@ -166,72 +172,95 @@ private extension HomeViewController {
 }
 
 extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 2
+    }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         guard let viewModel = viewModel else { return 0 }
-        return viewModel.recommendedMatePreviewList.count
+        switch section {
+        case 0:
+            if data.isEmpty, viewModel.recommendedMatePreviewList.count <= 2 {
+                data = viewModel.recommendedMatePreviewList
+            } else if data.isEmpty, viewModel.recommendedMatePreviewList.count > 2 {
+                (0..<2).forEach {
+                    data.append(viewModel.recommendedMatePreviewList[$0])
+                }
+            }
+            return data.count
+            
+        case 1:
+            return 1
+            
+        default:
+            fatalError("indexPath.section")
+        }
     }
     
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PartnerCell", for: indexPath) as? PartnerCell,
-              let viewModel = viewModel else {
-            return UICollectionViewCell()
-        }
-        
-        cell.fill(userPreview: viewModel.recommendedMatePreviewList[indexPath.row])
-        
-        Task {
-            guard let imageKey = viewModel.recommendedMatePreviewList[indexPath.row].imageKey,
-                  let imageData = try await viewModel.fetchImage(key: imageKey),
-                  let uiImage = UIImage(data: imageData) else { return }
+        switch indexPath.section {
+        case 0:
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PartnerCell", for: indexPath) as? PartnerCell,
+            let viewModel = viewModel else {
+                return UICollectionViewCell()
+            }
             
-            await MainActor.run { cell.fill(userImage: uiImage) }
+            Task {
+                guard let imageKey = viewModel.recommendedMatePreviewList[indexPath.row].imageKey,
+                      let imageData = try await viewModel.fetchImage(key: imageKey),
+                      let uiImage = UIImage(data: imageData) else { return }
+                cell.fill(userPreview: viewModel.recommendedMatePreviewList[indexPath.row])
+                await MainActor.run { cell.fill(userImage: uiImage) }
+            }
+            return cell
+            
+        case 1:
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "RecommendView", for: indexPath) as? RecommendView else {
+                return UICollectionViewCell()
+            }
+            return cell
+        default:
+            fatalError("indexPath.section")
         }
-        
-        
-        
-        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        switch indexPath.section {
+        case 0:
+            return CGSize(width: view.frame.size.width - 40, height: view.frame.size.width - 40)
+            
+        case 1:
+            return CGSize(width: view.frame.size.width - 40, height: 54)
+            
+        default:
+            fatalError("indexPath.section")
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        guard let vc = viewModel?.coordinator?.showDetailVC() else { return }
-//        self.present(vc, animated: true)
         guard let viewModel = viewModel else { return }
-        viewModel.mateSelected(index: indexPath.row)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        guard let footer = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "RecommendFooterView", for: indexPath) as? RecommendFooterView else { return RecommendFooterView() }
-        return footer
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
-        let width: CGFloat = collectionView.frame.width
-        let height: CGFloat = 100
-        return CGSize(width: width, height: height)
-    }
-}
-
-#if DEBUG
-import SwiftUI
-struct HomeViewControllerRepresentable: UIViewControllerRepresentable {
-    func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {
-        // leave this empty
-    }
-    @available(iOS 13.0.0, *)
-    func makeUIViewController(context: Context) -> some UIViewController {
-        HomeViewController()
-    }
-    @available(iOS 13.0, *)
-    struct SnapKitVCRepresentable_PreviewProvider: PreviewProvider {
-        static var previews: some View {
-            Group {
-                HomeViewControllerRepresentable()
-                    .ignoresSafeArea()
-                    .previewDisplayName("Preview")
-                    .previewDevice(PreviewDevice(rawValue: "iPhone 14"))
+        switch indexPath.section {
+        case 0:
+            viewModel.mateSelected(index: indexPath.row)
+            
+        case 1:
+            let numberOfItem = self.collectionView.numberOfItems(inSection: 0)
+            if viewModel.recommendedMatePreviewList.count - numberOfItem >= 1 {
+                print("1명 더 추천 완료! 하트 -10개!")
+                data.insert(viewModel.recommendedMatePreviewList[numberOfItem], at: numberOfItem)
+                collectionView.insertItems(at: [IndexPath(item: numberOfItem, section: 0)])
+                collectionView.reloadData()
+            } else {
+                let alert = UIAlertController(title: "😭", message: "가까운 거리에 더 이상 추천 상대가 없어요!", preferredStyle: .alert)
+                let okAction = UIAlertAction(title: "OK", style: .default)
+                alert.addAction(okAction)
+                present(alert, animated: true)
             }
+            
+            
+        default:
+            fatalError("indexPath.section")
         }
     }
-} #endif
+}

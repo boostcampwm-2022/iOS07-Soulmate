@@ -27,7 +27,7 @@ class DefaultUpLoadLocationUseCase: UpLoadLocationUseCase {
     
     func updateLocation(location: Location) async throws {
         guard let uid = Auth.auth().currentUser?.uid else { return }
-        print(location)
+        print("업데이트 \(location)")
         userDefaultsRepository.set(key: "latestLatitude", value: location.latitude)
         userDefaultsRepository.set(key: "latestLongitude", value: location.longitude)
         try await userPreviewRepository.updateLocation(userUid: uid, location: location)
