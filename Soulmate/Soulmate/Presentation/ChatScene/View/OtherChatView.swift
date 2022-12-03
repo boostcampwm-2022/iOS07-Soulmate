@@ -33,6 +33,7 @@ final class OtherChatView: UIView {
         label.clipsToBounds = true
         label.textColor = .black
         label.lineBreakMode = .byCharWrapping
+        label.font = UIFont.systemFont(ofSize: 18)
         
         return label
     }()

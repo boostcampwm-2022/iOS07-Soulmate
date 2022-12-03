@@ -21,6 +21,7 @@ final class MyChatView: UIView {
         label.clipsToBounds = true
         label.textColor = .white
         label.lineBreakMode = .byCharWrapping
+        label.font = UIFont.systemFont(ofSize: 18)
         
         return label
     }()
