@@ -178,6 +178,7 @@
 		6AE21021291DE06600A32280 /* SelectableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AE21020291DE06600A32280 /* SelectableCell.swift */; };
 		6AECA1D2293B865C0035A9AE /* ChatDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AECA1D1293B865C0035A9AE /* ChatDataSource.swift */; };
 		6AECA1D6293B88000035A9AE /* ChatListLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AECA1D5293B88000035A9AE /* ChatListLayout.swift */; };
+		6AECA1D8293B8C390035A9AE /* ChatListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AECA1D7293B8C390035A9AE /* ChatListView.swift */; };
 		B3010251292F1A2000481C6C /* MyPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3010250292F1A2000481C6C /* MyPageView.swift */; };
 		B301025529322FB500481C6C /* HeartShopViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B301025429322FB500481C6C /* HeartShopViewController.swift */; };
 		B301025729329E8A00481C6C /* HeartShopCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B301025629329E8A00481C6C /* HeartShopCell.swift */; };
@@ -375,6 +376,7 @@
 		6AE21020291DE06600A32280 /* SelectableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectableCell.swift; sourceTree = "<group>"; };
 		6AECA1D1293B865C0035A9AE /* ChatDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatDataSource.swift; sourceTree = "<group>"; };
 		6AECA1D5293B88000035A9AE /* ChatListLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatListLayout.swift; sourceTree = "<group>"; };
+		6AECA1D7293B8C390035A9AE /* ChatListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatListView.swift; sourceTree = "<group>"; };
 		B3010250292F1A2000481C6C /* MyPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageView.swift; sourceTree = "<group>"; };
 		B301025429322FB500481C6C /* HeartShopViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartShopViewController.swift; sourceTree = "<group>"; };
 		B301025629329E8A00481C6C /* HeartShopCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartShopCell.swift; sourceTree = "<group>"; };
@@ -694,6 +696,7 @@
 				6A34C231292F29EA00A3E57F /* ReceivedChatRequestView.swift */,
 				6A34C233292F29F800A3E57F /* ReceivedChatRequestCell.swift */,
 				6A34C23F292FAE8100A3E57F /* PageNavigationView.swift */,
+				6AECA1D7293B8C390035A9AE /* ChatListView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1214,6 +1217,7 @@
 				07DDDF292924B2D500CB398C /* RegisterHeightView.swift in Sources */,
 				6A8C88942919031A009EDBBB /* ViewController.swift in Sources */,
 				6A34C1ED292B3A3A00A3E57F /* ChattingRoomViewModel.swift in Sources */,
+				6AECA1D8293B8C390035A9AE /* ChatListView.swift in Sources */,
 				6A34C230292F273C00A3E57F /* ReceivedChatRequestsViewController.swift in Sources */,
 				6A34C201292C97BC00A3E57F /* ChatRoomListViewModel.swift in Sources */,
 				6A34C203292C982500A3E57F /* LoadChattingRoomListUseCase.swift in Sources */,
