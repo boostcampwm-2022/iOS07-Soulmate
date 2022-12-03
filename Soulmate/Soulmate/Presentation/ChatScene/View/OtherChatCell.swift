@@ -8,9 +8,19 @@
 import UIKit
 import SnapKit
 
-final class OtherChatCell: UITableViewCell {
+final class OtherChatCell: UICollectionViewCell {
     
     static let id = String(describing: OtherChatCell.self)
+    static func register(with collectionView: UICollectionView) {
+        collectionView.register(OtherChatCell.self, forCellWithReuseIdentifier: id)
+    }
+    static func dequeu(from collectionView: UICollectionView, at indexPath: IndexPath) -> OtherChatCell {
+        let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: id,
+            for: indexPath) as? OtherChatCell ?? OtherChatCell()
+        
+        return cell
+    }
     
     private lazy var otherChatView: OtherChatView = {
         let chatView = OtherChatView()
@@ -20,8 +30,8 @@ final class OtherChatCell: UITableViewCell {
         return chatView
     }()
     
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         
         layout()
     }
@@ -36,7 +46,6 @@ final class OtherChatCell: UITableViewCell {
     }
     
     func configure(from chat: Chat) {
-        self.selectionStyle = .none
         otherChatView.configure(with: chat)
     }
     

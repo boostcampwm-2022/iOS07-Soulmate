@@ -29,8 +29,5 @@ struct Chat: Identifiable, Hashable {
     
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)
-//        hasher.combine(state)
-//        hasher.combine(date)
-//        hasher.combine(readUsers)
     }
 }
