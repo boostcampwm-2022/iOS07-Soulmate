@@ -11,6 +11,10 @@ final class ChatDataSource: NSObject, UICollectionViewDataSource {
     
     private var chats: [Chat] = []
     
+    var heights: [CGFloat] {
+        return chats.map { $0.height }
+    }
+    
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
