@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class ChatListLayout: UICollectionViewLayout {
+final class ChatListLayout: UICollectionViewLayout {        
     
     private var computedContentSize: CGSize = .zero
     private var cellAttributes = [UICollectionViewLayoutAttributes]()
@@ -22,10 +22,10 @@ final class ChatListLayout: UICollectionViewLayout {
         guard let collectionView,
               let dataSource = collectionView.dataSource as? ChatDataSource,
               !dataSource.ids.isEmpty else { return }
-
+        
+        let ids = dataSource.ids
         let heights = dataSource.heights
         let yOffsets = dataSource.offsets
-        let ids = dataSource.ids
         
         // FIXME: Refactoring 필요
         let cacheFirst = cellIds.first ?? ""
@@ -41,13 +41,13 @@ final class ChatListLayout: UICollectionViewLayout {
             cellAttributes = [UICollectionViewLayoutAttributes]()
         } else if cacheFirst == dataSourceFirst && cacheLast != dataSourceLast {
             startItem = cellAttributes.count
-        }
-
+        }                
+        
         for section in 0..<collectionView.numberOfSections {
             for item in startItem..<collectionView.numberOfItems(inSection: section) {
                 
                 let indexPath = IndexPath(item: item, section: section)
-                                
+                                    
                 let cellHeight = heights[item]
                 let cellWidth = collectionView.bounds.size.width
                 let cellOffset = yOffsets[item] - cellHeight

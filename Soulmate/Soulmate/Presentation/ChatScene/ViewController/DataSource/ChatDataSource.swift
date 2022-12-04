@@ -11,6 +11,7 @@ final class ChatDataSource: NSObject, UICollectionViewDataSource {
     
     private var chats: [Chat] = []
     private(set) var offsets: [CGFloat] = []
+    private var buffer: [Chat] = []
     
     var heights: [CGFloat] {
         return chats.map { $0.height }
@@ -26,6 +27,10 @@ final class ChatDataSource: NSObject, UICollectionViewDataSource {
     
     var endIndex: Int {
         return chats.endIndex
+    }
+    
+    var isBufferEmpty: Bool {
+        return buffer.isEmpty
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -54,5 +59,24 @@ extension ChatDataSource {
         for chat in data {
             offsets.append((offsets.last ?? 0) + chat.height)
         }
+    }
+    
+    func insertBuffer() -> CGFloat {
+        guard !buffer.isEmpty else { return 0 }
+        
+        chats = buffer + chats
+        offsets.removeAll()
+        
+        for chat in chats {
+            offsets.append((offsets.last ?? 0) + chat.height)
+        }
+        
+        let addedHeight = buffer.reduce(0) { partialResult, chat in
+            return partialResult + chat.height
+        }
+        
+        buffer = []
+        
+        return addedHeight
     }
 }

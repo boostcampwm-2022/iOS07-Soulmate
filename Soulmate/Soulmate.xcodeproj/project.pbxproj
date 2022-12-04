@@ -179,6 +179,8 @@
 		6AECA1D2293B865C0035A9AE /* ChatDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AECA1D1293B865C0035A9AE /* ChatDataSource.swift */; };
 		6AECA1D6293B88000035A9AE /* ChatListLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AECA1D5293B88000035A9AE /* ChatListLayout.swift */; };
 		6AECA1D8293B8C390035A9AE /* ChatListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AECA1D7293B8C390035A9AE /* ChatListView.swift */; };
+		6AECA1DB293C8B670035A9AE /* ChatListDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AECA1DA293C8B670035A9AE /* ChatListDelegate.swift */; };
+		6AECA1DD293CA6DB0035A9AE /* LoadPrevChatDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AECA1DC293CA6DB0035A9AE /* LoadPrevChatDelegate.swift */; };
 		B3010251292F1A2000481C6C /* MyPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3010250292F1A2000481C6C /* MyPageView.swift */; };
 		B301025529322FB500481C6C /* HeartShopViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B301025429322FB500481C6C /* HeartShopViewController.swift */; };
 		B301025729329E8A00481C6C /* HeartShopCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B301025629329E8A00481C6C /* HeartShopCell.swift */; };
@@ -377,6 +379,8 @@
 		6AECA1D1293B865C0035A9AE /* ChatDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatDataSource.swift; sourceTree = "<group>"; };
 		6AECA1D5293B88000035A9AE /* ChatListLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatListLayout.swift; sourceTree = "<group>"; };
 		6AECA1D7293B8C390035A9AE /* ChatListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatListView.swift; sourceTree = "<group>"; };
+		6AECA1DA293C8B670035A9AE /* ChatListDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatListDelegate.swift; sourceTree = "<group>"; };
+		6AECA1DC293CA6DB0035A9AE /* LoadPrevChatDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadPrevChatDelegate.swift; sourceTree = "<group>"; };
 		B3010250292F1A2000481C6C /* MyPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageView.swift; sourceTree = "<group>"; };
 		B301025429322FB500481C6C /* HeartShopViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartShopViewController.swift; sourceTree = "<group>"; };
 		B301025629329E8A00481C6C /* HeartShopCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartShopCell.swift; sourceTree = "<group>"; };
@@ -520,6 +524,7 @@
 		6A0041F02919EDA30042E02F /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				6AECA1D9293C8AF80035A9AE /* Delegate */,
 				6AECA1D4293B87F80035A9AE /* Layout */,
 				6AECA1D0293B84BD0035A9AE /* DataSource */,
 				6A34C1FA292C8F8F00A3E57F /* ChatRoomListViewController.swift */,
@@ -1000,6 +1005,15 @@
 			path = Layout;
 			sourceTree = "<group>";
 		};
+		6AECA1D9293C8AF80035A9AE /* Delegate */ = {
+			isa = PBXGroup;
+			children = (
+				6AECA1DA293C8B670035A9AE /* ChatListDelegate.swift */,
+				6AECA1DC293CA6DB0035A9AE /* LoadPrevChatDelegate.swift */,
+			);
+			path = Delegate;
+			sourceTree = "<group>";
+		};
 		B301024F292F19F100481C6C /* View */ = {
 			isa = PBXGroup;
 			children = (
@@ -1156,6 +1170,7 @@
 				B3E029A9291DDC1500931FA2 /* GradientButton.swift in Sources */,
 				6ADEE4EC29221CD900AD328B /* UITextField+Publisher.swift in Sources */,
 				6AB6B97A292C3E5800A029BD /* ProfilePhotoRepository.swift in Sources */,
+				6AECA1DB293C8B670035A9AE /* ChatListDelegate.swift in Sources */,
 				6A9452C729349BF60041B71D /* ImageCacheStorage.swift in Sources */,
 				6A0041E42919EBA40042E02F /* AuthCoordinator.swift in Sources */,
 				6A03B6F02923BF8900AC15A6 /* CertificationTextField.swift in Sources */,
@@ -1263,6 +1278,7 @@
 				6A34C238292F392100A3E57F /* LoadReceivedChatRequestsUseCase.swift in Sources */,
 				6A34C1FF292C944D00A3E57F /* ChatRoomInfoCell.swift in Sources */,
 				6A9452F72937D36A0041B71D /* DownLoadPreviewUseCase.swift in Sources */,
+				6AECA1DD293CA6DB0035A9AE /* LoadPrevChatDelegate.swift in Sources */,
 				6AB6B9E4292F336F00A029BD /* DefaultUpLoadLocationUseCase.swift in Sources */,
 				6AB6B9B3292D7D9300A029BD /* LocalKeyValueStorage.swift in Sources */,
 				6A0041EB2919ED5F0042E02F /* HomeViewController.swift in Sources */,

@@ -22,7 +22,12 @@ final class ChattingRoomViewController: UIViewController {
     private var isInitLoad = true
     private var isLoading = false
     
-    private lazy var chatListView = ChatListView(hostView: self.view)
+    private lazy var chatListView: ChatListView = {
+        let listView = ChatListView(hostView: self.view)
+        listView.loadPrevChatDelegate = self
+        
+        return listView
+    }()
     
     private lazy var composeBar: ComposeBar = {
         let messageInputView = ComposeBar()
@@ -91,6 +96,14 @@ extension ChattingRoomViewController: NSTextStorageDelegate {
         range editedRange: NSRange,
         changeInLength delta: Int) {
             messageSubject.send(textStorage.string)
+    }
+}
+
+// MARK: - Load Prev Chats Delegate
+extension ChattingRoomViewController: LoadPrevChatDelegate {
+    func loadPrevChats() {
+        print("채팅 로드")
+        // loadPrevChattingsSubject.send(())
     }
 }
 
@@ -223,7 +236,6 @@ private extension ChattingRoomViewController {
         
         output.prevChattingLoaded
             .sink { [weak self] chats in
-
 //                self?.dataInsert(chats)
                 self?.isLoading = false
             }
@@ -273,7 +285,7 @@ private extension ChattingRoomViewController {
     }
 }
 
-// MARK: - 가장 아래로 스크롤
+// MARK: - BottomOffset
 private extension ChattingRoomViewController {
 
     func bottomOffset() -> CGPoint {
