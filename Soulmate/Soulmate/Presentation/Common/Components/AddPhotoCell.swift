@@ -74,7 +74,15 @@ final class AddPhotoCell: UICollectionViewCell {
                 
                 if let faces = req.results as? [VNFaceObservation] {
                     if faces.count >= 1 { // 얼굴 인식 성공 했을 경우
+                        // print(faces.count, "Face found!")
+                        DispatchQueue.main.async {
+                            self.addPhotoImageView.layer.borderColor = UIColor.backgroundGrey?.cgColor
+                            self.addPhotoImageView.contentMode = .scaleAspectFill
+                            self.addPhotoImageView.image = originImage
+                            self.loadingIndicator.stopAnimating()
+                        }
                         
+                        /*
                         // 이하 테스트코드! 얼굴 인식된 부분 빨간 사각형 그리기
                         print(faces.count, "Face found!")
                         for face in faces {
@@ -106,8 +114,9 @@ final class AddPhotoCell: UICollectionViewCell {
                                 self.loadingIndicator.stopAnimating()
                             }
                         }
+                         */
                     } else { // 얼굴 인식 실패했을 경우
-                        print("Face not found!")
+                        // print("Face not found!")
                         DispatchQueue.main.async {
                             self.addPhotoImageView.contentMode = .center
                             self.addPhotoImageView.image = UIImage(named: "plusGrey")
