@@ -11,8 +11,6 @@ import Vision
 import SnapKit
 
 final class AddPhotoCell: UICollectionViewCell {
-    weak var viewController: UIViewController?
-    
     lazy var addPhotoImageView: UIImageView = {
         let imageView = UIImageView(frame: .zero)
         imageView.clipsToBounds = true
