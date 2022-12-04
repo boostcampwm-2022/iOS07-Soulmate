@@ -14,10 +14,12 @@ final class MyChatCell: UICollectionViewCell {
     static func register(with collectionView: UICollectionView) {
         collectionView.register(MyChatCell.self, forCellWithReuseIdentifier: id)
     }
-    static func dequeue(from collectionView: UICollectionView, at indexPath: IndexPath) -> MyChatCell {
+    static func dequeue(from collectionView: UICollectionView, at indexPath: IndexPath, with chat: Chat) -> MyChatCell {
         let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: id,
             for: indexPath) as? MyChatCell ?? MyChatCell()
+        
+        cell.configure(from: chat)
         
         return cell
     }

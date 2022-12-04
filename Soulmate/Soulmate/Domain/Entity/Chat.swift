@@ -24,12 +24,16 @@ struct Chat: Identifiable, Hashable {
     var state: ChatState
     
     var height: CGFloat {
-        return NSString(string: text).boundingRect(
-            with: CGSize(width: 200, height: CGFloat.greatestFiniteMagnitude),
-            options: .usesLineFragmentOrigin,
+        let height = NSString(string: text).boundingRect(
+            with: CGSize(width: 214, height: CGFloat.greatestFiniteMagnitude),
+            options: [.usesLineFragmentOrigin],
             attributes: [.font: UIFont.systemFont(ofSize: 18)],
             context: nil
         ).height
+        
+        let labelHeight = ceil(height * 2) / 2
+        
+        return labelHeight + 16 + 10
     }
     
     mutating func updateState(_ success: Bool, _ date: Date?) {

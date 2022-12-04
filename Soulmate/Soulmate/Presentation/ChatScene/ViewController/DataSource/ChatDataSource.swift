@@ -10,9 +10,22 @@ import UIKit
 final class ChatDataSource: NSObject, UICollectionViewDataSource {
     
     private var chats: [Chat] = []
+    private(set) var offsets: [CGFloat] = []
     
     var heights: [CGFloat] {
         return chats.map { $0.height }
+    }
+    
+    var ids: [String] {
+        return chats.map { $0.id }
+    }
+    
+    var count: Int {
+        return chats.count
+    }
+    
+    var endIndex: Int {
+        return chats.endIndex
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -27,9 +40,19 @@ final class ChatDataSource: NSObject, UICollectionViewDataSource {
         let chat = chats[indexPath.item]
         
         if chat.isMe {
-            return MyChatCell.dequeue(from: collectionView, at: indexPath)
+            return MyChatCell.dequeue(from: collectionView, at: indexPath, with: chat)
         } else {
-            return OtherChatCell.dequeu(from: collectionView, at: indexPath)
+            return OtherChatCell.dequeu(from: collectionView, at: indexPath, with: chat)
+        }
+    }
+}
+
+extension ChatDataSource {
+    
+    func append(_ data: [Chat]) {
+        chats += data
+        for chat in data {
+            offsets.append((offsets.last ?? 0) + chat.height)
         }
     }
 }
