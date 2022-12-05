@@ -22,20 +22,11 @@ final class ChattingRoomViewController: UIViewController {
     private var isInitLoad = true
     private var isLoading = false
     
-    private var dataSource: DataSource?
-    
-    private lazy var chatTableView: UITableView = {
-        let tableView = UITableView()
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.rowHeight = UITableView.automaticDimension
-        tableView.delegate = self
-        tableView.register(MyChatCell.self, forCellReuseIdentifier: MyChatCell.id)
-        tableView.register(OtherChatCell.self, forCellReuseIdentifier: OtherChatCell.id)
-        tableView.separatorStyle = .none
-        tableView.showsVerticalScrollIndicator = false
-        tableView.showsHorizontalScrollIndicator = false
+    private lazy var chatListView: ChatListView = {
+        let listView = ChatListView(hostView: self.view)
+        listView.loadPrevChatDelegate = self
         
-        return tableView
+        return listView
     }()
     
     private lazy var composeBar: ComposeBar = {
@@ -75,7 +66,6 @@ final class ChattingRoomViewController: UIViewController {
         configureView()
         configureLayout()
         setPublishers()
-        createDataSource()
         bind()
     }
     
@@ -98,97 +88,6 @@ final class ChattingRoomViewController: UIViewController {
     }
 }
 
-extension ChattingRoomViewController {
-    enum Section {
-        case main
-    }
-    
-    typealias DataSource = UITableViewDiffableDataSource<Section, Chat>
-    typealias Snapshot = NSDiffableDataSourceSnapshot<Section, Chat>
-    
-    func loadData(_ chats: [Chat]) {
-        
-        var snapshot = Snapshot()
-        snapshot.appendSections([.main])
-        snapshot.appendItems(chats)
-        dataSource?.apply(snapshot, animatingDifferences: false)
-    }
-    
-    func reloadData() {
-        guard var snapshot = dataSource?.snapshot() else { return }
-        dataSource?.apply(snapshot, animatingDifferences: false)
-    }
-    
-    func dataInsert(_ chats: [Chat]) {
-        
-        guard var snapshot = dataSource?.snapshot(),
-              let firstItem = snapshot.itemIdentifiers.first else { return }
-        
-        let beforeHeight = chatTableView.contentSize.height
-
-        snapshot.insertItems(chats, beforeItem: firstItem)
-        dataSource?.apply(snapshot, animatingDifferences: false) { [weak self] in
-            guard let afterHeight = self?.chatTableView.contentSize.height,
-                  let currentYOffset = self?.chatTableView.contentOffset.y else { return }
-            let addedOffset = afterHeight - beforeHeight
-            self?.chatTableView.setContentOffset(
-                CGPoint(x: 0, y: currentYOffset + addedOffset),
-                animated: false
-            )
-        }
-    }
-    
-    func dataAppend(_ chats: [Chat]) {
-        guard var snapshot = dataSource?.snapshot() else { return }
-        
-        snapshot.appendItems(chats)
-        dataSource?.apply(snapshot, animatingDifferences: false)
-    }
-    
-    func createDataSource() {
-        dataSource = DataSource(
-            tableView: chatTableView,
-            cellProvider: { [weak self] tableView, indexPath, chat in
-
-                if chat.isMe {
-                    guard let cell = tableView.dequeueReusableCell(
-                        withIdentifier: MyChatCell.id,
-                        for: indexPath) as? MyChatCell else {
-
-                        return UITableViewCell()
-                    }
-
-                    cell.configure(from: chat)
-
-                    return cell
-                } else {
-                    guard let cell = tableView.dequeueReusableCell(
-                        withIdentifier: OtherChatCell.id,
-                        for: indexPath) as? OtherChatCell else {
-
-                        return UITableViewCell()
-                    }
-
-                    cell.configure(from: chat)
-                    
-                    Task {
-                        guard let profileImageData = await self?.viewModel?.fetchProfileImage(of: chat.userId) else { return }
-                        guard let image = UIImage(data: profileImageData) else { return }
-                        
-                        if self?.chatTableView.cellForRow(at: indexPath) != nil {
-                            await MainActor.run {
-                                
-                                cell.set(image: image)
-                            }
-                        }
-                    }
-
-                    return cell
-                }
-        })
-    }
-}
-
 // MARK: - TextView Delegate
 extension ChattingRoomViewController: NSTextStorageDelegate {
     func textStorage(
@@ -200,19 +99,11 @@ extension ChattingRoomViewController: NSTextStorageDelegate {
     }
 }
 
-
-// MARK: - TableView Delegae, DataSource
-extension ChattingRoomViewController: UITableViewDelegate {
-
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        guard !isInitLoad, !isLoading else { return }
-                                
-        if scrollView.contentOffset.y < chatTableView.bounds.size.height &&
-            !chatTableView.isTracking &&
-            scrollView.contentOffset.y > 0 {
-                        
-            loadPrevChattings()
-        }
+// MARK: - Load Prev Chats Delegate
+extension ChattingRoomViewController: LoadPrevChatDelegate {
+    func loadPrevChats() {
+        print("채팅 로드")
+        // loadPrevChattingsSubject.send(())
     }
 }
 
@@ -263,10 +154,10 @@ private extension ChattingRoomViewController {
         isLoading = true
         loadPrevChattingsSubject.send(())
     }
-    
+
     func configureLayout() {
         
-        view.addSubview(chatTableView)
+        view.addSubview(chatListView)
         view.addSubview(composeBar)
         
         composeBar.snp.makeConstraints {
@@ -276,7 +167,7 @@ private extension ChattingRoomViewController {
             $0.height.equalTo(50)
         }
         
-        chatTableView.snp.makeConstraints {
+        chatListView.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide.snp.top)
             $0.leading.equalTo(view.safeAreaLayoutGuide.snp.leading)
             $0.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing)
@@ -324,37 +215,39 @@ private extension ChattingRoomViewController {
         output.chattingInitLoaded
             .sink { [weak self] chats in
                 
-                if self?.isInitLoad ?? false {
-                    self?.loadData(chats)
+                guard !chats.isEmpty else {
                     self?.isInitLoad = false
-                    self?.scrollToBottom()
+                    return
+                }
+                
+                if self?.isInitLoad ?? false {
+                    self?.chatListView.load(chats)
+                    self?.isInitLoad = false
+                    self?.chatListView.scrollToBottomByOffset()
                 }
             }
             .store(in: &cancellabels)
         
         output.unreadChattingLoaded
             .sink { [weak self] chats in
-                self?.dataAppend(chats)
+                self?.chatListView.append(chats)
             }
             .store(in: &cancellabels)
         
         output.prevChattingLoaded
             .sink { [weak self] chats in
-
-                self?.dataInsert(chats)
+//                self?.dataInsert(chats)
                 self?.isLoading = false
             }
             .store(in: &cancellabels)
         
         output.newMessageArrived
             .sink { [weak self] chats in
-
-                let diff = (self?.bottomOffset().y ?? 0) - (self?.chatTableView.contentOffset.y ?? 0)
-
-                self?.dataAppend(chats)
+                let diff = (self?.bottomOffset().y ?? 0) - (self?.chatListView.contentOffset.y ?? 0)
+                self?.chatListView.append(chats)                 
                 
                 if diff < 10 {
-                    self?.scrollToBottom()
+                    self?.chatListView.scrollToBottomByOffset()
                 }
             }
             .store(in: &cancellabels)
@@ -362,71 +255,61 @@ private extension ChattingRoomViewController {
         output.chatUpdated
             .receive(on: DispatchQueue.main)
             .sink { [weak self] chat in
-
-                // FIXME: - index 찾는게 굉장히 비효율적
-                guard let index = self?.dataSource?.snapshot().itemIdentifiers.firstIndex(
-                    where: { old in
-                        old.id == chat.id
-                    }) else { return }
-                guard var items = self?.dataSource?.snapshot().itemIdentifiers else { return }
-                items[index] = chat
                 
-                self?.loadData(items)
+//                guard let index = self?.dataSource?.snapshot().itemIdentifiers.firstIndex(
+//                    where: { old in
+//                        old.id == chat.id
+//                    }) else { return }
+//                guard var items = self?.dataSource?.snapshot().itemIdentifiers else { return }
+//                items[index] = chat
+//
+//                self?.loadData(items)
             }
             .store(in: &cancellabels)
         
         output.otherRead            
             .sink { [weak self] otherId in
-                guard var items = self?.dataSource?.snapshot().itemIdentifiers else { return }
-                print(items.map { $0.readUsers })
-                for i in (0..<items.count).reversed() {
-                    
-                    if items[i].readUsers.contains(otherId) { break }
-                    var chat = items[i]
-                    chat.readUsers.append(otherId)
-                    items[i] = chat                    
-                }
-                print(items.map { $0.readUsers })
-                self?.loadData(items)
+//                guard var items = self?.dataSource?.snapshot().itemIdentifiers else { return }
+//
+//                for i in (0..<items.count).reversed() {
+//
+//                    if items[i].readUsers.contains(otherId) { break }
+//                    var chat = items[i]
+//                    chat.readUsers.append(otherId)
+//                    items[i] = chat
+//                }
+//
+//                self?.loadData(items)
             }
             .store(in: &cancellabels)
     }
 }
 
-// MARK: - 가장 아래로 스크롤
+// MARK: - BottomOffset
 private extension ChattingRoomViewController {
-    
-    func scrollToBottom() {
-        guard let snapshot = dataSource?.snapshot(), !snapshot.itemIdentifiers.isEmpty else { return }        
-        
-        chatTableView.scrollToRow(
-            at: IndexPath(
-                row: snapshot.itemIdentifiers.count - 1,
-                section: 0
-            ),
-            at: .bottom, animated: false
-        )
-    }
 
     func bottomOffset() -> CGPoint {
         
         return CGPoint(
             x: 0,
-            y: max(-chatTableView.contentInset.top, chatTableView.contentSize.height - (chatTableView.bounds.size.height - chatTableView.contentInset.bottom))
+            y: max(
+                -chatListView.contentInset.top,
+                 chatListView.contentSize.height - (chatListView.bounds.size.height - chatListView.contentInset.bottom)
+            )
         )
     }
 }
 
-// MARK: - 키보트 높이에 따라 TableView 변경
+// MARK: - 키보트 높이에 따라 ChatListView 변경
 private extension ChattingRoomViewController {
     
     func adjustContentForKeyboard(with height: CGFloat) {
         let safeLayoutBottomHeight = view.frame.maxY - view.safeAreaLayoutGuide.layoutFrame.maxY
         let keyboardHeight = height == 0 ? 0 : height - safeLayoutBottomHeight
         
-        let distanceFromBottom = bottomOffset().y - chatTableView.contentOffset.y
+        let distanceFromBottom = bottomOffset().y - chatListView.contentOffset.y
         
-        var insets = chatTableView.contentInset
+        var insets = chatListView.contentInset
         insets.bottom = keyboardHeight
         
         UIView.animate(withDuration: 0.3, delay: 0, options: [], animations: {
@@ -434,12 +317,12 @@ private extension ChattingRoomViewController {
             self.composeBar.snp.updateConstraints {
                 $0.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom).offset(-keyboardHeight)
             }
-            self.chatTableView.contentInset = insets
-            self.chatTableView.scrollIndicatorInsets = insets
+            self.chatListView.contentInset = insets
+            self.chatListView.scrollIndicatorInsets = insets
             self.view.layoutIfNeeded()
             
             if distanceFromBottom < 10 {
-                self.chatTableView.contentOffset = self.bottomOffset()
+                self.chatListView.contentOffset = self.bottomOffset()
             }
         }, completion: nil)
     }

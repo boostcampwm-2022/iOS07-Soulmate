@@ -111,6 +111,7 @@ final class ChattingRoomViewModel {
         
         self.loadChattingsUseCase.initLoadedchattings
             .sink { [weak self] chats in
+                
                 output.chattingInitLoaded.send(chats)
                 self?.loadUnreadChattingsUseCase.loadUnreadChattings()
             }
@@ -132,7 +133,7 @@ final class ChattingRoomViewModel {
             .store(in: &cancellables)
         
         self.sendMessageUseCase.newMessage
-            .sink { chat in
+            .sink { chat in                
                 output.newMessageArrived.send([chat])
             }
             .store(in: &cancellables)
