@@ -103,7 +103,8 @@ class ModificationViewModel {
                 name: userDetailInfo.nickName,
                 birth: userDetailInfo.birthDay,
                 imageKey: ImageKeyList.first,
-                chatImageKey: chatImageKey
+                chatImageKey: chatImageKey,
+                heart: 30
             )
             try await uploadPreviewUseCase.uploadPreview(userPreview: userPreview)
 

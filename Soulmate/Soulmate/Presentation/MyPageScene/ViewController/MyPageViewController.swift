@@ -74,6 +74,7 @@ private extension MyPageViewController {
             .sink { [weak self] value in
                 self?.contentView.profileNameLabel.text = value.name
                 self?.contentView.profileAgeLabel.text = "\(value.birth?.toAge() ?? 0)"
+                self?.contentView.remainingHeartLabel.text = String(value.heart ?? 0) + "개"
             }
             .store(in: &cancellables)
         

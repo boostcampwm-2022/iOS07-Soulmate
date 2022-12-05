@@ -26,8 +26,8 @@ class HeartShopViewController: UIViewController {
     
     var viewModel: HeartShopViewModel?
     
-    let quantities = [30, 50, 100]
-    let prices = ["15,000원", "30,000원", "50,000원"]
+    private let quantities = [30, 50, 100]
+    private let prices = ["15,000원", "30,000원", "50,000원"]
     
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
