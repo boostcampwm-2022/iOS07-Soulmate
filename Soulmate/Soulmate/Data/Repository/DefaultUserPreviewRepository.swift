@@ -19,7 +19,12 @@ class DefaultUserPreviewRepository: UserPreviewRepository {
         self.networkDatabaseApi = networkDatabaseApi
     }
     
-    func fetchDistanceFilteredRecommendedPreviewList(userGender: GenderType, userLocation: Location, distance: Double) async throws -> [UserPreview] {
+    func fetchDistanceFilteredRecommendedPreviewList(
+        userUid: String,
+        userGender: GenderType,
+        userLocation: Location,
+        distance: Double
+    ) async throws -> [UserPreview] {
         
         let fromPoint = CLLocation(latitude: userLocation.latitude, longitude: userLocation.longitude)
 
@@ -30,7 +35,7 @@ class DefaultUserPreviewRepository: UserPreviewRepository {
         )
         .filter { dto in
             guard let documentID = dto.uid,
-                  documentID != Auth.auth().currentUser!.uid,
+                  documentID != userUid,
                   let location = dto.location else { return false }
             
             let toPoint = CLLocation(latitude: location.latitude, longitude: location.longitude)
@@ -42,7 +47,10 @@ class DefaultUserPreviewRepository: UserPreviewRepository {
         
     }
     
-    func fetchRecommendedPreviewList(userGender: GenderType) async throws -> [UserPreview] {
+    func fetchRecommendedPreviewList(
+        userUid: String,
+        userGender: GenderType
+    ) async throws -> [UserPreview] {
         return try await networkDatabaseApi.read(
             table: collectionTitle,
             constraints: [QueryEntity(field: "gender", value: userGender.rawValue, comparator: .isNotEqualTo)],
@@ -50,7 +58,7 @@ class DefaultUserPreviewRepository: UserPreviewRepository {
         )
         .filter { dto in
             guard let documentID = dto.uid,
-                  documentID != Auth.auth().currentUser!.uid else { return false }
+                  documentID != userUid else { return false }
             return true
         }
         .map {

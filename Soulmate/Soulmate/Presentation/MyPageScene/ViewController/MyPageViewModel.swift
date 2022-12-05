@@ -18,7 +18,7 @@ struct MyPageViewModelActions {
 
 class MyPageViewModel {
     
-    let downLoadPreviewUseCase: DownLoadPreviewUseCase
+    let downLoadMyPreviewUseCase: DownLoadMyPreviewUseCase
     let downLoadPictureUseCase: DownLoadPictureUseCase
     
     let symbols = ["myPageHeart", "myPagePersonalInfo", "distance", "myPagePin"]
@@ -43,10 +43,10 @@ class MyPageViewModel {
     }
     
     init(
-        downLoadPreviewUseCase: DownLoadPreviewUseCase,
+        downLoadPreviewUseCase: DownLoadMyPreviewUseCase,
         downLoadPictureUseCase: DownLoadPictureUseCase
     ) {
-        self.downLoadPreviewUseCase = downLoadPreviewUseCase
+        self.downLoadMyPreviewUseCase = downLoadPreviewUseCase
         self.downLoadPictureUseCase = downLoadPictureUseCase
         
         // 여기서 해주고 내정보 수정에서 save하고 빠져나올때마다 계속 업댓해주자
@@ -97,8 +97,7 @@ class MyPageViewModel {
     
     func loadInfo() {
         Task { [weak self] in
-            guard let uid = Auth.auth().currentUser?.uid else { return }
-            let preview = try await downLoadPreviewUseCase.downloadPreview(userUid: uid)
+            let preview = try await downLoadMyPreviewUseCase.downloadPreview()
             self?.userProfileInfo = preview
             
             guard let imageKey = preview.imageKey else { return }

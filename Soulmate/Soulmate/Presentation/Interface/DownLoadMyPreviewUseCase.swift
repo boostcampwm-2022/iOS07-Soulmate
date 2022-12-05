@@ -7,6 +7,6 @@
 
 import Foundation
 
-protocol DownLoadPreviewUseCase {
-    func downloadPreview(userUid: String) async throws -> UserPreview
+protocol DownLoadMyPreviewUseCase {
+    func downloadPreview() async throws -> UserPreview
 }

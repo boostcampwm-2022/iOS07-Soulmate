@@ -20,9 +20,9 @@ class RegisterViewModel {
     
     var bag = Set<AnyCancellable>()
     
-    var uploadDetailInfoUseCase: UploadDetailInfoUseCase
+    var uploadDetailInfoUseCase: UploadMyDetailInfoUseCase
     var uploadPictureUseCase: UploadPictureUseCase
-    var uploadPreviewUseCase: UploadPreviewUseCase
+    var uploadPreviewUseCase: UploadMyPreviewUseCase
     
     var didAllInfoUploaded = PassthroughSubject<Void, Never>()
     
@@ -58,9 +58,9 @@ class RegisterViewModel {
     }
     
     init(
-        uploadDetailInfoUseCase: UploadDetailInfoUseCase,
+        uploadDetailInfoUseCase: UploadMyDetailInfoUseCase,
         uploadPictureUseCase: UploadPictureUseCase,
-        uploadPreviewUseCase: UploadPreviewUseCase
+        uploadPreviewUseCase: UploadMyPreviewUseCase
     ) {
         self.uploadDetailInfoUseCase = uploadDetailInfoUseCase
         self.uploadPictureUseCase = uploadPictureUseCase

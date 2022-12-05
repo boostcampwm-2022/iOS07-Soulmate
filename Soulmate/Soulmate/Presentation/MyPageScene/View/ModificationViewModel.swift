@@ -30,9 +30,9 @@ class ModificationViewModel {
     let downloadDetailInfoUseCase: DownLoadDetailInfoUseCase
     let downloadPictureUseCase: DownLoadPictureUseCase
     
-    let uploadDetailInfoUseCase: UploadDetailInfoUseCase
+    let uploadMyDetailInfoUseCase: UploadMyDetailInfoUseCase
     let uploadPictureUseCase: UploadPictureUseCase
-    let uploadPreviewUseCase: UploadPreviewUseCase
+    let uploadMyPreviewUseCase: UploadMyPreviewUseCase
     
     struct Input {
         var didTappedSaveButton: AnyPublisher<Void, Never>
@@ -47,15 +47,15 @@ class ModificationViewModel {
     init(
         downloadDetailInfoUseCase: DownLoadDetailInfoUseCase,
         downloadPictureUseCase: DownLoadPictureUseCase,
-        uploadDetailInfoUseCase: UploadDetailInfoUseCase,
+        uploadMyDetailInfoUseCase: UploadMyDetailInfoUseCase,
         uploadPictureUseCase: UploadPictureUseCase,
-        uploadPreviewUseCase: UploadPreviewUseCase
+        uploadMyPreviewUseCase: UploadMyPreviewUseCase
     ) {
         self.downloadDetailInfoUseCase = downloadDetailInfoUseCase
         self.downloadPictureUseCase = downloadPictureUseCase
-        self.uploadDetailInfoUseCase = uploadDetailInfoUseCase
+        self.uploadMyDetailInfoUseCase = uploadMyDetailInfoUseCase
         self.uploadPictureUseCase = uploadPictureUseCase
-        self.uploadPreviewUseCase = uploadPreviewUseCase
+        self.uploadMyPreviewUseCase = uploadMyPreviewUseCase
         
         loadInfo()
     }
@@ -80,8 +80,7 @@ class ModificationViewModel {
     
     func loadInfo() {
         Task { [weak self] in
-            guard let uid = Auth.auth().currentUser?.uid else { return }
-            let userDetailInfo = try await downloadDetailInfoUseCase.downloadDetailInfo(userUid: uid)
+            let userDetailInfo = try await downloadDetailInfoUseCase.downloadMyDetailInfo()
             self?.userDetailInfo = userDetailInfo
             
             guard let keyList = userDetailInfo.imageList else { return }
@@ -106,10 +105,10 @@ class ModificationViewModel {
                 chatImageKey: chatImageKey,
                 heart: 30
             )
-            try await uploadPreviewUseCase.uploadPreview(userPreview: userPreview)
+            try await uploadMyPreviewUseCase.uploadPreview(userPreview: userPreview)
 
             userDetailInfo.imageList = ImageKeyList
-            try await uploadDetailInfoUseCase.uploadDetailInfo(registerUserInfo: userDetailInfo)
+            try await uploadMyDetailInfoUseCase.uploadDetailInfo(registerUserInfo: userDetailInfo)
             
             self?.didUploadAllInfo.send(())
         }

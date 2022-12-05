@@ -13,20 +13,26 @@ class DefaultMateRecommendationUseCase: MateRecommendationUseCase {
     
     let userPreviewRepository: UserPreviewRepository
     let userDefaultsRepository: UserDefaultsRepository
+    let authRepository: AuthRepository
     
     init(
         userPreviewRepository: UserPreviewRepository,
-        userDefaultsRepository: UserDefaultsRepository
+        userDefaultsRepository: UserDefaultsRepository,
+        authRepository: AuthRepository
     ) {
         self.userPreviewRepository = userPreviewRepository
         self.userDefaultsRepository = userDefaultsRepository
+        self.authRepository = authRepository
     }
     
     func fetchRecommendedMate() async throws -> [UserPreview] {
+        let uid = try authRepository.currentUid()
+        let myGender = try await userPreviewRepository.downloadPreview(userUid: uid).gender!
         
-        let myGender = try await userPreviewRepository.downloadPreview(userUid: Auth.auth().currentUser!.uid).gender!
-        
-        return try await userPreviewRepository.fetchRecommendedPreviewList(userGender: myGender)
+        return try await userPreviewRepository.fetchRecommendedPreviewList(
+            userUid: uid,
+            userGender: myGender
+        )
     }
     
     func fetchDistanceFilteredRecommendedMate(distance: Double) async throws -> [UserPreview] {
@@ -35,9 +41,11 @@ class DefaultMateRecommendationUseCase: MateRecommendationUseCase {
             throw UserDefaultsError.noSuchKeyMatchedValue
         }
         
-        let myGender = try await userPreviewRepository.downloadPreview(userUid: Auth.auth().currentUser!.uid).gender!
+        let uid = try authRepository.currentUid()
+        let myGender = try await userPreviewRepository.downloadPreview(userUid: uid).gender!
         
         return try await userPreviewRepository.fetchDistanceFilteredRecommendedPreviewList(
+            userUid: uid,
             userGender: myGender,
             userLocation: Location(
                 latitude: latitude,

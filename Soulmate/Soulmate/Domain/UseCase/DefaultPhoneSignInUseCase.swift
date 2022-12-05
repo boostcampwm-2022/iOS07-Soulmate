@@ -11,13 +11,18 @@ import FirebaseAuth
 class DefaultPhoneSignInUseCase: PhoneSignInUseCase {
     
     let userDefaultsRepository: UserDefaultsRepository
+    let authRepository: AuthRepository
     
-    init(userDefaultsRepository: UserDefaultsRepository) {
+    init(
+        userDefaultsRepository: UserDefaultsRepository,
+        authRepository: AuthRepository
+    ) {
         self.userDefaultsRepository = userDefaultsRepository
+        self.authRepository = authRepository
     }
     
     func verifyPhoneNumber(phoneNumber: String) async throws -> String {
-        let verificationID = try await PhoneAuthProvider.provider().verifyPhoneNumber(phoneNumber, uiDelegate: nil)
+        let verificationID = try await authRepository.verifyPhoneNumber(number: phoneNumber)
         userDefaultsRepository.set(key: "verificationID", value: verificationID)
         return verificationID
     }
@@ -25,17 +30,12 @@ class DefaultPhoneSignInUseCase: PhoneSignInUseCase {
     func certifyWithSMSCode(certificationCode: String) async throws {
         guard let verificationID: String = userDefaultsRepository.get(key: "verificationID") else { return }
         userDefaultsRepository.remove(key: "verificationID")
-        let credential = PhoneAuthProvider.provider().credential(
-            withVerificationID: verificationID,
+
+        let credentail = authRepository.buildCredential(
+            verificationID: verificationID,
             verificationCode: certificationCode
         )
         
-        let result = try await Auth.auth().signIn(with: credential)
+        try await authRepository.signIn(with: credentail)
     }
-}
-
-// TODO: 에러 따로 빼서 정의하기
-enum AuthError: Error {
-    case noVerificationIDError
-    case noCurrentUserError
 }

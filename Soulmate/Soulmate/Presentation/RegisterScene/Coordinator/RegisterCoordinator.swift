@@ -29,9 +29,9 @@ class RegisterCoordinator: Coordinator {
         let userDetailInfoRepository = DefaultUserDetailInfoRepository(networkDatabaseApi: networkDatabaseApi)
         let userPreviewRepository = DefaultUserPreviewRepository(networkDatabaseApi: networkDatabaseApi)
         
-        let uploadDetailInfoUseCase = DefaultUploadDetailInfoUseCase(userDetailInfoRepository: userDetailInfoRepository)
+        let uploadDetailInfoUseCase = DefaultUploadMyDetailInfoUseCase(userDetailInfoRepository: userDetailInfoRepository)
         let uploadPhotoUseCase = DefaultUpLoadPictureUseCase(profilePhotoRepository: profilePhotoRepository)
-        let uploadPreviewUseCase = DefaultUploadPreviewUseCase(userPreviewRepository: userPreviewRepository)
+        let uploadPreviewUseCase = DefaultUploadMyPreviewUseCase(userPreviewRepository: userPreviewRepository)
         
         let vm = RegisterViewModel(
             uploadDetailInfoUseCase: uploadDetailInfoUseCase,

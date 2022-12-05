@@ -7,6 +7,6 @@
 
 import Foundation
 
-protocol UploadDetailInfoUseCase {
+protocol UploadMyDetailInfoUseCase {
     func uploadDetailInfo(registerUserInfo: RegisterUserInfo) async throws
 }

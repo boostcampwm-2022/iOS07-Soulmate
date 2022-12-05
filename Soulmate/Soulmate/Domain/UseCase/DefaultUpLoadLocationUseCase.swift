@@ -16,18 +16,21 @@ protocol UpLoadLocationUseCase {
 class DefaultUpLoadLocationUseCase: UpLoadLocationUseCase {
     let userPreviewRepository: UserPreviewRepository
     let userDefaultsRepository: UserDefaultsRepository
+    let authRepository: AuthRepository
     
     init(
         userPreviewRepository: UserPreviewRepository,
-        userDefaultsRepository: UserDefaultsRepository
+        userDefaultsRepository: UserDefaultsRepository,
+        authRepository: AuthRepository
     ) {
         self.userPreviewRepository = userPreviewRepository
         self.userDefaultsRepository = userDefaultsRepository
+        self.authRepository = authRepository
     }
     
     func updateLocation(location: Location) async throws {
-        guard let uid = Auth.auth().currentUser?.uid else { return }
-        print("업데이트 \(location)")
+        let uid = try authRepository.currentUid()
+
         userDefaultsRepository.set(key: "latestLatitude", value: location.latitude)
         userDefaultsRepository.set(key: "latestLongitude", value: location.longitude)
         try await userPreviewRepository.updateLocation(userUid: uid, location: location)

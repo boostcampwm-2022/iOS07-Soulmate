@@ -11,13 +11,18 @@ import FirebaseAuth
 class DefaultUpLoadPictureUseCase: UploadPictureUseCase {
 
     let profilePhotoRepository: ProfilePhotoRepository
+    let authRepository: AuthRepository
     
-    init(profilePhotoRepository: ProfilePhotoRepository) {
+    init(
+        profilePhotoRepository: ProfilePhotoRepository,
+        authRepository: AuthRepository
+    ) {
         self.profilePhotoRepository = profilePhotoRepository
+        self.authRepository = authRepository
     }
     
     func uploadChatImageData(photoData: Data) async throws -> String {
-        let uid = Auth.auth().currentUser!.uid
+        let uid = try authRepository.currentUid()
         let key = "\(uid)_low_profile"
         try await profilePhotoRepository.uploadPicture(fileName: key, data: photoData)
         
@@ -28,7 +33,7 @@ class DefaultUpLoadPictureUseCase: UploadPictureUseCase {
         guard photoData.allSatisfy{ $0 != nil } == true else { return [] }
         let photoData = photoData.compactMap { $0 }
         
-        let uid = Auth.auth().currentUser!.uid
+        let uid = try authRepository.currentUid()
         return try await withThrowingTaskGroup(of: [String].self) { [weak self] group throws in
             for i in 0..<photoData.count {
                 let key = "\(uid)_profile\(i)"
