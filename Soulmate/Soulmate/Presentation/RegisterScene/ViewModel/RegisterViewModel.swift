@@ -199,7 +199,8 @@ class RegisterViewModel {
                 name: self?.nickName,
                 birth: self?.birth,
                 imageKey: keys.first,
-                chatImageKey: chatImageKey
+                chatImageKey: chatImageKey,
+                heart: 30
             )
             try await uploadPreviewUseCase.uploadPreview(userPreview: userPreview)
 
