@@ -24,7 +24,10 @@ final class AppCoordinator: Coordinator {
     
     func start() {
         //try? Auth.auth().signOut()
-        if let uid = Auth.auth().currentUser?.uid {
+        let container = DIContainer.shared.container
+        guard let authUseCase = container.resolve(AuthUseCase.self) else { return }
+        
+        if let uid = authUseCase.userUid() {
             checkRegistration(for: uid)
         }
         else {
@@ -34,10 +37,9 @@ final class AppCoordinator: Coordinator {
     
     private func checkRegistration(for uid: String) {
         Task {
-            let networkDatabseApi = FireStoreNetworkDatabaseApi()
-            let userDetailInfoRepository = DefaultUserDetailInfoRepository(networkDatabaseApi: networkDatabseApi)
-            var downloadDetailInfoUseCase = DefaultDownLoadDetailInfoUseCase(userDetailInfoRepository: userDetailInfoRepository)
-            var registerStateValidateUseCase = DefaultRegisterStateValidateUseCase()
+            let container = DIContainer.shared.container
+            guard let downloadDetailInfoUseCase = container.resolve(DownLoadDetailInfoUseCase.self),
+                  let registerStateValidateUseCase = container.resolve(RegisterStateValidateUseCase.self) else { return }
             
             do {
                 let userInfo = try await downloadDetailInfoUseCase.downloadDetailInfo(userUid: uid)
@@ -54,18 +56,6 @@ final class AppCoordinator: Coordinator {
                 await MainActor.run { showAuthRegisterFlow() }
             }
         }
-    }
-    
-    private func showMyPageFlow() {
-        let navigation = UINavigationController()
-        window.rootViewController = navigation
-        
-        let authCoordinator = MyPageCoordinator(navigationController: navigation)
-        authCoordinator.finishDelegate = self
-        authCoordinator.start()
-        childCoordinators.append(authCoordinator)
-        
-        window.makeKeyAndVisible()
     }
     
     private func showAuthSignInFlow() {
