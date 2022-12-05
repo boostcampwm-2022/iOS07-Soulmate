@@ -7,7 +7,7 @@ S012_김종헌 | S039_이상민 | S048_장승태 | S058_한종우
  [@12251145](https://github.com/12251145) | [@Sangmin627](https://github.com/Sangmin627) | [@termblur](https://github.com/termblur) | [@gwd0311](https://github.com/gwd0311) 
 
 # About Soulmate
-![emoji@3x](https://user-images.githubusercontent.com/69361087/205690934-7a5ffe22-9d48-47ec-95d8-179313082955.png)
+![Image](https://user-images.githubusercontent.com/69361087/205692643-26e58fcd-4f55-4f0a-a747-178aeebf69e0.png)
 
 
 원하는 이성을 소개해주는 거리기반 소개팅 어플리케이션 입니다. 😘
@@ -15,5 +15,6 @@ S012_김종헌 | S039_이상민 | S048_장승태 | S058_한종우
 ---
 
 # For more information
-[프로젝트 소개](https://www.notion.so/boostcamp-wm/iOS07-Soulmate-51dd58f741e74bb080646869d2386908)
-[Wiki](https://github.com/boostcampwm-2022/iOS07-Soulmate/wiki)
+-[프로젝트 소개](https://www.notion.so/boostcamp-wm/iOS07-Soulmate-51dd58f741e74bb080646869d2386908)
+
+-[Wiki](https://github.com/boostcampwm-2022/iOS07-Soulmate/wiki)
