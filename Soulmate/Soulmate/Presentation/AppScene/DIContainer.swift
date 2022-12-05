@@ -180,7 +180,7 @@ extension DIContainer {
     }
     
     func registerDefaultPhoneSignInUseCase() {
-        container.register(DefaultPhoneSignInUseCase.self) { r in
+        container.register(PhoneSignInUseCase.self) { r in
             return DefaultPhoneSignInUseCase(
                 userDefaultsRepository: r.resolve(UserDefaultsRepository.self)!,
                 authRepository: r.resolve(AuthRepository.self)!

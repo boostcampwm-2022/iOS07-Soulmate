@@ -49,6 +49,12 @@ final class RegisterHeightView: UIView {
         configureLayout()
     }
     
+    func configureHistory(height: Int?) {
+        if let height = height {
+            selectedHeight = String(height)
+        }
+    }
+    
     func heightPublisher() -> AnyPublisher<Int, Never> {
         return $selectedHeight.map { print($0); return Int($0)! }.eraseToAnyPublisher()
     }

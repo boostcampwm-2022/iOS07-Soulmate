@@ -22,22 +22,9 @@ class RegisterCoordinator: Coordinator {
     }
     
     func start(with registerUserInfo: RegisterUserInfo? = nil) {
-        let networkDatabaseApi = FireStoreNetworkDatabaseApi()
-        let networkKeyValueStorageApi = FirebaseNetworkKeyValueStorageApi()
-        
-        let profilePhotoRepository = DefaultProfilePhotoRepository(networkKeyValueStorageApi: networkKeyValueStorageApi)
-        let userDetailInfoRepository = DefaultUserDetailInfoRepository(networkDatabaseApi: networkDatabaseApi)
-        let userPreviewRepository = DefaultUserPreviewRepository(networkDatabaseApi: networkDatabaseApi)
-        
-        let uploadDetailInfoUseCase = DefaultUploadMyDetailInfoUseCase(userDetailInfoRepository: userDetailInfoRepository)
-        let uploadPhotoUseCase = DefaultUpLoadPictureUseCase(profilePhotoRepository: profilePhotoRepository)
-        let uploadPreviewUseCase = DefaultUploadMyPreviewUseCase(userPreviewRepository: userPreviewRepository)
-        
-        let vm = RegisterViewModel(
-            uploadDetailInfoUseCase: uploadDetailInfoUseCase,
-            uploadPictureUseCase: uploadPhotoUseCase,
-            uploadPreviewUseCase: uploadPreviewUseCase
-        )
+
+        let container = DIContainer.shared.container
+        guard let vm = container.resolve(RegisterViewModel.self) else { return }
         
         vm.setActions(
             actions: RegisterViewModelAction(
@@ -63,7 +50,9 @@ class RegisterCoordinator: Coordinator {
     
     lazy var quitRegister: () -> Void = { [weak self] in // 애는 중간에 종료하는 경우, 이 경우는 그냥 원래 페이지로 옮겨주자
         self?.finish()
-        let signoutUseCase = DefaultSignOutUseCase()
-        guard let _ = try? signoutUseCase.signOut() else { return }
+        
+        let container = DIContainer.shared.container
+        guard let signOutUseCase = container.resolve(SignOutUseCase.self) else { return }
+        guard let _ = try? signOutUseCase.signOut() else { return }
     }
 }

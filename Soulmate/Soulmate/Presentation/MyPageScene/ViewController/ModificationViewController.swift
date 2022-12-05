@@ -285,16 +285,11 @@ extension ModificationViewController {
 
 extension ModificationViewController {
     func presentGenderPopUp() {
-        let registerSelectableView = RegisterSelectableView(selectableType: GenderType.self)
-        
-        if let gender = viewModel?.userDetailInfo?.gender,
-           let index = GenderType.allCases.firstIndex(of: gender) {
-            registerSelectableView.collectionView.selectItem(at: IndexPath(row: index, section: 0), animated: false, scrollPosition: .centeredVertically)
-            registerSelectableView.selectedIndex = index
-        }
+        let registerSelectableView = RegisterSelectableView<GenderType>()
+        registerSelectableView.configureHistory(selectableValue: viewModel?.userDetailInfo?.gender)
         
         let vc = ModificationPopUpViewController(containerView: registerSelectableView)
-        registerSelectableView.selectablePublisher(type: GenderType.self)
+        registerSelectableView.selectablePublisher()
             .sink { value in
                 if value == nil {
                     vc.dismissButton.isEnabled = false
@@ -309,11 +304,8 @@ extension ModificationViewController {
     
     func presentNickNamePopUp() {
         let registerNickNameView = RegisterNickNameView()
-        
-        if let nickName = viewModel?.userDetailInfo?.nickName {
-            registerNickNameView.nicknameTextField.text = nickName
-        }
-        
+        registerNickNameView.configureHistory(nickName: viewModel?.userDetailInfo?.nickName)
+
         let vc = ModificationPopUpViewController(containerView: registerNickNameView)
         registerNickNameView.nickNamePublisher()
             .sink { value in
@@ -330,10 +322,7 @@ extension ModificationViewController {
     
     func presentBirthPopUp() {
         let registerBirthView = RegisterBirthView()
-        
-        if let birth = viewModel?.userDetailInfo?.birthDay {
-            registerBirthView.birthPicker.date = birth
-        }
+        registerBirthView.configureHistory(birth: viewModel?.userDetailInfo?.birthDay)
         
         let vc = ModificationPopUpViewController(containerView: registerBirthView)
         registerBirthView.birthPublisher()
@@ -346,11 +335,8 @@ extension ModificationViewController {
     
     func presentHeightPopUp() {
         let registerHeightView = RegisterHeightView()
-        
-        if let height = viewModel?.userDetailInfo?.height {
-            registerHeightView.selectedHeight = String(height)
-        }
-        
+        registerHeightView.configureHistory(height: viewModel?.userDetailInfo?.height)
+
         let vc = ModificationPopUpViewController(containerView: registerHeightView)
         registerHeightView.heightPublisher()
             .sink { value in
@@ -362,17 +348,7 @@ extension ModificationViewController {
     
     func presentMbtiPopUp() {
         let registerMbtiView = RegisterMbtiView()
-        
-        if let mbti = viewModel?.userDetailInfo?.mbti,
-           let innerIndex = InnerType.allCases.firstIndex(of: mbti.innerType),
-           let recogIndex = RecognizeType.allCases.firstIndex(of: mbti.recognizeType),
-           let judgeIndex = JudgementType.allCases.firstIndex(of: mbti.judgementType),
-           let lifeIndex = LifeStyleType.allCases.firstIndex(of: mbti.lifeStyleType) {
-            innerIndex == 0 ? registerMbtiView.innerTypeView.leftButtonTapped() : registerMbtiView.innerTypeView.rightButtonTapped()
-            recogIndex == 0 ? registerMbtiView.recognizeTypeView.leftButtonTapped() : registerMbtiView.recognizeTypeView.rightButtonTapped()
-            judgeIndex == 0 ? registerMbtiView.judgementTypeView.leftButtonTapped() : registerMbtiView.judgementTypeView.rightButtonTapped()
-            lifeIndex == 0 ? registerMbtiView.lifeStyleTypeView.leftButtonTapped() : registerMbtiView.lifeStyleTypeView.rightButtonTapped()
-        }
+        registerMbtiView.configureHistory(mbti: viewModel?.userDetailInfo?.mbti)
         
         let vc = ModificationPopUpViewController(containerView: registerMbtiView)
         registerMbtiView.mbtiPublisher()
@@ -389,16 +365,11 @@ extension ModificationViewController {
     }
     
     func presentSmokingPopUp() {
-        let registerSelectableView = RegisterSelectableView(selectableType: SmokingType.self)
-        
-        if let smoking = viewModel?.userDetailInfo?.smokingType,
-           let index = SmokingType.allCases.firstIndex(of: smoking) {
-            registerSelectableView.collectionView.selectItem(at: IndexPath(row: index, section: 0), animated: false, scrollPosition: .centeredVertically)
-            registerSelectableView.selectedIndex = index
-        }
-        
+        let registerSelectableView = RegisterSelectableView<SmokingType>()
+        registerSelectableView.configureHistory(selectableValue: viewModel?.userDetailInfo?.smokingType)
+
         let vc = ModificationPopUpViewController(containerView: registerSelectableView)
-        registerSelectableView.selectablePublisher(type: SmokingType.self)
+        registerSelectableView.selectablePublisher()
             .sink { value in
                 if value == nil {
                     vc.dismissButton.isEnabled = false
@@ -412,16 +383,11 @@ extension ModificationViewController {
     }
     
     func presentDrinkingPopUp() {
-        let registerSelectableView = RegisterSelectableView(selectableType: DrinkingType.self)
-        
-        if let drinking = viewModel?.userDetailInfo?.drinkingType,
-           let index = DrinkingType.allCases.firstIndex(of: drinking) {
-            registerSelectableView.collectionView.selectItem(at: IndexPath(row: index, section: 0), animated: false, scrollPosition: .centeredVertically)
-            registerSelectableView.selectedIndex = index
-        }
+        let registerSelectableView = RegisterSelectableView<DrinkingType>()
+        registerSelectableView.configureHistory(selectableValue: viewModel?.userDetailInfo?.drinkingType)
         
         let vc = ModificationPopUpViewController(containerView: registerSelectableView)
-        registerSelectableView.selectablePublisher(type: DrinkingType.self)
+        registerSelectableView.selectablePublisher()
             .sink { value in
                 if value == nil {
                     vc.dismissButton.isEnabled = false
@@ -436,10 +402,7 @@ extension ModificationViewController {
     
     func presentIntroductionPopUp() {
         let registerIntroductionView = RegisterIntroductionView()
-        
-        if let introduction = viewModel?.userDetailInfo?.aboutMe {
-            registerIntroductionView.introductionTextView.text = introduction
-        }
+        registerIntroductionView.configureHistory(introduction: viewModel?.userDetailInfo?.aboutMe)
         
         let vc = ModificationPopUpViewController(containerView: registerIntroductionView)
         registerIntroductionView.introductionPublisher()

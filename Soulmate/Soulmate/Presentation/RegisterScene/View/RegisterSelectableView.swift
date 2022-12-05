@@ -9,13 +9,11 @@ import UIKit
 import SnapKit
 import Combine
 
-class RegisterSelectableView: UIView {
+class RegisterSelectableView<T: SelectableType>: UIView, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
         
     var bag = Set<AnyCancellable>()
     @Published var selectedIndex: Int?
-    
-    var selectableType: SelectableType.Type?
-    
+        
     lazy var registerHeaderStackView: RegisterHeaderStackView = {
         let headerView = RegisterHeaderStackView(frame: .zero)
         self.addSubview(headerView)
@@ -38,76 +36,44 @@ class RegisterSelectableView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    convenience init(selectableType: SelectableType.Type) {
+    convenience init() {
         self.init(frame: .zero)
-        
-        self.selectableType = selectableType
-        
+                
         configureView()
         configureLayout()
         
     }
     
-    func selectablePublisher<T: SelectableType>(type: T.Type) -> AnyPublisher<T?, Never> {
+    func configureHistory(selectableValue: T?) {
+        if let index = selectableValue?.index {
+            collectionView.selectItem(at: IndexPath(row: index, section: 0), animated: false, scrollPosition: .top)
+            selectedIndex = index
+        }
+    }
+    
+    func selectablePublisher() -> AnyPublisher<T?, Never> {
         return $selectedIndex.map { index -> T? in
             guard let index = index,
-                  let value = type.cases[index] as? T else {
+                  let value = T.cases[index] as? T else {
                 return nil
             }
             return value
         }
         .eraseToAnyPublisher()
     }
-}
-
-// MARK: - View Generators
-
-private extension RegisterSelectableView {
-
-    func configureView() {
-        self.backgroundColor = .systemBackground
-        collectionView.register(SelectableCell.self, forCellWithReuseIdentifier: "SelectableCell")
-        
-        guard let selectableType = selectableType else { return }
-        registerHeaderStackView.setMessage(
-            guideText: selectableType.guideText,
-            descriptionText: selectableType.descriptionText
-        )
-    }
-    
-    func configureLayout() {
-        registerHeaderStackView.snp.makeConstraints {
-            $0.top.equalTo(self.safeAreaLayoutGuide.snp.top).offset(50)
-            $0.leading.equalTo(self.safeAreaLayoutGuide.snp.leading).offset(20)
-            $0.trailing.equalTo(self.safeAreaLayoutGuide.snp.trailing).offset(-20)
-        }
-        
-        collectionView.snp.makeConstraints {
-            $0.top.equalTo(registerHeaderStackView.snp.bottom).offset(70)
-            $0.leading.trailing.equalToSuperview()
-            $0.bottom.equalTo(self.safeAreaLayoutGuide.snp.bottom).offset(-84)
-        }
-    }
-    
-    
-}
-
-extension RegisterSelectableView: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         1
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        guard let selectableType = selectableType else { return 0 }
-        return selectableType.cases.count
+        return T.cases.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let selectableType = selectableType,
-              let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SelectableCell", for: indexPath) as? SelectableCell else { return UICollectionViewCell() }
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SelectableCell", for: indexPath) as? SelectableCell else { return UICollectionViewCell() }
         
-        cell.fill(with: selectableType.cases[indexPath.row].value)
+        cell.fill(with: T.cases[indexPath.row].value)
         return cell
     }
     
@@ -135,11 +101,43 @@ extension RegisterSelectableView: UICollectionViewDataSource, UICollectionViewDe
     }
 }
 
+// MARK: - View Generators
+
+private extension RegisterSelectableView {
+
+    func configureView() {
+        self.backgroundColor = .systemBackground
+        collectionView.register(SelectableCell.self, forCellWithReuseIdentifier: "SelectableCell")
+        
+        registerHeaderStackView.setMessage(
+            guideText: T.guideText,
+            descriptionText: T.descriptionText
+        )
+    }
+    
+    func configureLayout() {
+        registerHeaderStackView.snp.makeConstraints {
+            $0.top.equalTo(self.safeAreaLayoutGuide.snp.top).offset(50)
+            $0.leading.equalTo(self.safeAreaLayoutGuide.snp.leading).offset(20)
+            $0.trailing.equalTo(self.safeAreaLayoutGuide.snp.trailing).offset(-20)
+        }
+        
+        collectionView.snp.makeConstraints {
+            $0.top.equalTo(registerHeaderStackView.snp.bottom).offset(70)
+            $0.leading.trailing.equalToSuperview()
+            $0.bottom.equalTo(self.safeAreaLayoutGuide.snp.bottom).offset(-84)
+        }
+    }
+    
+    
+}
+
 protocol SelectableType {
     static var cases: [SelectableType] { get }
     static var guideText: String { get }
     static var descriptionText: String? { get }
     var value: String { get }
+    var index: Int? { get }
 }
 
 enum GenderType: String, CaseIterable, SelectableType {
@@ -155,6 +153,10 @@ enum GenderType: String, CaseIterable, SelectableType {
     
     var value: String {
         return self.rawValue
+    }
+    
+    var index: Int? {
+        return Self.allCases.firstIndex(of: self)
     }
 }
 
@@ -173,6 +175,10 @@ enum SmokingType: String, CaseIterable, SelectableType {
     var value: String {
         return self.rawValue
     }
+    
+    var index: Int? {
+        return Self.allCases.firstIndex(of: self)
+    }
 }
 
 enum DrinkingType: String, CaseIterable, SelectableType {
@@ -190,5 +196,9 @@ enum DrinkingType: String, CaseIterable, SelectableType {
     
     var value: String {
         return self.rawValue
+    }
+    
+    var index: Int? {
+        return Self.allCases.firstIndex(of: self)
     }
 }

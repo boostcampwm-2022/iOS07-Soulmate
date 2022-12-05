@@ -62,6 +62,19 @@ final class RegisterMbtiView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func configureHistory(mbti: Mbti?) {
+        if let mbti = mbti,
+           let innerIndex = InnerType.allCases.firstIndex(of: mbti.innerType),
+           let recogIndex = RecognizeType.allCases.firstIndex(of: mbti.recognizeType),
+           let judgeIndex = JudgementType.allCases.firstIndex(of: mbti.judgementType),
+           let lifeIndex = LifeStyleType.allCases.firstIndex(of: mbti.lifeStyleType) {
+            innerIndex == 0 ? innerTypeView.leftButtonTapped() : innerTypeView.rightButtonTapped()
+            recogIndex == 0 ? recognizeTypeView.leftButtonTapped() : recognizeTypeView.rightButtonTapped()
+            judgeIndex == 0 ? judgementTypeView.leftButtonTapped() : judgementTypeView.rightButtonTapped()
+            lifeIndex == 0 ? lifeStyleTypeView.leftButtonTapped() : lifeStyleTypeView.rightButtonTapped()
+        }
+    }
+    
     func mbtiPublisher() -> AnyPublisher<Mbti?, Never> {
         return Publishers.CombineLatest4(
             innerTypeView.$seletedMbti.eraseToAnyPublisher(),
