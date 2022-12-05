@@ -518,7 +518,7 @@ extension ModificationViewController: PHPickerViewControllerDelegate { //PHPicke
             let newImage = UIImage.resizeImage(image: image, targetSize: CGSize(width: 390, height: ratioHeight))!
             
             
-            guard let data = newImage.jpegData(compressionQuality: 0.2) else { return }
+            guard let data = newImage.jpegData(compressionQuality: 0.9) else { return }
             
             self?.viewModel?.userDetailImageData[selectedIndex] = data
             self?.selectedPhotoIndex = nil
