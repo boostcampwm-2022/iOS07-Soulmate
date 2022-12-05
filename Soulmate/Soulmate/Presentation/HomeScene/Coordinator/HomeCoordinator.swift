@@ -26,31 +26,9 @@ final class HomeCoordinator: Coordinator {
     }
     
     func showHomeVC() {
-        let networkDatabaseApi = FireStoreNetworkDatabaseApi()
-        let userPreviewRepository = DefaultUserPreviewRepository(networkDatabaseApi: networkDatabaseApi)
-        
-        let localKeyValueStorage = UserDefaulsLocalKeyValueStorage()
-        let userDefaultsRepository = DefaultUserDefaultsRepository(localKeyValueStorage: localKeyValueStorage)
-        
-        let mateRecommendationUseCase = DefaultMateRecommendationUseCase(
-            userPreviewRepository: userPreviewRepository,
-            userDefaultsRepository: userDefaultsRepository
-        )
-        
-        let networkKeyValueStorageApi = FirebaseNetworkKeyValueStorageApi()
-        let profilePhotoRepository = DefaultProfilePhotoRepository(networkKeyValueStorageApi: networkKeyValueStorageApi)
-        
-    
-        let imageCacheStorage = NSCacheImageCacheStorage.shared
-        let imageCacheRepository = DefaultImageCacheRepository(imageCacheStorage: imageCacheStorage)
-        let downloadPictureUseCase = DefaultDownLoadPictureUseCase(
-            profilePhotoRepository: profilePhotoRepository,
-            imageCacheRepository: imageCacheRepository
-        )
-        let vm = HomeViewModel(
-            mateRecommendationUseCase: mateRecommendationUseCase,
-            downloadPictureUseCase: downloadPictureUseCase
-        )
+        let container = DIContainer.shared.container
+        guard let vm = container.resolve(HomeViewModel.self) else { return }
+
         vm.setActions(
             actions: HomeViewModelAction(
                 showDetailVC: showDetailVC
@@ -62,22 +40,9 @@ final class HomeCoordinator: Coordinator {
     }
     
     lazy var showDetailVC: (UserPreview) -> Void = { [weak self] userPreview in
-        let networkDatabaseApi = FireStoreNetworkDatabaseApi()
-        let networkKeyValueStorageApi = FirebaseNetworkKeyValueStorageApi()
-        let imageCacheStorage = NSCacheImageCacheStorage.shared
-        let userDetailInfoRepository = DefaultUserDetailInfoRepository(networkDatabaseApi: networkDatabaseApi)
-        let profilePhotoRepository = DefaultProfilePhotoRepository(networkKeyValueStorageApi: networkKeyValueStorageApi)
-        let imageCacheRepository = DefaultImageCacheRepository(imageCacheStorage: imageCacheStorage)
-        let downloadDetailInfoUseCase = DefaultDownLoadDetailInfoUseCase(userDetailInfoRepository: userDetailInfoRepository)
-        let downloadPictureUseCase = DefaultDownLoadPictureUseCase(
-            profilePhotoRepository: profilePhotoRepository,
-            imageCacheRepository: imageCacheRepository
-        )
+        let container = DIContainer.shared.container
+        guard let vm = container.resolve(DetailViewModel.self) else { return }
         
-        let vm = DetailViewModel(
-            downloadPictureUseCase: downloadPictureUseCase,
-            downloadDetailInfoUseCase: downloadDetailInfoUseCase
-        )
         vm.setActions(actions: DetailViewModelActions())
         vm.setUser(userPreview: userPreview)
         

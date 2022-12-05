@@ -37,15 +37,10 @@ class AuthCoordinator: Coordinator {
     }
     
     lazy var showLoginPage: () -> Void = { [weak self] in
-        let networkDatabaseApi = FireStoreNetworkDatabaseApi()
-        let userDetailInfoRepository = DefaultUserDetailInfoRepository(networkDatabaseApi: networkDatabaseApi)
-        let downloadDetailInfoUseCase = DefaultDownLoadDetailInfoUseCase(userDetailInfoRepository: userDetailInfoRepository)
-        let registerDetailInfoUseCase = DefaultRegisterStateValidateUseCase()
+
+        let container = DIContainer.shared.container
+        guard let viewModel = container.resolve(LoginViewModel.self) else { return }
         
-        let viewModel = LoginViewModel(
-            downLoadDetailInfoUseCase: downloadDetailInfoUseCase,
-            registerStateValidateUseCase: registerDetailInfoUseCase
-        )
         viewModel.setActions(
             actions: LoginViewModelActions(
                 showRegisterFlow: self?.showRegisterFlow,

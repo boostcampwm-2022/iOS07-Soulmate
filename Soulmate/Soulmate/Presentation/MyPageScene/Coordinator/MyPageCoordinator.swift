@@ -21,23 +21,8 @@ class MyPageCoordinator: Coordinator {
     }
     
     func start() {
-        let networkDatabaseApi = FireStoreNetworkDatabaseApi()
-        let networkKeyValueStorageApi = FirebaseNetworkKeyValueStorageApi()
-        
-        let userPreviewRepository = DefaultUserPreviewRepository(networkDatabaseApi: networkDatabaseApi)
-        let profilePhotoRepository = DefaultProfilePhotoRepository(networkKeyValueStorageApi: networkKeyValueStorageApi)
-        let imageCacheRepository = DefaultImageCacheRepository(imageCacheStorage: NSCacheImageCacheStorage.shared)
-        
-        let downLoadPreviewUseCase = DefaultDownLoadPreviewUseCase(userPreviewRepository: userPreviewRepository)
-        let downLoadPictureUseCase = DefaultDownLoadPictureUseCase(
-            profilePhotoRepository: profilePhotoRepository,
-            imageCacheRepository: imageCacheRepository
-        )
-        
-        let vm = MyPageViewModel(
-            downLoadPreviewUseCase: downLoadPreviewUseCase,
-            downLoadPictureUseCase: downLoadPictureUseCase
-        )
+        let container = DIContainer.shared.container
+        guard let vm = container.resolve(MyPageViewModel.self) else { return }
         
         vm.setActions(
             actions: MyPageViewModelActions(
@@ -60,32 +45,8 @@ class MyPageCoordinator: Coordinator {
     
     lazy var showModificationVC: (@escaping () -> Void) -> Void = { [weak self] completionHandler in
         
-        let networkDatabaseApi = FireStoreNetworkDatabaseApi()
-        let networkKeyValueStorageApi = FirebaseNetworkKeyValueStorageApi()
-        let imageCacheStorage = NSCacheImageCacheStorage.shared
-        
-        let userDetailInfoRepository = DefaultUserDetailInfoRepository(networkDatabaseApi: networkDatabaseApi)
-        let profilePhotoRepository = DefaultProfilePhotoRepository(networkKeyValueStorageApi: networkKeyValueStorageApi)
-        let imageCacheRepository = DefaultImageCacheRepository(imageCacheStorage: imageCacheStorage)
-        let userPreviewRepository = DefaultUserPreviewRepository(networkDatabaseApi: networkDatabaseApi)
-        
-        let downloadDetailInfoUseCase = DefaultDownLoadDetailInfoUseCase(userDetailInfoRepository: userDetailInfoRepository)
-        let downloadPictureUseCase = DefaultDownLoadPictureUseCase(
-            profilePhotoRepository: profilePhotoRepository,
-            imageCacheRepository: imageCacheRepository
-        )
-        let uploadDetailInfoUseCase = DefaultUploadDetailInfoUseCase(userDetailInfoRepository: userDetailInfoRepository)
-        let uploadPictureUseCase = DefaultUpLoadPictureUseCase(profilePhotoRepository: profilePhotoRepository)
-        let uploadPreviewUseCase = DefaultUploadPreviewUseCase(userPreviewRepository: userPreviewRepository)
-        
-        
-        let viewModel = ModificationViewModel(
-            downloadDetailInfoUseCase: downloadDetailInfoUseCase,
-            downloadPictureUseCase: downloadPictureUseCase,
-            uploadDetailInfoUseCase: uploadDetailInfoUseCase,
-            uploadPictureUseCase: uploadPictureUseCase,
-            uploadPreviewUseCase: uploadPreviewUseCase
-        )
+        let container = DIContainer.shared.container
+        guard let viewModel = container.resolve(ModificationViewModel.self) else { return }
         
         viewModel.setActions(
             actions: ModificationViewModelActions(

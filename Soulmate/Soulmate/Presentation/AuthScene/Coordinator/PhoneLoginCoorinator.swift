@@ -27,11 +27,9 @@ class PhoneLoginCoordinator: Coordinator {
     
     
     lazy var showPhoneLoginPage: () -> Void = { [weak self] in
-        let localKeyValueStorage = UserDefaulsLocalKeyValueStorage()
-        let userDefaultsRepository = DefaultUserDefaultsRepository(localKeyValueStorage: localKeyValueStorage)
-        let phoneSignInUseCase = DefaultPhoneSignInUseCase(userDefaultsRepository: userDefaultsRepository)
+        let container = DIContainer.shared.container
+        guard let viewModel = container.resolve(PhoneNumberViewModel.self) else { return }
         
-        let viewModel = PhoneNumberViewModel(phoneSignInUseCase: phoneSignInUseCase)
         viewModel.setActions(
             actions: PhoneNumberViewModelActions(
                 showCertificationPage: self?.showCerfiticationPage,
@@ -44,23 +42,10 @@ class PhoneLoginCoordinator: Coordinator {
     }
     
     lazy var showCerfiticationPage: (String) -> Void = { [weak self] phoneNumber in
-        let localKeyValueStorage = UserDefaulsLocalKeyValueStorage()
-        let userDefaultsRepository = DefaultUserDefaultsRepository(localKeyValueStorage: localKeyValueStorage)
-        let phoneSignInUseCase = DefaultPhoneSignInUseCase(userDefaultsRepository: userDefaultsRepository)
+        let container = DIContainer.shared.container
+        guard let viewModel = container.resolve(CertificationViewModel.self) else { return }
         
-        let networkDatabseApi = FireStoreNetworkDatabaseApi()
-        let userDetailInfoRepository = DefaultUserDetailInfoRepository(networkDatabaseApi: networkDatabseApi)
-        let downloadDetailInfoUseCase = DefaultDownLoadDetailInfoUseCase(userDetailInfoRepository: userDetailInfoRepository)
-
-        let registerStateValidateUseCase = DefaultRegisterStateValidateUseCase()
-        
-        let viewModel = CertificationViewModel(
-            phoneSignInUseCase: phoneSignInUseCase,
-            registerStateValidateUseCase: registerStateValidateUseCase,
-            downloadDetailInfoUseCase: downloadDetailInfoUseCase
-        )
         viewModel.phoneNumber = phoneNumber
-        
         viewModel.setActions(
             actions: CertificationViewModelActions(
                 showRegisterFlow: self?.showRegisterFlow,
@@ -83,7 +68,6 @@ class PhoneLoginCoordinator: Coordinator {
     lazy var showMainTabFlow: () -> Void = { [weak self] in
         guard let authCoordinator = self?.finishDelegate as? AuthCoordinator else { return }
         
-        //self?.navigationController.popToRootViewController(animated: false)
         self?.finish()
         authCoordinator.showMainTabFlow()
     }
