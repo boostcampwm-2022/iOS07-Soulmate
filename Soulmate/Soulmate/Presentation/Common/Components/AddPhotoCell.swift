@@ -72,49 +72,13 @@ final class AddPhotoCell: UICollectionViewCell {
                 
                 if let faces = req.results as? [VNFaceObservation] {
                     if faces.count >= 1 { // 얼굴 인식 성공 했을 경우
-                        // print(faces.count, "Face found!")
                         DispatchQueue.main.async {
                             self.addPhotoImageView.layer.borderColor = UIColor.backgroundGrey?.cgColor
                             self.addPhotoImageView.contentMode = .scaleAspectFill
                             self.addPhotoImageView.image = originImage
                             self.loadingIndicator.stopAnimating()
                         }
-                        
-                        /*
-                        // 이하 테스트코드! 얼굴 인식된 부분 빨간 사각형 그리기
-                        print(faces.count, "Face found!")
-                        for face in faces {
-                            // 원본 이미지 그리기
-                            UIGraphicsBeginImageContextWithOptions(originImage.size, false, 1.0)
-                            originImage.draw(in: CGRect(x: 0, y: 0, width: originImage.size.width, height: originImage.size.height))
-                            
-                            // rect 구하기
-                            let rect = face.boundingBox
-                            let flip = CGAffineTransform.init(scaleX: 1, y: -1).translatedBy(x: 0, y: -originImage.size.height)
-                            let scale = CGAffineTransform.identity.scaledBy(x: originImage.size.width, y: originImage.size.height)
-                            let convertedFace = rect.applying(scale).applying(flip)
-                            
-                            // image에 rect 그리기
-                            guard let draw = UIGraphicsGetCurrentContext() else { return }
-                            draw.setStrokeColor(UIColor.red.cgColor)
-                            draw.setLineWidth(0.01 * originImage.size.width)
-                            draw.stroke(convertedFace)
-                            
-                            // 결과값 얻기
-                            guard let result = UIGraphicsGetImageFromCurrentImageContext() else { return }
-                            UIGraphicsEndImageContext()
-                            
-                            originImage = result
-                            DispatchQueue.main.async {
-                                self.addPhotoImageView.layer.borderColor = UIColor.backgroundGrey?.cgColor
-                                self.addPhotoImageView.contentMode = .scaleAspectFill
-                                self.addPhotoImageView.image = originImage
-                                self.loadingIndicator.stopAnimating()
-                            }
-                        }
-                         */
                     } else { // 얼굴 인식 실패했을 경우
-                        // print("Face not found!")
                         DispatchQueue.main.async {
                             self.addPhotoImageView.contentMode = .center
                             self.addPhotoImageView.image = UIImage(named: "plusGrey")
