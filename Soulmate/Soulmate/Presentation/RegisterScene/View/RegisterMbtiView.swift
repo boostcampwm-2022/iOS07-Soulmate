@@ -13,9 +13,11 @@ final class RegisterMbtiView: UIView {
     
     var bag = Set<AnyCancellable>()
     
-    private lazy var registerHeaderStackView: RegisterHeaderStackView = {
+    lazy var registerHeaderStackView: RegisterHeaderStackView = {
         let headerView = RegisterHeaderStackView(frame: .zero)
-        headerView.setMessage(guideText: "회원님의 MBTI를\n선택해주세요.")
+        headerView.setMessage(
+            guideText: "회원님의 MBTI를\n선택해주세요."
+        )
         self.addSubview(headerView)
         return headerView
     }()
@@ -28,25 +30,21 @@ final class RegisterMbtiView: UIView {
     
     lazy var innerTypeView: MbtiSegmentView = {
         let view = MbtiSegmentView(titles: ("I", "E"))
-        self.addSubview(view)
         return view
     }()
 
     lazy var recognizeTypeView: MbtiSegmentView = {
         let view = MbtiSegmentView(titles: ("N", "S"))
-        self.addSubview(view)
         return view
     }()
     
     lazy var judgementTypeView: MbtiSegmentView = {
         let view = MbtiSegmentView(titles: ("F", "T"))
-        self.addSubview(view)
         return view
     }()
     
     lazy var lifeStyleTypeView: MbtiSegmentView = {
         let view = MbtiSegmentView(titles: ("P", "J"))
-        self.addSubview(view)
         return view
     }()
     
@@ -143,23 +141,19 @@ private extension RegisterMbtiView {
     func configureLayout() {
         registerHeaderStackView.snp.makeConstraints {
             $0.top.equalTo(self.safeAreaLayoutGuide.snp.top).offset(50)
-            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.leading.equalToSuperview().offset(20)
+            $0.trailing.equalToSuperview().offset(-20)
         }
 
         preview.snp.makeConstraints {
-            $0.top.equalTo(registerHeaderStackView.snp.bottom).offset(60)
+            $0.top.equalTo(registerHeaderStackView.snp.bottom).offset(70)
             $0.width.equalTo(169)
             $0.centerX.equalToSuperview()
         }
-//        let stack = UIStackView()
-//        stack.axis = .horizontal
-//        stack.spacing = 4
-//        stack.distribution = .fillEqually
-//        self.addSubview(stack)
-//        return stack
+
         var vStackView = UIStackView(frame: .zero)
         vStackView.axis = .vertical
-        vStackView.spacing = 10
+        vStackView.spacing = 12
         vStackView.distribution = .fillEqually
         vStackView.addArrangedSubview(innerTypeView)
         vStackView.addArrangedSubview(recognizeTypeView)
@@ -170,33 +164,25 @@ private extension RegisterMbtiView {
         vStackView.snp.makeConstraints {
             $0.top.equalTo(preview.snp.bottom).offset(60)
             $0.leading.trailing.equalToSuperview().inset(20)
-            $0.bottom.equalToSuperview().inset(140)
         }
-
         
-        innerTypeView.snp.makeConstraints {
-//            $0.top.equalTo(preview.snp.bottom).offset(60)
-//            $0.leading.trailing.equalToSuperview().inset(20)
-            $0.height.lessThanOrEqualTo(50)
-        }
-
-        recognizeTypeView.snp.makeConstraints {
-//            $0.top.equalTo(innerTypeView.snp.bottom).offset(24)
-//            $0.leading.trailing.equalToSuperview().inset(20)
-            $0.height.lessThanOrEqualTo(50)
-        }
-
-        judgementTypeView.snp.makeConstraints {
-//            $0.top.equalTo(recognizeTypeView.snp.bottom).offset(24)
-//            $0.leading.trailing.equalToSuperview().inset(20)
-            $0.height.lessThanOrEqualTo(50)
-        }
-
-        lifeStyleTypeView.snp.makeConstraints {
-//            $0.top.equalTo(judgementTypeView.snp.bottom).offset(24)
-//            $0.leading.trailing.equalToSuperview().inset(20)
-            $0.height.lessThanOrEqualTo(50)
+        [innerTypeView, recognizeTypeView, judgementTypeView, lifeStyleTypeView].forEach {
+            $0.snp.makeConstraints {
+                $0.height.lessThanOrEqualTo(54)
+            }
         }
     }
     
 }
+
+#if canImport(SwiftUI) && DEBUG
+import SwiftUI
+
+struct MBTIPreview: PreviewProvider{
+    static var previews: some View {
+        UIViewPreview {
+            return RegisterMbtiView(frame: .zero)
+        }.previewLayout(.device)
+    }
+}
+#endif
