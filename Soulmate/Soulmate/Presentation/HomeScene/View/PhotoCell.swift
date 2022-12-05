@@ -19,7 +19,7 @@ final class PhotoCell: UICollectionViewCell {
     }()
     
     private lazy var loadingIndicator: LoadingIndicator = {
-       let loading = LoadingIndicator()
+        let loading = LoadingIndicator()
         imageView.addSubview(loading)
         return loading
     }()
