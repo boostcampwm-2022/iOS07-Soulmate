@@ -72,25 +72,25 @@ final class ProfileCell: UICollectionViewCell {
         
         partnerName.snp.makeConstraints {
             $0.top.equalToSuperview().inset(24)
-            $0.left.equalToSuperview().inset(20)
+            $0.leading.equalToSuperview().inset(20)
             $0.bottom.equalToSuperview().inset(50)
         }
         
         partnerAge.snp.makeConstraints {
             $0.top.equalToSuperview().inset(24)
-            $0.left.equalToSuperview().inset(84)
+            $0.leading.equalTo(partnerName.snp.trailing).offset(6)
             $0.bottom.equalToSuperview().inset(50)
         }
         
         partnerMapImageView.snp.makeConstraints {
             $0.top.equalToSuperview().inset(57)
-            $0.left.equalToSuperview().inset(22.48)
+            $0.leading.equalToSuperview().inset(22.48)
             $0.bottom.equalToSuperview().inset(25)
         }
         
         partnerDistance.snp.makeConstraints {
             $0.top.equalToSuperview().inset(56)
-            $0.left.equalToSuperview().inset(44)
+            $0.leading.equalToSuperview().inset(44)
             $0.bottom.equalToSuperview().inset(24)
         }
         
@@ -116,7 +116,7 @@ final class ProfileCell: UICollectionViewCell {
             let from = CLLocation(latitude: UserDefaults.standard.double(forKey: "latestLatitude"), longitude: UserDefaults.standard.double(forKey: "latestLongitude"))
             
             let to = CLLocation(latitude: location.latitude, longitude: location.longitude)
-            partnerDistance.text = String(format: "%.2fkm", to.distance(from: from)*0.001)
+            partnerDistance.text = String(format: "%.2fkm", to.distance(from: from) * 0.001)
 
         }
         

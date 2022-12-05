@@ -27,7 +27,6 @@ class ServiceTermViewController: UIViewController {
         configureLayout()
     }
     
-    
     private func configureLayout() {
         termLabel.snp.makeConstraints {
             $0.top.equalTo(self.view.safeAreaLayoutGuide.snp.top).offset(16)

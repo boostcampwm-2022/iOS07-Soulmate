@@ -26,7 +26,6 @@ final class LoadingIndicator: UIActivityIndicatorView {
         self.color = UIColor.mainPurple
         self.hidesWhenStopped = true
         self.style = .large
-        // self.stopAnimating()
         self.startAnimating()
     }
     

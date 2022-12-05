@@ -18,6 +18,12 @@ final class PhotoCell: UICollectionViewCell {
         return photo
     }()
     
+    private lazy var loadingIndicator: LoadingIndicator = {
+        let loading = LoadingIndicator()
+        imageView.addSubview(loading)
+        return loading
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -31,8 +37,8 @@ final class PhotoCell: UICollectionViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-
-        imageView.image = UIImage(systemName: "photo")
+        imageView.image = nil
+        loadingIndicator.startAnimating()
     }
     
     func configureView() {
@@ -45,11 +51,17 @@ final class PhotoCell: UICollectionViewCell {
             $0.width.equalTo(imageView.snp.height)
             $0.centerX.centerY.equalToSuperview()
         }
+        
+        loadingIndicator.snp.makeConstraints {
+            $0.center.equalToSuperview()
+        }
     }
     
     func loadImage(image: UIImage) {
         let ratio = image.size.width / self.contentView.frame.width
         
-        imageView.image = image.resized(to: CGSize(width: self.contentView.frame.width, height: self.contentView.frame.height * ratio))
+        //imageView.image = image.resized(to: CGSize(width: self.contentView.frame.width * ratio, height: self.contentView.frame.height * ratio))
+        imageView.image = image.resize(newWidth: self.contentView.frame.width)
+        loadingIndicator.stopAnimating()
     }
 }
