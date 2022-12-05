@@ -19,6 +19,8 @@ class AuthCoordinator: Coordinator {
     
     var navigationController: UINavigationController
     
+    var authRootViewController: UIViewController?
+    
     var childCoordinators: [Coordinator] = []
     
     var type: CoordinatorType = .auth
@@ -37,7 +39,6 @@ class AuthCoordinator: Coordinator {
     }
     
     lazy var showLoginPage: () -> Void = { [weak self] in
-
         let container = DIContainer.shared.container
         guard let viewModel = container.resolve(LoginViewModel.self) else { return }
         
@@ -51,6 +52,8 @@ class AuthCoordinator: Coordinator {
         
         let vc = LoginViewController(viewModel: viewModel)
         self?.navigationController.pushViewController(vc, animated: true)
+        
+        self?.authRootViewController = vc
     }
     
     lazy var showPhoneLoginFlow: () -> Void = { [weak self] in
@@ -65,6 +68,8 @@ class AuthCoordinator: Coordinator {
         coordinator.finishDelegate = self
         self?.childCoordinators.append(coordinator)
         coordinator.start(with: registerUserInfo)
+        
+        coordinator.setPreNavigationStack(viewControllers: [self?.authRootViewController ?? UIViewController()])
     }
     
     lazy var showMainTabFlow: () -> Void = { [weak self] in

@@ -13,6 +13,8 @@ class RegisterCoordinator: Coordinator {
     
     var navigationController: UINavigationController
     
+    var registerViewController: UIViewController?
+    
     var childCoordinators: [Coordinator] = []
     
     var type: CoordinatorType = .register
@@ -22,7 +24,6 @@ class RegisterCoordinator: Coordinator {
     }
     
     func start(with registerUserInfo: RegisterUserInfo? = nil) {
-
         let container = DIContainer.shared.container
         guard let vm = container.resolve(RegisterViewModel.self) else { return }
         
@@ -32,14 +33,17 @@ class RegisterCoordinator: Coordinator {
                 finishRegister: finishRegister
             )
         )
+        vm.setPrevRegisterInfo(registerUserInfo: registerUserInfo)
         
-        if let registerUserInfo = registerUserInfo {
-            vm.setPrevRegisterInfo(registerUserInfo: registerUserInfo)
-        }
-
         let vc = RegisterViewController(viewModel: vm)
-        
+
         navigationController.pushViewController(vc, animated: true)
+        self.registerViewController = vc
+    }
+    
+    func setPreNavigationStack(viewControllers: [UIViewController]) {
+        guard let vc = self.registerViewController else { return }
+        navigationController.setViewControllers(viewControllers + [vc], animated: true)        
     }
     
     lazy var finishRegister: () -> Void = { [weak self] in
@@ -48,7 +52,7 @@ class RegisterCoordinator: Coordinator {
         authCoordinator.showMainTabFlow()
     }
     
-    lazy var quitRegister: () -> Void = { [weak self] in // 애는 중간에 종료하는 경우, 이 경우는 그냥 원래 페이지로 옮겨주자
+    lazy var quitRegister: () -> Void = { [weak self] in // 이전버튼 계속 눌러서 홈으로 나갈 경우, 이 경우는 팝은 딱히 필요 없음
         self?.finish()
         
         let container = DIContainer.shared.container

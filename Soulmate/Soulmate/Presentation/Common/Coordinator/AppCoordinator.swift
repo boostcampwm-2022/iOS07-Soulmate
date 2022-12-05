@@ -20,6 +20,12 @@ final class AppCoordinator: Coordinator {
             
     init(window: UIWindow) {
         self.window = window
+        
+        UIView.transition(with: window,
+                          duration: 1,
+                          options: .transitionCrossDissolve,
+                          animations: nil,
+                          completion: nil)
     }
     
     func start() {

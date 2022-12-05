@@ -67,7 +67,9 @@ class RegisterViewModel {
         self.uploadPreviewUseCase = uploadPreviewUseCase
     }
     
-    func setPrevRegisterInfo(registerUserInfo: RegisterUserInfo) {
+    func setPrevRegisterInfo(registerUserInfo: RegisterUserInfo?) {
+        guard let registerUserInfo = registerUserInfo else { return }
+        
         self.genderType = registerUserInfo.gender
         self.nickName = registerUserInfo.nickName
         self.height = registerUserInfo.height == nil ? Int() : registerUserInfo.height!

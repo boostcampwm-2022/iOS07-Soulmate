@@ -145,7 +145,7 @@ private extension RegisterMbtiView {
             $0.top.equalTo(self.safeAreaLayoutGuide.snp.top).offset(50)
             $0.leading.trailing.equalToSuperview().inset(20)
         }
-        
+
         preview.snp.makeConstraints {
             $0.top.equalTo(registerHeaderStackView.snp.bottom).offset(60)
             $0.width.equalTo(169)

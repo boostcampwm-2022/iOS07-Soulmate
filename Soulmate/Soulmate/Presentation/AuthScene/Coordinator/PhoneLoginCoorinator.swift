@@ -60,7 +60,6 @@ class PhoneLoginCoordinator: Coordinator {
     lazy var showRegisterFlow: (RegisterUserInfo?) -> Void = { [weak self] registerUserInfo in
         guard let authCoordinator = self?.finishDelegate as? AuthCoordinator else { return }
         
-        self?.navigationController.popToRootViewController(animated: false)
         self?.finish()
         authCoordinator.showRegisterFlow(registerUserInfo)
     }
