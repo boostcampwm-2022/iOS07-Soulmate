@@ -168,6 +168,7 @@ extension DIContainer {
         container.register(AuthUseCase.self) { _ in
             return DefaultAuthUseCase()
         }
+        .inObjectScope(.container)
     }
     
     func registerDefaultPhoneSignInUseCase() {
@@ -261,6 +262,7 @@ extension DIContainer {
                 userDefaultsRepository: r.resolve(UserDefaultsRepository.self)!
             )
         }
+        .inObjectScope(.container)
     }
 }
 
@@ -325,6 +327,7 @@ extension DIContainer {
                 downloadDetailInfoUseCase: r.resolve(DownLoadDetailInfoUseCase.self)!
             )
         }
+        .inObjectScope(.graph)
     }
     
     func registerMyPageViewModel() {
@@ -334,6 +337,7 @@ extension DIContainer {
                 downLoadPictureUseCase: r.resolve(DownLoadPictureUseCase.self)!
             )
         }
+        .inObjectScope(.graph)
     }
     
     func registerModificationViewModel() {
@@ -346,5 +350,6 @@ extension DIContainer {
                 uploadPreviewUseCase: r.resolve(UploadPreviewUseCase.self)!
             )
         }
+        .inObjectScope(.graph)
     }
 }
