@@ -8,6 +8,7 @@
 import Foundation
 import FirebaseAuth
 import FirebaseFirestore
+import CoreLocation
 
 class DefaultMateRecommendationUseCase: MateRecommendationUseCase {
     
@@ -31,13 +32,16 @@ class DefaultMateRecommendationUseCase: MateRecommendationUseCase {
     
     func fetchDistanceFilteredRecommendedMate(distance: Double) async throws -> [UserPreview] {
         guard let latitude: Double = userDefaultsRepository.get(key: "latestLatitude"),
-              let longitude: Double = userDefaultsRepository.get(key: "latestLongitude") else {
+              let longitude: Double = userDefaultsRepository.get(key: "latestLongitude"),
+              let uid = Auth.auth().currentUser?.uid else {
             throw UserDefaultsError.noSuchKeyMatchedValue
         }
+        let preview = try await userPreviewRepository.downloadPreview(userUid: uid)
+        let from = CLLocation(latitude: preview.location?.latitude ?? 0, longitude: preview.location?.longitude ?? 0)
         
-        let myGender = try await userPreviewRepository.downloadPreview(userUid: Auth.auth().currentUser!.uid).gender!
+        let myGender = try await userPreviewRepository.downloadPreview(userUid: uid).gender!
         
-        return try await userPreviewRepository.fetchDistanceFilteredRecommendedPreviewList(
+        var previewList = try await userPreviewRepository.fetchDistanceFilteredRecommendedPreviewList(
             userGender: myGender,
             userLocation: Location(
                 latitude: latitude,
@@ -45,6 +49,9 @@ class DefaultMateRecommendationUseCase: MateRecommendationUseCase {
             ),
             distance: distance
         )
+        // 거리 가까운 순으로 정렬 preveiwList 정렬 후 반환
+        previewList.sort { $0.location?.toDistance(from: from) ?? 0 <= $1.location?.toDistance(from: from) ?? 0 }
+        return previewList
     }
     
 }
