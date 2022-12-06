@@ -8,6 +8,7 @@
 import Foundation
 import FirebaseAuth
 import FirebaseFirestore
+import CoreLocation
 
 class DefaultMateRecommendationUseCase: MateRecommendationUseCase {
     
@@ -40,6 +41,8 @@ class DefaultMateRecommendationUseCase: MateRecommendationUseCase {
               let longitude: Double = userDefaultsRepository.get(key: "latestLongitude") else {
             throw UserDefaultsError.noSuchKeyMatchedValue
         }
+        let preview = try await userPreviewRepository.downloadPreview(userUid: uid)
+        let from = CLLocation(latitude: preview.location?.latitude ?? 0, longitude: preview.location?.longitude ?? 0)
         
         let uid = try authRepository.currentUid()
         let myGender = try await userPreviewRepository.downloadPreview(userUid: uid).gender!
@@ -52,7 +55,8 @@ class DefaultMateRecommendationUseCase: MateRecommendationUseCase {
                 longitude: longitude
             ),
             distance: distance
-        )
+        ).sort { $0.location?.toDistance(from: from) ?? 0 <= $1.location?.toDistance(from: from) ?? 0 }
+        // 거리 가까운 순으로 정렬 preveiwList 정렬 후 반환
     }
     
 }
