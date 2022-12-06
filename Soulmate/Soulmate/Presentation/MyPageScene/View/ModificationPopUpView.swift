@@ -76,7 +76,7 @@ class ModificationPopUpViewController: UIViewController {
         containerView.snp.makeConstraints {
             $0.center.equalToSuperview()
             $0.leading.trailing.equalToSuperview().inset(30)
-            $0.height.equalTo(500)
+            $0.height.equalTo(550)
         }
         
         dismissButton.snp.makeConstraints {

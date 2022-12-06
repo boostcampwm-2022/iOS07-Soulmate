@@ -20,9 +20,9 @@ class RegisterViewModel {
     
     var bag = Set<AnyCancellable>()
     
-    var uploadDetailInfoUseCase: UploadDetailInfoUseCase
+    var uploadDetailInfoUseCase: UploadMyDetailInfoUseCase
     var uploadPictureUseCase: UploadPictureUseCase
-    var uploadPreviewUseCase: UploadPreviewUseCase
+    var uploadPreviewUseCase: UploadMyPreviewUseCase
     
     var didAllInfoUploaded = PassthroughSubject<Void, Never>()
     
@@ -58,16 +58,18 @@ class RegisterViewModel {
     }
     
     init(
-        uploadDetailInfoUseCase: UploadDetailInfoUseCase,
+        uploadDetailInfoUseCase: UploadMyDetailInfoUseCase,
         uploadPictureUseCase: UploadPictureUseCase,
-        uploadPreviewUseCase: UploadPreviewUseCase
+        uploadPreviewUseCase: UploadMyPreviewUseCase
     ) {
         self.uploadDetailInfoUseCase = uploadDetailInfoUseCase
         self.uploadPictureUseCase = uploadPictureUseCase
         self.uploadPreviewUseCase = uploadPreviewUseCase
     }
     
-    func setPrevRegisterInfo(registerUserInfo: RegisterUserInfo) {
+    func setPrevRegisterInfo(registerUserInfo: RegisterUserInfo?) {
+        guard let registerUserInfo = registerUserInfo else { return }
+        
         self.genderType = registerUserInfo.gender
         self.nickName = registerUserInfo.nickName
         self.height = registerUserInfo.height == nil ? Int() : registerUserInfo.height!

@@ -78,6 +78,12 @@ final class RegisterIntroductionView: UIView {
         bind()
     }
     
+    func configureHistory(introduction: String?) {
+        if let introduction = introduction {
+            introductionTextView.text = introduction
+        }
+    }
+    
     func introductionPublisher() -> AnyPublisher<String?, Never> {
         return textSubject.eraseToAnyPublisher()
     }

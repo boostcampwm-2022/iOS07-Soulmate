@@ -46,6 +46,12 @@ final class RegisterBirthView: UIView {
         configureLayout()
     }
     
+    func configureHistory(birth: Date?) {
+        if let birth = birth {
+            birthPicker.date = birth
+        }
+    }
+    
     func birthPublisher() -> AnyPublisher<Date, Never> {
         return birthPicker.datePublisher()
     }

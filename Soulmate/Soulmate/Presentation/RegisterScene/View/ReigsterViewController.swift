@@ -19,13 +19,13 @@ class RegisterViewController: UIViewController {
     @Published var currentPage: Int = 0
 
     var childView = [
-        RegisterSelectableView(selectableType: GenderType.self),
+        RegisterSelectableView<GenderType>(),
         RegisterNickNameView(),
         RegisterBirthView(),
         RegisterHeightView(),
         RegisterMbtiView(),
-        RegisterSelectableView(selectableType: SmokingType.self),
-        RegisterSelectableView(selectableType: DrinkingType.self),
+        RegisterSelectableView<SmokingType>(),
+        RegisterSelectableView<DrinkingType>(),
         RegisterIntroductionView(),
         RegisterPhotoView(),
         RegisterCongraturationsView()
@@ -146,65 +146,34 @@ private extension RegisterViewController {
     
     func configureHistory() { // 이전에 했던 부분까지 셋팅
         guard let viewModel = viewModel,
-              let genderView = childView[0] as? RegisterSelectableView,
+              let genderView = childView[0] as? RegisterSelectableView<GenderType>,
               let nickNameView = childView[1] as? RegisterNickNameView,
               let birthView = childView[2] as? RegisterBirthView,
               let heightView = childView[3] as? RegisterHeightView,
               let mbtiView = childView[4] as? RegisterMbtiView,
-              let smokingView = childView[5] as? RegisterSelectableView,
-              let drinkingView = childView[6] as? RegisterSelectableView,
+              let smokingView = childView[5] as? RegisterSelectableView<SmokingType>,
+              let drinkingView = childView[6] as? RegisterSelectableView<DrinkingType>,
               let introductionView = childView[7] as? RegisterIntroductionView else { return }
         
-        if let gender = viewModel.genderType,
-           let index = GenderType.allCases.firstIndex(of: gender) {
-            genderView.collectionView.selectItem(at: IndexPath(row: index, section: 0), animated: false, scrollPosition: .top)
-            genderView.selectedIndex = index
-        }
-        
-        if let nickName = viewModel.nickName {
-            nickNameView.nicknameTextField.text = nickName
-        }
-
-        birthView.birthPicker.date = viewModel.birth
-        heightView.selectedHeight = String(viewModel.height)
-        
-        if let mbti = viewModel.mbti,
-           let innerIndex = InnerType.allCases.firstIndex(of: mbti.innerType),
-           let recogIndex = RecognizeType.allCases.firstIndex(of: mbti.recognizeType),
-           let judgeIndex = JudgementType.allCases.firstIndex(of: mbti.judgementType),
-           let lifeIndex = LifeStyleType.allCases.firstIndex(of: mbti.lifeStyleType) {
-            innerIndex == 0 ? mbtiView.innerTypeView.leftButtonTapped() : mbtiView.innerTypeView.rightButtonTapped()
-            recogIndex == 0 ? mbtiView.recognizeTypeView.leftButtonTapped() : mbtiView.recognizeTypeView.rightButtonTapped()
-            judgeIndex == 0 ? mbtiView.judgementTypeView.leftButtonTapped() : mbtiView.judgementTypeView.rightButtonTapped()
-            lifeIndex == 0 ? mbtiView.lifeStyleTypeView.leftButtonTapped() : mbtiView.lifeStyleTypeView.rightButtonTapped()
-        }
-        
-        if let smoking = viewModel.smokingType,
-           let index = SmokingType.allCases.firstIndex(of: smoking) {
-            smokingView.collectionView.selectItem(at: IndexPath(row: index, section: 0), animated: false, scrollPosition: .top)
-            smokingView.selectedIndex = index
-        }
-        
-        if let drinking = viewModel.drinkingType,
-           let index = DrinkingType.allCases.firstIndex(of: drinking) {
-            drinkingView.collectionView.selectItem(at: IndexPath(row: index, section: 0), animated: false, scrollPosition: .top)
-            drinkingView.selectedIndex = index
-        }
-        
-        if let introduction = viewModel.introduction {
-            introductionView.introductionTextView.text = introduction
-        }
+        genderView.configureHistory(selectableValue: viewModel.genderType)
+        nickNameView.configureHistory(nickName: viewModel.nickName)
+        birthView.configureHistory(birth: viewModel.birth)
+        heightView.configureHistory(height: viewModel.height)
+        mbtiView.configureHistory(mbti: viewModel.mbti)
+        smokingView.configureHistory(selectableValue: viewModel.smokingType)
+        drinkingView.configureHistory(selectableValue: viewModel.drinkingType)
+        introductionView.configureHistory(introduction: viewModel.introduction)
     }
     
     func bind() {
         guard let viewModel = viewModel,
-              let genderView = childView[0] as? RegisterSelectableView,
+              let genderView = childView[0] as? RegisterSelectableView<GenderType>,
               let nickNameView = childView[1] as? RegisterNickNameView,
               let birthView = childView[2] as? RegisterBirthView,
               let heightView = childView[3] as? RegisterHeightView,
               let mbtiView = childView[4] as? RegisterMbtiView,
-              let smokingView = childView[5] as? RegisterSelectableView,
-              let drinkingView = childView[6] as? RegisterSelectableView,
+              let smokingView = childView[5] as? RegisterSelectableView<SmokingType>,
+              let drinkingView = childView[6] as? RegisterSelectableView<DrinkingType>,
               let introductionView = childView[7] as? RegisterIntroductionView,
               let photoView = childView[8] as? RegisterPhotoView,
               let congratulationView = childView[9] as? RegisterCongraturationsView else { return }
@@ -244,7 +213,7 @@ private extension RegisterViewController {
                     self?.navigationItem.setLeftBarButton(nil, animated: true)
                 case 1...8:
                     self?.navigationItem.setLeftBarButton(UIBarButtonItem(customView: self?.prevButton ?? UIView()), animated: true)
-                case 9:
+                case 9: // last page
                     self?.navigationItem.setLeftBarButton(nil, animated: true)
                     self?.navigationItem.hidesBackButton = true
                     self?.nextButton.isHidden = true
@@ -257,13 +226,13 @@ private extension RegisterViewController {
         let output = viewModel.transform(
             input: RegisterViewModel.Input(
                 didChangedPageIndex: $currentPage.eraseToAnyPublisher(),
-                didChangedGenderType: genderView.selectablePublisher(type: GenderType.self),
+                didChangedGenderType: genderView.selectablePublisher(),
                 didChangedNickNameValue: nickNameView.nickNamePublisher(),
                 didChangedHeightValue: heightView.heightPublisher(),
                 didChangedBirthValue: birthView.birthPublisher(),
                 didChangedMbtiValue: mbtiView.mbtiPublisher(),
-                didChangedSmokingType: smokingView.selectablePublisher(type: SmokingType.self),
-                didChangedDrinkingType: drinkingView.selectablePublisher(type: DrinkingType.self),
+                didChangedSmokingType: smokingView.selectablePublisher(),
+                didChangedDrinkingType: drinkingView.selectablePublisher(),
                 didChangedIntroductionValue: introductionView.introductionPublisher(),
                 didChangedImageListValue: photoView.imageListPublisher(),
                 didTappedNextButton: nextButton.tapPublisher()
@@ -271,27 +240,24 @@ private extension RegisterViewController {
         )
         
         output.isNextButtonEnabled
+            .receive(on: DispatchQueue.main)
             .sink { [weak self] value in
-                DispatchQueue.main.async {
-                    self?.nextButton.isEnabled = value
-                }
+                self?.nextButton.isEnabled = value
             }
             .store(in: &bag)
         
         output.isProfilImageSetted
+            .receive(on: DispatchQueue.main)
             .sink { value in
                 guard let value = value else { return }
-                DispatchQueue.main.async {
-                    congratulationView.profileImage.image = UIImage(data: value)
-                }
+                congratulationView.profileImage.image = UIImage(data: value)
             }
             .store(in: &bag)
         
         output.isAllInfoUploaded
+            .receive(on: DispatchQueue.main)
             .sink { [weak self] in
-                DispatchQueue.main.async {
-                    self?.viewModel?.actions?.finishRegister?()
-                }
+                self?.viewModel?.actions?.finishRegister?()
             }
             .store(in: &bag)
     }
@@ -306,6 +272,7 @@ private extension RegisterViewController {
         photoView.delegate = self
     }
     
+    // MARK: Page 이외의 subview 레이아웃
     func configureLayout() {
         progressBar.snp.makeConstraints {
             $0.top.equalTo(self.view.safeAreaLayoutGuide.snp.top).offset(10)
@@ -320,6 +287,7 @@ private extension RegisterViewController {
         }
     }
 
+    // MARK: 처음 보여줄 페이지 선정
     func targetPage() -> Int {
         guard let viewModel = viewModel else { return 0 }
 
@@ -406,7 +374,3 @@ extension RegisterViewController: PHPickerViewControllerDelegate { //PHPicker �
     
     
 }
-
-//extension RegisterViewController {
-//    func
-//}

@@ -9,7 +9,14 @@ import Foundation
 import FirebaseAuth
 
 class DefaultSignOutUseCase: SignOutUseCase {
+    
+    let authRepository: AuthRepository
+    
+    init(authRepository: AuthRepository) {
+        self.authRepository = authRepository
+    }
+    
     func signOut() throws {
-        try Auth.auth().signOut()
+        try authRepository.signOut()
     }
 }

@@ -40,6 +40,8 @@ final class DIContainer {
         registerUserPreviewRepository()
         
         registerImageCacheRepository()
+        
+        registerAuthRepository()
     }
     
     func registerUseCase() {
@@ -158,6 +160,12 @@ extension DIContainer {
         .inObjectScope(.container)
     }
     
+    func registerAuthRepository() {
+        container.register(AuthRepository.self) { _ in
+            return DefaultAuthRepository()
+        }
+    }
+    
 }
 
 extension DIContainer {
@@ -172,24 +180,28 @@ extension DIContainer {
     }
     
     func registerDefaultPhoneSignInUseCase() {
-        container.register(DefaultPhoneSignInUseCase.self) { r in
-            let userDefaultsRepository = r.resolve(UserDefaultsRepository.self)!
-            return DefaultPhoneSignInUseCase(userDefaultsRepository: userDefaultsRepository)
+        container.register(PhoneSignInUseCase.self) { r in
+            return DefaultPhoneSignInUseCase(
+                userDefaultsRepository: r.resolve(UserDefaultsRepository.self)!,
+                authRepository: r.resolve(AuthRepository.self)!
+            )
         }
         .inObjectScope(.container)
     }
     
     func registerDownLoadDetailInfoUseCase() {
         container.register(DownLoadDetailInfoUseCase.self) { r in
-            let userDetailInfoRepository = r.resolve(UserDetailInfoRepository.self)!
-            return DefaultDownLoadDetailInfoUseCase(userDetailInfoRepository: userDetailInfoRepository)
+            return DefaultDownLoadDetailInfoUseCase(
+                userDetailInfoRepository: r.resolve(UserDetailInfoRepository.self)!,
+                authRepository: r.resolve(AuthRepository.self)!
+            )
         }
         .inObjectScope(.container)
     }
     
     func registerSignOutUseCase() {
         container.register(SignOutUseCase.self) { r in
-            return DefaultSignOutUseCase()
+            return DefaultSignOutUseCase(authRepository: r.resolve(AuthRepository.self)!)
         }
         .inObjectScope(.container)
     }
@@ -202,17 +214,21 @@ extension DIContainer {
     }
     
     func registerUpLoadDetailInfoUseCase() {
-        container.register(UploadDetailInfoUseCase.self) { r in
-            let userDetailInfoRepository = r.resolve(UserDetailInfoRepository.self)!
-            return DefaultUploadDetailInfoUseCase(userDetailInfoRepository: userDetailInfoRepository)
+        container.register(UploadMyDetailInfoUseCase.self) { r in
+            return DefaultUploadMyDetailInfoUseCase(
+                userDetailInfoRepository: r.resolve(UserDetailInfoRepository.self)!,
+                authRepository: r.resolve(AuthRepository.self)!
+            )
         }
         .inObjectScope(.container)
     }
     
     func registerUpLoadPictureUseCase() {
         container.register(UploadPictureUseCase.self) { r in
-            let profilePhotoRepository = r.resolve(ProfilePhotoRepository.self)!
-            return DefaultUpLoadPictureUseCase(profilePhotoRepository: profilePhotoRepository)
+            return DefaultUpLoadPictureUseCase(
+                profilePhotoRepository: r.resolve(ProfilePhotoRepository.self)!,
+                authRepository: r.resolve(AuthRepository.self)!
+            )
         }
         .inObjectScope(.container)
     }
@@ -230,26 +246,30 @@ extension DIContainer {
     }
     
     func registerUpLoadPreviewUseCase() {
-        container.register(UploadPreviewUseCase.self) { r in
-            let userPreviewRepository = r.resolve(UserPreviewRepository.self)!
-            return DefaultUploadPreviewUseCase(userPreviewRepository: userPreviewRepository)
+        container.register(UploadMyPreviewUseCase.self) { r in
+            return DefaultUploadMyPreviewUseCase(
+                userPreviewRepository: r.resolve(UserPreviewRepository.self)!,
+                authRepository: r.resolve(AuthRepository.self)!
+            )
         }
         .inObjectScope(.container)
     }
     
     func registerDownLoadPreviewUseCase() {
-        container.register(DownLoadPreviewUseCase.self) { r in
-            return DefaultDownLoadPreviewUseCase(userPreviewRepository: r.resolve(UserPreviewRepository.self)!)
+        container.register(DownLoadMyPreviewUseCase.self) { r in
+            return DefaultDownLoadMyPreviewUseCase(
+                userPreviewRepository: r.resolve(UserPreviewRepository.self)!,
+                authRepository: r.resolve(AuthRepository.self)!
+            )
         }
     }
     
     func registerUpLoadLocationUseCase() {
         container.register(UpLoadLocationUseCase.self) { r in
-            let userPreviewRepository = r.resolve(UserPreviewRepository.self)!
-            let userDefaultsRepository = r.resolve(UserDefaultsRepository.self)!
             return DefaultUpLoadLocationUseCase(
-                userPreviewRepository: userPreviewRepository,
-                userDefaultsRepository: userDefaultsRepository
+                userPreviewRepository: r.resolve(UserPreviewRepository.self)!,
+                userDefaultsRepository: r.resolve(UserDefaultsRepository.self)!,
+                authRepository: r.resolve(AuthRepository.self)!
             )
         }
         .inObjectScope(.container)
@@ -259,7 +279,8 @@ extension DIContainer {
         container.register(MateRecommendationUseCase.self) { r in
             return DefaultMateRecommendationUseCase(
                 userPreviewRepository: r.resolve(UserPreviewRepository.self)!,
-                userDefaultsRepository: r.resolve(UserDefaultsRepository.self)!
+                userDefaultsRepository: r.resolve(UserDefaultsRepository.self)!,
+                authRepository: r.resolve(AuthRepository.self)!
             )
         }
         .inObjectScope(.container)
@@ -302,9 +323,9 @@ extension DIContainer {
     func registerRegisterViewModel() {
         container.register(RegisterViewModel.self) { r in
             return RegisterViewModel(
-                uploadDetailInfoUseCase: r.resolve(UploadDetailInfoUseCase.self)!,
+                uploadDetailInfoUseCase: r.resolve(UploadMyDetailInfoUseCase.self)!,
                 uploadPictureUseCase: r.resolve(UploadPictureUseCase.self)!,
-                uploadPreviewUseCase: r.resolve(UploadPreviewUseCase.self)!
+                uploadPreviewUseCase: r.resolve(UploadMyPreviewUseCase.self)!
             )
         }
         .inObjectScope(.graph)
@@ -333,7 +354,7 @@ extension DIContainer {
     func registerMyPageViewModel() {
         container.register(MyPageViewModel.self) { r in
             return MyPageViewModel(
-                downLoadPreviewUseCase: r.resolve(DownLoadPreviewUseCase.self)!,
+                downLoadPreviewUseCase: r.resolve(DownLoadMyPreviewUseCase.self)!,
                 downLoadPictureUseCase: r.resolve(DownLoadPictureUseCase.self)!
             )
         }
@@ -345,9 +366,9 @@ extension DIContainer {
             return ModificationViewModel(
                 downloadDetailInfoUseCase: r.resolve(DownLoadDetailInfoUseCase.self)!,
                 downloadPictureUseCase: r.resolve(DownLoadPictureUseCase.self)!,
-                uploadDetailInfoUseCase: r.resolve(UploadDetailInfoUseCase.self)!,
+                uploadMyDetailInfoUseCase: r.resolve(UploadMyDetailInfoUseCase.self)!,
                 uploadPictureUseCase: r.resolve(UploadPictureUseCase.self)!,
-                uploadPreviewUseCase: r.resolve(UploadPreviewUseCase.self)!
+                uploadMyPreviewUseCase: r.resolve(UploadMyPreviewUseCase.self)!
             )
         }
         .inObjectScope(.graph)

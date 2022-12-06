@@ -1,15 +1,14 @@
 //
-//  DefaultUpLoadPreviewCase.swift
+//  DefaultDownLoadPreviewUseCase.swift
 //  Soulmate
 //
-//  Created by Sangmin Lee on 2022/11/24.
+//  Created by Sangmin Lee on 2022/12/01.
 //
 
 import Foundation
-import FirebaseAuth
 
-class DefaultUploadMyPreviewUseCase: UploadMyPreviewUseCase {
-
+class DefaultDownLoadMyPreviewUseCase: DownLoadMyPreviewUseCase {
+        
     let userPreviewRepository: UserPreviewRepository
     let authRepository: AuthRepository
     
@@ -21,8 +20,8 @@ class DefaultUploadMyPreviewUseCase: UploadMyPreviewUseCase {
         self.authRepository = authRepository
     }
     
-    func uploadPreview(userPreview: UserPreview) async throws {
+    func downloadPreview() async throws -> UserPreview {
         let uid = try authRepository.currentUid()
-        try await userPreviewRepository.uploadPreview(userUid: uid, userPreview: userPreview)
+        return try await userPreviewRepository.downloadPreview(userUid: uid)
     }
 }

@@ -47,6 +47,10 @@ final class RegisterNickNameView: UIView {
         configureLayout()
     }
     
+    func configureHistory(nickName: String?) {
+        nicknameTextField.text = nickName
+    }
+    
     func nickNamePublisher() -> AnyPublisher<String?, Never> {
         return nicknameTextField.textPublisher()
     }

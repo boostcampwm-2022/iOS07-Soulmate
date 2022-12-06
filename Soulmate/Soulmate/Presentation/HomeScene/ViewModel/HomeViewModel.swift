@@ -18,7 +18,7 @@ struct HomeViewModelAction {
 final class HomeViewModel {
     let networkDatabaseApi = FireStoreNetworkDatabaseApi()
     lazy var userPreviewRepository = DefaultUserPreviewRepository(networkDatabaseApi: networkDatabaseApi)
-    lazy var downLoadPreviewUseCase = DefaultDownLoadPreviewUseCase(userPreviewRepository: userPreviewRepository)
+    lazy var downLoadPreviewUseCase = DefaultDownLoadMyPreviewUseCase(userPreviewRepository: userPreviewRepository, authRepository: DefaultAuthRepository())
     
     var cancellable = Set<AnyCancellable>()
     
@@ -88,6 +88,7 @@ final class HomeViewModel {
             guard let self else { return }
             do {
                 self.recommendedMatePreviewList = try await mateRecommendationUseCase.fetchDistanceFilteredRecommendedMate(distance: distance)
+
             } catch { // 초기에 자꾸 위치설정이 안된 경우 에러가 뜸... 초기값이 설정되고 리프레시 하게 어케하지?
                 print(error)
             }

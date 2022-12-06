@@ -14,44 +14,49 @@ class DefaultMateRecommendationUseCase: MateRecommendationUseCase {
     
     let userPreviewRepository: UserPreviewRepository
     let userDefaultsRepository: UserDefaultsRepository
+    let authRepository: AuthRepository
     
     init(
         userPreviewRepository: UserPreviewRepository,
-        userDefaultsRepository: UserDefaultsRepository
+        userDefaultsRepository: UserDefaultsRepository,
+        authRepository: AuthRepository
     ) {
         self.userPreviewRepository = userPreviewRepository
         self.userDefaultsRepository = userDefaultsRepository
+        self.authRepository = authRepository
     }
     
     func fetchRecommendedMate() async throws -> [UserPreview] {
+        let uid = try authRepository.currentUid()
+        let myGender = try await userPreviewRepository.downloadPreview(userUid: uid).gender!
         
-        let myGender = try await userPreviewRepository.downloadPreview(userUid: Auth.auth().currentUser!.uid).gender!
-        
-        return try await userPreviewRepository.fetchRecommendedPreviewList(userGender: myGender)
+        return try await userPreviewRepository.fetchRecommendedPreviewList(
+            userUid: uid,
+            userGender: myGender
+        )
     }
     
     func fetchDistanceFilteredRecommendedMate(distance: Double) async throws -> [UserPreview] {
         guard let latitude: Double = userDefaultsRepository.get(key: "latestLatitude"),
-              let longitude: Double = userDefaultsRepository.get(key: "latestLongitude"),
-              let uid = Auth.auth().currentUser?.uid else {
+              let longitude: Double = userDefaultsRepository.get(key: "latestLongitude") else {
             throw UserDefaultsError.noSuchKeyMatchedValue
         }
         let preview = try await userPreviewRepository.downloadPreview(userUid: uid)
         let from = CLLocation(latitude: preview.location?.latitude ?? 0, longitude: preview.location?.longitude ?? 0)
         
+        let uid = try authRepository.currentUid()
         let myGender = try await userPreviewRepository.downloadPreview(userUid: uid).gender!
         
-        var previewList = try await userPreviewRepository.fetchDistanceFilteredRecommendedPreviewList(
+        return try await userPreviewRepository.fetchDistanceFilteredRecommendedPreviewList(
+            userUid: uid,
             userGender: myGender,
             userLocation: Location(
                 latitude: latitude,
                 longitude: longitude
             ),
             distance: distance
-        )
+        ).sort { $0.location?.toDistance(from: from) ?? 0 <= $1.location?.toDistance(from: from) ?? 0 }
         // 거리 가까운 순으로 정렬 preveiwList 정렬 후 반환
-        previewList.sort { $0.location?.toDistance(from: from) ?? 0 <= $1.location?.toDistance(from: from) ?? 0 }
-        return previewList
     }
     
 }

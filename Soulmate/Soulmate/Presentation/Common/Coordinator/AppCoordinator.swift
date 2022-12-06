@@ -20,17 +20,24 @@ final class AppCoordinator: Coordinator {
             
     init(window: UIWindow) {
         self.window = window
+        
+        UIView.transition(with: window,
+                          duration: 1,
+                          options: .transitionCrossDissolve,
+                          animations: nil,
+                          completion: nil)
     }
     
     func start() {
-        //try? Auth.auth().signOut()
-        let container = DIContainer.shared.container
-        guard let authUseCase = container.resolve(AuthUseCase.self) else { return }
+        try? Auth.auth().signOut()
         
-        if let uid = authUseCase.userUid() {
+        // 코디네이터는 presentation 레이어인데 여기서 레포지토리를 꺼내써도 되는지? auth usecase를 따로 만들어야하나?
+        let container = DIContainer.shared.container
+        guard let authRepository = container.resolve(AuthRepository.self) else { return }
+        
+        if let uid = try? authRepository.currentUid() {
             checkRegistration(for: uid)
-        }
-        else {
+        } else {
             showAuthSignInFlow()
         }
     }
