@@ -7,27 +7,13 @@
 
 import UIKit
 import SnapKit
+import Combine
 
-struct HeartShopViewModelActions {
-    var quitHeartShop: (() -> Void)?
-}
-
-class HeartShopViewModel {
-    // 현재 데이터 바인딩 없음
+final class HeartShopViewController: UIViewController {
     
-    var actions: HeartShopViewModelActions?
-    
-    func setActions(actions: HeartShopViewModelActions) {
-        self.actions = actions
-    }
-}
-
-class HeartShopViewController: UIViewController {
-    
-    var viewModel: HeartShopViewModel?
-    
-    private let quantities = [30, 50, 100]
-    private let prices = ["15,000원", "30,000원", "50,000원"]
+    private var viewModel: HeartShopViewModel?
+    private var rowSelectSubject = PassthroughSubject<Int, Never>()
+    var cancellables = Set<AnyCancellable>()
     
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -60,17 +46,43 @@ class HeartShopViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureLayout()
+        
         self.view.backgroundColor = .white
         self.navigationItem.title = "하트 충전"
         self.collectionView.delegate = self
         self.collectionView.dataSource = self
         self.collectionView.register(HeartShopCell.self, forCellWithReuseIdentifier: HeartShopCell.identifier)
+        
+        configureLayout()
+        bind()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         viewModel?.actions?.quitHeartShop?()
+    }
+    
+}
+
+private extension HeartShopViewController {
+    
+    private func bind() {
+        guard let viewModel = viewModel else { return }
+        
+        let output = viewModel.transform(
+            input: HeartShopViewModel.Input(
+                didTappedHeartCell: self.rowSelectSubject.eraseToAnyPublisher(),
+                didTappedChargeButton: self.chargeButton.tapPublisher()
+            )
+        )
+        
+        output.didFinishCharging
+            .receive(on: RunLoop.main)
+            .sink {
+                self.navigationController?.dismiss(animated: true)
+            }
+            .store(in: &cancellables)
+            
     }
     
     private func configureLayout() {
@@ -96,8 +108,12 @@ extension HeartShopViewController: UICollectionViewDelegate, UICollectionViewDat
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HeartShopCell.identifier, for: indexPath) as? HeartShopCell else { return UICollectionViewCell() }
-        cell.heartQuantity.text = String(self.quantities[indexPath.row]) + "개"
-        cell.heartPrice.text = self.prices[indexPath.row]
+        
+        guard let quantities = self.viewModel?.quantities[indexPath.row] else {
+            return UICollectionViewCell()
+        }
+        cell.heartQuantity.text = String(quantities) + "개"
+        cell.heartPrice.text = self.viewModel?.prices[indexPath.row]
         return cell
     }
     
@@ -106,6 +122,15 @@ extension HeartShopViewController: UICollectionViewDelegate, UICollectionViewDat
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("눌렀음")
+        switch indexPath.row {
+        case 0:
+            rowSelectSubject.send(1)
+        case 1:
+            rowSelectSubject.send(2)
+        case 2:
+            rowSelectSubject.send(3)
+        default:
+            break
+        }
     }
 }

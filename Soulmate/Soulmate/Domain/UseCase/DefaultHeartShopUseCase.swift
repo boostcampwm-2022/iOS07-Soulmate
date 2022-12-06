@@ -9,13 +9,25 @@ import Foundation
 import FirebaseAuth
 
 protocol HeartShopUseCase {
-    
+    func chargeHeart(heart: Int) async
 }
 
 class DefaultHeartShopUseCase: HeartShopUseCase {
-    let auth = Auth.auth()
     
-    func userUid() -> String? {
-        return auth.currentUser?.uid
+    let userPreviewRepository: UserPreviewRepository
+    
+    init(
+        userPreviewRepository: UserPreviewRepository
+    ) {
+        self.userPreviewRepository = userPreviewRepository
+    }
+    
+    func chargeHeart(heart: Int) async {
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        
+        try? await userPreviewRepository.updateHeart(
+            userUid: uid,
+            heart: heart
+        )
     }
 }

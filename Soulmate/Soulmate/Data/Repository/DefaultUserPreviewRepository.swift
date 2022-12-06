@@ -84,4 +84,14 @@ class DefaultUserPreviewRepository: UserPreviewRepository {
         )
         .toDomain()
     }
+    
+    func updateHeart(userUid: String, heart: Int) async throws {
+        try await networkDatabaseApi.update(
+            table: collectionTitle,
+            documentID: userUid,
+            with: [
+                "heart": FieldValue.increment(Int64(heart))
+            ]
+        )
+    }
 }
