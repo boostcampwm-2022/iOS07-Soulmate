@@ -9,7 +9,7 @@ import Foundation
 import FirebaseFirestore
 import CoreLocation
 
-struct Location {
+struct Location: Codable {
     var latitude: Double
     var longitude: Double
 }

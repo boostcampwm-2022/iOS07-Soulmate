@@ -66,7 +66,8 @@ class MyPageCoordinator: Coordinator {
     }
     
     lazy var showDistanceVC: () -> Void = { [weak self] in
-        let vm = DistanceViewModel()
+        let container = DIContainer.shared.container
+        guard let vm = container.resolve(DistanceViewModel.self) else { return }
         let vc = DistanceViewController(viewModel: vm)
         self?.navigationController.pushViewController(vc, animated: true)
     }

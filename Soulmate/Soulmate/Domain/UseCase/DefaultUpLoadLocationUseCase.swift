@@ -31,8 +31,12 @@ class DefaultUpLoadLocationUseCase: UpLoadLocationUseCase {
     func updateLocation(location: Location) async throws {
         let uid = try authRepository.currentUid()
 
-        userDefaultsRepository.set(key: "latestLatitude", value: location.latitude)
-        userDefaultsRepository.set(key: "latestLongitude", value: location.longitude)
+        // FIXME: 바로 다음 디버깅시 지우자
+        userDefaultsRepository.remove(key: "latestLatitude")
+        userDefaultsRepository.remove(key: "latestLongitude")
+        
+        let encodedLocation = try JSONEncoder().encode(location)
+        userDefaultsRepository.set(key: "latestLocation", value: encodedLocation)
         try await userPreviewRepository.updateLocation(userUid: uid, location: location)
     }
 }
