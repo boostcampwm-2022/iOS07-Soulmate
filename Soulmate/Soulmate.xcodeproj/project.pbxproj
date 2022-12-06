@@ -190,6 +190,7 @@
 		B301025729329E8A00481C6C /* HeartShopCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B301025629329E8A00481C6C /* HeartShopCell.swift */; };
 		B301025B2934A80E00481C6C /* HeartShopCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B301025A2934A80E00481C6C /* HeartShopCoordinator.swift */; };
 		B301025D293DE90F00481C6C /* DefaultHeartShopUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = B301025C293DE90F00481C6C /* DefaultHeartShopUseCase.swift */; };
+		B301025F293E0C7C00481C6C /* HeartShopViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B301025E293E0C7C00481C6C /* HeartShopViewModel.swift */; };
 		B303D651292367CF00414293 /* ProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B303D650292367CF00414293 /* ProgressBar.swift */; };
 		B30A8ECE291C953F00ED4906 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = B30A8ECD291C953F00ED4906 /* FirebaseAnalytics */; };
 		B30A8ED0291C953F00ED4906 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = B30A8ECF291C953F00ED4906 /* FirebaseAuth */; };
@@ -394,6 +395,7 @@
 		B301025629329E8A00481C6C /* HeartShopCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartShopCell.swift; sourceTree = "<group>"; };
 		B301025A2934A80E00481C6C /* HeartShopCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartShopCoordinator.swift; sourceTree = "<group>"; };
 		B301025C293DE90F00481C6C /* DefaultHeartShopUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultHeartShopUseCase.swift; sourceTree = "<group>"; };
+		B301025E293E0C7C00481C6C /* HeartShopViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = HeartShopViewModel.swift; path = Soulmate/Domain/UseCase/HeartShopViewModel.swift; sourceTree = SOURCE_ROOT; };
 		B303D650292367CF00414293 /* ProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBar.swift; sourceTree = "<group>"; };
 		B30A8F0E291CB4AC00ED4906 /* PhoneNumberViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneNumberViewController.swift; sourceTree = "<group>"; };
 		B30A8F10291CB4F100ED4906 /* CertificationNumberViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CertificationNumberViewController.swift; sourceTree = "<group>"; };
@@ -573,6 +575,7 @@
 			isa = PBXGroup;
 			children = (
 				B3B03B49292DECFF000AF283 /* MyPageViewModel.swift */,
+				B301025E293E0C7C00481C6C /* HeartShopViewModel.swift */,
 				6A9452FA29382EEC0041B71D /* ModificationViewModel.swift */,
 				6A9452FC29382F0D0041B71D /* ModificationInfoViewModel.swift */,
 				6A9452FE29382F360041B71D /* ModificationImageViewModel.swift */,
@@ -1224,6 +1227,7 @@
 				07EAD6FB2925F6B5001AE220 /* AddPhotoCell.swift in Sources */,
 				6A34C1E2292B233300A3E57F /* MyChatCell.swift in Sources */,
 				6AB6B9DA292EC87200A029BD /* DownLoadPictureUseCase.swift in Sources */,
+				B301025F293E0C7C00481C6C /* HeartShopViewModel.swift in Sources */,
 				6AB6B9B5292D7DA100A029BD /* UserDefaultsLocalKeyValueStorage.swift in Sources */,
 				6A0041EE2919ED7F0042E02F /* DetailViewController.swift in Sources */,
 				6A34C1F3292B48C700A3E57F /* DefaultSendMessageUseCase.swift in Sources */,
