@@ -12,6 +12,7 @@ final class ChatDataSource: NSObject, UICollectionViewDataSource {
     private var chats: [Chat] = []
     private(set) var offsets: [CGFloat] = []
     private var buffer: [Chat] = []
+    var isLoading = false
     
     var heights: [CGFloat] {
         return chats.map { $0.height }
@@ -78,5 +79,9 @@ extension ChatDataSource {
         buffer = []
         
         return addedHeight
+    }
+    
+    func fillBuffer(with prevChats: [Chat]) {
+        buffer = prevChats + buffer
     }
 }

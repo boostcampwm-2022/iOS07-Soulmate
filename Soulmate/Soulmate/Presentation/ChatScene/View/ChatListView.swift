@@ -43,13 +43,18 @@ final class ChatListView: UICollectionView {
         self.reloadData()        
     }
     
-    func insertPrevChats() -> CGFloat {
-
+    func insertPrevChats() -> CGFloat {        
+        
         return chatDataSource.insertBuffer()
     }
     
     func loadPrevChats() {
         loadPrevChatDelegate?.loadPrevChats()
+    }
+    
+    func fillBuffer(with chats: [Chat]) {
+        chatDataSource.fillBuffer(with: chats)
+        chatDataSource.isLoading = false
     }
     
     func scrollToBottomByOffset() {

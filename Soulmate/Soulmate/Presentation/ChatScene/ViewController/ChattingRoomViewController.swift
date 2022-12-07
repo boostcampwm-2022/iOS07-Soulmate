@@ -20,7 +20,6 @@ final class ChattingRoomViewController: UIViewController {
     private var messageSendSubject: AnyPublisher<Void, Never>?
     
     private var isInitLoad = true
-    private var isLoading = false
     
     private lazy var chatListView: ChatListView = {
         let listView = ChatListView(hostView: self.view)
@@ -102,8 +101,8 @@ extension ChattingRoomViewController: NSTextStorageDelegate {
 // MARK: - Load Prev Chats Delegate
 extension ChattingRoomViewController: LoadPrevChatDelegate {
     func loadPrevChats() {
-        print("채팅 로드")
-        // loadPrevChattingsSubject.send(())
+        
+        loadPrevChattingsSubject.send(())
     }
 }
 
@@ -151,7 +150,6 @@ private extension ChattingRoomViewController {
     
     @objc
     func loadPrevChattings() {
-        isLoading = true
         loadPrevChattingsSubject.send(())
     }
 
@@ -238,8 +236,8 @@ private extension ChattingRoomViewController {
         
         output.prevChattingLoaded
             .sink { [weak self] chats in
-//                self?.dataInsert(chats)
-                self?.isLoading = false
+                print(chats.map { $0.text })
+                self?.chatListView.fillBuffer(with: chats)
             }
             .store(in: &cancellabels)
         

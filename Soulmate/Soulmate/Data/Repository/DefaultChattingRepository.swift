@@ -80,11 +80,16 @@ final class DefaultChattingRepository: ChattingRepository {
     }
     
     func loadPrevChattings(from chatRoomId: String) async -> [MessageInfoDTO] {
+
+        guard startDocument != nil else {            
+            return []
+        }
         
         let path = "ChatRooms/\(chatRoomId)/Messages"
         var constraints = [
             QueryEntity(field: "date", value: "", comparator: .orderDescending),
-            QueryEntity(field: "", value: 100, comparator: .limit)
+            QueryEntity(field: "", value: 30, comparator: .limit),
+            QueryEntity(field: "", value: startDocument, comparator: .startAfterDocument)
         ]
         
         if let startDocument {

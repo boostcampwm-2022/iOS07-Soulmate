@@ -36,9 +36,10 @@ final class ChatListDelegate: NSObject, UIScrollViewDelegate, UICollectionViewDe
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         
         guard let dataSource = chatList?.dataSource as? ChatDataSource,
-              let yOffset = chatList?.contentOffset.y  else { return }
-        
-        if dataSource.isBufferEmpty && yOffset < 1000 {
+              let yOffset = chatList?.contentOffset.y  else { return }                
+                
+        if !dataSource.isLoading && yOffset < 1000 && dataSource.isBufferEmpty {
+            dataSource.isLoading = true
             chatList?.loadPrevChats()
         }
     }
