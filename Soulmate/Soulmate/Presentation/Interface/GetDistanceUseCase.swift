@@ -9,6 +9,6 @@ import Foundation
 import Combine
 
 protocol GetDistanceUseCase {
-    func getDistance() -> Double?
+    func getDistance() -> Double
     func getDistancePublisher() -> AnyPublisher<Double, Never>
 }

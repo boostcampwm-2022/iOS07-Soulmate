@@ -15,11 +15,12 @@ struct HomeViewModelAction {
     var showDetailVC: ((DetailPreviewViewModel) -> Void)?
 }
 
-final class HomeViewModel {
+final class HomeViewModel: ViewModelable {
     
     var cancellable = Set<AnyCancellable>()
     
-    var actions: HomeViewModelAction?
+    typealias Action = HomeViewModelAction
+    var actions: Action?
     
     let mateRecommendationUseCase: MateRecommendationUseCase
     let downloadPictureUseCase: DownLoadPictureUseCase
@@ -52,15 +53,34 @@ final class HomeViewModel {
         self.uploadLocationUseCase = uploadLocationUseCase
         self.getDistanceUseCase = getDistanceUseCase
         
-        // distance를 받아와서 초기화 해둬야함.
-        if UserDefaults.standard.double(forKey: "distance") == 0 {
-            UserDefaults.standard.set(20, forKey: "distance") // FIXME: 초기값 설정, 이것도 여기서 해주는건 아닌거같다!!!
-        }
-        distance = UserDefaults.standard.double(forKey: "distance")
+        self.distance = getDistanceUseCase.getDistance()
+        
+        self.bind()
     }
 
-    func setActions(actions: HomeViewModelAction) {
+    func setActions(actions: Action) {
         self.actions = actions
+    }
+    
+    func bind() {
+        getDistanceUseCase.getDistancePublisher()
+            .assign(to: \.distance, on: self)
+            .store(in: &cancellable)
+        
+        $currentLocation
+            .compactMap { $0 }
+            .first()
+            .sink { value in
+                self.refresh()
+            }
+            .store(in: &cancellable)
+        
+        $distance
+            .dropFirst()
+            .sink { [weak self] value in
+                self?.refresh()
+            }
+            .store(in: &cancellable)
     }
     
     func transform(input: Input) -> Output {
@@ -87,26 +107,6 @@ final class HomeViewModel {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] index in
                 self?.mateSelected(index: index)
-            }
-            .store(in: &cancellable)
-
-        getDistanceUseCase.getDistancePublisher()
-            .assign(to: \.distance, on: self)
-            .store(in: &cancellable)
-        
-        $currentLocation
-            .compactMap { $0 }
-            .first()
-            .sink { value in
-                self.refresh()
-            }
-            .store(in: &cancellable)
-        
-        $distance
-            .dropFirst()
-            .sink { [weak self] value in
-                self?.refresh()
-                print("distance updated \(value)")
             }
             .store(in: &cancellable)
 

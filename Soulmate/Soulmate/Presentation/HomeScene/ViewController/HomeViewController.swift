@@ -168,7 +168,7 @@ final class HomeViewController: UIViewController {
     private func mainSectionLayout() -> NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        item.contentInsets = .init(top: 10, leading: 0, bottom: 0, trailing: 10)
+        item.contentInsets = .init(top: 0, leading: 5, bottom: 0, trailing: 5)
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalWidth(1))
         let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
         group.contentInsets = .init(top: 10, leading: 0, bottom: 10, trailing: 0)

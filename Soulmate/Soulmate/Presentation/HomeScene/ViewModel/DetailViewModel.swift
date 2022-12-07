@@ -11,10 +11,11 @@ import Combine
 struct DetailViewModelActions {
 }
 
-final class DetailViewModel {
+final class DetailViewModel: ViewModelable {
     var cancellables = Set<AnyCancellable>()
     
-    var actions: DetailViewModelActions?
+    typealias Action = DetailViewModelActions
+    var actions: Action?
     
     let downloadPictureUseCase: DownLoadPictureUseCase
     let downloadDetailInfoUseCase: DownLoadDetailInfoUseCase
@@ -43,6 +44,10 @@ final class DetailViewModel {
     ) {
         self.downloadPictureUseCase = downloadPictureUseCase
         self.downloadDetailInfoUseCase = downloadDetailInfoUseCase
+    }
+    
+    func setActions(actions: Action) {
+        self.actions = actions
     }
     
     func setUser(detailPreviewViewModel: DetailPreviewViewModel) {
@@ -93,9 +98,4 @@ final class DetailViewModel {
     func registerMate() {
         // 대화 친구 신청 시 처리하는 로직 부분
     }
-    
-    func setActions(actions: DetailViewModelActions) {
-        self.actions = actions
-    }
-
 }

@@ -15,8 +15,13 @@ class DefaultGetDistanceUseCase: GetDistanceUseCase {
         self.userDefaultRepository = userDefaultRepository
     }
     
-    func getDistance() -> Double? {
-        return userDefaultRepository.get(key: "distance")
+    func getDistance() -> Double {
+        guard let distance: Double = userDefaultRepository.get(key: "distance") else {
+            // 없다면 초기값 생성
+            userDefaultRepository.set(key: "distance", value: 20)
+            return 20
+        }
+        return distance
     }
     
     func getDistancePublisher() -> AnyPublisher<Double, Never> {

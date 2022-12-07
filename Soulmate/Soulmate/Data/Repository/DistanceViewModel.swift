@@ -8,7 +8,13 @@
 import Foundation
 import Combine
 
-class DistanceViewModel {
+struct DistanceViewModelActions {}
+
+class DistanceViewModel: ViewModelable {
+    
+    typealias Action = DistanceViewModelActions
+    var actions: Action?
+    
     var cancellables = Set<AnyCancellable>()
     
     let setDistanceUseCase: SetDistanceUseCase
@@ -31,7 +37,11 @@ class DistanceViewModel {
         self.setDistanceUseCase = setDistanceUseCase
         self.getDistanceUseCase = getDistanceUseCase
         
-        self.distance = getDistanceUseCase.getDistance() ?? 0
+        self.distance = getDistanceUseCase.getDistance()
+    }
+    
+    func setActions(actions: Action) {
+        self.actions = actions
     }
     
     func transform(input: Input) -> Output {
@@ -47,7 +57,7 @@ class DistanceViewModel {
                 case 3:
                     return 50
                 case 4:
-                    return 100
+                    return 1000
                 default:
                     fatalError()
                 }

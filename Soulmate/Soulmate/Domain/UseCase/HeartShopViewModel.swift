@@ -12,14 +12,15 @@ struct HeartShopViewModelActions {
     var quitHeartShop: (() -> Void)?
 }
 
-class HeartShopViewModel {
+class HeartShopViewModel: ViewModelable {
     // 현재 데이터 바인딩 없음
+    typealias Action = HeartShopViewModelActions
     
     let quantities = [30, 50, 100]
     let prices = ["15,000원", "30,000원", "50,000원"]
     
     var heartShopUseCase: HeartShopUseCase?
-    var actions: HeartShopViewModelActions?
+    var actions: Action?
     var cancellables = Set<AnyCancellable>()
     var didFinishCharging = PassthroughSubject<Void, Never>()
     
@@ -40,7 +41,7 @@ class HeartShopViewModel {
         self.heartShopUseCase = heartShopUseCase
     }
     
-    func setActions(actions: HeartShopViewModelActions) {
+    func setActions(actions: Action) {
         self.actions = actions
     }
     

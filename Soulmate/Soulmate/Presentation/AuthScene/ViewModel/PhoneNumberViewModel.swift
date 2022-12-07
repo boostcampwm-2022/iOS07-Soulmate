@@ -14,12 +14,15 @@ struct PhoneNumberViewModelActions {
     var quitPhoneLoginFlow: (() -> Void)?
 }
 
-class PhoneNumberViewModel {
+class PhoneNumberViewModel: ViewModelable {
+    
+    typealias Action = PhoneNumberViewModelActions
+    
     var bag = Set<AnyCancellable>()
     
     var phoneSignInUseCase: PhoneSignInUseCase
     
-    var actions: PhoneNumberViewModelActions?
+    var actions: Action?
     
     @Published var nationCode: String?
     @Published var phoneNumber: String?
@@ -37,7 +40,7 @@ class PhoneNumberViewModel {
         self.phoneSignInUseCase = phoneSignInUseCase
     }
     
-    func setActions(actions: PhoneNumberViewModelActions) {
+    func setActions(actions: Action) {
         self.actions = actions
     }
     

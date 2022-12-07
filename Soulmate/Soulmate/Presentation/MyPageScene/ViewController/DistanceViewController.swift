@@ -102,7 +102,7 @@ private extension DistanceViewController {
                     self?.slider.value = 2
                 case 50:
                     self?.slider.value = 3
-                case 100:
+                case 1000:
                     self?.slider.value = 4
                 default:
                     fatalError()
