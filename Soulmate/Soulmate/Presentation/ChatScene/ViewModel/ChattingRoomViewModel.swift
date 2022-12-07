@@ -14,7 +14,7 @@ final class ChattingRoomViewModel {
     private let loadChattingsUseCase: LoadChattingsUseCase
     private let loadUnreadChattingsUseCase: LoadUnreadChattingsUseCase
     private let loadPrevChattingsUseCase: LoadPrevChattingsUseCase
-//    private let listenOthersChattingsUseCase: ListenOthersChattingUseCase
+    private let listenOthersChattingsUseCase: ListenOthersChattingUseCase
 //    private let listenOtherIsReadingUseCase: ListenOtherIsReadingUseCase
     private let imageKeyUseCase: ImageKeyUseCase
     private let fetchImageUseCase: FetchImageUseCase
@@ -24,7 +24,7 @@ final class ChattingRoomViewModel {
         loadChattingsUseCase: LoadChattingsUseCase,
         loadUnreadChattingsUseCase: LoadUnreadChattingsUseCase,
         loadPrevChattingsUseCase: LoadPrevChattingsUseCase,
-//        listenOthersChattingsUseCase: ListenOthersChattingUseCase,
+        listenOthersChattingsUseCase: ListenOthersChattingUseCase,
 //        listenOtherIsReadingUseCase: ListenOtherIsReadingUseCase,
         imageKeyUseCase: ImageKeyUseCase,
         fetchImageUseCase: FetchImageUseCase
@@ -33,7 +33,7 @@ final class ChattingRoomViewModel {
         self.loadChattingsUseCase = loadChattingsUseCase
         self.loadUnreadChattingsUseCase = loadUnreadChattingsUseCase
         self.loadPrevChattingsUseCase = loadPrevChattingsUseCase
-//        self.listenOthersChattingsUseCase = listenOthersChattingsUseCase
+        self.listenOthersChattingsUseCase = listenOthersChattingsUseCase
 //        self.listenOtherIsReadingUseCase = listenOtherIsReadingUseCase
         self.imageKeyUseCase = imageKeyUseCase
         self.fetchImageUseCase = fetchImageUseCase
@@ -75,16 +75,17 @@ final class ChattingRoomViewModel {
                     output.chattingInitLoaded.send(chats)                    
                     let unReadChats = await self.loadUnreadChattingsUseCase.loadUnreadChattings()
                     output.unreadChattingLoaded.send(unReadChats)
+                    self.listenOthersChattingsUseCase.listenOthersChattings()
                 }
             }
             .store(in: &cancellables)
         
-//        input.viewWillDisappear
-//            .sink { [weak self] _ in
-//                self?.listenOthersChattingsUseCase.removeListen()
+        input.viewWillDisappear
+            .sink { [weak self] _ in
+                self?.listenOthersChattingsUseCase.removeListen()
 //                self?.listenOtherIsReadingUseCase.removeListen()
-//            }
-//            .store(in: &cancellables)
+            }
+            .store(in: &cancellables)
         
         input.message
             .compactMap { $0 }
@@ -137,13 +138,13 @@ final class ChattingRoomViewModel {
                 output.chatUpdated.send(chat)
             }
             .store(in: &cancellables)
-//
-//        self.listenOthersChattingsUseCase.newMessages
-//            .sink { chats in
-//
-//                output.newMessageArrived.send(chats)
-//            }
-//            .store(in: &cancellables)
+
+        self.listenOthersChattingsUseCase.othersMessages
+            .sink { chats in
+                
+                output.newMessageArrived.send(chats)
+            }
+            .store(in: &cancellables)
 //
 //        self.listenOtherIsReadingUseCase.otherRead
 //            .sink { otherId in

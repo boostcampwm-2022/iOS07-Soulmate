@@ -98,4 +98,14 @@ class FireStoreNetworkDatabaseApi: NetworkDatabaseApi {
             }
         }
     }
+    
+    func query(path: String, constraints: [QueryEntity]) -> Query {
+        var query = db.collection(path) as Query
+        
+        constraints.forEach {
+            query = query.merge(with: $0)
+        }
+        
+        return query
+    }
 }

@@ -23,11 +23,11 @@ final class DefaultChattingRepository: ChattingRepository {
         self.networkDatabaseApi = networkDatabaseApi
     }
     
-    func setStartDocument(_ doc: QueryDocumentSnapshot) {
+    func setStartDocument(_ doc: QueryDocumentSnapshot?) {
         self.startDocument = doc
     }
     
-    func setLastDocument(_ doc: QueryDocumentSnapshot) {
+    func setLastDocument(_ doc: QueryDocumentSnapshot?) {
         self.lastDocument = doc
     }
     
@@ -75,7 +75,9 @@ final class DefaultChattingRepository: ChattingRepository {
         let dtos = result.data
         let snapshot = result.snapshot
         
-        lastDocument = snapshot.documents.last
+        if let newLastDocument = snapshot.documents.last {
+            lastDocument = newLastDocument
+        }
         
         addMeToReadUsers(of: snapshot)
         
@@ -122,7 +124,7 @@ final class DefaultChattingRepository: ChattingRepository {
             readUsers.insert(uid)
             var arrReadUsers = readUsers.map { $0 }
             
-            docRef.updateData(["readUsers": arrReadUsers])
+            docRef.updateData(["readUsers": arrReadUsers])        
         }
     }
     
@@ -188,7 +190,18 @@ final class DefaultChattingRepository: ChattingRepository {
         return false
     }
     
-    func listenOthersChatting() {
+    func listenOthersChattingQuery(from chatRoomId: String) -> Query {
+        let path = "ChatRooms/\(chatRoomId)/Messages"
+        var constraints = [
+            QueryEntity(field: "date", value: "", comparator: .order)
+        ]
         
+        if let lastDocument {
+            constraints.append(QueryEntity(field: "", value: lastDocument, comparator: .startAfterDocument))
+        }
+        
+        let query = networkDatabaseApi.query(path: path, constraints: constraints)
+        
+        return query
     }
 }
