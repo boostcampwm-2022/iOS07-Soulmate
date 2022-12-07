@@ -355,7 +355,9 @@ extension DIContainer {
         container.register(HomeViewModel.self) { r in
             return HomeViewModel(
                 mateRecommendationUseCase: r.resolve(MateRecommendationUseCase.self)!,
-                downloadPictureUseCase: r.resolve(DownLoadPictureUseCase.self)!
+                downloadPictureUseCase: r.resolve(DownLoadPictureUseCase.self)!,
+                uploadLocationUseCase: r.resolve(UpLoadLocationUseCase.self)!,
+                getDistanceUseCase: r.resolve(GetDistanceUseCase.self)!
             )
         }
         .inObjectScope(.graph)

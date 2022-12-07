@@ -8,11 +8,14 @@
 import UIKit
 import SnapKit
 import Combine
+import CoreLocation
 
 final class HomeViewController: UIViewController {
     
     var bag = Set<AnyCancellable>()
     
+    var locationManager: CLLocationManager?
+
     private var viewModel: HomeViewModel?
     let refreshControl = UIRefreshControl()
     var data = [UserPreview]()
@@ -87,6 +90,21 @@ final class HomeViewController: UIViewController {
         configureLayout()
         
         bind()
+        
+        configureLocationService()
+    }
+    
+    func configureLocationService() {
+        locationManager = CLLocationManager()
+        
+        locationManager?.desiredAccuracy = kCLLocationAccuracyKilometer
+        locationManager?.distanceFilter = 2000
+        locationManager?.allowsBackgroundLocationUpdates = true
+                
+        locationManager?.delegate = self
+        
+        locationManager?.startUpdatingLocation()
+        locationManager?.startMonitoringSignificantLocationChanges()
     }
 }
 
@@ -96,22 +114,12 @@ private extension HomeViewController {
     func bind() {
         guard let viewModel = viewModel else { return }
         let output = viewModel.transform(input: HomeViewModel.Input())
-        
+
         output.didRefreshedPreviewList
+            .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
-                print(self?.viewModel?.recommendedMatePreviewList.count)
-                DispatchQueue.main.async {
-                    self?.collectionView.reloadData()
-                }
-            }
-            .store(in: &bag)
-        
-        output.isLocationAuthorized
-            .compactMap { $0 }
-            .sink { value in
-                if value == "no" {
-                    self.setAuthAlertAction()
-                }
+                print("refreshed?")
+                self?.collectionView.reloadData()
             }
             .store(in: &bag)
     }
@@ -159,7 +167,10 @@ private extension HomeViewController {
     }
     
     func setAuthAlertAction() {
-         let authAlertController = UIAlertController(title: "위치 사용 권한이 필요합니다.", message: "위치 권한을 허용해야만 앱을 사용하실 수 있습니다.", preferredStyle: .alert)
+         let authAlertController = UIAlertController(
+            title: "위치 사용 권한이 필요합니다.",
+            message: "위치 권한을 허용해야만 앱을 사용하실 수 있습니다.", preferredStyle: .alert
+         )
          
          let getAuthAction = UIAlertAction(title: "설정", style: .default, handler: { (UIAlertAction) in
              if let appSettings = URL(string: UIApplication.openSettingsURLString) {
@@ -261,6 +272,31 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
             
         default:
             fatalError("indexPath.section")
+        }
+    }
+}
+
+extension HomeViewController: CLLocationManagerDelegate {
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        Task {
+            guard let location = locations.last else { return }
+            var locationInstance = Location(
+                latitude: location.coordinate.latitude,
+                longitude: location.coordinate.longitude
+            )
+            viewModel?.updateLocation(location: locationInstance)
+        }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        switch status {
+        case .authorizedAlways, .authorizedWhenInUse:
+            manager.startUpdatingLocation()
+        case .notDetermined:
+            manager.requestAlwaysAuthorization()
+        case .restricted, .notDetermined, .denied:
+            manager.requestAlwaysAuthorization()
         }
     }
 }

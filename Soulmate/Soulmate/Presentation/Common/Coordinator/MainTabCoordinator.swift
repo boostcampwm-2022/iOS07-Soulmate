@@ -38,9 +38,7 @@ enum TabBarPage: Int, CaseIterable {
 }
 
 final class MainTabCoordinator: NSObject, Coordinator {
-    
-    var locationService: CLLocationService?
-    
+        
     weak var finishDelegate: CoordinatorFinishDelegate?
     
     var navigationController: UINavigationController
@@ -58,15 +56,7 @@ final class MainTabCoordinator: NSObject, Coordinator {
         self.tabBarController = UITabBarController()
     }
     
-    func configureLocationService() {
-        let container = DIContainer.shared.container
-        guard let uploadLocationUseCase = container.resolve(UpLoadLocationUseCase.self) else { return }
-        self.locationService = CLLocationService(upLoadLocationUseCase: uploadLocationUseCase)
-    }
-    
-    func start() {
-        configureLocationService()
-        
+    func start() {        
         let pages = TabBarPage.allCases
         let controllers: [UINavigationController] = pages.map { getTabController($0) }
     

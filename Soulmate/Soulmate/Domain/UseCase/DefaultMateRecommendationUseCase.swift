@@ -25,35 +25,18 @@ class DefaultMateRecommendationUseCase: MateRecommendationUseCase {
         self.userDefaultsRepository = userDefaultsRepository
         self.authRepository = authRepository
     }
-    
-    func fetchRecommendedMate() async throws -> [UserPreview] {
-        let uid = try authRepository.currentUid()
-        let myGender = try await userPreviewRepository.downloadPreview(userUid: uid).gender!
-        
-        return try await userPreviewRepository.fetchRecommendedPreviewList(
-            userUid: uid,
-            userGender: myGender
-        )
-    }
-    
-    func fetchDistanceFilteredRecommendedMate(distance: Double) async throws -> [UserPreview] {
-        guard let latestLocationData: Data = userDefaultsRepository.get(key: "latestLocation"),
-              let latestLocation = try? JSONDecoder().decode(Location.self, from: latestLocationData) else {
-            throw UserDefaultsError.noSuchKeyMatchedValue
-        }
 
+    func fetchDistanceFilteredRecommendedMate(from userLocation: Location, distance: Double) async throws -> [UserPreview] {
         let uid = try authRepository.currentUid()
-        let preview = try await userPreviewRepository.downloadPreview(userUid: uid)
-        let from = CLLocation(latitude: preview.location?.latitude ?? 0, longitude: preview.location?.longitude ?? 0)
         
         let myGender = try await userPreviewRepository.downloadPreview(userUid: uid).gender!
         var previewList = try await userPreviewRepository.fetchDistanceFilteredRecommendedPreviewList(
             userUid: uid,
             userGender: myGender,
-            userLocation: latestLocation,
+            userLocation: userLocation,
             distance: distance
         )
-        previewList.sort { $0.location?.toDistance(from: from) ?? 0 <= $1.location?.toDistance(from: from) ?? 0 }
+//        previewList.sort { Location.distance(from: userLocation, to: $0.location) ?? 0 <= $1.location?.toDistance(from: from) ?? 0 }
         return previewList
     }
 }
