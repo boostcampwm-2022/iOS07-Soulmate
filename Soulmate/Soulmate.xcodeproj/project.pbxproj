@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		07497021292E7B26002F607D /* Date+toAge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07497020292E7B26002F607D /* Date+toAge.swift */; };
 		074F3B0B292261EA00D36C89 /* PartnerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074F3B0A292261EA00D36C89 /* PartnerCell.swift */; };
+		0755652A294057AB002A8F10 /* BasicInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07556529294057AB002A8F10 /* BasicInfoViewModel.swift */; };
 		077F73252935E41800FD86D6 /* LaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 077F73242935E41800FD86D6 /* LaunchViewController.swift */; };
 		0788A3C029349965003ADB7D /* LoadingIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0788A3BF29349965003ADB7D /* LoadingIndicator.swift */; };
 		07B61AC2292B6C510009BC8A /* DetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07B61AC1292B6C510009BC8A /* DetailViewModel.swift */; };
@@ -218,6 +219,7 @@
 /* Begin PBXFileReference section */
 		07497020292E7B26002F607D /* Date+toAge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+toAge.swift"; sourceTree = "<group>"; };
 		074F3B0A292261EA00D36C89 /* PartnerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PartnerCell.swift; sourceTree = "<group>"; };
+		07556529294057AB002A8F10 /* BasicInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicInfoViewModel.swift; sourceTree = "<group>"; };
 		077F73242935E41800FD86D6 /* LaunchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchViewController.swift; sourceTree = "<group>"; };
 		0788A3BF29349965003ADB7D /* LoadingIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingIndicator.swift; sourceTree = "<group>"; };
 		07B61AC1292B6C510009BC8A /* DetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewModel.swift; sourceTree = "<group>"; };
@@ -528,6 +530,7 @@
 			children = (
 				07EE0F1B292CEEDC00E761C4 /* HomeViewModel.swift */,
 				07B61AC1292B6C510009BC8A /* DetailViewModel.swift */,
+				07556529294057AB002A8F10 /* BasicInfoViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -1371,6 +1374,7 @@
 				6A25C64A293F333000CDC1BC /* SetDistanceUseCase.swift in Sources */,
 				6AB6B9DC292F23C600A029BD /* UserPreviewDTO.swift in Sources */,
 				6A45AA3D2925701200F85D2C /* UIDatePicker+Publisher.swift in Sources */,
+				0755652A294057AB002A8F10 /* BasicInfoViewModel.swift in Sources */,
 				074F3B0B292261EA00D36C89 /* PartnerCell.swift in Sources */,
 				6A45AA5F292794B500F85D2C /* ReigsterViewController.swift in Sources */,
 				6A9452CB29349EB40041B71D /* ImageCacheRepository.swift in Sources */,

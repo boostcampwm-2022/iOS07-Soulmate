@@ -45,6 +45,7 @@ final class PhotoFooterView: UICollectionReusableView {
     }
     
     func configure(with numberOfPages: Int) {
+        //print(numberOfPages)
         pageControl.numberOfPages = numberOfPages
     }
     

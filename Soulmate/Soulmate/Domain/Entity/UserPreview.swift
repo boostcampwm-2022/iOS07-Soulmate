@@ -8,7 +8,8 @@
 import Foundation
 import FirebaseFirestore
 
-struct UserPreview {
+struct UserPreview: Hashable {
+    var id = UUID().uuidString
     var uid: String?
     var gender: GenderType?
     var name: String?
@@ -31,5 +32,13 @@ extension UserPreview {
             location: self.location?.toGeoPoint() ?? nil,
             heart: self.heart
         )
+    }
+    
+    static func == (lhs: UserPreview, rhs: UserPreview) -> Bool {
+        lhs.id == rhs.id
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(self.id)
     }
 }

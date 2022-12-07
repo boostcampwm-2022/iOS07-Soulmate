@@ -29,6 +29,7 @@ final class AppCoordinator: Coordinator {
     }
     
     func start() {
+        //try? Auth.auth().signOut()
         
         // 코디네이터는 presentation 레이어인데 여기서 레포지토리를 꺼내써도 되는지? auth usecase를 따로 만들어야하나?
         let container = DIContainer.shared.container
