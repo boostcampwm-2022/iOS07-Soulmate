@@ -62,6 +62,7 @@ final class ChattingRoomViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        addGestures()
         configureView()
         configureLayout()
         setPublishers()
@@ -116,28 +117,19 @@ private extension ChattingRoomViewController {
     }
 }
 
+// MARK: - gestures
+private extension ChattingRoomViewController {
+    
+    func addGestures() {
+        let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
+        
+        view.addGestureRecognizer(tapRecognizer)
+    }
+}
+
 // MARK: - UI Configure
 private extension ChattingRoomViewController {
     func configureView() {
-        
-        let hideKeyboardButton = UIBarButtonItem(
-            image: UIImage(systemName: "xmark"),
-            style: .plain,
-            target: self,
-            action: #selector(hideKeyboard)
-        )
-        
-        let loadPrevChattingsButton = UIBarButtonItem(
-            image: UIImage(systemName: "plus.message"),
-            style: .plain,
-            target: self,
-            action: #selector(loadPrevChattings)
-        )
-        
-        self.navigationItem.rightBarButtonItems = [
-            hideKeyboardButton,
-            loadPrevChattingsButton
-        ]
         
         self.title = chatRoomInfo?.mateName
         view.backgroundColor = .white
@@ -146,11 +138,6 @@ private extension ChattingRoomViewController {
     @objc
     func hideKeyboard() {
         view.endEditing(true)
-    }
-    
-    @objc
-    func loadPrevChattings() {
-        loadPrevChattingsSubject.send(())
     }
 
     func configureLayout() {
