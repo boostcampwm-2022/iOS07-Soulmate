@@ -10,6 +10,7 @@ import Combine
 
 struct HeartShopViewModelActions {
     var quitHeartShop: (() -> Void)?
+    var chargeFinished: (() -> Void)?
 }
 
 class HeartShopViewModel {
@@ -22,6 +23,7 @@ class HeartShopViewModel {
     var actions: HeartShopViewModelActions?
     var cancellables = Set<AnyCancellable>()
     var didFinishCharging = PassthroughSubject<Void, Never>()
+    var completionHandler: (() -> Void)?
     
     @Published var selectedCellNumber: Int?
     
@@ -63,7 +65,7 @@ class HeartShopViewModel {
     }
     
     func chargeHeart(row: Int) {
-        Task { [weak self] in
+        Task {
             switch row {
             case 1:
                 await heartShopUseCase?.chargeHeart(heart: 30)
@@ -74,7 +76,10 @@ class HeartShopViewModel {
             default:
                 break
             }
-            self?.didFinishCharging.send(())
+            didFinishCharging.send(())
+            await MainActor.run {
+                actions?.chargeFinished?()
+            }
         }
     }
     

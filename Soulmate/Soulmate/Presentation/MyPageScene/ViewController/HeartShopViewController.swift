@@ -77,9 +77,8 @@ private extension HeartShopViewController {
         )
         
         output.didFinishCharging
-            .receive(on: RunLoop.main)
-            .sink {
-                self.navigationController?.dismiss(animated: true)
+            .sink { [weak self] in
+                self?.viewModel?.completionHandler?()
             }
             .store(in: &cancellables)
             
