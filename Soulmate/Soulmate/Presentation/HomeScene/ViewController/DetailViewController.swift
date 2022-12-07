@@ -11,17 +11,76 @@ import Combine
 import SnapKit
 
 final class DetailViewController: UIViewController {
-
     private var viewModel: DetailViewModel?
     private var cancellables = Set<AnyCancellable>()
-    
     private let pagingInfoSubject = PassthroughSubject<Int, Never>()
     
+    enum Section: Int, CaseIterable {
+        case photo
+        case profile
+        case greeting
+        case basicInfo
+    }
+    
+    private lazy var dataSource = UICollectionViewDiffableDataSource<Section, AnyHashable>(collectionView: self.collectionView) { [weak self] (collectionView, indexPath, item) -> UICollectionViewCell? in
+        switch Section(rawValue: indexPath.section) {
+        case .photo:
+            guard let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: "PhotoCell",
+                for: indexPath) as? PhotoCell,
+                  let viewModel = self?.viewModel else { preconditionFailure() }
+
+            Task {
+                guard let imageKeyList = viewModel.imageKeyList,
+                      let data = try await viewModel.fetchImage(key: imageKeyList[indexPath.item]),
+                      let uiImage = UIImage(data: data) else { return }
+
+                await MainActor.run {
+                    cell.loadImage(image: uiImage)
+                }
+            }
+            return cell
+            
+        case .profile:
+            guard let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: "ProfileCell",
+                for: indexPath) as? ProfileCell else { preconditionFailure() }
+            cell.configure(userPreview: self?.viewModel?.preview ?? UserPreview())
+            return cell
+            
+        case .greeting:
+            guard let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: "GreetingCell",
+                for: indexPath) as? GreetingCell else { preconditionFailure() }
+            cell.configure(message: self?.viewModel?.greetingMessage ?? "[등록된 인사말이 없습니다🥲]")
+            return cell
+            
+        case .basicInfo:
+            guard let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: "BasicInfoCell",
+                for: indexPath) as? BasicInfoCell else { preconditionFailure() }
+            if let mbti = self?.viewModel?.mbti,
+               let height = self?.viewModel?.height,
+               let drink = self?.viewModel?.drinking,
+               let smoke = self?.viewModel?.smoking {
+                cell.configure(
+                    height: height,
+                    mbti: mbti,
+                    drink: drink,
+                    smoke: smoke
+                )
+            }
+            return cell
+            
+        default:
+            print("Section error")
+            return nil
+        }
+    }
+
     private lazy var collectionView: UICollectionView = {
         let layout = createCompositionalLayout()
         let collection = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collection.delegate = self
-        collection.dataSource = self
         collection.backgroundColor = .systemBackground
         collection.bounces = true
         collection.showsVerticalScrollIndicator = false
@@ -61,7 +120,8 @@ final class DetailViewController: UIViewController {
         
         configureView()
         configureLayout()
-        
+        configureSnapshot()
+        configureFooter()
         bind()
     }
 }
@@ -78,39 +138,37 @@ private extension DetailViewController {
         )
         
         output.didFetchedImageKeyList
+            .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
-                DispatchQueue.main.async {
-                    self?.collectionView.reloadSections(IndexSet(0...0))
-                }
+                self?.configureSnapshot()
             }
             .store(in: &cancellables)
-
+        
         output.didFetchedPreview
+            .receive(on: DispatchQueue.main)
+            .compactMap { $0 }
             .sink { [weak self] _ in
-                DispatchQueue.main.async {
-                    self?.collectionView.reloadSections(IndexSet(1...1))
-                }
+                self?.configureSnapshot()
             }
             .store(in: &cancellables)
         
         output.didFetchedGreeting
+            .receive(on: DispatchQueue.main)
+            .compactMap { $0 }
             .sink { [weak self] _ in
-                DispatchQueue.main.async {
-                    self?.collectionView.reloadSections(IndexSet(2...2))
-                }
+                self?.configureSnapshot()
             }
             .store(in: &cancellables)
-        
+
         Publishers.CombineLatest4(
             output.didFetchedHeight,
             output.didFetchedMbti,
             output.didFetchedDrinking,
             output.didFetchedSmoking
         )
+        .receive(on: DispatchQueue.main)
         .sink { [weak self] _ in
-            DispatchQueue.main.async {
-                self?.collectionView.reloadSections(IndexSet(3...3))
-            }
+            self?.configureSnapshot()
         }
         .store(in: &cancellables)
         
@@ -133,84 +191,39 @@ private extension DetailViewController {
             $0.height.equalTo(54)
         }
     }
+    
+    func configureSnapshot() {
+        var snapshot = NSDiffableDataSourceSnapshot<Section, AnyHashable>()
+        snapshot.appendSections(Section.allCases)
+        snapshot.appendItems(viewModel?.imageKeyList ?? [], toSection: .photo)
+        snapshot.appendItems([viewModel?.preview], toSection: .profile)
+        snapshot.appendItems([viewModel?.greetingMessage], toSection: .greeting)
+        snapshot.appendItems([viewModel?.basicInfo], toSection: .basicInfo)
+        
+        dataSource.apply(snapshot, animatingDifferences: false)
+    }
+    
+    func configureFooter() {
+        self.dataSource.supplementaryViewProvider = { [weak self] (collectionView, kind, indexPath) in
+            guard kind == UICollectionView.elementKindSectionFooter,
+                  let subject = self?.pagingInfoSubject,
+                  let footer = collectionView.dequeueReusableSupplementaryView(
+                    ofKind: kind,
+                    withReuseIdentifier: "PhotoFooterView",
+                    for: indexPath) as? PhotoFooterView,
+                  let section = self?.dataSource.snapshot()
+                .sectionIdentifiers[indexPath.section] else { return nil }
+            
+            footer.configure(with: collectionView.numberOfItems(inSection: section.rawValue))
+            footer.subscribeTo(subject: subject)
+            return footer
+        }
+    }
+    
 }
-    
-// MARK: - 컬렉션 뷰
-extension DetailViewController: UICollectionViewDataSource, UICollectionViewDelegate {
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 4
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if section == 0 {
-            return viewModel?.imageKeyList?.count ?? 1
-        } else {
-            return 1
-        }
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        switch indexPath.section {
-        case 0:
-            guard let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: "PhotoCell",
-                for: indexPath) as? PhotoCell,
-                let viewModel = viewModel else { return PhotoCell() }
 
-            Task {
-                guard let imageKeyList = viewModel.imageKeyList,
-                      let data = try await viewModel.fetchImage(key: imageKeyList[indexPath.item]),
-                      let uiImage = UIImage(data: data) else { return }
+extension DetailViewController {
 
-                await MainActor.run { cell.loadImage(image: uiImage) }
-            }
-            return cell
-            
-        case 1:
-            guard let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: "ProfileCell",
-                for: indexPath) as? ProfileCell else { return ProfileCell() }
-            cell.configure(userPreview: viewModel?.preview ?? UserPreview())
-            return cell
-            
-        case 2:
-            guard let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: "GreetingCell",
-                for: indexPath) as? GreetingCell else { return GreetingCell() }
-            cell.configure(message: viewModel?.greetingMessage ?? "[등록된 인사말이 없습니다🥲]")
-            return cell
-            
-        case 3:
-            guard let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: "BasicInfoCell",
-                for: indexPath) as? BasicInfoCell else { return BasicInfoCell() }
-
-            if let mbti = viewModel?.mbti,
-               let height = viewModel?.height,
-               let drink = viewModel?.drinking,
-               let smoke = viewModel?.smoking {
-                cell.configure(
-                    height: height,
-                    mbti: mbti,
-                    drink: drink,
-                    smoke: smoke
-                )
-            }
-            
-            return cell
-            
-        default:
-            fatalError("indexPath.section")
-        }
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        guard let footer = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "PhotoFooterView", for: indexPath) as? PhotoFooterView else { return PhotoFooterView() }
-        footer.configure(with: collectionView.numberOfItems(inSection: 0))
-        footer.subscribeTo(subject: pagingInfoSubject)
-        return footer
-    }
-    
     private func createCompositionalLayout() -> UICollectionViewCompositionalLayout {
         return UICollectionViewCompositionalLayout { sectionNumber, _ -> NSCollectionLayoutSection? in
             switch sectionNumber {
@@ -285,26 +298,91 @@ extension DetailViewController: UICollectionViewDataSource, UICollectionViewDele
 
 
 
-// MARK: - 미리보기
-#if DEBUG
-import SwiftUI
-struct DetailViewControllerRepresentable: UIViewControllerRepresentable {
-    func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {
-        // leave this empty
-    }
-    @available(iOS 13.0.0, *)
-    func makeUIViewController(context: Context) -> some UIViewController {
-        DetailViewController()
-    }
-    @available(iOS 13.0, *)
-    struct SnapKitVCRepresentable_PreviewProvider: PreviewProvider {
-        static var previews: some View {
-            Group {
-                DetailViewControllerRepresentable()
-                    .ignoresSafeArea()
-                    .previewDisplayName("Preview")
-                    .previewDevice(PreviewDevice(rawValue: "iPhone 14"))
-            }
-        }
-    }
-} #endif
+
+
+
+
+
+
+
+
+
+// MARK: - 컬렉션 뷰
+
+//extension DetailViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+//    func numberOfSections(in collectionView: UICollectionView) -> Int {
+//        return 4
+//    }
+//
+//    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+//        if section == 0 {
+//            return viewModel?.imageKeyList?.count ?? 0
+//        } else {
+//            return 1
+//        }
+//    }
+//
+//    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+//        switch indexPath.section {
+//        case 0:
+//            guard let cell = collectionView.dequeueReusableCell(
+//                withReuseIdentifier: "PhotoCell",
+//                for: indexPath) as? PhotoCell,
+//                  let viewModel = viewModel else { return PhotoCell() }
+//
+//            Task {
+//                guard let imageKeyList = viewModel.imageKeyList,
+//                      let data = try await viewModel.fetchImage(key: imageKeyList[indexPath.item]),
+//                      let uiImage = UIImage(data: data) else { return }
+//
+//                await MainActor.run {
+//                    cell.loadImage(image: uiImage)
+//                }
+//            }
+//            return cell
+//
+//        case 1:
+//            guard let cell = collectionView.dequeueReusableCell(
+//                withReuseIdentifier: "ProfileCell",
+//                for: indexPath) as? ProfileCell else { return ProfileCell() }
+//            cell.configure(userPreview: viewModel?.preview ?? UserPreview())
+//            return cell
+//
+//        case 2:
+//            guard let cell = collectionView.dequeueReusableCell(
+//                withReuseIdentifier: "GreetingCell",
+//                for: indexPath) as? GreetingCell else { return GreetingCell() }
+//            cell.configure(message: viewModel?.greetingMessage ?? "[등록된 인사말이 없습니다🥲]")
+//            return cell
+//
+//        case 3:
+//            guard let cell = collectionView.dequeueReusableCell(
+//                withReuseIdentifier: "BasicInfoCell",
+//                for: indexPath) as? BasicInfoCell else { return BasicInfoCell() }
+//
+//            if let mbti = viewModel?.mbti,
+//               let height = viewModel?.height,
+//               let drink = viewModel?.drinking,
+//               let smoke = viewModel?.smoking {
+//                cell.configure(
+//                    height: height,
+//                    mbti: mbti,
+//                    drink: drink,
+//                    smoke: smoke
+//                )
+//            }
+//
+//            return cell
+//
+//        default:
+//            fatalError("indexPath.section")
+//        }
+//    }
+//
+//    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+//        guard let footer = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "PhotoFooterView", for: indexPath) as? PhotoFooterView else { return PhotoFooterView() }
+//        footer.configure(with: collectionView.numberOfItems(inSection: 0))
+//        footer.subscribeTo(subject: pagingInfoSubject)
+//        return footer
+//    }
+//}

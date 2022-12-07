@@ -13,6 +13,7 @@ struct DetailViewModelActions {
 
 final class DetailViewModel {
     var cancellables = Set<AnyCancellable>()
+    var basicInfo: BasicInfoViewModel?
     
     var actions: DetailViewModelActions?
     
@@ -63,6 +64,13 @@ final class DetailViewModel {
             self?.smoking = detailInfo.smokingType
             self?.greetingMessage = detailInfo.aboutMe
             self?.imageKeyList = detailInfo.imageList
+            
+            guard let height = detailInfo.height,
+                  let mbti = detailInfo.mbti,
+                  let drink = detailInfo.drinkingType,
+                  let smoke = detailInfo.smokingType else { return }
+                        
+            self?.basicInfo = BasicInfoViewModel(height: height, mbti: mbti, drink: drink, smoke: smoke)
         }
     }
     
