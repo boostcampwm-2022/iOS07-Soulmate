@@ -20,7 +20,18 @@ class FireStoreNetworkDatabaseApi: NetworkDatabaseApi {
         try await collection.document(documentID).setData(fetchData)
     }
     
-    func read<T: Codable>(table: String, documentID: String, type: T.Type) async throws -> T {
+    func create<T: Encodable>(path: String, data: T, completion: (() -> ())?) async throws {
+        let docRef = try db.collection(path).addDocument(
+            from: data,
+            completion: { err in
+            
+                if err == nil {
+                    completion?()
+                }
+        })
+    }
+    
+    func read<T: Decodable>(table: String, documentID: String, type: T.Type) async throws -> T {
         let snapshot = try await db.collection(table).document(documentID).getDocument()
         return try snapshot.data(as: T.self)
     }
@@ -36,6 +47,19 @@ class FireStoreNetworkDatabaseApi: NetworkDatabaseApi {
         return try snapshot.documents.map {
             try $0.data(as: T.self)
         }
+    }
+    
+    func read<T: Decodable>(path: String, constraints: [QueryEntity], type: T.Type) async throws -> (data: [T], snapshot: QuerySnapshot) {
+        var query = db.collection(path) as Query
+        
+        constraints.forEach {
+            query = query.merge(with: $0)
+        }
+        
+        let snapshot = try await query.getDocuments()
+        let data = try snapshot.documents.map { try $0.data(as: T.self) }
+        
+        return (data, snapshot)
     }
     
     func update(table: String, documentID: String, with fields: [AnyHashable: Any]) async throws {

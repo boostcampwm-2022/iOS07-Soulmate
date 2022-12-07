@@ -213,6 +213,7 @@ private extension ChattingRoomViewController {
             .store(in: &cancellabels)
         
         output.chattingInitLoaded
+            .receive(on: DispatchQueue.main)
             .sink { [weak self] chats in
                 
                 guard !chats.isEmpty else {
@@ -229,7 +230,8 @@ private extension ChattingRoomViewController {
             .store(in: &cancellabels)
         
         output.unreadChattingLoaded
-            .sink { [weak self] chats in
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] chats in                
                 self?.chatListView.append(chats)
             }
             .store(in: &cancellabels)

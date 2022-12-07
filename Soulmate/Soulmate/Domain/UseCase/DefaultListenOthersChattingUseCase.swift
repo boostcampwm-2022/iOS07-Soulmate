@@ -47,7 +47,7 @@ final class DefaultListenOthersChattingUseCase: ListenOthersChattingUseCase {
             query = query
                 .start(afterDocument: lastDocument)
         }
-
+        
         listenerRegistration = query
             .addSnapshotListener { [weak self] snapshot, err in
                 

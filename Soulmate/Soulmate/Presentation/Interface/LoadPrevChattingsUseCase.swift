@@ -8,8 +8,7 @@
 import Combine
 import FirebaseFirestore
 
-protocol LoadPrevChattingsUseCase {
-    var loadedPrevChatting: PassthroughSubject<[Chat], Never> { get }
+protocol LoadPrevChattingsUseCase {    
     
-    func loadPrevChattings()
+    func loadPrevChattings() async -> [Chat]
 }

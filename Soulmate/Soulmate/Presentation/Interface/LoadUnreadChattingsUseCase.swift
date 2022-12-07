@@ -8,8 +8,7 @@
 import Combine
 import FirebaseFirestore
 
-protocol LoadUnreadChattingsUseCase {
-    var unreadChattings: PassthroughSubject<[Chat], Never> { get }
+protocol LoadUnreadChattingsUseCase {    
     
-    func loadUnreadChattings()
+    func loadUnreadChattings() async -> [Chat]
 }

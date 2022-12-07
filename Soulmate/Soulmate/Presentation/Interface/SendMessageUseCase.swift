@@ -10,9 +10,9 @@ import Foundation
 
 protocol SendMessageUseCase {
     var sendButtonEnabled: CurrentValueSubject<Bool, Never> { get }
-    var newMessage: PassthroughSubject<Chat, Never> { get }
+    var myMessage: PassthroughSubject<Chat, Never> { get }
     var messageSended: PassthroughSubject<Chat, Never> { get }
     
     func updateMessage(_ text: String)    
-    func sendMessage()
+    func sendMessage() async
 }

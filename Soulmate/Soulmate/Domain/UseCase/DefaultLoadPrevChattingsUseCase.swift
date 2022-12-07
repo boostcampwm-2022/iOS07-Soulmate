@@ -14,50 +14,32 @@ import FirebaseFirestoreSwift
 final class DefaultLoadPrevChattingsUseCase: LoadPrevChattingsUseCase {
     
     private let info: ChatRoomInfo
-    private let uid = Auth.auth().currentUser?.uid
-    private let loadChattingRepository: LoadChattingsRepository
-        
-    var loadedPrevChatting = PassthroughSubject<[Chat], Never>()
+    private let chattingRepository: ChattingRepository
+    private let authRepository: AuthRepository
     
     init(
         with info: ChatRoomInfo,
-        loadChattingRepository: LoadChattingsRepository) {
-            
+        chattingRepository: ChattingRepository,
+        authRepository: AuthRepository) {
+        
             self.info = info
-            self.loadChattingRepository = loadChattingRepository
+            self.chattingRepository = chattingRepository
+            self.authRepository = authRepository
     }
     
-    func loadPrevChattings() {
-        let db = Firestore.firestore()
+    func loadPrevChattings() async -> [Chat] {
+        guard let chatRoomId = info.documentId, let uid = try? authRepository.currentUid() else { return [] }
         
-        guard let chatRoomId = info.documentId, let startDocument = loadChattingRepository.startDocument else {
-            return
+        let dtos = await chattingRepository.loadPrevChattings(from: chatRoomId)
+        let infos = dtos.map { $0.toModel() }.reversed()
+        let chats = infos.map { info in
+            let date = info.date
+            let isMe = info.userId == uid
+            let text = info.text
+            
+            return Chat(isMe: isMe, userId: info.userId, readUsers: info.readUsers, text: text, date: date, state: .validated)
         }
         
-        let _ = db.collection("ChatRooms")
-            .document(chatRoomId)
-            .collection("Messages")
-            .order(by: "date", descending: true)
-            .start(afterDocument: startDocument)
-            .limit(to: 100)
-            .getDocuments { [weak self] snapshot, err in
-            
-                guard let snapshot, err == nil, let uid = self?.uid else { return }
-                
-                let messageInfoDTOs = snapshot.documents.compactMap { try? $0.data(as: MessageInfoDTO.self) }
-                let infos = messageInfoDTOs.map { return $0.toModel() }.reversed()
-                let chats = infos.map { info in
-                    let date = info.date
-                    let isMe = info.userId == uid
-                    let text = info.text
-                    
-                    return Chat(isMe: isMe, userId: info.userId, readUsers: info.readUsers, text: text, date: date, state: .validated)
-                }
-                
-                guard let lastDocument = snapshot.documents.last else { return }
-                
-                self?.loadChattingRepository.setStartDocument(lastDocument)                                
-                self?.loadedPrevChatting.send(chats)
-            }
+        return chats
     }
 }
