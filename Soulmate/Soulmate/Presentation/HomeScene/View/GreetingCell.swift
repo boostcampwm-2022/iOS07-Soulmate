@@ -69,7 +69,7 @@ final class GreetingCell: UICollectionViewCell {
         }
     }
     
-    func configure(message: String) {
+    func fill(message: String) {
         greetingMessage.text = message
     }
 }

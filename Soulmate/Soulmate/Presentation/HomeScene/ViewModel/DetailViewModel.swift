@@ -13,7 +13,6 @@ struct DetailViewModelActions {
 
 final class DetailViewModel {
     var cancellables = Set<AnyCancellable>()
-    var basicInfo: BasicInfoViewModel?
     
     var actions: DetailViewModelActions?
     
@@ -26,22 +25,17 @@ final class DetailViewModel {
 
     struct Output {
         var didFetchedImageKeyList: AnyPublisher<[String]?, Never>
-        var didFetchedPreview: AnyPublisher<UserPreview?, Never>
-        var didFetchedHeight: AnyPublisher<Int?, Never>
-        var didFetchedMbti: AnyPublisher<Mbti?, Never>
-        var didFetchedDrinking: AnyPublisher<DrinkingType?, Never>
-        var didFetchedSmoking: AnyPublisher<SmokingType?, Never>
+        var didFetchedPreview: AnyPublisher<DetailPreviewViewModel?, Never>
         var didFetchedGreeting: AnyPublisher<String?, Never>
+        var didFetchedBasicInfo: AnyPublisher<DetailBasicInfoViewModel?, Never>
     }
-    
-    @Published var preview: UserPreview?
-    @Published var distance: Int?
-    @Published var greetingMessage: String?
-    @Published var height: Int?
-    @Published var mbti: Mbti?
-    @Published var drinking: DrinkingType?
-    @Published var smoking: SmokingType?
+
     @Published var imageKeyList: [String]?
+    @Published var detailPreviewViewModel: DetailPreviewViewModel?
+    @Published var greetingMessage: String?
+    @Published var basicInfo: DetailBasicInfoViewModel?
+    
+
     
     init(
         downloadPictureUseCase: DownLoadPictureUseCase,
@@ -53,24 +47,36 @@ final class DetailViewModel {
     
     func setUser(userPreview: UserPreview) {
         Task { [weak self] in
-            guard let uid = userPreview.uid else { return }
+            guard let uid = userPreview.uid,
+                  let name = userPreview.name,
+                  let birth = userPreview.birth,
+                  let location = userPreview.location else { return }
             
-            self?.preview = userPreview
-            
+            self?.detailPreviewViewModel = DetailPreviewViewModel(
+                uid: uid,
+                name: name,
+                age: String(birth.toAge()),
+                distance: "aaakm"
+            )
+        
             let detailInfo = try await downloadDetailInfoUseCase.downloadDetailInfo(userUid: uid)
-            self?.height = detailInfo.height
-            self?.mbti = detailInfo.mbti
-            self?.drinking = detailInfo.drinkingType
-            self?.smoking = detailInfo.smokingType
-            self?.greetingMessage = detailInfo.aboutMe
-            self?.imageKeyList = detailInfo.imageList
             
             guard let height = detailInfo.height,
-                  let mbti = detailInfo.mbti,
-                  let drink = detailInfo.drinkingType,
-                  let smoke = detailInfo.smokingType else { return }
-                        
-            self?.basicInfo = BasicInfoViewModel(height: height, mbti: mbti, drink: drink, smoke: smoke)
+                  let mbti = detailInfo.mbti?.toString(),
+                  let drinking = detailInfo.drinkingType?.rawValue,
+                  let smoking = detailInfo.smokingType?.rawValue,
+                  let greetingMessage = detailInfo.aboutMe,
+                  let imageKeyList = detailInfo.imageList else { return }
+
+            self?.greetingMessage = greetingMessage
+            self?.basicInfo = DetailBasicInfoViewModel(
+                uid: uid,
+                height: String(height),
+                mbti: mbti,
+                drink: drinking,
+                smoke: smoking
+            )
+            self?.imageKeyList = imageKeyList
         }
     }
     
@@ -84,12 +90,9 @@ final class DetailViewModel {
         
         return Output(
             didFetchedImageKeyList: $imageKeyList.eraseToAnyPublisher(),
-            didFetchedPreview: $preview.eraseToAnyPublisher(),
-            didFetchedHeight: $height.eraseToAnyPublisher(),
-            didFetchedMbti: $mbti.eraseToAnyPublisher(),
-            didFetchedDrinking: $drinking.eraseToAnyPublisher(),
-            didFetchedSmoking: $smoking.eraseToAnyPublisher(),
-            didFetchedGreeting: $greetingMessage.eraseToAnyPublisher()
+            didFetchedPreview: $detailPreviewViewModel.eraseToAnyPublisher(),
+            didFetchedGreeting: $greetingMessage.eraseToAnyPublisher(),
+            didFetchedBasicInfo: $basicInfo.eraseToAnyPublisher()
         )
     }
     
