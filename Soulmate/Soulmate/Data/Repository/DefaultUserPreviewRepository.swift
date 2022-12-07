@@ -39,7 +39,6 @@ class DefaultUserPreviewRepository: UserPreviewRepository {
                   let location = dto.location else { return false }
             
             let toPoint = Location(latitude: location.latitude, longitude: location.longitude)
-            print(Location.distance(from: fromPoint, to: toPoint), distance)
             return Location.distance(from: fromPoint, to: toPoint) <= distance
         }
         .map {

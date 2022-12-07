@@ -56,26 +56,8 @@ final class RecommendFooterView: UICollectionReusableView {
         self.buttonTappedHandler = handler
     }
     
-    func buttonTapPublisher() -> AnyPublisher<Void, Never> {
-        return recommendAgainButton.tapPublisher()
-    }
-    
     @objc func didTouchedButton() {
-        print("touch")
         buttonTappedHandler?()
     }
 
 }
-
-#if canImport(SwiftUI) && DEBUG
-import SwiftUI
-
-struct aaaPreview: PreviewProvider{
-    static var previews: some View {
-        UIViewPreview {
-            let cell = RecommendFooterView(frame: .zero)
-            return cell
-        }.previewLayout(.device)
-    }
-}
-#endif
