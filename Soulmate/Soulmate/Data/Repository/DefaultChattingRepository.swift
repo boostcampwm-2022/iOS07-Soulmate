@@ -5,6 +5,7 @@
 //  Created by Hoen on 2022/12/06.
 //
 
+import Combine
 import FirebaseFirestore
 
 final class DefaultChattingRepository: ChattingRepository {
@@ -14,6 +15,8 @@ final class DefaultChattingRepository: ChattingRepository {
     
     var startDocument: QueryDocumentSnapshot?
     var lastDocument: QueryDocumentSnapshot?
+    
+    var newMessages = PassthroughSubject<[Chat], Never>()
     
     init(authRepository: AuthRepository, networkDatabaseApi: NetworkDatabaseApi) {
         self.authRepository = authRepository
@@ -81,7 +84,7 @@ final class DefaultChattingRepository: ChattingRepository {
     
     func loadPrevChattings(from chatRoomId: String) async -> [MessageInfoDTO] {
 
-        guard startDocument != nil else {            
+        guard startDocument != nil else {
             return []
         }
         
@@ -165,21 +168,27 @@ final class DefaultChattingRepository: ChattingRepository {
         )
     }
     
-    func addMessage(_ message: MessageToSendDTO, to chatRoomId: String) async {
+    func addMessage(_ message: MessageToSendDTO, to chatRoomId: String) async -> Bool {
         let path = "ChatRooms/\(chatRoomId)/Messages"
-        
-        try? await networkDatabaseApi.create(path: path, data: message) {
+
+        if let _ = try? await networkDatabaseApi.create(path: path, data: message.toDict()) {
             
-            Task {
-                try? await self.networkDatabaseApi.update(
-                    table: "ChatRooms",
-                    documentID: chatRoomId,
-                    with: [
-                        "lastMessage": message.text,
-                        "lastDate": message.date
-                    ]
-                )
+            if let _ = try? await self.networkDatabaseApi.update(
+                table: "ChatRooms",
+                documentID: chatRoomId,
+                with: [
+                    "lastMessage": message.text,
+                    "lastDate": message.date
+                ]
+            ) {
+                return true
             }
         }
+        
+        return false
+    }
+    
+    func listenOthersChatting() {
+        
     }
 }

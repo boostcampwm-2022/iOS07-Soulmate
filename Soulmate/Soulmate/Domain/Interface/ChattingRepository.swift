@@ -20,5 +20,5 @@ protocol ChattingRepository {
     func updateLastRead(of chatRoomId: String) async
     func updateUnreadCountToZero(of chatRoomId: String, othersId: String) async
     func increaseUnreadCount(of id: String, in chatRoomId: String) async
-    func addMessage(_ message: MessageToSendDTO, to chatRoomId: String) async
+    func addMessage(_ message: MessageToSendDTO, to chatRoomId: String) async -> Bool
 }

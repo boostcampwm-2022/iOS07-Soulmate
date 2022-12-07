@@ -235,13 +235,13 @@ private extension ChattingRoomViewController {
             .store(in: &cancellabels)
         
         output.prevChattingLoaded
-            .sink { [weak self] chats in
-                print(chats.map { $0.text })
+            .sink { [weak self] chats in                
                 self?.chatListView.fillBuffer(with: chats)
             }
             .store(in: &cancellabels)
         
         output.newMessageArrived
+            .receive(on: DispatchQueue.main)
             .sink { [weak self] chats in
                 let diff = (self?.bottomOffset().y ?? 0) - (self?.chatListView.contentOffset.y ?? 0)
                 self?.chatListView.append(chats)                 
@@ -256,14 +256,7 @@ private extension ChattingRoomViewController {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] chat in
                 
-//                guard let index = self?.dataSource?.snapshot().itemIdentifiers.firstIndex(
-//                    where: { old in
-//                        old.id == chat.id
-//                    }) else { return }
-//                guard var items = self?.dataSource?.snapshot().itemIdentifiers else { return }
-//                items[index] = chat
-//
-//                self?.loadData(items)
+                self?.chatListView.update(chat)
             }
             .store(in: &cancellabels)
         

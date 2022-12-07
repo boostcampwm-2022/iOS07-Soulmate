@@ -43,6 +43,12 @@ final class ChatListView: UICollectionView {
         self.reloadData()        
     }
     
+    func update(_ chat: Chat) {
+        chatDataSource.update(chat)
+        
+        self.reloadData()
+    }
+    
     func insertPrevChats() -> CGFloat {        
         
         return chatDataSource.insertBuffer()
@@ -58,7 +64,7 @@ final class ChatListView: UICollectionView {
     }
     
     func scrollToBottomByOffset() {
-        print(self.contentInset.bottom)
+        
         let maxY = chatDataSource.offsets.last ?? 0
         let height = self.bounds.size.height
         let yOffset = maxY - height + self.contentInset.bottom

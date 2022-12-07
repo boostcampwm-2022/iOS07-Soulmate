@@ -95,8 +95,10 @@ final class ChattingRoomViewModel {
         
         input.messageSendEvent?
             .throttle(for: 0.3, scheduler: RunLoop.main, latest: true)
-            .sink { [weak self] _ in
-                // self?.sendMessageUseCase.sendMessage()
+            .sink { _ in
+                Task {
+                    await self.sendMessageUseCase.sendMessage()
+                }
             }
             .store(in: &cancellables)
         

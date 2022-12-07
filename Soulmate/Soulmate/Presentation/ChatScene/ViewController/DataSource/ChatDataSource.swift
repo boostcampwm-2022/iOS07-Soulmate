@@ -62,6 +62,15 @@ extension ChatDataSource {
         }
     }
     
+    func update(_ chat: Chat) {
+        guard let index = chats.firstIndex(
+            where: { old in
+                old.id == chat.id
+            })else { return }
+        
+        chats[index] = chat
+    }
+    
     func insertBuffer() -> CGFloat {
         guard !buffer.isEmpty else { return 0 }
         
