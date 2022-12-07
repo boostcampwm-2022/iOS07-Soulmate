@@ -33,6 +33,8 @@ final class HomeViewModel {
     @Published var distance: Double
     
     struct Input {
+        var didTappedRefreshButton: AnyPublisher<Void, Never>
+        var didSelectedMateCollectionCell: AnyPublisher<Int, Never>
     }
     
     struct Output {
@@ -74,6 +76,19 @@ final class HomeViewModel {
 //                }
 //            }
 //            .store(in: &cancellable)
+        
+        input.didTappedRefreshButton
+            .sink { [weak self] _ in
+                self?.refresh()
+            }
+            .store(in: &cancellable)
+        
+        input.didSelectedMateCollectionCell
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] index in
+                self?.mateSelected(index: index)
+            }
+            .store(in: &cancellable)
 
         getDistanceUseCase.getDistancePublisher()
             .assign(to: \.distance, on: self)
@@ -102,27 +117,26 @@ final class HomeViewModel {
     
     func refresh() {
         Task { [weak self] in
-            guard let currentLocation = self?.currentLocation,
-                  let distance = self?.distance else { return }
-            
+            guard let currentLocation = self?.currentLocation  else { return }
             let previewList = try await mateRecommendationUseCase
-                    .fetchDistanceFilteredRecommendedMate(from: currentLocation, distance: distance)
-            
-            self?.matePreviewViewModelList = previewList.map {
-                guard let uid = $0.uid,
-                      let imageKey = $0.imageKey,
-                      let name = $0.name,
-                      let birth = $0.birth,
-                      let location = $0.location else { return }
+                .fetchDistanceFilteredRecommendedMate(from: currentLocation, distance: distance)
+                        
+            self?.matePreviewViewModelList = previewList.map { preview -> HomePreviewViewModel in
+                guard let uid = preview.uid,
+                      let imageKey = preview.imageKey,
+                      let name = preview.name,
+                      let birth = preview.birth,
+                      let location = preview.location else { fatalError() }
                 
                 return HomePreviewViewModel(
                     uid: uid,
                     imageKey: imageKey,
                     name: name,
                     age: String(birth.toAge()),
-                    distance: String(format: "%.2fkm", Location.distance(from: distance, to: location))
+                    distance: String(format: "%.2fkm", Location.distance(from: currentLocation, to: location))
                 )
             }
+                        
         }
     }
     
@@ -131,8 +145,6 @@ final class HomeViewModel {
     }
     
     func mateSelected(index: Int) {
-        print("build success")
-
         let selectedMatePreviewViewModel = matePreviewViewModelList[index]
         let detailPreviewViewModel = DetailPreviewViewModel(
             uid: selectedMatePreviewViewModel.uid,

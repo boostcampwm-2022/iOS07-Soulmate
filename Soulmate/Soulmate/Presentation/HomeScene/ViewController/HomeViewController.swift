@@ -17,8 +17,6 @@ final class HomeViewController: UIViewController {
     var locationManager: CLLocationManager?
 
     private var viewModel: HomeViewModel?
-    let refreshControl = UIRefreshControl()
-    var data = [UserPreview]()
     
     enum SectionKind: Int, CaseIterable {
         case main
@@ -28,6 +26,8 @@ final class HomeViewController: UIViewController {
         case main(HomePreviewViewModel)
     }
 
+    var refreshButtonTapSubject = PassthroughSubject<Void, Never>()
+    var collectionViewSelectSubject = PassthroughSubject<Int, Never>()
     
     // MARK: - UI
     private lazy var logo: UIImageView = {
@@ -59,38 +59,18 @@ final class HomeViewController: UIViewController {
         return label
     }()
     
-    // MARK: - 컬렉션뷰
-//    private lazy var collectionView: UICollectionView = {
-//        var layout = UICollectionViewFlowLayout()
-//        layout.scrollDirection = .vertical
-//        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 30, right: 0)
-//
-//        let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
-//        cv.register(PartnerCell.self, forCellWithReuseIdentifier: "PartnerCell")
-//        cv.register(RecommendView.self, forCellWithReuseIdentifier: "RecommendView")
-//        cv.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-//        cv.showsVerticalScrollIndicator = false
-//        cv.bounces = true
-//        cv.isPagingEnabled = false
-//        cv.backgroundColor = .clear
-//
-//        self.view.addSubview(cv)
-//        return cv
-//    }()
-    
     private lazy var collectionView: UICollectionView = {
         let layout = createCompositionalLayout()
         let collection = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collection.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         collection.showsVerticalScrollIndicator = false
         collection.bounces = true
         collection.isPagingEnabled = false
         collection.backgroundColor = .clear
+        self.view.addSubview(collection)
         return collection
     }()
     
     private var dataSource: UICollectionViewDiffableDataSource<SectionKind, ItemKind>!
-
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nil, bundle: nil)
@@ -149,13 +129,12 @@ final class HomeViewController: UIViewController {
         }
 
         
-//        let footerViewRegistration = UICollectionView.SupplementaryRegistration
-//        <PhotoFooterView>(elementKind: PhotoFooterView.footerKind) { [weak self] supplementaryView, string, indexPath in
-//            guard let currentPage = self?.currentImagePageSubject,
-//                  let totalPage = self?.totalImagePageSubject else { return }
-//            supplementaryView.subscribeTo(totalPage: totalPage.eraseToAnyPublisher())
-//            supplementaryView.subscribeTo(currentPage: currentPage.eraseToAnyPublisher())
-//        }
+        let footerViewRegistration = UICollectionView.SupplementaryRegistration
+        <RecommendFooterView>(elementKind: RecommendFooterView.footerKind) { [weak self] supplementaryView, string, indexPath in
+            supplementaryView.configureButtonHandler {
+                self?.refreshButtonTapSubject.send(())
+            }
+        }
         
         // MARK: DataSource Configuration
         
@@ -168,10 +147,10 @@ final class HomeViewController: UIViewController {
             }
         }
         
-//        self.dataSource.supplementaryViewProvider = { [weak self] (collectionView, kind, indexPath) in
-//            return collectionView.dequeueConfiguredReusableSupplementary(using: footerViewRegistration, for: indexPath)
-//        }
-//
+        self.dataSource.supplementaryViewProvider = { [weak self] (collectionView, kind, indexPath) in
+            return collectionView.dequeueConfiguredReusableSupplementary(using: footerViewRegistration, for: indexPath)
+        }
+
         var snapshot = NSDiffableDataSourceSnapshot<SectionKind, ItemKind>()
         snapshot.appendSections(SectionKind.allCases)
         self.dataSource.apply(snapshot, animatingDifferences: false)
@@ -189,21 +168,20 @@ final class HomeViewController: UIViewController {
     private func mainSectionLayout() -> NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        
+        item.contentInsets = .init(top: 10, leading: 0, bottom: 0, trailing: 10)
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalWidth(1))
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
-        group.contentInsets = .init(top: 0, leading: 0, bottom: 0, trailing: 0)
+        let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
+        group.contentInsets = .init(top: 10, leading: 0, bottom: 10, trailing: 0)
         
         let section = NSCollectionLayoutSection(group: group)
-        section.orthogonalScrollingBehavior = .groupPaging
-        
-//        let footerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(20))
-//        let footer = NSCollectionLayoutBoundarySupplementaryItem(
-//            layoutSize: footerSize,
-//            elementKind: PhotoFooterView.footerKind,
-//            alignment: .bottom
-//        )
-//        section.boundarySupplementaryItems = [footer]
+        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 20, trailing: 0)
+        let footerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(54))
+        let footer = NSCollectionLayoutBoundarySupplementaryItem(
+            layoutSize: footerSize,
+            elementKind: RecommendFooterView.footerKind,
+            alignment: .bottom
+        )
+        section.boundarySupplementaryItems = [footer]
 
         return section
     }
@@ -218,7 +196,13 @@ final class HomeViewController: UIViewController {
 private extension HomeViewController {
     func bind() {
         guard let viewModel = viewModel else { return }
-        let output = viewModel.transform(input: HomeViewModel.Input())
+        
+        let output = viewModel.transform(
+            input: HomeViewModel.Input(
+                didTappedRefreshButton: refreshButtonTapSubject.eraseToAnyPublisher(),
+                didSelectedMateCollectionCell: collectionViewSelectSubject.eraseToAnyPublisher()
+            )
+        )
 
         output.didRefreshedPreviewList
             .receive(on: DispatchQueue.main)
@@ -233,9 +217,6 @@ private extension HomeViewController {
     func configureView() {
         view.backgroundColor = .white
         collectionView.delegate = self
-        refreshControl.tintColor = .mainPurple
-        refreshControl.addTarget(self, action: #selector(self.refreshFunc), for: .valueChanged)
-        collectionView.refreshControl = refreshControl
     }
     
     func configureLayout() {
@@ -266,11 +247,6 @@ private extension HomeViewController {
         }
     }
     
-    @objc func refreshFunc() {
-        collectionView.reloadData()
-        refreshControl.endRefreshing()
-    }
-    
     func setAuthAlertAction() {
          let authAlertController = UIAlertController(
             title: "위치 사용 권한이 필요합니다.",
@@ -288,94 +264,12 @@ private extension HomeViewController {
 }
 
 extension HomeViewController: UICollectionViewDelegate {
-//    func numberOfSections(in collectionView: UICollectionView) -> Int {
-//        return 2
-//    }
-    
-//    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        guard let viewModel = viewModel else { return 0 }
-//        switch section {
-//        case 0:
-//            if data.isEmpty, viewModel.recommendedMatePreviewList.count <= 2 {
-//                data = viewModel.recommendedMatePreviewList
-//            } else if data.isEmpty, viewModel.recommendedMatePreviewList.count > 2 {
-//                (0..<2).forEach {
-//                    data.append(viewModel.recommendedMatePreviewList[$0])
-//                }
-//            }
-//            return data.count
-//
-//        case 1:
-//            return 1
-//
-//        default:
-//            fatalError("indexPath.section")
-//        }
-//    }
-    
-//
-//    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-//        switch indexPath.section {
-//        case 0:
-//            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PartnerCell", for: indexPath) as? PartnerCell,
-//            let viewModel = viewModel else {
-//                return UICollectionViewCell()
-//            }
-//
-//            Task {
-//                guard let imageKey = viewModel.recommendedMatePreviewList[indexPath.row].imageKey,
-//                      let imageData = try await viewModel.fetchImage(key: imageKey),
-//                      let uiImage = UIImage(data: imageData) else { return }
-//                cell.fill(userPreview: viewModel.recommendedMatePreviewList[indexPath.row])
-//                await MainActor.run { cell.fill(userImage: uiImage) }
-//            }
-//            return cell
-//
-//        case 1:
-//            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "RecommendView", for: indexPath) as? RecommendView else {
-//                return UICollectionViewCell()
-//            }
-//            return cell
-//        default:
-//            fatalError("indexPath.section")
-//        }
-//    }
-    
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-//        switch indexPath.section {
-//        case 0:
-//            return CGSize(width: view.frame.size.width - 40, height: view.frame.size.width - 40)
-//
-//        case 1:
-//            return CGSize(width: view.frame.size.width - 40, height: 54)
-//
-//        default:
-//            fatalError("indexPath.section")
-//        }
-//    }
-    
+
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let viewModel = viewModel else { return }
         switch indexPath.section {
         case 0:
-            viewModel.mateSelected(index: indexPath.row)
-            print("build success")
-
-        //case 1:
-//            let numberOfItem = self.collectionView.numberOfItems(inSection: 0)
-//            if viewModel.recommendedMatePreviewList.count - numberOfItem >= 1 {
-//                print("1명 더 추천 완료! 하트 -10개!")
-//                data.insert(viewModel.recommendedMatePreviewList[numberOfItem], at: numberOfItem)
-//                collectionView.insertItems(at: [IndexPath(item: numberOfItem, section: 0)])
-//                collectionView.reloadData()
-//            } else {
-//                let alert = UIAlertController(title: "😭", message: "가까운 거리에 더 이상 추천 상대가 없어요!", preferredStyle: .alert)
-//                let okAction = UIAlertAction(title: "OK", style: .default)
-//                alert.addAction(okAction)
-//                present(alert, animated: true)
-//            }
-//
-
+            collectionViewSelectSubject.send(indexPath.row)
         default:
             fatalError("indexPath.section")
         }
