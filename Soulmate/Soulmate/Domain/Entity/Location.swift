@@ -31,6 +31,6 @@ extension Location {
         let fromCL = CLLocation(latitude: from.latitude, longitude: from.longitude)
         let toCL = CLLocation(latitude: to.latitude, longitude: to.longitude)
         
-        return toCL.distance(from: fromCL)
+        return toCL.distance(from: fromCL) * 0.001
     }
 }

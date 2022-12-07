@@ -116,19 +116,10 @@ final class PartnerCell: UICollectionViewCell {
         gradientLayer.frame = partnerSubview.bounds
     }
     
-    func fill(userPreview: UserPreview) {
-        self.partnerName.text = userPreview.name
-        self.partnerAge.text = String(userPreview.birth!.toAge())
-        
-        
-        // FIXME: 디퍼블쓰면 이부분을 뷰모델쪽에서 맵핑해서 저장할텐데 거기서 거리차를 직접 구해서 넣어주기
-        
-        if let location = userPreview.location {
-            let from = CLLocation(latitude: UserDefaults.standard.double(forKey: "latestLatitude"), longitude: UserDefaults.standard.double(forKey: "latestLongitude"))
-            
-            let to = CLLocation(latitude: location.latitude, longitude: location.longitude)
-            self.partnerDistance.text = String(format: "%.2fkm", to.distance(from: from) * 0.001)
-        }
+    func fill(previewViewModel: HomePreviewViewModel) {
+        self.partnerName.text = previewViewModel.name
+        self.partnerAge.text = previewViewModel.age
+        self.partnerDistance.text = previewViewModel.distance
     }
     
     func fill(userImage: UIImage) {

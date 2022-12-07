@@ -45,20 +45,10 @@ final class DetailViewModel {
         self.downloadDetailInfoUseCase = downloadDetailInfoUseCase
     }
     
-    func setUser(userPreview: UserPreview) {
+    func setUser(detailPreviewViewModel: DetailPreviewViewModel) {
         Task { [weak self] in
-            guard let uid = userPreview.uid,
-                  let name = userPreview.name,
-                  let birth = userPreview.birth,
-                  let location = userPreview.location else { return }
-            
-            self?.detailPreviewViewModel = DetailPreviewViewModel(
-                uid: uid,
-                name: name,
-                age: String(birth.toAge()),
-                distance: "aaakm"
-            )
-        
+            let uid = detailPreviewViewModel.uid
+            self?.detailPreviewViewModel = detailPreviewViewModel
             let detailInfo = try await downloadDetailInfoUseCase.downloadDetailInfo(userUid: uid)
             
             guard let height = detailInfo.height,

@@ -12,7 +12,7 @@ import FirebaseAuth
 import CoreLocation
 
 struct HomeViewModelAction {
-    var showDetailVC: ((UserPreview) -> Void)?
+    var showDetailVC: ((DetailPreviewViewModel) -> Void)?
 }
 
 final class HomeViewModel {
@@ -26,7 +26,8 @@ final class HomeViewModel {
     let uploadLocationUseCase: UpLoadLocationUseCase
     let getDistanceUseCase: GetDistanceUseCase
         
-    @Published var recommendedMatePreviewList = [UserPreview]()
+    
+    @Published var matePreviewViewModelList = [HomePreviewViewModel]()
     
     @Published var currentLocation: Location? // 애는 첫 1회만 업댓시 바인딩해서 리프레시할거임, 그다음부턴 프로퍼티처럼 사용됨
     @Published var distance: Double
@@ -35,7 +36,7 @@ final class HomeViewModel {
     }
     
     struct Output {
-        var didRefreshedPreviewList: AnyPublisher<[UserPreview], Never>
+        var didRefreshedPreviewList: AnyPublisher<[HomePreviewViewModel], Never>
     }
     
     init(
@@ -95,7 +96,7 @@ final class HomeViewModel {
             .store(in: &cancellable)
 
         return Output(
-            didRefreshedPreviewList: $recommendedMatePreviewList.eraseToAnyPublisher()
+            didRefreshedPreviewList: $matePreviewViewModelList.eraseToAnyPublisher()
         )
     }
     
@@ -104,8 +105,24 @@ final class HomeViewModel {
             guard let currentLocation = self?.currentLocation,
                   let distance = self?.distance else { return }
             
-            self?.recommendedMatePreviewList = try await mateRecommendationUseCase
+            let previewList = try await mateRecommendationUseCase
                     .fetchDistanceFilteredRecommendedMate(from: currentLocation, distance: distance)
+            
+            self?.matePreviewViewModelList = previewList.map {
+                guard let uid = $0.uid,
+                      let imageKey = $0.imageKey,
+                      let name = $0.name,
+                      let birth = $0.birth,
+                      let location = $0.location else { return }
+                
+                return HomePreviewViewModel(
+                    uid: uid,
+                    imageKey: imageKey,
+                    name: name,
+                    age: String(birth.toAge()),
+                    distance: String(format: "%.2fkm", Location.distance(from: distance, to: location))
+                )
+            }
         }
     }
     
@@ -114,7 +131,16 @@ final class HomeViewModel {
     }
     
     func mateSelected(index: Int) {
-        actions?.showDetailVC?(recommendedMatePreviewList[index])
+        print("build success")
+
+        let selectedMatePreviewViewModel = matePreviewViewModelList[index]
+        let detailPreviewViewModel = DetailPreviewViewModel(
+            uid: selectedMatePreviewViewModel.uid,
+            name: selectedMatePreviewViewModel.name,
+            age: selectedMatePreviewViewModel.age,
+            distance: selectedMatePreviewViewModel.distance
+        )
+        actions?.showDetailVC?(detailPreviewViewModel)
     }
     
     func updateLocation(location: Location) {
