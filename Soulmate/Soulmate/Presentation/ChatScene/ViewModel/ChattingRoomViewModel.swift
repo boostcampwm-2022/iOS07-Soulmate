@@ -15,7 +15,7 @@ final class ChattingRoomViewModel {
     private let loadUnreadChattingsUseCase: LoadUnreadChattingsUseCase
     private let loadPrevChattingsUseCase: LoadPrevChattingsUseCase
     private let listenOthersChattingsUseCase: ListenOthersChattingUseCase
-//    private let listenOtherIsReadingUseCase: ListenOtherIsReadingUseCase
+    private let listenOtherIsReadingUseCase: ListenOtherIsReadingUseCase
     private let imageKeyUseCase: ImageKeyUseCase
     private let fetchImageUseCase: FetchImageUseCase
     
@@ -25,7 +25,7 @@ final class ChattingRoomViewModel {
         loadUnreadChattingsUseCase: LoadUnreadChattingsUseCase,
         loadPrevChattingsUseCase: LoadPrevChattingsUseCase,
         listenOthersChattingsUseCase: ListenOthersChattingUseCase,
-//        listenOtherIsReadingUseCase: ListenOtherIsReadingUseCase,
+        listenOtherIsReadingUseCase: ListenOtherIsReadingUseCase,
         imageKeyUseCase: ImageKeyUseCase,
         fetchImageUseCase: FetchImageUseCase
     ) {
@@ -34,7 +34,7 @@ final class ChattingRoomViewModel {
         self.loadUnreadChattingsUseCase = loadUnreadChattingsUseCase
         self.loadPrevChattingsUseCase = loadPrevChattingsUseCase
         self.listenOthersChattingsUseCase = listenOthersChattingsUseCase
-//        self.listenOtherIsReadingUseCase = listenOtherIsReadingUseCase
+        self.listenOtherIsReadingUseCase = listenOtherIsReadingUseCase
         self.imageKeyUseCase = imageKeyUseCase
         self.fetchImageUseCase = fetchImageUseCase
     }
@@ -76,6 +76,7 @@ final class ChattingRoomViewModel {
                     let unReadChats = await self.loadUnreadChattingsUseCase.loadUnreadChattings()
                     output.unreadChattingLoaded.send(unReadChats)
                     self.listenOthersChattingsUseCase.listenOthersChattings()
+                    self.listenOtherIsReadingUseCase.listenOtherIsReading()
                 }
             }
             .store(in: &cancellables)
@@ -83,7 +84,7 @@ final class ChattingRoomViewModel {
         input.viewWillDisappear
             .sink { [weak self] _ in
                 self?.listenOthersChattingsUseCase.removeListen()
-//                self?.listenOtherIsReadingUseCase.removeListen()
+                self?.listenOtherIsReadingUseCase.removeListen()
             }
             .store(in: &cancellables)
         
@@ -117,16 +118,7 @@ final class ChattingRoomViewModel {
                 output.sendButtonEnabled.send(isEnabled)
             }
             .store(in: &cancellables)
-        
-//        self.loadUnreadChattingsUseCase.unreadChattings
-//            .sink { [weak self] chats in
-//
-//                output.unreadChattingLoaded.send(chats)
-//                self?.listenOthersChattingsUseCase.listenOthersChattings()
-//                self?.listenOtherIsReadingUseCase.listenOtherIsReading()
-//            }
-//            .store(in: &cancellables)
-        
+
         self.sendMessageUseCase.myMessage
             .sink { chat in                
                 output.newMessageArrived.send([chat])
@@ -145,12 +137,12 @@ final class ChattingRoomViewModel {
                 output.newMessageArrived.send(chats)
             }
             .store(in: &cancellables)
-//
-//        self.listenOtherIsReadingUseCase.otherRead
-//            .sink { otherId in
-//                output.otherRead.send(otherId)
-//            }
-//            .store(in: &cancellables)
+
+        self.listenOtherIsReadingUseCase.otherRead
+            .sink { otherId in
+                output.otherRead.send(otherId)
+            }
+            .store(in: &cancellables)
 
         return output
     }

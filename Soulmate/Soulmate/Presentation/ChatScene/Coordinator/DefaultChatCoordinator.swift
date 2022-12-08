@@ -78,7 +78,11 @@ class DefaultChatCoordinator: ChatCoordinator {
             chattingRepository: chattingRepository,
             authRepository: authRepository
         )
-//        let listenOtherIsReadingUseCase = DefaultListenOtherIsReadingUseCase(with: info)
+        let listenOtherIsReadingUseCase = DefaultListenOtherIsReadingUseCase(
+            with: info,
+            chattingRepository: chattingRepository,
+            authRepository: authRepository
+        )
         let imageKeyUseCase = DefaultImageKeyUseCase()
         let fetchImageUseCase = DefaultFetchImageUseCase(
             profilePhotoRepository: profilePhotoRepository,
@@ -91,7 +95,7 @@ class DefaultChatCoordinator: ChatCoordinator {
             loadUnreadChattingsUseCase: loadUnreadChattingsUseCase,
             loadPrevChattingsUseCase: loadPrevChattingsUseCase,
             listenOthersChattingsUseCase: listenOthersChattingsUseCase,
-//            listenOtherIsReadingUseCase: listenOtherIsReadingUseCase,
+            listenOtherIsReadingUseCase: listenOtherIsReadingUseCase,
             imageKeyUseCase: imageKeyUseCase,
             fetchImageUseCase: fetchImageUseCase
         )

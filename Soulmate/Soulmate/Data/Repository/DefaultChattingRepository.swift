@@ -124,7 +124,7 @@ final class DefaultChattingRepository: ChattingRepository {
             var arrReadUsers = readUsers.map { $0 }
             
             docRef.updateData(["readUsers": arrReadUsers])        
-        }
+        }            
     }
     
     func updateLastRead(of chatRoomId: String) async {
@@ -198,6 +198,17 @@ final class DefaultChattingRepository: ChattingRepository {
         if let lastDocument {
             constraints.append(QueryEntity(field: "", value: lastDocument, comparator: .startAfterDocument))
         }
+        
+        let query = networkDatabaseApi.query(path: path, constraints: constraints)
+        
+        return query
+    }
+    
+    func listenOtherIsReading(from chatRoomId: String, userId: String) -> Query {
+        let path = "ChatRooms/\(chatRoomId)/LastRead"
+        var constraints = [
+            QueryEntity(field: "userId", value: userId, comparator: .isEqualTo)
+        ]
         
         let query = networkDatabaseApi.query(path: path, constraints: constraints)
         

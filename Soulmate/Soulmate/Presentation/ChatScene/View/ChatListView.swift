@@ -49,6 +49,12 @@ final class ChatListView: UICollectionView {
         self.reloadData()
     }
     
+    func update(notContaining othersId: String) {
+        chatDataSource.update(notContaining: othersId)
+        
+        self.reloadData()
+    }
+    
     func insertPrevChats() -> CGFloat {        
         
         return chatDataSource.insertBuffer()

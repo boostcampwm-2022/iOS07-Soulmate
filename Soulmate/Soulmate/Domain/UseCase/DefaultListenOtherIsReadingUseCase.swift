@@ -11,14 +11,22 @@ import FirebaseFirestore
 import FirebaseFirestoreSwift
 
 final class DefaultListenOtherIsReadingUseCase: ListenOtherIsReadingUseCase {
+    
     private let info: ChatRoomInfo
-    private let uid = Auth.auth().currentUser?.uid
-    private var listenerRegistration: ListenerRegistration?
+    private let chattingRepository: ChattingRepository
+    private let authRepository: AuthRepository
+    private var listenerRegistration: ListenerRegistration?    
+    
     var otherRead = PassthroughSubject<String, Never>()
     
-    init(with info: ChatRoomInfo) {
+    init(
+        with info: ChatRoomInfo,
+        chattingRepository: ChattingRepository,
+        authRepository: AuthRepository) {
         
-        self.info = info
+            self.info = info
+            self.chattingRepository = chattingRepository
+            self.authRepository = authRepository
     }
     
     func removeListen() {
@@ -27,16 +35,15 @@ final class DefaultListenOtherIsReadingUseCase: ListenOtherIsReadingUseCase {
     }
     
     func listenOtherIsReading() {
-        let db = Firestore.firestore()
         
-        guard let chatRoomId = info.documentId, let uid else { return }
-        guard let userId = info.userIds.first(where: { $0 != uid }) else { return }
+        guard let chatRoomId = info.documentId,
+              let uid = try? authRepository.currentUid(),
+              let userId = info.userIds.first(where: { $0 != uid }) else { return }
         
-        let query = db
-            .collection("ChatRooms")
-            .document(chatRoomId)
-            .collection("LastRead")
-            .whereField("userId", isEqualTo: userId)
+        let query = chattingRepository.listenOtherIsReading(
+            from: chatRoomId,
+            userId: userId
+        )
         
         listenerRegistration = query.addSnapshotListener { [weak self] snapshot, err in
             guard let snapshot, err == nil else { return }

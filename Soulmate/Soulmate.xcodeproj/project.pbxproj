@@ -90,8 +90,6 @@
 		6A34C240292FAE8100A3E57F /* PageNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A34C23F292FAE8100A3E57F /* PageNavigationView.swift */; };
 		6A34C2422931096E00A3E57F /* KeyboardMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A34C2412931096E00A3E57F /* KeyboardMonitor.swift */; };
 		6A34C26B2934691900A3E57F /* DefaultLoadPrevChattingsUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A34C26A2934691800A3E57F /* DefaultLoadPrevChattingsUseCase.swift */; };
-		6A34C26D29346A3000A3E57F /* DefaultLoadChattingsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A34C26C29346A3000A3E57F /* DefaultLoadChattingsRepository.swift */; };
-		6A34C26F29346A4800A3E57F /* LoadChattingsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A34C26E29346A4800A3E57F /* LoadChattingsRepository.swift */; };
 		6A34C27129346F2700A3E57F /* LoadPrevChattingsUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A34C27029346F2700A3E57F /* LoadPrevChattingsUseCase.swift */; };
 		6A34C2732934952800A3E57F /* DefaultListenOthersChattingUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A34C2722934952800A3E57F /* DefaultListenOthersChattingUseCase.swift */; };
 		6A34C27529349B7A00A3E57F /* ListenOthersChattingUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A34C27429349B7A00A3E57F /* ListenOthersChattingUseCase.swift */; };
@@ -305,8 +303,6 @@
 		6A34C23F292FAE8100A3E57F /* PageNavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageNavigationView.swift; sourceTree = "<group>"; };
 		6A34C2412931096E00A3E57F /* KeyboardMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardMonitor.swift; sourceTree = "<group>"; };
 		6A34C26A2934691800A3E57F /* DefaultLoadPrevChattingsUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultLoadPrevChattingsUseCase.swift; sourceTree = "<group>"; };
-		6A34C26C29346A3000A3E57F /* DefaultLoadChattingsRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultLoadChattingsRepository.swift; sourceTree = "<group>"; };
-		6A34C26E29346A4800A3E57F /* LoadChattingsRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadChattingsRepository.swift; sourceTree = "<group>"; };
 		6A34C27029346F2700A3E57F /* LoadPrevChattingsUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadPrevChattingsUseCase.swift; sourceTree = "<group>"; };
 		6A34C2722934952800A3E57F /* DefaultListenOthersChattingUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultListenOthersChattingUseCase.swift; sourceTree = "<group>"; };
 		6A34C27429349B7A00A3E57F /* ListenOthersChattingUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListenOthersChattingUseCase.swift; sourceTree = "<group>"; };
@@ -946,7 +942,6 @@
 				6AB6B9B6292D807B00A029BD /* DefaultUserDefaultsRepository.swift */,
 				6AB6B9D1292EC24100A029BD /* DefaultUserPreviewRepository.swift */,
 				6A9452C829349CE90041B71D /* DefaultImageCacheRepository.swift */,
-				6A34C26C29346A3000A3E57F /* DefaultLoadChattingsRepository.swift */,
 				6A25C63F293E671400CDC1BC /* DefaultAuthRepository.swift */,
 				6A5ED915293EEE5600A284F7 /* DefaultChattingRepository.swift */,
 			);
@@ -979,7 +974,6 @@
 				6AB6B9B8292D814E00A029BD /* UserDefaultsRepository.swift */,
 				6AB6B9CF292EC1E700A029BD /* UserPreviewRepository.swift */,
 				6A9452CA29349EB40041B71D /* ImageCacheRepository.swift */,
-				6A34C26E29346A4800A3E57F /* LoadChattingsRepository.swift */,
 				6A25C63D293E667E00CDC1BC /* AuthRepository.swift */,
 				6A5ED917293EEE6000A284F7 /* ChattingRepository.swift */,
 			);
@@ -1217,7 +1211,6 @@
 			files = (
 				6A9453012938FAF80041B71D /* DefaultAuthUseCase.swift in Sources */,
 				6A34C1F7292B501500A3E57F /* DefaultLoadChattingsUseCase.swift in Sources */,
-				6A34C26F29346A4800A3E57F /* LoadChattingsRepository.swift in Sources */,
 				6A34C28529373E7B00A3E57F /* DefaultListenOtherIsReadingUseCase.swift in Sources */,
 				6A34C27B2935E5C200A3E57F /* DefaultFetchImageUseCase.swift in Sources */,
 				6A34C1DB292B216A00A3E57F /* OtherChatCell.swift in Sources */,
@@ -1408,7 +1401,6 @@
 				6A9452CB29349EB40041B71D /* ImageCacheRepository.swift in Sources */,
 				07DDDF272924A7C600CB398C /* RegisterBirthView.swift in Sources */,
 				6AB6B95D292BDE7A00A029BD /* NetworkDatabaseApi.swift in Sources */,
-				6A34C26D29346A3000A3E57F /* DefaultLoadChattingsRepository.swift in Sources */,
 				6A34C27F29364AFA00A3E57F /* DefaultLoadUnreadChattingsUseCase.swift in Sources */,
 				6A34C211292DD38000A3E57F /* DefaultChatCoordinator.swift in Sources */,
 				07B61AC2292B6C510009BC8A /* DetailViewModel.swift in Sources */,

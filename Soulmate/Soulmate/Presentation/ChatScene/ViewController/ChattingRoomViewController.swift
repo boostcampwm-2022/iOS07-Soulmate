@@ -248,18 +248,8 @@ private extension ChattingRoomViewController {
             .store(in: &cancellabels)
         
         output.otherRead            
-            .sink { [weak self] otherId in
-//                guard var items = self?.dataSource?.snapshot().itemIdentifiers else { return }
-//
-//                for i in (0..<items.count).reversed() {
-//
-//                    if items[i].readUsers.contains(otherId) { break }
-//                    var chat = items[i]
-//                    chat.readUsers.append(otherId)
-//                    items[i] = chat
-//                }
-//
-//                self?.loadData(items)
+            .sink { [weak self] othersId in
+                self?.chatListView.update(notContaining: othersId)
             }
             .store(in: &cancellabels)
     }
