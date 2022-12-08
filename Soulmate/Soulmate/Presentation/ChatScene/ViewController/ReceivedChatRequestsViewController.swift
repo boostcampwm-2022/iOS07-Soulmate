@@ -95,6 +95,14 @@ extension ReceivedChatRequestsViewController: UITableViewDelegate, UITableViewDa
         }
         
         cell.configure(with: request)
+        print(request.mateProfileImage)
+        Task {
+            guard let imageData = await self.viewModel?.fetchProfileImage(key: request.mateProfileImage),
+                  let uiImage = UIImage(data: imageData) else { return }
+            if tableView.cellForRow(at: indexPath) != nil {
+                await MainActor.run { cell.configure(image: uiImage) }
+            }
+        }
         
         return cell
     }

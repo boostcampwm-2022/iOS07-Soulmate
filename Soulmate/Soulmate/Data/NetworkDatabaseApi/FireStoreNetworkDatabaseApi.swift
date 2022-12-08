@@ -18,10 +18,9 @@ class FireStoreNetworkDatabaseApi: NetworkDatabaseApi {
         let encoder = Firestore.Encoder()
         let fetchData = try encoder.encode(data)
         try await collection.document(documentID).setData(fetchData)
-        
     }
-    
-    func create(path: String, data: [String: Any]) async throws -> Bool {
+        
+    func create(path: String, data: [String: Any]) async -> Bool {
         if let _ = try? await db.collection(path).addDocument(data: data) {
             return true
         }
