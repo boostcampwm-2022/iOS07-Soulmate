@@ -20,78 +20,97 @@ disabled_rules:
  - multiline_parameters
  - multiline_parameters_brackets
  - multiline_arguments
+ - vertical_whitespace
+ - unused_optional_binding
+ - unused_closure_parameter
+ - comment_spacing
+ - return_arrow_whitespace
+ - function_body_length
+ - statement_position
+ - opening_brace
+ - comma
+ - trailing_newline
+ - file_length
+ - redundant_optional_initialization
+ - control_statement
+ - void_function_in_ternary
+ - nesting
+ - colon
+ - cyclomatic_complexity
+ - closure_parameter_position
+ - void_return
 opt_in_rules:
- - array_init
- - attributes
- - closure_end_indentation
- - closure_spacing
- - collection_alignment
- - colon # promote to error
- - convenience_type
- - discouraged_object_literal
- - empty_collection_literal
- - empty_count
- - empty_string
- - enum_case_associated_values_count
- - fatal_error_message
- - first_where
+# - array_init
+# - attributes
+# - closure_end_indentation
+# - closure_spacing
+# - collection_alignment
+# - colon # promote to error
+# - convenience_type
+# - discouraged_object_literal
+# - empty_collection_literal
+# - empty_count
+# - empty_string
+# - enum_case_associated_values_count
+# - fatal_error_message
+# - first_where
  - force_unwrapping
- - implicitly_unwrapped_optional
- - indentation_width
- - last_where
- - legacy_random
- - literal_expression_end_indentation
- - multiline_function_chains
- - operator_usage_whitespace
- - overridden_super_call
- - pattern_matching_keywords
- - prefer_self_type_over_type_of_self
- - redundant_nil_coalescing
- - redundant_type_annotation
- - strict_fileprivate
- - toggle_bool
- - trailing_closure
- - unneeded_parentheses_in_closure_argument
- - unused_import
- - yoda_condition
-custom_rules:
- array_constructor:
-  name: “Array/Dictionary initializer”
-  regex: ‘[let,var] .+ = (\[.+\]\(\))’
-  capture_group: 1
-  message: “Use explicit type annotation when initializing empty arrays and dictionaries”
-  severity: warning
-attributes:
- always_on_same_line:
-  - “@IBSegueAction”
-  - “@IBAction”
-  - “@NSManaged”
-  - “@objc”
+# - implicitly_unwrapped_optional
+# - indentation_width
+# - last_where
+# - legacy_random
+# - literal_expression_end_indentation
+# - multiline_function_chains
+# - operator_usage_whitespace
+# - overridden_super_call
+# - pattern_matching_keywords
+# - prefer_self_type_over_type_of_self
+# - redundant_nil_coalescing
+# - redundant_type_annotation
+# - strict_fileprivate
+# - toggle_bool
+# - trailing_closure
+# - unneeded_parentheses_in_closure_argument
+# - unused_import
+# - yoda_condition
+#custom_rules:
+# array_constructor:
+#  name: “Array/Dictionary initializer”
+#  regex: ‘[let,var] .+ = (\[.+\]\(\))’
+#  capture_group: 1
+#  message: “Use explicit type annotation when initializing empty arrays and dictionaries”
+#  severity: warning
+#attributes:
+# always_on_same_line:
+#  - “@IBSegueAction”
+#  - “@IBAction”
+#  - “@NSManaged”
+#  - “@objc”
 force_cast: warning
 force_try: warning
-function_body_length:
-  warning: 60
-legacy_hashing: error
-identifier_name:
- excluded:
-  - i
-  - id
-  - x
-  - y
-  - z
-indentation_width:
- indentation_width: 4
-line_length:
- ignores_urls: true
- ignores_function_declarations: true
- ignores_comments: true
-multiline_arguments:
- first_argument_location: next_line
- only_enforce_after_first_closure_on_first_line: true
-private_over_fileprivate:
- validate_extensions: true
+#function_body_length:
+#  warning: 60
+#legacy_hashing: error
+#identifier_name:
+# excluded:
+#  - i
+#  - id
+#  - x
+#  - y
+#  - z
+#indentation_width:
+# indentation_width: 4
+#line_length:
+# ignores_urls: true
+# ignores_function_declarations: true
+# ignores_comments: true
+#multiline_arguments:
+# first_argument_location: next_line
+# only_enforce_after_first_closure_on_first_line: true
+#private_over_fileprivate:
+# validate_extensions: true
 #trailing_whitespace:
 # ignores_empty_lines: true
 # ignores_comments: true
-vertical_whitespace:
- max_empty_lines: 3
+#vertical_whitespace:
+# max_empty_lines: 3

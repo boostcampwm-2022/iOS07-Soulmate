@@ -132,22 +132,22 @@ final class HomeViewController: UIViewController {
         let footerViewRegistration = UICollectionView.SupplementaryRegistration
         <RecommendFooterView>(elementKind: RecommendFooterView.footerKind) { [weak self] supplementaryView, string, indexPath in
             supplementaryView.configureButtonHandler {
-                self?.refreshButtonTapSubject.send(())
+                self?.showPopUp(title: "다시한번 추천받기", message: "하트❤️ 10개가 소비되어요~", rightActionCompletion: {
+                    self?.refreshButtonTapSubject.send(())
+                })
             }
         }
         
         // MARK: DataSource Configuration
         
-        self.dataSource = UICollectionViewDiffableDataSource<SectionKind, ItemKind>(collectionView: self.collectionView) { [weak self] (collectionView, indexPath, item) -> UICollectionViewCell? in
+        self.dataSource = UICollectionViewDiffableDataSource<SectionKind, ItemKind>(collectionView: self.collectionView) { (collectionView, indexPath, item) -> UICollectionViewCell? in
             switch item {
             case .main(let previewViewModel):
                 return collectionView.dequeueConfiguredReusableCell(using: previewCellRegistration, for: indexPath, item: previewViewModel)
-            default:
-                fatalError("no item kind error")
             }
         }
         
-        self.dataSource?.supplementaryViewProvider = { [weak self] (collectionView, kind, indexPath) in
+        self.dataSource?.supplementaryViewProvider = { (collectionView, kind, indexPath) in
             return collectionView.dequeueConfiguredReusableSupplementary(using: footerViewRegistration, for: indexPath)
         }
 
@@ -168,10 +168,10 @@ final class HomeViewController: UIViewController {
     private func mainSectionLayout() -> NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        item.contentInsets = .init(top: 0, leading: 5, bottom: 0, trailing: 5)
+        item.contentInsets = .init(top: 0, leading: 0, bottom: 0, trailing: 0)
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalWidth(1))
         let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
-        group.contentInsets = .init(top: 10, leading: 0, bottom: 10, trailing: 0)
+        group.contentInsets = .init(top: 5, leading: 5, bottom: 5, trailing: 5)
         
         let section = NSCollectionLayoutSection(group: group)
         section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 20, trailing: 0)
@@ -181,15 +181,12 @@ final class HomeViewController: UIViewController {
             elementKind: RecommendFooterView.footerKind,
             alignment: .bottom
         )
+        footer.contentInsets = .init(top: 0, leading: 5, bottom: 0, trailing: 5)
         section.boundarySupplementaryItems = [footer]
 
         return section
     }
-    
-    
 }
-
-
 
 // MARK: - View Generators
 
