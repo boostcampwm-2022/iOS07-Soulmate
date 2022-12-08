@@ -15,7 +15,6 @@ final class DefaultChattingRepository: ChattingRepository {
     
     var startDocument: QueryDocumentSnapshot?
     var lastDocument: QueryDocumentSnapshot?
-    
     var newMessages = PassthroughSubject<[Chat], Never>()
     
     init(authRepository: AuthRepository, networkDatabaseApi: NetworkDatabaseApi) {
@@ -27,7 +26,7 @@ final class DefaultChattingRepository: ChattingRepository {
         self.startDocument = doc
     }
     
-    func setLastDocument(_ doc: QueryDocumentSnapshot?) {
+    func setLastDocument(_ doc: QueryDocumentSnapshot?) {        
         self.lastDocument = doc
     }
     
