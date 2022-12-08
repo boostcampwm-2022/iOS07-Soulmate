@@ -216,6 +216,9 @@
 		B31A682A291A4257001D35E9 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = B31A6829291A4257001D35E9 /* Then */; };
 		B31A682D291A42BC001D35E9 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = B31A682C291A42BC001D35E9 /* SnapKit */; };
 		B331CED0292B854500F17AED /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B331CECF292B854500F17AED /* UIImage.swift */; };
+		B34124562942208800580F45 /* UserHeartInfoDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = B34124552942208800580F45 /* UserHeartInfoDTO.swift */; };
+		B3412458294220B500580F45 /* UserHeartInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3412457294220B500580F45 /* UserHeartInfo.swift */; };
+		B341245A294220D100580F45 /* DefaultUserHeartInfoRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3412459294220D100580F45 /* DefaultUserHeartInfoRepository.swift */; };
 		B3B03B48292CB877000AF283 /* MyPageMenuCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B03B47292CB877000AF283 /* MyPageMenuCollectionViewCell.swift */; };
 		B3B03B4A292DECFF000AF283 /* MyPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B03B49292DECFF000AF283 /* MyPageViewModel.swift */; };
 		B3E029A9291DDC1500931FA2 /* GradientButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3E029A8291DDC1500931FA2 /* GradientButton.swift */; };
@@ -426,6 +429,9 @@
 		B311F4A92925EC7100806E86 /* RegisterMbtiView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterMbtiView.swift; sourceTree = "<group>"; };
 		B31A68262919F5D2001D35E9 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		B331CECF292B854500F17AED /* UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
+		B34124552942208800580F45 /* UserHeartInfoDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserHeartInfoDTO.swift; sourceTree = "<group>"; };
+		B3412457294220B500580F45 /* UserHeartInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserHeartInfo.swift; sourceTree = "<group>"; };
+		B3412459294220D100580F45 /* DefaultUserHeartInfoRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultUserHeartInfoRepository.swift; sourceTree = "<group>"; };
 		B3B03B47292CB877000AF283 /* MyPageMenuCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageMenuCollectionViewCell.swift; sourceTree = "<group>"; };
 		B3B03B49292DECFF000AF283 /* MyPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MyPageViewModel.swift; path = Soulmate/Presentation/MyPageScene/ViewController/MyPageViewModel.swift; sourceTree = SOURCE_ROOT; };
 		B3E029A8291DDC1500931FA2 /* GradientButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientButton.swift; sourceTree = "<group>"; };
@@ -728,6 +734,7 @@
 				6AB6B9DD292F259500A029BD /* UserPreview.swift */,
 				6AB6B9E5292F3D9C00A029BD /* Location.swift */,
 				6A34C23D292F415700A3E57F /* ReceivedRequest.swift */,
+				B3412457294220B500580F45 /* UserHeartInfo.swift */,
 			);
 			path = Entity;
 			sourceTree = "<group>";
@@ -949,6 +956,7 @@
 				6A34C26C29346A3000A3E57F /* DefaultLoadChattingsRepository.swift */,
 				6A25C63F293E671400CDC1BC /* DefaultAuthRepository.swift */,
 				6A5ED915293EEE5600A284F7 /* DefaultChattingRepository.swift */,
+				B3412459294220D100580F45 /* DefaultUserHeartInfoRepository.swift */,
 			);
 			path = Repository;
 			sourceTree = "<group>";
@@ -995,6 +1003,7 @@
 				6A34C21E292E559B00A3E57F /* MessageInfoDTO.swift */,
 				6A34C222292E654F00A3E57F /* MessageToSendDTO.swift */,
 				6A34C23B292F40B000A3E57F /* ReceivedRequestDTO.swift */,
+				B34124552942208800580F45 /* UserHeartInfoDTO.swift */,
 			);
 			path = DataTransferObject;
 			sourceTree = "<group>";
@@ -1340,8 +1349,10 @@
 				07EE0F18292C893D00E761C4 /* PhotoFooterView.swift in Sources */,
 				6A945306293DDF030041B71D /* DIContainer.swift in Sources */,
 				6A34C232292F29EA00A3E57F /* ReceivedChatRequestView.swift in Sources */,
+				B3412458294220B500580F45 /* UserHeartInfo.swift in Sources */,
 				6AB6B9BD292D82F800A029BD /* SignOutUseCase.swift in Sources */,
 				6A3F91A72924A45300F1D901 /* RegisterSelectableView.swift in Sources */,
+				B341245A294220D100580F45 /* DefaultUserHeartInfoRepository.swift in Sources */,
 				6A34C27129346F2700A3E57F /* LoadPrevChattingsUseCase.swift in Sources */,
 				6A34C238292F392100A3E57F /* LoadReceivedChatRequestsUseCase.swift in Sources */,
 				6A34C1FF292C944D00A3E57F /* ChatRoomInfoCell.swift in Sources */,
@@ -1410,6 +1421,7 @@
 				6AB6B95D292BDE7A00A029BD /* NetworkDatabaseApi.swift in Sources */,
 				6A34C26D29346A3000A3E57F /* DefaultLoadChattingsRepository.swift in Sources */,
 				6A34C27F29364AFA00A3E57F /* DefaultLoadUnreadChattingsUseCase.swift in Sources */,
+				B34124562942208800580F45 /* UserHeartInfoDTO.swift in Sources */,
 				6A34C211292DD38000A3E57F /* DefaultChatCoordinator.swift in Sources */,
 				07B61AC2292B6C510009BC8A /* DetailViewModel.swift in Sources */,
 				6A0041D72919E68D0042E02F /* MainTabCoordinator.swift in Sources */,
