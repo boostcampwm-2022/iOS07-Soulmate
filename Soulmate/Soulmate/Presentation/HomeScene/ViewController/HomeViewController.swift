@@ -168,10 +168,10 @@ final class HomeViewController: UIViewController {
     private func mainSectionLayout() -> NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        item.contentInsets = .init(top: 0, leading: 5, bottom: 0, trailing: 5)
+        item.contentInsets = .init(top: 0, leading: 0, bottom: 0, trailing: 0)
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalWidth(1))
         let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
-        group.contentInsets = .init(top: 10, leading: 0, bottom: 10, trailing: 0)
+        group.contentInsets = .init(top: 5, leading: 5, bottom: 5, trailing: 5)
         
         let section = NSCollectionLayoutSection(group: group)
         section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 20, trailing: 0)
@@ -181,6 +181,7 @@ final class HomeViewController: UIViewController {
             elementKind: RecommendFooterView.footerKind,
             alignment: .bottom
         )
+        footer.contentInsets = .init(top: 0, leading: 5, bottom: 0, trailing: 5)
         section.boundarySupplementaryItems = [footer]
 
         return section
