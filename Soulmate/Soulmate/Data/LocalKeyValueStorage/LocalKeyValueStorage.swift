@@ -6,9 +6,11 @@
 //
 
 import Foundation
+import Combine
 
 protocol LocalKeyValueStorage {
     func set(key: String, value: Any?)
     func get<T>(key: String) -> T?
     func remove(key: String)
+    func valuePublisher<Value>(path: KeyPath<UserDefaults, Value>) -> AnyPublisher<Value, Never>
 }

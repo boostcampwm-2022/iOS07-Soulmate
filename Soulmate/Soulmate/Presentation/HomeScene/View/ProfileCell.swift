@@ -110,18 +110,9 @@ final class ProfileCell: UICollectionViewCell {
         }
     }
     
-    func configure(userPreview: UserPreview) {
-        partnerName.text = userPreview.name
-        if let location = userPreview.location {
-            let from = CLLocation(latitude: UserDefaults.standard.double(forKey: "latestLatitude"), longitude: UserDefaults.standard.double(forKey: "latestLongitude"))
-            
-            let to = CLLocation(latitude: location.latitude, longitude: location.longitude)
-            partnerDistance.text = String(format: "%.2fkm", to.distance(from: from) * 0.001)
-
-        }
-        
-        if let birth = userPreview.birth {
-            partnerAge.text = String(birth.toAge())
-        }
+    func fill(previewViewModel: DetailPreviewViewModel) {
+        partnerName.text = previewViewModel.name
+        partnerDistance.text = previewViewModel.distance
+        partnerAge.text = previewViewModel.age
     }
 }

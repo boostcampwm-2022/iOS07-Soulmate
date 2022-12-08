@@ -13,13 +13,15 @@ struct ModificationViewModelActions {
     var didFinishModification: (() -> Void)?
 }
 
-class ModificationViewModel {
+class ModificationViewModel: ViewModelable {
+    
+    typealias Action = ModificationViewModelActions
     
     var cancelables = Set<AnyCancellable>()
     
     var completionHandler: (() -> Void)?
     
-    var actions: ModificationViewModelActions?
+    var actions: Action?
     
     @Published var userDetailInfo: RegisterUserInfo?
     @Published var userDetailImageData: [Data?] = [nil, nil, nil, nil, nil]
@@ -60,7 +62,7 @@ class ModificationViewModel {
         loadInfo()
     }
     
-    func setActions(actions: ModificationViewModelActions) {
+    func setActions(actions: Action) {
         self.actions = actions
     }
     

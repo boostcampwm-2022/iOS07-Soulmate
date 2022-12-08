@@ -12,11 +12,13 @@ import Combine
 struct MyPageViewModelActions {
     var showMyInfoEditFlow: ((@escaping () -> Void) -> Void)?
     var showServiceTermFlow: (() -> Void)?
-    var showHeartShopFlow: (() -> Void)?
+    var showHeartShopFlow: ((@escaping () -> Void) -> Void)?
     var showDistanceFlow: (() -> Void)?
 }
 
-class MyPageViewModel {
+class MyPageViewModel: ViewModelable {
+    
+    typealias Action = MyPageViewModelActions
     
     let downLoadMyPreviewUseCase: DownLoadMyPreviewUseCase
     let downLoadPictureUseCase: DownLoadPictureUseCase
@@ -25,7 +27,7 @@ class MyPageViewModel {
     let titles = ["하트샵 가기", "개인정보 처리방침", "거리 설정하기", "버전정보"]
     let subTexts = ["", "", "", "v 3.2.20"]
     
-    var actions: MyPageViewModelActions?
+    var actions: Action?
     var cancellables = Set<AnyCancellable>()
     
     @Published var userProfileImage: Data?
@@ -53,7 +55,7 @@ class MyPageViewModel {
         loadInfo()
     }
     
-    func setActions(actions: MyPageViewModelActions) {
+    func setActions(actions: Action) {
         self.actions = actions
     }
     
@@ -61,7 +63,9 @@ class MyPageViewModel {
         
         input.didTappedHeartShopButton
             .sink { [weak self] in
-                self?.actions?.showHeartShopFlow?()
+                self?.actions?.showHeartShopFlow? { [weak self] in
+                    self?.loadInfo()
+                }
             }
             .store(in: &cancellables)
         
@@ -77,7 +81,9 @@ class MyPageViewModel {
             .sink { [weak self] in
                 switch $0 {
                 case 0:
-                    self?.actions?.showHeartShopFlow?()
+                    self?.actions?.showHeartShopFlow? {
+                        print("ss")
+                    }
                 case 1:
                     self?.actions?.showServiceTermFlow?()
                 case 2:
@@ -96,6 +102,7 @@ class MyPageViewModel {
     }
     
     func loadInfo() {
+        print("dd")
         Task { [weak self] in
             let preview = try await downLoadMyPreviewUseCase.downloadPreview()
             self?.userProfileInfo = preview

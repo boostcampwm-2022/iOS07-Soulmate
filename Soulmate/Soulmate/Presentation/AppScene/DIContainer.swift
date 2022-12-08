@@ -69,6 +69,10 @@ final class DIContainer {
         registerUpLoadLocationUseCase()
         
         registerMateRecommendationUseCase()
+        
+        registerSetDistanceUseCase()
+        
+        registerGetDistanceUseCase()
     }
     
     func registerViewModel() {
@@ -88,6 +92,8 @@ final class DIContainer {
         registerMyPageViewModel()
         
         registerModificationViewModel()
+        
+        registerDistanceViewModel()
     }
     
     
@@ -285,6 +291,20 @@ extension DIContainer {
         }
         .inObjectScope(.container)
     }
+    
+    func registerSetDistanceUseCase() {
+        container.register(SetDistanceUseCase.self) { r in
+            return DefaultSetDistanceUseCase(userDefaultRepository: r.resolve(UserDefaultsRepository.self)!)
+        }
+        .inObjectScope(.container)
+    }
+    
+    func registerGetDistanceUseCase() {
+        container.register(GetDistanceUseCase.self) { r in
+            return DefaultGetDistanceUseCase(userDefaultRepository: r.resolve(UserDefaultsRepository.self)!)
+        }
+        .inObjectScope(.container)
+    }
 }
 
 extension DIContainer {
@@ -335,7 +355,9 @@ extension DIContainer {
         container.register(HomeViewModel.self) { r in
             return HomeViewModel(
                 mateRecommendationUseCase: r.resolve(MateRecommendationUseCase.self)!,
-                downloadPictureUseCase: r.resolve(DownLoadPictureUseCase.self)!
+                downloadPictureUseCase: r.resolve(DownLoadPictureUseCase.self)!,
+                uploadLocationUseCase: r.resolve(UpLoadLocationUseCase.self)!,
+                getDistanceUseCase: r.resolve(GetDistanceUseCase.self)!
             )
         }
         .inObjectScope(.graph)
@@ -369,6 +391,16 @@ extension DIContainer {
                 uploadMyDetailInfoUseCase: r.resolve(UploadMyDetailInfoUseCase.self)!,
                 uploadPictureUseCase: r.resolve(UploadPictureUseCase.self)!,
                 uploadMyPreviewUseCase: r.resolve(UploadMyPreviewUseCase.self)!
+            )
+        }
+        .inObjectScope(.graph)
+    }
+    
+    func registerDistanceViewModel() {
+        container.register(DistanceViewModel.self) { r in
+            return DistanceViewModel(
+                setDistanceUseCase: r.resolve(SetDistanceUseCase.self)!,
+                getDistanceUseCase: r.resolve(GetDistanceUseCase.self)!
             )
         }
         .inObjectScope(.graph)

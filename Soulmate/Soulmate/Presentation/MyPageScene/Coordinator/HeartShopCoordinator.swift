@@ -22,24 +22,34 @@ class HeartShopCoordinator: Coordinator {
     deinit {
         print("heartshop deinited")
         // TODO: 마이페이지로 돌아왔을때 보유하트 로드해야함..
-        navigationController.topViewController?.reloadInputViews()
     }
     
-    func start() {
-        let userPreviewRepo = DefaultUserPreviewRepository(networkDatabaseApi: FireStoreNetworkDatabaseApi())
-        let heartShopUseCase = DefaultHeartShopUseCase(userPreviewRepository: userPreviewRepo)
-        let vm = HeartShopViewModel(heartShopUseCase: heartShopUseCase)
-        vm.setActions(actions: HeartShopViewModelActions(quitHeartShop: quitHeartShop))
+    func start(completionHandler: @escaping () -> Void) {
+        let repo = DefaultUserPreviewRepository(networkDatabaseApi: FireStoreNetworkDatabaseApi())
+        let usecase = DefaultHeartShopUseCase(userPreviewRepository: repo)
+        let vm = HeartShopViewModel(heartShopUseCase: usecase)
+        vm.setActions(
+            actions: HeartShopViewModelActions(
+                quitHeartShop: quitHeartShop,
+                chargeFinished: chargeFinished
+            )
+        )
+        vm.completionHandler = completionHandler
         let vc = HeartShopViewController(viewModel: vm)
         let nav = UINavigationController(rootViewController: vc)
         nav.modalPresentationStyle = .pageSheet
         if let sheet = nav.sheetPresentationController {
-            sheet.detents = [.medium()]
+        sheet.detents = [.medium()]
         }
         navigationController.topViewController?.present(nav, animated: true)
     }
     
     lazy var quitHeartShop: () -> Void = { [weak self] in
+        self?.finish()
+    }
+    
+    lazy var chargeFinished: () -> Void = { [weak self] in
+        self?.navigationController.dismiss(animated: true)
         self?.finish()
     }
 }

@@ -26,7 +26,7 @@ class DefaultUserPreviewRepository: UserPreviewRepository {
         distance: Double
     ) async throws -> [UserPreview] {
         
-        let fromPoint = CLLocation(latitude: userLocation.latitude, longitude: userLocation.longitude)
+        let fromPoint = Location(latitude: userLocation.latitude, longitude: userLocation.longitude)
 
         return try await networkDatabaseApi.read(
             table: collectionTitle,
@@ -38,8 +38,8 @@ class DefaultUserPreviewRepository: UserPreviewRepository {
                   documentID != userUid,
                   let location = dto.location else { return false }
             
-            let toPoint = CLLocation(latitude: location.latitude, longitude: location.longitude)
-            return toPoint.distance(from: fromPoint) <= distance * 1000
+            let toPoint = Location(latitude: location.latitude, longitude: location.longitude)
+            return Location.distance(from: fromPoint, to: toPoint) <= distance
         }
         .map {
             $0.toDomain()

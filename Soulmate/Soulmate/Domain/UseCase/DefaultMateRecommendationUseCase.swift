@@ -25,38 +25,37 @@ class DefaultMateRecommendationUseCase: MateRecommendationUseCase {
         self.userDefaultsRepository = userDefaultsRepository
         self.authRepository = authRepository
     }
-    
-    func fetchRecommendedMate() async throws -> [UserPreview] {
+
+    func fetchDistanceFilteredRecommendedMate(from userLocation: Location, distance: Double) async throws -> [UserPreview] {
         let uid = try authRepository.currentUid()
+        
         let myGender = try await userPreviewRepository.downloadPreview(userUid: uid).gender!
         
-        return try await userPreviewRepository.fetchRecommendedPreviewList(
-            userUid: uid,
-            userGender: myGender
-        )
-    }
-    
-    func fetchDistanceFilteredRecommendedMate(distance: Double) async throws -> [UserPreview] {
-        guard let latitude: Double = userDefaultsRepository.get(key: "latestLatitude"),
-              let longitude: Double = userDefaultsRepository.get(key: "latestLongitude") else {
-            throw UserDefaultsError.noSuchKeyMatchedValue
-        }
-        let uid = try authRepository.currentUid()
-        let preview = try await userPreviewRepository.downloadPreview(userUid: uid)
-        let from = CLLocation(latitude: preview.location?.latitude ?? 0, longitude: preview.location?.longitude ?? 0)
-        
-        
-        let myGender = try await userPreviewRepository.downloadPreview(userUid: uid).gender!
         var previewList = try await userPreviewRepository.fetchDistanceFilteredRecommendedPreviewList(
             userUid: uid,
             userGender: myGender,
-            userLocation: Location(
-                latitude: latitude,
-                longitude: longitude
-            ),
+            userLocation: userLocation,
             distance: distance
         )
-        previewList.sort { $0.location?.toDistance(from: from) ?? 0 <= $1.location?.toDistance(from: from) ?? 0 }
-        return previewList
+        
+        if previewList.count <= 4 {
+            return previewList
+        } else {
+            let indexList = randomIndex(recommendCount: 4, endIndex: previewList.count - 1)
+            var randPreviewList = [UserPreview]()
+            indexList.forEach {
+                randPreviewList.append(previewList[$0])
+            }
+            return randPreviewList
+        }
+    }
+    
+    private func randomIndex(recommendCount: Int, endIndex: Int) -> [Int] {
+        let numbers = Array(0...endIndex)
+        var result = Set<Int>()
+        while result.count < recommendCount {
+            result.insert(numbers.randomElement()!)
+        }
+        return Array(result)
     }
 }

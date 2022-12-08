@@ -48,15 +48,13 @@ final class GreetingCell: UICollectionViewCell {
     func configureLayout() {
         title.snp.makeConstraints {
             $0.leading.equalToSuperview().inset(20)
-            $0.width.equalTo(42)
-            $0.height.equalTo(22)
+            $0.top.equalToSuperview().inset(30)
         }
         
         greetingMessage.snp.makeConstraints {
             $0.top.equalTo(title.snp.bottom).offset(12)
             $0.centerY.equalToSuperview()
             $0.leading.trailing.equalToSuperview().inset(20)
-            $0.height.equalToSuperview().inset(40)
         }
         
         let separator = UIView(frame: .zero)
@@ -69,7 +67,7 @@ final class GreetingCell: UICollectionViewCell {
         }
     }
     
-    func configure(message: String) {
+    func fill(message: String) {
         greetingMessage.text = message
     }
 }

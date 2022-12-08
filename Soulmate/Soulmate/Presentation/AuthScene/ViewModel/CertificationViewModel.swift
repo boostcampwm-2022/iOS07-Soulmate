@@ -14,7 +14,8 @@ struct CertificationViewModelActions {
     var showMainTabFlow: (() -> Void)?
 }
 
-class CertificationViewModel {
+class CertificationViewModel: ViewModelable {
+    typealias Action = CertificationViewModelActions
     
     var bag = Set<AnyCancellable>()
     
@@ -46,7 +47,7 @@ class CertificationViewModel {
         self.downloadDetailInfoUseCase = downloadDetailInfoUseCase
     }
     
-    func setActions(actions: CertificationViewModelActions) {
+    func setActions(actions: Action) {
         self.actions = actions
     }
     

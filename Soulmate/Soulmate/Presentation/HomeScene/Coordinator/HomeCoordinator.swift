@@ -39,12 +39,12 @@ final class HomeCoordinator: Coordinator {
         navigationController.pushViewController(vc, animated: true)
     }
     
-    lazy var showDetailVC: (UserPreview) -> Void = { [weak self] userPreview in
+    lazy var showDetailVC: (DetailPreviewViewModel) -> Void = { [weak self] detailPreviewViewModel in
         let container = DIContainer.shared.container
         guard let vm = container.resolve(DetailViewModel.self) else { return }
         
         vm.setActions(actions: DetailViewModelActions())
-        vm.setUser(userPreview: userPreview)
+        vm.setUser(detailPreviewViewModel: detailPreviewViewModel)
         
         let vc = DetailViewController(viewModel: vm)
         

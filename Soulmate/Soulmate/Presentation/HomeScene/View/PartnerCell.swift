@@ -47,18 +47,18 @@ final class PartnerCell: UICollectionViewCell {
     }()
     
     private lazy var gradientLayer: CAGradientLayer = {
-        let l = CAGradientLayer()
-        l.colors = [
+        let layer = CAGradientLayer()
+        layer.colors = [
             UIColor(red: 0, green: 0, blue: 0, alpha: 0).cgColor,
             UIColor(red: 0, green: 0, blue: 0, alpha: 0.4).cgColor
         ]
-        l.locations = [0, 1]
-        l.startPoint = CGPoint(x: 0.25, y: 0.5)
-        l.endPoint = CGPoint(x: 0.75, y: 0.5)
-        l.transform = CATransform3DMakeAffineTransform(CGAffineTransform(a: 0, b: 1, c: -1, d: 0, tx: 1, ty: 0))
-        l.cornerRadius = 14
-        l.cornerCurve = .continuous
-        return l
+        layer.locations = [0, 1]
+        layer.startPoint = CGPoint(x: 0.25, y: 0.5)
+        layer.endPoint = CGPoint(x: 0.75, y: 0.5)
+        layer.transform = CATransform3DMakeAffineTransform(CGAffineTransform(a: 0, b: 1, c: -1, d: 0, tx: 1, ty: 0))
+        layer.cornerRadius = 14
+        layer.cornerCurve = .continuous
+        return layer
     }()
 
     private lazy var partnerName: UILabel = {
@@ -116,16 +116,10 @@ final class PartnerCell: UICollectionViewCell {
         gradientLayer.frame = partnerSubview.bounds
     }
     
-    func fill(userPreview: UserPreview) {
-        self.partnerName.text = userPreview.name
-        self.partnerAge.text = String(userPreview.birth!.toAge())
-        
-        if let location = userPreview.location {
-            let from = CLLocation(latitude: UserDefaults.standard.double(forKey: "latestLatitude"), longitude: UserDefaults.standard.double(forKey: "latestLongitude"))
-            
-            let to = CLLocation(latitude: location.latitude, longitude: location.longitude)
-            self.partnerDistance.text = String(format: "%.2fkm", to.distance(from: from) * 0.001)
-        }
+    func fill(previewViewModel: HomePreviewViewModel) {
+        self.partnerName.text = previewViewModel.name
+        self.partnerAge.text = previewViewModel.age
+        self.partnerDistance.text = previewViewModel.distance
     }
     
     func fill(userImage: UIImage) {

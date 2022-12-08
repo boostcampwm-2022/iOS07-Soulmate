@@ -9,19 +9,12 @@ import Foundation
 import FirebaseFirestore
 import CoreLocation
 
-struct Location {
+struct Location: Codable {
     var latitude: Double
     var longitude: Double
 }
 
 extension Location {
-    func toCLLocationCoordinate2D() -> CLLocationCoordinate2D {
-        return CLLocationCoordinate2D(
-            latitude: self.latitude,
-            longitude: self.longitude
-        )
-    }
-    
     func toGeoPoint() -> GeoPoint {
         return GeoPoint(
             latitude: self.latitude,
@@ -32,5 +25,12 @@ extension Location {
     func toDistance(from: CLLocation) -> CLLocationDistance {
         let toPoint = CLLocation(latitude: self.latitude, longitude: self.longitude)
         return toPoint.distance(from: from)
+    }
+    
+    static func distance(from: Location, to: Location) -> Double {
+        let fromCL = CLLocation(latitude: from.latitude, longitude: from.longitude)
+        let toCL = CLLocation(latitude: to.latitude, longitude: to.longitude)
+        
+        return toCL.distance(from: fromCL) * 0.001
     }
 }
