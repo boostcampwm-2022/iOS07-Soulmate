@@ -28,10 +28,28 @@ class DefaultChatCoordinator: ChatCoordinator {
         )
         let chatRoomListVC = ChatRoomListViewController(viewModel: chatRoomListViewModel)
         
-        let loadReceivedChatRequestsUseCase = DefaultLoadReceivedChatRequestsUseCase()
+        let networkDatabaseApi = FireStoreNetworkDatabaseApi()
+        let mateRequestRepository = DefaultMateRquestRepository(networkDatabaseApi: networkDatabaseApi)
+        let authRepository = DefaultAuthRepository()
+        let listenMateRequestUseCase = DefaultListenMateRequestUseCase(
+            mateRequestRepository: mateRequestRepository,
+            authRepository: authRepository
+        )
+        
+        
+        let networkKeyValueStorageApi = FirebaseNetworkKeyValueStorageApi()
+        
+        let profilePhotoRepository = DefaultProfilePhotoRepository(networkKeyValueStorageApi: networkKeyValueStorageApi)
+        let imageCacheRepository = DefaultImageCacheRepository(imageCacheStorage: NSCacheImageCacheStorage.shared)
+        
+        let fetchImageUseCase = DefaultFetchImageUseCase(
+            profilePhotoRepository: profilePhotoRepository,
+            imageCacheRepository: imageCacheRepository
+        )
         let receivedChatRequestsViewModel = ReceivedChatRequestsViewModel(
             coordinator: self,
-            loadReceivedChatRequestsUseCase: loadReceivedChatRequestsUseCase
+            listenMateRequestUseCase: listenMateRequestUseCase,
+            fetchImageUseCase: fetchImageUseCase
         )
         let receivedChatRequestsVC = ReceivedChatRequestsViewController(viewModel: receivedChatRequestsViewModel)
         

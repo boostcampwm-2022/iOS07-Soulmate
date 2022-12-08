@@ -99,8 +99,12 @@ final class ReceivedChatRequestView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure(with request: ReceivedRequest) {
-        mateNameLabel.text = request.mateName        
+    func configure(with request: ReceivedMateRequest) {
+        mateNameLabel.text = request.mateName
+    }
+    
+    func configure(image: UIImage) {
+        mateProfileImageView.image = image
     }
 }
 
