@@ -34,5 +34,5 @@ final class DefaultChatRoomRepository: ChatRoomRepository {
                 data: ["state": false]
             )
         }
-    }
+    }        
 }

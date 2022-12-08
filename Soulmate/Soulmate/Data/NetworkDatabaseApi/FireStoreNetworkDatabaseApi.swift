@@ -113,6 +113,12 @@ class FireStoreNetworkDatabaseApi: NetworkDatabaseApi {
         }
     }
     
+    func delete(path: String, documentId: String) async throws {
+        var docRef = db.collection(path).document(documentId)
+        
+        try await docRef.delete()
+    }
+    
     func query(path: String, constraints: [QueryEntity]) -> Query {
         var query = db.collection(path) as Query
         

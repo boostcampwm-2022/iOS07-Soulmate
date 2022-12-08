@@ -102,7 +102,7 @@ extension ReceivedChatRequestsViewController: UITableViewDelegate, UITableViewDa
         
         cell.configure(with: request)
         cell.configureAccept { [weak self] in
-            print("눌림")
+            
             self?.acceptSubject.send(request)
         }
         cell.configureDeny { [weak self] in

@@ -11,7 +11,7 @@ import FirebaseFirestoreSwift
 
 final class DefaultMateRquestRepository: MateRequestRepository {
     
-    private let collectionTitle = "ReceivedRequest"
+    private let path = "ReceivedRequest"
     private let networkDatabaseApi: NetworkDatabaseApi
     
     init(networkDatabaseApi: NetworkDatabaseApi) {
@@ -20,13 +20,12 @@ final class DefaultMateRquestRepository: MateRequestRepository {
     
     func sendMateRequest(request: SendMateRequest) async throws {
         try await networkDatabaseApi.create(
-            path: collectionTitle,
+            path: path,
             data: request.toDTO().toDict()
         )
     }
     
     func listenOthersRequest(userId: String) -> Query {
-        let path = "ReceivedRequest"
         var constraints = [
             QueryEntity(field: "receivedUserId", value: userId, comparator: .isEqualTo),
             QueryEntity(field: "createdAt", value: "", comparator: .order)
@@ -36,11 +35,16 @@ final class DefaultMateRquestRepository: MateRequestRepository {
         
         return query
     }
+    
+    func deleteMateRequest(requestId: String) async throws {
+        try await networkDatabaseApi.delete(path: path, documentId: requestId)
+    }
 }
 
 protocol MateRequestRepository {
     func sendMateRequest(request: SendMateRequest) async throws
     func listenOthersRequest(userId: String) -> Query
+    func deleteMateRequest(requestId: String) async throws
 }
 
 

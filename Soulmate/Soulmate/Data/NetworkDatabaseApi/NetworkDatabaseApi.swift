@@ -20,6 +20,7 @@ protocol NetworkDatabaseApi {
     func update(table: String, constraints: [QueryEntity], with fields: [AnyHashable: Any]) async throws
     func update(path: String, documentId: String, with fields: [AnyHashable: Any])
     func delete(table: String, constraints: [QueryEntity]) async throws
+    func delete(path: String, documentId: String) async throws
     func query(path: String, constraints: [QueryEntity]) -> Query
     func documentRef(path: String, documentId: String) -> DocumentReference
 }
