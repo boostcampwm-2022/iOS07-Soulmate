@@ -53,6 +53,11 @@ class DefaultChatCoordinator: ChatCoordinator {
         let imageCacheRepository = DefaultImageCacheRepository(
             imageCacheStorage: NSCacheImageCacheStorage.shared
         )
+        
+        let enterStateRepository = DefaultEnterStateRepository(
+            authRepository: authRepository,
+            networkDatabaseApi: networkDatabaseApi
+        )
         let sendMessageUseCase = DefaultSendMessageUseCase(
             with: info,
             chattingRepository: chattingRepository,
@@ -78,11 +83,17 @@ class DefaultChatCoordinator: ChatCoordinator {
             chattingRepository: chattingRepository,
             authRepository: authRepository
         )
-        let listenOtherIsReadingUseCase = DefaultListenOtherIsReadingUseCase(
+        let listenOthersEnterStateUseCase = DefaultListenOthersEnterStateUseCase(
             with: info,
-            chattingRepository: chattingRepository,
+            enterStateRepository: enterStateRepository,
             authRepository: authRepository
         )
+        let enterChatRoomUseCase = DefaultEnterChatRoomUseCase(
+            with: info,
+            enterStateRepository: enterStateRepository,
+            authRepository: authRepository
+        )
+        
         let imageKeyUseCase = DefaultImageKeyUseCase()
         let fetchImageUseCase = DefaultFetchImageUseCase(
             profilePhotoRepository: profilePhotoRepository,
@@ -95,7 +106,8 @@ class DefaultChatCoordinator: ChatCoordinator {
             loadUnreadChattingsUseCase: loadUnreadChattingsUseCase,
             loadPrevChattingsUseCase: loadPrevChattingsUseCase,
             listenOthersChattingsUseCase: listenOthersChattingsUseCase,
-            listenOtherIsReadingUseCase: listenOtherIsReadingUseCase,
+            listenOthersEnterStateUseCase: listenOthersEnterStateUseCase,
+            enterChatRoomUseCase: enterChatRoomUseCase,
             imageKeyUseCase: imageKeyUseCase,
             fetchImageUseCase: fetchImageUseCase
         )

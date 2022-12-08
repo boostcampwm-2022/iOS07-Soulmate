@@ -76,9 +76,9 @@ final class DefaultListenOthersChattingUseCase: ListenOthersChattingUseCase {
                 self.othersMessages.send(chats)
                 
                 // FIXME: - update 실패 시 처리 해줘야 함.
-                Task {
-                    await self.chattingRepository.updateLastRead(of: chatRoomId)
-                }
+//                Task {
+//                    await self.chattingRepository.updateLastRead(of: chatRoomId)
+//                }
                 
                 guard let othersId = self.info.userIds.first(where: { $0 != uid }) else { return }
                 self.chattingRepository.setLastDocument(snapshot.documents.last)

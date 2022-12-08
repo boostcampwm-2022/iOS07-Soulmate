@@ -18,7 +18,7 @@ protocol ChattingRepository {
     func loadUnReadChattings(from chatRoomId: String) async -> [MessageInfoDTO]
     func loadPrevChattings(from chatRoomId: String) async -> [MessageInfoDTO]
     func addMeToReadUsers(of snapshot: QuerySnapshot)
-    func updateLastRead(of chatRoomId: String) async
+//    func updateLastRead(of chatRoomId: String) async
     func updateUnreadCountToZero(of chatRoomId: String, othersId: String) async
     func increaseUnreadCount(of id: String, in chatRoomId: String) async
     func addMessage(_ message: MessageToSendDTO, to chatRoomId: String) async -> Bool

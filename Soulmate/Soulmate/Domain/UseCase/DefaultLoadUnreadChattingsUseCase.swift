@@ -33,7 +33,7 @@ final class DefaultLoadUnreadChattingsUseCase: LoadUnreadChattingsUseCase {
               let othersId = info.userIds.first(where: { $0 != uid }) else { return [] }
         
         let dtos = await chattingRepository.loadUnReadChattings(from: chatRoomId)
-        await chattingRepository.updateLastRead(of: chatRoomId)
+//        await chattingRepository.updateLastRead(of: chatRoomId)
         await chattingRepository.updateUnreadCountToZero(of: chatRoomId, othersId: othersId)
         
         let infos = dtos.map { $0.toModel() }

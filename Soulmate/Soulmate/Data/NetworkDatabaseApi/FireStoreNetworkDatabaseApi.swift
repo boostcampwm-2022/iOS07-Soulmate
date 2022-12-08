@@ -81,6 +81,10 @@ class FireStoreNetworkDatabaseApi: NetworkDatabaseApi {
             }
         }
     }
+    
+    func update(path: String, documentId: String, with fields: [AnyHashable: Any]) {
+        db.collection(path).document(documentId).updateData(fields)
+    }
 
     func delete(table: String, constraints: [QueryEntity]) async throws {
         var query = db.collection(table) as Query
@@ -107,5 +111,9 @@ class FireStoreNetworkDatabaseApi: NetworkDatabaseApi {
         }
         
         return query
+    }
+    
+    func documentRef(path: String, documentId: String) -> DocumentReference {
+        return db.collection(path).document(documentId)
     }
 }

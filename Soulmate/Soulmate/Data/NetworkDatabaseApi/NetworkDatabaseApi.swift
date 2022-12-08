@@ -16,6 +16,8 @@ protocol NetworkDatabaseApi {
     func read<T: Decodable>(path: String, constraints: [QueryEntity], type: T.Type) async throws -> (data: [T], snapshot: QuerySnapshot)
     func update(table: String, documentID: String, with fields: [AnyHashable: Any]) async throws
     func update(table: String, constraints: [QueryEntity], with fields: [AnyHashable: Any]) async throws
+    func update(path: String, documentId: String, with fields: [AnyHashable: Any])
     func delete(table: String, constraints: [QueryEntity]) async throws
     func query(path: String, constraints: [QueryEntity]) -> Query
+    func documentRef(path: String, documentId: String) -> DocumentReference
 }

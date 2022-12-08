@@ -74,7 +74,7 @@ extension ChatDataSource {
     func update(notContaining otherId: String) {
         for i in (0..<chats.count).reversed() {
             
-            if chats[i].readUsers.contains(otherId) { break }
+            if chats[i].readUsers.contains(otherId) { continue }
             var chat = chats[i]
             chat.readUsers.append(otherId)
             chats[i] = chat
