@@ -6,24 +6,28 @@
 //
 
 import UIKit
-
+import Combine
 import SnapKit
 
-final class RecommendView: UICollectionViewCell {
+final class RecommendFooterView: UICollectionReusableView {
     
-    private lazy var recommendAgainLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 18)
-        label.text = "한번 더 추천받기"
-        label.textAlignment = .center
-        label.textColor = UIColor.messagePurple
-        label.layer.cornerRadius = 10
-        label.backgroundColor = .white
-        label.layer.borderWidth = 2
-        label.layer.borderColor = UIColor.borderPurple?.cgColor
-        addSubview(label)
-        return label
+    static var footerKind = "Recommend-Footer-View"
+    
+    private lazy var recommendAgainButton: UIButton = {
+        let button = UIButton(frame: .zero)
+        button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 18)
+        button.setTitle("한번 더 추천받기", for: .normal)
+        button.setTitleColor(.messagePurple, for: .normal)
+        button.layer.cornerRadius = 10
+        button.backgroundColor = .white
+        button.layer.borderWidth = 2
+        button.layer.borderColor = UIColor.borderPurple?.cgColor
+        addSubview(button)
+        button.addTarget(self, action: #selector(didTouchedButton), for: .touchUpInside)
+        return button
     }()
+    
+    private var buttonTappedHandler: (() -> Void)?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -41,11 +45,37 @@ final class RecommendView: UICollectionViewCell {
     }
     
     func configureLayout() {
-        recommendAgainLabel.snp.makeConstraints {
+        recommendAgainButton.snp.makeConstraints {
             $0.centerX.centerY.equalToSuperview()
             $0.leading.trailing.equalToSuperview()
             $0.height.equalTo(54)
         }
     }
+    
+    func configureButtonHandler(handler: @escaping () -> Void) {
+        self.buttonTappedHandler = handler
+    }
+    
+    func buttonTapPublisher() -> AnyPublisher<Void, Never> {
+        return recommendAgainButton.tapPublisher()
+    }
+    
+    @objc func didTouchedButton() {
+        print("touch")
+        buttonTappedHandler?()
+    }
 
 }
+
+#if canImport(SwiftUI) && DEBUG
+import SwiftUI
+
+struct aaaPreview: PreviewProvider{
+    static var previews: some View {
+        UIViewPreview {
+            let cell = RecommendFooterView(frame: .zero)
+            return cell
+        }.previewLayout(.device)
+    }
+}
+#endif

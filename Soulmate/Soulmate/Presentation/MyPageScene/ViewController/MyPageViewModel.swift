@@ -16,7 +16,9 @@ struct MyPageViewModelActions {
     var showDistanceFlow: (() -> Void)?
 }
 
-class MyPageViewModel {
+class MyPageViewModel: ViewModelable {
+    
+    typealias Action = MyPageViewModelActions
     
     let downLoadMyPreviewUseCase: DownLoadMyPreviewUseCase
     let downLoadPictureUseCase: DownLoadPictureUseCase
@@ -25,7 +27,7 @@ class MyPageViewModel {
     let titles = ["하트샵 가기", "개인정보 처리방침", "거리 설정하기", "버전정보"]
     let subTexts = ["", "", "", "v 3.2.20"]
     
-    var actions: MyPageViewModelActions?
+    var actions: Action?
     var cancellables = Set<AnyCancellable>()
     
     @Published var userProfileImage: Data?
@@ -53,7 +55,7 @@ class MyPageViewModel {
         loadInfo()
     }
     
-    func setActions(actions: MyPageViewModelActions) {
+    func setActions(actions: Action) {
         self.actions = actions
     }
     

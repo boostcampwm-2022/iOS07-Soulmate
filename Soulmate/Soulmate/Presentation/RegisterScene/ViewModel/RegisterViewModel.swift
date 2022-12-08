@@ -14,9 +14,11 @@ struct RegisterViewModelAction {
     var finishRegister: (() -> Void)?
 }
 
-class RegisterViewModel {
+class RegisterViewModel: ViewModelable {
     
-    var actions: RegisterViewModelAction?
+    typealias Action = RegisterViewModelAction
+    
+    var actions: Action?
     
     var bag = Set<AnyCancellable>()
     
@@ -80,7 +82,7 @@ class RegisterViewModel {
         self.introduction = registerUserInfo.aboutMe
     }
     
-    func setActions(actions: RegisterViewModelAction) {
+    func setActions(actions: Action) {
         self.actions = actions
     }
     

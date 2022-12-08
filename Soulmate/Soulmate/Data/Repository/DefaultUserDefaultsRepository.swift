@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Combine
 
 class DefaultUserDefaultsRepository: UserDefaultsRepository {
     
@@ -25,5 +26,9 @@ class DefaultUserDefaultsRepository: UserDefaultsRepository {
     
     func remove(key: String) {
         localKeyValueStorage.remove(key: key)
+    }
+    
+    func valuePublisher<Value>(path: KeyPath<UserDefaults, Value>) -> AnyPublisher<Value, Never> {
+        return localKeyValueStorage.valuePublisher(path: path)
     }
 }

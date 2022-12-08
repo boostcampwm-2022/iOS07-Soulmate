@@ -11,7 +11,10 @@ import Combine
 import SnapKit
 
 final class PhotoFooterView: UICollectionReusableView {
-    private var cancellable: AnyCancellable?
+    
+    static var footerKind = "Photo-Footer-View"
+    
+    private var cancellable = Set<AnyCancellable>()
     
     private lazy var pageControl: UIPageControl = {
         let control = UIPageControl()
@@ -44,15 +47,21 @@ final class PhotoFooterView: UICollectionReusableView {
         }
     }
     
-    func configure(with numberOfPages: Int) {
-        pageControl.numberOfPages = numberOfPages
+    func subscribeTo(totalPage: AnyPublisher<Int, Never>) {
+        totalPage
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] value in
+                self?.pageControl.numberOfPages = value
+            }
+            .store(in: &cancellable)
     }
     
-    func subscribeTo(subject: PassthroughSubject<Int, Never>) {
-        cancellable = subject
+    func subscribeTo(currentPage: AnyPublisher<Int, Never>) {
+        currentPage
             .receive(on: DispatchQueue.main)
             .sink { [weak self] page in
                 self?.pageControl.currentPage = page
             }
+            .store(in: &cancellable)
     }
 }

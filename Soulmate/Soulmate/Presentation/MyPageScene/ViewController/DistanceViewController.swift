@@ -8,33 +8,6 @@
 import UIKit
 import Combine
 
-class DistanceViewModel {
-    var cancellables = Set<AnyCancellable>()
-    
-    //@Published var mateFilteringDistance: Double?
-    
-    struct Input {
-        var didChangedDistanceValue: AnyPublisher<Double, Never>
-    }
-    
-    struct Output {}
-    
-    init() {}
-    
-    func transform(input: Input) -> Output {
-        input.didChangedDistanceValue
-            .sink { [weak self] value in
-                self?.setDistance(distance: value)
-            }
-            .store(in: &cancellables)
-        return Output()
-    }
-    
-    func setDistance(distance: Double) {
-        
-    }
-}
-
 class DistanceViewController: UIViewController {
     var bag = Set<AnyCancellable>()
     
@@ -86,49 +59,56 @@ class DistanceViewController: UIViewController {
         bind()
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        viewModel?.finishDistanceSetting()
+    }
+    
+    @objc func sliderValueDidChange(sender: UISlider) {
+        let step: Float = 1
+        let roundedValue = round(sender.value / step) * step
+        sender.value = roundedValue
+    }
+}
+
+// MARK: Configure View Controller
+
+private extension DistanceViewController {
     func bind() {
         guard let viewModel = viewModel else { return }
         
-        let sliderPublihser = slider
+        let sliderPublisher = slider
             .valuePublisher()
             .removeDuplicates()
-            .map { value -> Double in
+            .eraseToAnyPublisher()
+        
+        let output = viewModel.transform(
+            input: DistanceViewModel.Input(
+                didChangedSliderValue: sliderPublisher
+            )
+        )
+        
+        output.didChangedDistanceValue
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] value in
+                self?.distanceMessageLabel.text = "\(Int(value))km 내의 메이트만 탐색할게요!"
                 switch value {
-                case 0:
-                    return 5
-                case 1:
-                    return 10
-                case 2:
-                    return 20
-                case 3:
-                    return 50
-                case 4:
-                    return 1000
+                case 5:
+                    self?.slider.value = 0
+                case 10:
+                    self?.slider.value = 1
+                case 20:
+                    self?.slider.value = 2
+                case 50:
+                    self?.slider.value = 3
+                case 1000:
+                    self?.slider.value = 4
                 default:
                     fatalError()
                 }
             }
-            .eraseToAnyPublisher()
-        
-        sliderPublihser
-            .sink { [weak self] value in
-                DispatchQueue.main.async {
-                    if value == 1000 {
-                        self?.distanceMessageLabel.text = "모든 메이트를 탐색할게요!"
-                    }
-                    else {
-                        self?.distanceMessageLabel.text = "\(Int(value))km 내의 메이트만 탐색할게요!"
-                    }
-                }
-            }
             .store(in: &bag)
-        
-        viewModel.transform(
-            input: DistanceViewModel.Input(
-                didChangedDistanceValue: sliderPublihser
-            )
-        )
-        
     }
     
     func configureView() {
@@ -154,12 +134,6 @@ class DistanceViewController: UIViewController {
             $0.centerX.equalToSuperview()
             $0.top.equalTo(slider.snp.bottom).offset(30)
         }
-    }
-    
-    @objc func sliderValueDidChange(sender: UISlider) {
-        let step: Float = 1
-        let roundedValue = round(sender.value / step) * step
-        sender.value = roundedValue
     }
 }
 

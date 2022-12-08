@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Combine
 
 class UserDefaulsLocalKeyValueStorage: LocalKeyValueStorage {
     
@@ -20,6 +21,12 @@ class UserDefaulsLocalKeyValueStorage: LocalKeyValueStorage {
     
     func remove(key: String) {
         UserDefaults.standard.removeObject(forKey: key)
+    }
+    
+    func valuePublisher<Value>(path: KeyPath<UserDefaults, Value>) -> AnyPublisher<Value, Never> {
+        return UserDefaults.standard
+            .publisher(for: path)
+            .eraseToAnyPublisher()
     }
     
 }

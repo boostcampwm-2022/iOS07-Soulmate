@@ -15,7 +15,9 @@ struct LoginViewModelActions {
     var showPhoneLoginFlow: (() -> Void)?
 }
 
-class LoginViewModel {
+class LoginViewModel: ViewModelable {
+    
+    typealias Action = LoginViewModelActions
     
     var downLoadDetailInfoUseCase: DownLoadDetailInfoUseCase
     var registerStateValidateUseCase: RegisterStateValidateUseCase
@@ -27,7 +29,7 @@ class LoginViewModel {
         
     var bag = Set<AnyCancellable>()
     
-    var actions: LoginViewModelActions?
+    var actions: Action?
     
     init(
         downLoadDetailInfoUseCase: DownLoadDetailInfoUseCase,
@@ -37,7 +39,7 @@ class LoginViewModel {
         self.downLoadDetailInfoUseCase = downLoadDetailInfoUseCase
     }
     
-    func setActions(actions: LoginViewModelActions) {
+    func setActions(actions: Action) {
         self.actions = actions
     }
     
