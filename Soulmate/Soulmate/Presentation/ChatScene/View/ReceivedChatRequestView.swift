@@ -9,6 +9,9 @@ import UIKit
 
 final class ReceivedChatRequestView: UIView {
     
+    private var acceptAction: (() -> ())?
+    private var denyAction: (() -> ())?
+    
     private lazy var mateProfileImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.backgroundColor = .secondarySystemBackground
@@ -64,6 +67,10 @@ final class ReceivedChatRequestView: UIView {
         button.setImage(UIImage(named: "friendAccept"), for: .normal)
         button.widthAnchor.constraint(equalToConstant: 42).isActive = true
         button.heightAnchor.constraint(equalToConstant: 42).isActive = true
+        button.addAction(
+            UIAction { _ in self.acceptAction?() },
+            for: .touchUpInside
+        )
         
         return button
     }()
@@ -73,6 +80,10 @@ final class ReceivedChatRequestView: UIView {
         button.setImage(UIImage(named: "friendDelete"), for: .normal)
         button.widthAnchor.constraint(equalToConstant: 42).isActive = true
         button.heightAnchor.constraint(equalToConstant: 42).isActive = true
+        button.addAction(
+            UIAction { _ in self.denyAction?() },
+            for: .touchUpInside
+        )
         
         return button
     }()
@@ -99,8 +110,20 @@ final class ReceivedChatRequestView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure(with request: ReceivedRequest) {
-        mateNameLabel.text = request.mateName        
+    func configure(with request: ReceivedMateRequest) {
+        mateNameLabel.text = request.mateName
+    }
+    
+    func configure(image: UIImage) {
+        mateProfileImageView.image = image
+    }
+    
+    func configureAccept(action: (() -> ())?) {
+        acceptAction = action
+    }
+    
+    func configureDeny(action: (() -> ())?) {
+        denyAction = action
     }
 }
 

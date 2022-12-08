@@ -9,6 +9,7 @@ import Foundation
 import Combine
 
 struct DetailViewModelActions {
+    
 }
 
 final class DetailViewModel: ViewModelable {
@@ -19,6 +20,7 @@ final class DetailViewModel: ViewModelable {
     
     let downloadPictureUseCase: DownLoadPictureUseCase
     let downloadDetailInfoUseCase: DownLoadDetailInfoUseCase
+    let sendMateRequestUseCase: SendMateRequestUseCase
     
     struct Input {
         var didTappedMateRegistrationButton: AnyPublisher<Void, Never>
@@ -40,10 +42,12 @@ final class DetailViewModel: ViewModelable {
     
     init(
         downloadPictureUseCase: DownLoadPictureUseCase,
-        downloadDetailInfoUseCase: DownLoadDetailInfoUseCase
+        downloadDetailInfoUseCase: DownLoadDetailInfoUseCase,
+        sendMateRequestUseCase: SendMateRequestUseCase
     ) {
         self.downloadPictureUseCase = downloadPictureUseCase
         self.downloadDetailInfoUseCase = downloadDetailInfoUseCase
+        self.sendMateRequestUseCase = sendMateRequestUseCase
     }
     
     func setActions(actions: Action) {
@@ -79,7 +83,7 @@ final class DetailViewModel: ViewModelable {
         
         input.didTappedMateRegistrationButton
             .sink { [weak self] _ in
-                self?.registerMate()
+                self?.sendMateRequest()
             }
             .store(in: &cancellables)
         
@@ -95,7 +99,17 @@ final class DetailViewModel: ViewModelable {
         return try await downloadPictureUseCase.downloadPhotoData(keyList: [key]).first
     }
     
-    func registerMate() {
+    func sendMateRequest() {
         // 대화 친구 신청 시 처리하는 로직 부분
+        Task {
+            guard let mateId = detailPreviewViewModel?.uid else { return }
+            do {
+                try await self.sendMateRequestUseCase.sendMateRequest(mateId: mateId)
+                
+            }
+            catch {
+                print("error")
+            }
+        }
     }
 }

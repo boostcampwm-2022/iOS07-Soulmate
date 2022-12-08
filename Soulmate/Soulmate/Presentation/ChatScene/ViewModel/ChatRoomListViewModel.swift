@@ -5,12 +5,14 @@
 //  Created by Hoen on 2022/11/22.
 //
 
+import Foundation
 import Combine
 
 final class ChatRoomListViewModel {
     
     private weak var coordinator: ChatCoordinator?
     private let loadChattingRoomListUseCase: LoadChattingRoomListUseCase
+    private let fetchImageUseCase: FetchImageUseCase
     private let authUseCase: AuthUseCase
     var chattingList: [ChatRoomInfo] {
         loadChattingRoomListUseCase.chattingRoomList.value
@@ -25,11 +27,16 @@ final class ChatRoomListViewModel {
         var listLoaded = PassthroughSubject<Void, Never>()
     }
     
-    init(coordinator: ChatCoordinator, loadChattingRoomListUseCase: LoadChattingRoomListUseCase, authUseCase: AuthUseCase) {
-        self.coordinator = coordinator
-        self.loadChattingRoomListUseCase = loadChattingRoomListUseCase
-        self.authUseCase = authUseCase
-    }
+    init(
+        coordinator: ChatCoordinator,
+        loadChattingRoomListUseCase: LoadChattingRoomListUseCase,
+        fetchImageUseCase: FetchImageUseCase,
+        authUseCase: AuthUseCase) {
+            self.coordinator = coordinator
+            self.loadChattingRoomListUseCase = loadChattingRoomListUseCase
+            self.fetchImageUseCase = fetchImageUseCase
+            self.authUseCase = authUseCase
+        }
     
     func transform(input: Input, cancellables: inout Set<AnyCancellable>) -> Output {
         let output = Output()
@@ -55,6 +62,10 @@ final class ChatRoomListViewModel {
             .store(in: &cancellables)
         
         return output
+    }
+    
+    func fetchProfileImage(key: String) async -> Data? {
+        return await fetchImageUseCase.fetchImage(for: key)
     }
     
     func userUid() -> String? {

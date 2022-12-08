@@ -123,9 +123,8 @@ final class PartnerCell: UICollectionViewCell {
     }
     
     func fill(userImage: UIImage) {
-        let ratio = userImage.size.width / self.contentView.frame.width
-
-        self.partnerImageView.image = userImage.resized(to: CGSize(width: self.contentView.frame.width, height: self.contentView.frame.height * ratio))
+        self.partnerImageView.image = userImage
+        
         loadingIndicator.stopAnimating()
     }
     

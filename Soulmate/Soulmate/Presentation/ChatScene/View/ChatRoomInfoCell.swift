@@ -42,6 +42,10 @@ final class ChatRoomInfoCell: UITableViewCell {
     func configure(with info: ChatRoomInfo, uid: String) {
         chatRoomInfoView.configure(with: info, uid: uid)
     }
+    
+    func configure(image: UIImage) {
+        chatRoomInfoView.configure(image: image)
+    }
 }
 
 private extension ChatRoomInfoCell {

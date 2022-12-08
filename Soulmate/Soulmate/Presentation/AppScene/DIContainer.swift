@@ -42,6 +42,8 @@ final class DIContainer {
         registerImageCacheRepository()
         
         registerAuthRepository()
+        
+        registerMateRequestRepository()
     }
     
     func registerUseCase() {
@@ -73,6 +75,10 @@ final class DIContainer {
         registerSetDistanceUseCase()
         
         registerGetDistanceUseCase()
+        
+        registerListenMateRequestUseCase()
+        
+        registerSendMateRequestUseCase()
     }
     
     func registerViewModel() {
@@ -169,6 +175,14 @@ extension DIContainer {
     func registerAuthRepository() {
         container.register(AuthRepository.self) { _ in
             return DefaultAuthRepository()
+        }
+    }
+    
+    func registerMateRequestRepository() {
+        container.register(MateRequestRepository.self) { r in
+            return DefaultMateRquestRepository(
+                networkDatabaseApi: r.resolve(NetworkDatabaseApi.self)!
+            )
         }
     }
     
@@ -305,6 +319,29 @@ extension DIContainer {
         }
         .inObjectScope(.container)
     }
+    
+    func registerListenMateRequestUseCase() {
+        container.register(ListenMateRequestUseCase.self) { r in
+            return DefaultListenMateRequestUseCase(
+                mateRequestRepository: r.resolve(MateRequestRepository.self)!,
+                authRepository: r.resolve(AuthRepository.self)!
+            )
+        }
+        .inObjectScope(.graph)
+    }
+    
+    func registerSendMateRequestUseCase() {
+        container.register(SendMateRequestUseCase.self) { r in
+            return DefaultSendMateRequestUseCase(
+                mateRequestRepository: r.resolve(MateRequestRepository.self)!,
+                userPreviewRepository: r.resolve(UserPreviewRepository.self)!,
+                authRepository: r.resolve(AuthRepository.self)!
+            )
+        }
+        .inObjectScope(.container)
+    }
+    
+    
 }
 
 extension DIContainer {
@@ -367,7 +404,8 @@ extension DIContainer {
         container.register(DetailViewModel.self) { r in
             return DetailViewModel(
                 downloadPictureUseCase: r.resolve(DownLoadPictureUseCase.self)!,
-                downloadDetailInfoUseCase: r.resolve(DownLoadDetailInfoUseCase.self)!
+                downloadDetailInfoUseCase: r.resolve(DownLoadDetailInfoUseCase.self)!,
+                sendMateRequestUseCase: r.resolve(SendMateRequestUseCase.self)!
             )
         }
         .inObjectScope(.graph)

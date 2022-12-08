@@ -71,6 +71,16 @@ extension ChatDataSource {
         chats[index] = chat
     }
     
+    func update(notContaining otherId: String) {
+        for i in (0..<chats.count).reversed() {
+            
+            if chats[i].readUsers.contains(otherId) { continue }
+            var chat = chats[i]
+            chat.readUsers.append(otherId)
+            chats[i] = chat
+        }
+    }
+    
     func insertBuffer() -> CGFloat {
         guard !buffer.isEmpty else { return 0 }
         
