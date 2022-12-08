@@ -34,7 +34,9 @@ final class DefaultListenOthersChattingUseCase: ListenOthersChattingUseCase {
     }
 
     func listenOthersChattings() {
-        guard let chatRoomId = info.documentId, let uid = try? authRepository.currentUid() else { return }
+        guard let chatRoomId = info.documentId,
+              let uid = try? authRepository.currentUid(),
+              let othersId = info.userIds.first(where: { $0 != uid }) else { return }
         
         let query = chattingRepository.listenOthersChattingQuery(from: chatRoomId)
         
@@ -73,14 +75,7 @@ final class DefaultListenOthersChattingUseCase: ListenOthersChattingUseCase {
                 guard !chats.isEmpty else { return }
                 
                 self.chattingRepository.addMeToReadUsers(of: snapshot)
-                self.othersMessages.send(chats)
-                
-                // FIXME: - update 실패 시 처리 해줘야 함.
-//                Task {
-//                    await self.chattingRepository.updateLastRead(of: chatRoomId)
-//                }
-                
-                guard let othersId = self.info.userIds.first(where: { $0 != uid }) else { return }
+                self.othersMessages.send(chats)                
                 self.chattingRepository.setLastDocument(snapshot.documents.last)
                 self.listenerRegistration?.remove()
                 self.listenerRegistration = nil

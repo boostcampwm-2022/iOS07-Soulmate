@@ -73,7 +73,10 @@ final class DefaultSendMessageUseCase: SendMessageUseCase {
             var sendedChat = chat
             sendedChat.updateState(true, date)
             messageSended.send(sendedChat)
-            await chattingRepository.increaseUnreadCount(of: othersId, in: chatRoomId)
+            
+            if !enterStateRepository.othersEnterState {
+                await chattingRepository.increaseUnreadCount(of: othersId, in: chatRoomId)
+            }
         } else {
             var failedChat = chat
             failedChat.updateState(false, nil)

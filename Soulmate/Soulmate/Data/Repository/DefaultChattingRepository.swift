@@ -139,13 +139,13 @@ final class DefaultChattingRepository: ChattingRepository {
 //        )
 //    }
     
-    func updateUnreadCountToZero(of chatRoomId: String, othersId: String) async {
+    func updateUnreadCountToZero(of chatRoomId: String, othersId: String) {
         guard let uid = try? authRepository.currentUid() else { return }
         let path = "ChatRooms"
         
-        let _ = try? await networkDatabaseApi.update(
-            table: path,
-            documentID: chatRoomId,
+        networkDatabaseApi.update(
+            path: path,
+            documentId: chatRoomId,
             with: ["unreadCount": [uid: 0.0, othersId: 0.0 ]]
         )
     }
