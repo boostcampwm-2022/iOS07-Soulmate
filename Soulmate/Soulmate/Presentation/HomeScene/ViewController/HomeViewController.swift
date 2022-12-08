@@ -196,6 +196,7 @@ private extension HomeViewController {
         
         let output = viewModel.transform(
             input: HomeViewModel.Input(
+                viewDidLoad: Just(()).eraseToAnyPublisher(),
                 didTappedRefreshButton: refreshButtonTapSubject.eraseToAnyPublisher(),
                 didSelectedMateCollectionCell: collectionViewSelectSubject.eraseToAnyPublisher()
             )
@@ -207,6 +208,15 @@ private extension HomeViewController {
                 var snapshot = NSDiffableDataSourceSectionSnapshot<ItemKind>()
                 snapshot.append(previewViewModelList.map { return ItemKind.main($0) })
                 self?.dataSource?.apply(snapshot, to: .main)
+            }
+            .store(in: &bag)
+        
+        output.didUpdatedHeartInfo
+            .compactMap { $0 }
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] heartInfo in
+                guard let heart = heartInfo.heart else { return }
+                self?.numOfHeartLabel.text = "\(heart)"
             }
             .store(in: &bag)
     }

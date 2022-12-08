@@ -96,7 +96,7 @@ final class MyPageView: UIView {
     
     lazy var remainingHeartLabel: UILabel = {
         let label = UILabel()
-        label.text = "30개"
+        label.text = "0개"
         label.textColor = .mainPurple
         label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 18)
         label.isUserInteractionEnabled = false

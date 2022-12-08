@@ -14,8 +14,6 @@ struct UserHeartInfo {
 
 extension UserHeartInfo {
     func toDTO() -> UserHeartInfoDTO {
-        return UserHeartInfoDTO(
-
-        )
+        return UserHeartInfoDTO(uid: self.uid, heart: self.heart)
     }
 }

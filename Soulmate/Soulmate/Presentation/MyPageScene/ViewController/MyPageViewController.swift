@@ -54,11 +54,13 @@ private extension MyPageViewController {
         
         let output = viewModel.transform(
             input: MyPageViewModel.Input(
+                viewDidLoad: Just(()).eraseToAnyPublisher(),
                 didTappedMyInfoEditButton: self.contentView.editButton.tapPublisher(),
                 didTappedHeartShopButton: self.contentView.remainingHeartButton.tapPublisher(),
                 didTappedMenuCell: self.rowSelectSubject.eraseToAnyPublisher()
             )
         )
+        
         
         output.didUpdatedImage
             .compactMap { $0 }
@@ -78,6 +80,14 @@ private extension MyPageViewController {
             }
             .store(in: &cancellables)
         
+        output.didUpdatedHeartInfo
+            .compactMap { $0 }
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] heartInfo in
+                guard let heart = heartInfo.heart else { return }
+                self?.contentView.remainingHeartLabel.text = "\(heart)개"
+            }
+            .store(in: &cancellables)
     }
     
 }

@@ -12,7 +12,7 @@ import Combine
 struct MyPageViewModelActions {
     var showMyInfoEditFlow: ((@escaping () -> Void) -> Void)?
     var showServiceTermFlow: (() -> Void)?
-    var showHeartShopFlow: ((@escaping () -> Void) -> Void)?
+    var showHeartShopFlow: (() -> Void)?
     var showDistanceFlow: (() -> Void)?
 }
 
@@ -22,6 +22,7 @@ class MyPageViewModel: ViewModelable {
     
     let downLoadMyPreviewUseCase: DownLoadMyPreviewUseCase
     let downLoadPictureUseCase: DownLoadPictureUseCase
+    let listenHeartUpdateUseCase: ListenHeartUpdateUseCase
     
     let symbols = ["myPageHeart", "myPagePersonalInfo", "distance", "myPagePin"]
     let titles = ["하트샵 가기", "개인정보 처리방침", "거리 설정하기", "버전정보"]
@@ -32,8 +33,10 @@ class MyPageViewModel: ViewModelable {
     
     @Published var userProfileImage: Data?
     @Published var userProfileInfo: UserPreview?
+    @Published var heartInfo: UserHeartInfo?
     
     struct Input {
+        var viewDidLoad: AnyPublisher<Void, Never>
         var didTappedMyInfoEditButton: AnyPublisher<Void, Never>
         var didTappedHeartShopButton: AnyPublisher<Void, Never>
         var didTappedMenuCell: AnyPublisher<Int, Never>
@@ -42,14 +45,17 @@ class MyPageViewModel: ViewModelable {
     struct Output {
         var didUpdatedPreview: AnyPublisher<UserPreview?, Never>
         var didUpdatedImage: AnyPublisher<Data?, Never>
+        var didUpdatedHeartInfo: AnyPublisher<UserHeartInfo?, Never>
     }
     
     init(
         downLoadPreviewUseCase: DownLoadMyPreviewUseCase,
-        downLoadPictureUseCase: DownLoadPictureUseCase
+        downLoadPictureUseCase: DownLoadPictureUseCase,
+        listenHeartUpdateUseCase: ListenHeartUpdateUseCase
     ) {
         self.downLoadMyPreviewUseCase = downLoadPreviewUseCase
         self.downLoadPictureUseCase = downLoadPictureUseCase
+        self.listenHeartUpdateUseCase = listenHeartUpdateUseCase
         
         // 여기서 해주고 내정보 수정에서 save하고 빠져나올때마다 계속 업댓해주자
         loadInfo()
@@ -61,11 +67,23 @@ class MyPageViewModel: ViewModelable {
     
     func transform(input: Input) -> Output {
         
+        input.viewDidLoad
+            .sink { [weak self] in
+                self?.listenHeartUpdateUseCase.listenHeartUpdate()
+            }
+            .store(in: &cancellables)
+        
+        // disappear에서 안끄는거 다같이 상의
+        
+        listenHeartUpdateUseCase.heartInfoSubject
+            .sink { [weak self] value in
+                self?.heartInfo = value
+            }
+            .store(in: &cancellables)
+        
         input.didTappedHeartShopButton
             .sink { [weak self] in
-                self?.actions?.showHeartShopFlow? { [weak self] in
-                    self?.loadInfo()
-                }
+                self?.actions?.showHeartShopFlow?()
             }
             .store(in: &cancellables)
         
@@ -81,9 +99,7 @@ class MyPageViewModel: ViewModelable {
             .sink { [weak self] in
                 switch $0 {
                 case 0:
-                    self?.actions?.showHeartShopFlow? {
-                        print("ss")
-                    }
+                    self?.actions?.showHeartShopFlow?()
                 case 1:
                     self?.actions?.showServiceTermFlow?()
                 case 2:
@@ -96,7 +112,8 @@ class MyPageViewModel: ViewModelable {
         
         return Output(
             didUpdatedPreview: $userProfileInfo.eraseToAnyPublisher(),
-            didUpdatedImage: $userProfileImage.eraseToAnyPublisher()
+            didUpdatedImage: $userProfileImage.eraseToAnyPublisher(),
+            didUpdatedHeartInfo: $heartInfo.eraseToAnyPublisher()
         )
         
     }

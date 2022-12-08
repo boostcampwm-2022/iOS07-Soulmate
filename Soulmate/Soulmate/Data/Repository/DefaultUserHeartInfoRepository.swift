@@ -10,33 +10,41 @@ import FirebaseFirestore
 import FirebaseAuth
 
 protocol UserHeartInfoRepository {
-    
-    func listenHeartInfo() async throws -> UserHeartInfo
-    func updateHeart()
-    
+    func updateHeart(uid: String, heartInfo: UserHeartInfo) async throws
+    func listenHeartUpdate(userId: String) -> DocumentReference
 }
 
-//final class DefaultUserHeartInfoRepository: UserHeartInfoRepository {
-//    
-//    let db = Firestore.firestore()
-//    
-//    func listenHeartInfo(@escaping ()) async throws -> UserHeartInfo {
-//        let querySnapshot = db.collection("UserHeartInfo")
-//            .document(Auth.auth().currentUser?.uid ?? "")
-//            .addSnapshotListener { querySnapshot, err in
-//                if err != nil {
-//                    print(err ?? "")
-//                    return
-//                }
-//                try? querySnapshot?.data(as: UserHeartInfoDTO.self)
-//                
-//                querySnapshot.
-//            }
-//        querySnapshot.
-//    }
-//    
-//    func updateHeart() {
-//        print("dd")
-//    }
-//    
-//}
+final class DefaultUserHeartInfoRepository: UserHeartInfoRepository {
+    
+    private let path = "UserHeartInfo"
+    private let networkDatabaseApi: NetworkDatabaseApi
+    
+    init(networkDatabaseApi: NetworkDatabaseApi) {
+        self.networkDatabaseApi = networkDatabaseApi
+    }
+    
+    func updateHeart(uid: String, heartInfo: UserHeartInfo) async throws {
+        let prevHeartInfo = try await networkDatabaseApi.read(
+            table: path,
+            documentID: uid,
+            type: UserHeartInfoDTO.self
+        ).toModel()
+        
+        guard let addingHeart = heartInfo.heart,
+              let prevHeart = prevHeartInfo.heart else { return }
+
+        let newHeartInfo = UserHeartInfo(heart: prevHeart + addingHeart)
+        
+        try await networkDatabaseApi.create(
+            table: path,
+            documentID: uid,
+            data: newHeartInfo.toDTO()
+        )
+    }
+    
+    func listenHeartUpdate(userId: String) -> DocumentReference {
+        return networkDatabaseApi.documentRef(path: path, documentId: userId)
+    }
+    
+
+}
