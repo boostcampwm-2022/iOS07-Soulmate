@@ -21,9 +21,18 @@ class DefaultChatCoordinator: ChatCoordinator {
     
     func start() {
         let loadChattingRoomListUseCase = DefaultLoadChattingRoomListUseCase()
+        
+        let networkKeyValueStorageApi = FirebaseNetworkKeyValueStorageApi()
+        let profilePhotoRepository = DefaultProfilePhotoRepository(networkKeyValueStorageApi: networkKeyValueStorageApi)
+        let imageCacheRepository = DefaultImageCacheRepository(imageCacheStorage: NSCacheImageCacheStorage.shared)
+        let fetchImageUseCase = DefaultFetchImageUseCase(
+            profilePhotoRepository: profilePhotoRepository,
+            imageCacheRepository: imageCacheRepository
+        )
         let chatRoomListViewModel = ChatRoomListViewModel(
             coordinator: self,
             loadChattingRoomListUseCase: loadChattingRoomListUseCase,
+            fetchImageUseCase: fetchImageUseCase,
             authUseCase: DefaultAuthUseCase()
         )
         let chatRoomListVC = ChatRoomListViewController(viewModel: chatRoomListViewModel)
@@ -36,18 +45,10 @@ class DefaultChatCoordinator: ChatCoordinator {
             authRepository: authRepository
         )
         
-        
-        let networkKeyValueStorageApi = FirebaseNetworkKeyValueStorageApi()
-        
-        let profilePhotoRepository = DefaultProfilePhotoRepository(networkKeyValueStorageApi: networkKeyValueStorageApi)
-        let imageCacheRepository = DefaultImageCacheRepository(imageCacheStorage: NSCacheImageCacheStorage.shared)
+                
         let userPreviewRepository = DefaultUserPreviewRepository(networkDatabaseApi: networkDatabaseApi)
         let chatRoomRepository = DefaultChatRoomRepository(networkDatabaseApi: networkDatabaseApi)
         
-        let fetchImageUseCase = DefaultFetchImageUseCase(
-            profilePhotoRepository: profilePhotoRepository,
-            imageCacheRepository: imageCacheRepository
-        )
         let acceptMateRequest = DefaultAcceptMateRequestUseCase(
             authRepository: authRepository,
             userPreviewRepository: userPreviewRepository,

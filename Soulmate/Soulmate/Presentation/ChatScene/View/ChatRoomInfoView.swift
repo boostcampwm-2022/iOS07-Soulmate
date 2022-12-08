@@ -139,6 +139,10 @@ final class ChatRoomInfoView: UIView {
         latestChatTime.text = info.lastChatDate?.passedTime()
         latestChatContentLabel.text = info.latestChatContent
     }
+    
+    func configure(image: UIImage) {
+        mateProfileImageView.image = image
+    }
 }
 
 private extension ChatRoomInfoView {
