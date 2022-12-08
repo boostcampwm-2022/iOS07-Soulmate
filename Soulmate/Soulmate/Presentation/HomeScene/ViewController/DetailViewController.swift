@@ -31,7 +31,7 @@ final class DetailViewController: UIViewController {
         case basicInfo(DetailBasicInfoViewModel)
     }
     
-    private var dataSource: UICollectionViewDiffableDataSource<SectionKind, ItemKind>!
+    private var dataSource: UICollectionViewDiffableDataSource<SectionKind, ItemKind>?
 
     private lazy var collectionView: UICollectionView = {
         let layout = createCompositionalLayout()
@@ -91,9 +91,8 @@ private extension DetailViewController {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] imageKeyList in
                 var snapshot = NSDiffableDataSourceSectionSnapshot<ItemKind>()
-                snapshot.append(imageKeyList.map { return ItemKind.photo($0) })
-                self?.dataSource.apply(snapshot, to: .photo)
-                
+                snapshot.append(imageKeyList.map { ItemKind.photo($0) })
+                self?.dataSource?.apply(snapshot, to: .photo)
                 self?.totalImagePageSubject.send(imageKeyList.count)
             }
             .store(in: &cancellables)
@@ -104,7 +103,7 @@ private extension DetailViewController {
             .sink { [weak self] previewViewModel in
                 var snapshot = NSDiffableDataSourceSectionSnapshot<ItemKind>()
                 snapshot.append([ItemKind.profile(previewViewModel)])
-                self?.dataSource.apply(snapshot, to: .profile)
+                self?.dataSource?.apply(snapshot, to: .profile)
             }
             .store(in: &cancellables)
         
@@ -114,7 +113,7 @@ private extension DetailViewController {
             .sink { [weak self] greeting in
                 var snapshot = NSDiffableDataSourceSectionSnapshot<ItemKind>()
                 snapshot.append([ItemKind.greeting(greeting)])
-                self?.dataSource.apply(snapshot, to: .greeting)
+                self?.dataSource?.apply(snapshot, to: .greeting)
             }
             .store(in: &cancellables)
         
@@ -124,7 +123,7 @@ private extension DetailViewController {
             .sink { [weak self] infoViewModel in
                 var snapshot = NSDiffableDataSourceSectionSnapshot<ItemKind>()
                 snapshot.append([ItemKind.basicInfo(infoViewModel)])
-                self?.dataSource.apply(snapshot, to: .basicInfo)
+                self?.dataSource?.apply(snapshot, to: .basicInfo)
             }
             .store(in: &cancellables)
     }
@@ -199,13 +198,13 @@ private extension DetailViewController {
             }
         }
         
-        self.dataSource.supplementaryViewProvider = { [weak self] (collectionView, kind, indexPath) in
+        self.dataSource?.supplementaryViewProvider = { [weak self] (collectionView, kind, indexPath) in
             return collectionView.dequeueConfiguredReusableSupplementary(using: footerViewRegistration, for: indexPath)
         }
         
         var snapshot = NSDiffableDataSourceSnapshot<SectionKind, ItemKind>()
         snapshot.appendSections(SectionKind.allCases)
-        self.dataSource.apply(snapshot, animatingDifferences: false)
+        self.dataSource?.apply(snapshot, animatingDifferences: false)
     }
     
 }
@@ -244,9 +243,9 @@ extension DetailViewController {
     
         section.boundarySupplementaryItems = [footer]
         section.visibleItemsInvalidationHandler = { [weak self] _, offset, _ -> Void in
-            guard let self = self else { return }
-            let page = round(offset.x / self.view.bounds.width)
-            self.currentImagePageSubject.send(Int(page))
+            guard let width = self?.view.bounds.width else { return }
+            let page = round(offset.x / width)
+            self?.currentImagePageSubject.send(Int(page))
         }
         return section
     }

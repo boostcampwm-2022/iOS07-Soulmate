@@ -70,7 +70,7 @@ final class HomeViewController: UIViewController {
         return collection
     }()
     
-    private var dataSource: UICollectionViewDiffableDataSource<SectionKind, ItemKind>!
+    private var dataSource: UICollectionViewDiffableDataSource<SectionKind, ItemKind>?
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nil, bundle: nil)
@@ -147,13 +147,13 @@ final class HomeViewController: UIViewController {
             }
         }
         
-        self.dataSource.supplementaryViewProvider = { [weak self] (collectionView, kind, indexPath) in
+        self.dataSource?.supplementaryViewProvider = { [weak self] (collectionView, kind, indexPath) in
             return collectionView.dequeueConfiguredReusableSupplementary(using: footerViewRegistration, for: indexPath)
         }
 
         var snapshot = NSDiffableDataSourceSnapshot<SectionKind, ItemKind>()
         snapshot.appendSections(SectionKind.allCases)
-        self.dataSource.apply(snapshot, animatingDifferences: false)
+        self.dataSource?.apply(snapshot, animatingDifferences: false)
     }
     
     private func createCompositionalLayout() -> UICollectionViewCompositionalLayout {
@@ -209,7 +209,7 @@ private extension HomeViewController {
             .sink { [weak self] previewViewModelList in
                 var snapshot = NSDiffableDataSourceSectionSnapshot<ItemKind>()
                 snapshot.append(previewViewModelList.map { return ItemKind.main($0) })
-                self?.dataSource.apply(snapshot, to: .main)
+                self?.dataSource?.apply(snapshot, to: .main)
             }
             .store(in: &bag)
     }
@@ -266,7 +266,6 @@ private extension HomeViewController {
 extension HomeViewController: UICollectionViewDelegate {
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let viewModel = viewModel else { return }
         switch indexPath.section {
         case 0:
             collectionViewSelectSubject.send(indexPath.row)
