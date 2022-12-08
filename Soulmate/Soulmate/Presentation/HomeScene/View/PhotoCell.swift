@@ -58,9 +58,6 @@ final class PhotoCell: UICollectionViewCell {
     }
     
     func fill(image: UIImage) {
-        let ratio = image.size.width / self.contentView.frame.width
-        
-        //imageView.image = image.resized(to: CGSize(width: self.contentView.frame.width * ratio, height: self.contentView.frame.height * ratio))
         imageView.image = image.resize(newWidth: self.contentView.frame.width)
         loadingIndicator.stopAnimating()
     }

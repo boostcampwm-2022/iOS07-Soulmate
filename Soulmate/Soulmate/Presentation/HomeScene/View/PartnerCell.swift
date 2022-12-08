@@ -22,7 +22,7 @@ final class PartnerCell: UICollectionViewCell {
     
     private lazy var partnerImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFill
+        imageView.contentMode = .center
         imageView.image = nil
         imageView.layer.cornerRadius = 14
         imageView.layer.cornerCurve = .continuous
