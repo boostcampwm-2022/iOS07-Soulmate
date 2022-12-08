@@ -38,6 +38,7 @@ disabled_rules:
  - colon
  - cyclomatic_complexity
  - closure_parameter_position
+ - void_return
 opt_in_rules:
 # - array_init
 # - attributes
