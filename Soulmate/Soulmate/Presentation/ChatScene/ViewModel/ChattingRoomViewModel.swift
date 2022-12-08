@@ -57,10 +57,10 @@ final class ChattingRoomViewModel {
         var chattingInitLoaded = PassthroughSubject<[Chat], Never>()
         var unreadChattingLoaded = PassthroughSubject<[Chat], Never>()
         var prevChattingLoaded = PassthroughSubject<[Chat], Never>()
-        var chatUpdated = PassthroughSubject<Chat, Never>()
-        var otherRead = PassthroughSubject<String, Never>()
+        var chatUpdated = PassthroughSubject<Chat, Never>()        
         var newMessageArrived = PassthroughSubject<[Chat], Never>()
-        var keyboardHeight = KeyboardMonitor().$keyboardHeight        
+        var keyboardHeight = KeyboardMonitor().$keyboardHeight
+        var otherIsEntered = PassthroughSubject<String, Never>()
     }
     
     func fetchProfileImage(of uid: String) async -> Data? {
@@ -154,6 +154,12 @@ final class ChattingRoomViewModel {
             .sink { chats in
                 
                 output.newMessageArrived.send(chats)
+            }
+            .store(in: &cancellables)
+        
+        self.listenOthersEnterStateUseCase.otherIsEntered
+            .sink { othersId in
+                output.otherIsEntered.send(othersId)
             }
             .store(in: &cancellables)
 

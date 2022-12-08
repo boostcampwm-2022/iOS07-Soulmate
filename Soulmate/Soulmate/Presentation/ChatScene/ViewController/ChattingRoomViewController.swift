@@ -285,9 +285,9 @@ private extension ChattingRoomViewController {
             }
             .store(in: &cancellabels)
         
-        output.otherRead            
-            .sink { [weak self] othersId in
-                self?.chatListView.update(notContaining: othersId)
+        output.otherIsEntered
+            .sink { othersId in
+                self.chatListView.update(notContaining: othersId)
             }
             .store(in: &cancellabels)
     }

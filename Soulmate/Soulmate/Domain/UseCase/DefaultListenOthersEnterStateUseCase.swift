@@ -17,6 +17,7 @@ final class DefaultListenOthersEnterStateUseCase: ListenOthersEnterStateUseCase 
     private let authRepository: AuthRepository
     private var listenerRegistration: ListenerRegistration?
     
+    var otherIsEntered = PassthroughSubject<String, Never>()    
     var othersEnterState = false
     
     init(
@@ -49,6 +50,9 @@ final class DefaultListenOthersEnterStateUseCase: ListenOthersEnterStateUseCase 
             
             if let state = document.data()?["state"] as? Bool {
                 self?.enterStateRepository.othersEnterState = state
+                if state {
+                    self?.otherIsEntered.send(othersId)
+                }
             }
         }
     }
