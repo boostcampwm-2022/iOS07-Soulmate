@@ -49,8 +49,7 @@ final class DefaultSendMessageUseCase: SendMessageUseCase {
         
         let chat = Chat(isMe: true, userId: uid, readUsers: [uid], text: messageToSend.value, date: date, state: .sending)
         myMessage.send(chat)
-        
-        await chattingRepository.updateUnreadCountToZero(of: chatRoomId, othersId: othersId)
+                
         let success = await chattingRepository.addMessage(
             MessageToSendDTO(
                 docId: chatRoomId,
@@ -66,6 +65,7 @@ final class DefaultSendMessageUseCase: SendMessageUseCase {
             var sendedChat = chat
             sendedChat.updateState(true, date)
             messageSended.send(sendedChat)
+            await chattingRepository.increaseUnreadCount(of: othersId, in: chatRoomId)
         } else {
             var failedChat = chat
             failedChat.updateState(false, nil)

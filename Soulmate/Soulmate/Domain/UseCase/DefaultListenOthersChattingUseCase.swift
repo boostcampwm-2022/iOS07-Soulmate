@@ -70,8 +70,7 @@ final class DefaultListenOthersChattingUseCase: ListenOthersChattingUseCase {
                 Task {
                     self.othersMessages.send(chats)
                     await self.chattingRepository.updateLastRead(of: chatRoomId)
-                    guard let othersId = self.info.userIds.first(where: { $0 != uid }) else { return }
-                    await self.chattingRepository.updateUnreadCountToZero(of: chatRoomId, othersId: othersId)
+                    guard let othersId = self.info.userIds.first(where: { $0 != uid }) else { return }                    
                     self.chattingRepository.setLastDocument(snapshot.documents.last)                    
                     self.listenerRegistration?.remove()
                     self.listenerRegistration = nil
