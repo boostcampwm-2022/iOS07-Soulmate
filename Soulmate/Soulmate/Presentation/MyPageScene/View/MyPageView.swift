@@ -27,7 +27,7 @@ final class MyPageView: UIView {
         let image = UIImage(named: "AppIcon")
         let imageView = UIImageView(image: image)
         imageView.layer.masksToBounds = true
-        imageView.contentMode = .scaleAspectFit
+        imageView.contentMode = .scaleAspectFill
         imageView.layer.cornerRadius = 78
         imageView.layer.borderWidth = 6
         imageView.layer.borderColor = UIColor.white.cgColor
