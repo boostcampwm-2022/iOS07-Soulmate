@@ -12,7 +12,7 @@ import Combine
 struct MyPageViewModelActions {
     var showMyInfoEditFlow: ((@escaping () -> Void) -> Void)?
     var showServiceTermFlow: (() -> Void)?
-    var showHeartShopFlow: (() -> Void)?
+    var showHeartShopFlow: ((@escaping () -> Void) -> Void)?
     var showDistanceFlow: (() -> Void)?
 }
 
@@ -61,7 +61,9 @@ class MyPageViewModel {
         
         input.didTappedHeartShopButton
             .sink { [weak self] in
-                self?.actions?.showHeartShopFlow?()
+                self?.actions?.showHeartShopFlow? { [weak self] in
+                    self?.loadInfo()
+                }
             }
             .store(in: &cancellables)
         
@@ -77,7 +79,9 @@ class MyPageViewModel {
             .sink { [weak self] in
                 switch $0 {
                 case 0:
-                    self?.actions?.showHeartShopFlow?()
+                    self?.actions?.showHeartShopFlow? {
+                        print("ss")
+                    }
                 case 1:
                     self?.actions?.showServiceTermFlow?()
                 case 2:
@@ -96,6 +100,7 @@ class MyPageViewModel {
     }
     
     func loadInfo() {
+        print("dd")
         Task { [weak self] in
             let preview = try await downLoadMyPreviewUseCase.downloadPreview()
             self?.userProfileInfo = preview

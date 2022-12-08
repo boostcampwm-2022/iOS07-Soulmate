@@ -36,11 +36,11 @@ class MyPageCoordinator: Coordinator {
         navigationController.pushViewController(vc, animated: true)
     }
     
-    lazy var showHeartShopVC: () -> Void = { [weak self] in
+    lazy var showHeartShopVC: ((@escaping () -> Void)) -> Void = { [weak self] handler in
         let coordinator = HeartShopCoordinator(navigationController: self?.navigationController ?? UINavigationController())
         self?.childCoordinators.append(coordinator)
         coordinator.finishDelegate = self
-        coordinator.start()
+        coordinator.start(completionHandler: handler)
     }
     
     lazy var showModificationVC: (@escaping () -> Void) -> Void = { [weak self] completionHandler in
