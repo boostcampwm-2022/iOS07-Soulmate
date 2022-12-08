@@ -13,6 +13,9 @@ final class ReceivedChatRequestsViewController: UIViewController {
     private var viewModel: ReceivedChatRequestsViewModel?
     private var cancellables = Set<AnyCancellable>()
     
+    private var acceptSubject = PassthroughSubject<ReceivedMateRequest, Never>()
+    private var denySubject = PassthroughSubject<String, Never>()
+    
     private lazy var chatRequestsView: UITableView = {
         let tableView = UITableView()
         view.addSubview(tableView)
@@ -21,6 +24,7 @@ final class ReceivedChatRequestsViewController: UIViewController {
         tableView.register(ReceivedChatRequestCell.self, forCellReuseIdentifier: ReceivedChatRequestCell.id)
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.delaysContentTouches = false
         
         return tableView
     }()
@@ -52,7 +56,9 @@ private extension ReceivedChatRequestsViewController {
     func bind() {
         let output = viewModel?.transform(
             input: ReceivedChatRequestsViewModel.Input(
-                viewDidLoad: Just(()).eraseToAnyPublisher()
+                viewDidLoad: Just(()).eraseToAnyPublisher(),
+                requestAccept: acceptSubject.eraseToAnyPublisher(),
+                requestDeny: denySubject.eraseToAnyPublisher()
             ),
             cancellables: &cancellables
         )
@@ -95,7 +101,16 @@ extension ReceivedChatRequestsViewController: UITableViewDelegate, UITableViewDa
         }
         
         cell.configure(with: request)
-        print(request.mateProfileImage)
+        cell.configureAccept { [weak self] in
+            print("눌림")
+            self?.acceptSubject.send(request)
+        }
+        cell.configureDeny { [weak self] in
+            if let documentId = request.documentId {
+                self?.denySubject.send(documentId)
+            }
+        }
+        
         Task {
             guard let imageData = await self.viewModel?.fetchProfileImage(key: request.mateProfileImage),
                   let uiImage = UIImage(data: imageData) else { return }

@@ -41,15 +41,22 @@ class DefaultChatCoordinator: ChatCoordinator {
         
         let profilePhotoRepository = DefaultProfilePhotoRepository(networkKeyValueStorageApi: networkKeyValueStorageApi)
         let imageCacheRepository = DefaultImageCacheRepository(imageCacheStorage: NSCacheImageCacheStorage.shared)
-        
+        let userPreviewRepository = DefaultUserPreviewRepository(networkDatabaseApi: networkDatabaseApi)
+        let chatRoomRepository = DefaultChatRoomRepository(networkDatabaseApi: networkDatabaseApi)
         let fetchImageUseCase = DefaultFetchImageUseCase(
             profilePhotoRepository: profilePhotoRepository,
             imageCacheRepository: imageCacheRepository
         )
+        let acceptMateRequest = DefaultAcceptMateRequestUseCase(
+            authRepository: authRepository,
+            userPreviewRepository: userPreviewRepository,
+            chatRoomRepository: chatRoomRepository
+        )
         let receivedChatRequestsViewModel = ReceivedChatRequestsViewModel(
             coordinator: self,
             listenMateRequestUseCase: listenMateRequestUseCase,
-            fetchImageUseCase: fetchImageUseCase
+            fetchImageUseCase: fetchImageUseCase,
+            acceptMateRequest: acceptMateRequest
         )
         let receivedChatRequestsVC = ReceivedChatRequestsViewController(viewModel: receivedChatRequestsViewModel)
         

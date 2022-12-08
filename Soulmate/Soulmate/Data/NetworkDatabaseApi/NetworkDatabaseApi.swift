@@ -10,7 +10,9 @@ import FirebaseFirestore
 
 protocol NetworkDatabaseApi {
     func create<T: Codable>(table: String, documentID: String, data: T) async throws
-    func create(path: String, data: [String: Any]) async -> Bool
+    func create<T: Encodable>(table: String, data: T) async throws -> String
+    func create(path: String, data: [String: Any]) async throws
+    func create(path: String, documentId: String, data: [String: Any]) async throws
     func read<T: Decodable>(table: String, documentID: String, type: T.Type) async throws -> T
     func read<T: Codable>(table: String, constraints: [QueryEntity], type: T.Type) async throws -> [T]
     func read<T: Decodable>(path: String, constraints: [QueryEntity], type: T.Type) async throws -> (data: [T], snapshot: QuerySnapshot)

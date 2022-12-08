@@ -167,7 +167,7 @@ private extension ChattingRoomViewController {
 private extension ChattingRoomViewController {
     func configureView() {
         
-        self.title = chatRoomInfo?.mateName
+        self.title = "수정해야함"
         view.backgroundColor = .white
     }
     

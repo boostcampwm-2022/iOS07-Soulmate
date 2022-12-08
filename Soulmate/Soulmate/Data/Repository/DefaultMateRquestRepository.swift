@@ -7,6 +7,7 @@
 
 import Foundation
 import FirebaseFirestore
+import FirebaseFirestoreSwift
 
 final class DefaultMateRquestRepository: MateRequestRepository {
     
@@ -17,8 +18,8 @@ final class DefaultMateRquestRepository: MateRequestRepository {
         self.networkDatabaseApi = networkDatabaseApi
     }
     
-    func sendMateRequest(request: SendMateRequest) async -> Bool {
-        return await networkDatabaseApi.create(
+    func sendMateRequest(request: SendMateRequest) async throws {
+        try await networkDatabaseApi.create(
             path: collectionTitle,
             data: request.toDTO().toDict()
         )
@@ -38,7 +39,7 @@ final class DefaultMateRquestRepository: MateRequestRepository {
 }
 
 protocol MateRequestRepository {
-    func sendMateRequest(request: SendMateRequest) async -> Bool
+    func sendMateRequest(request: SendMateRequest) async throws
     func listenOthersRequest(userId: String) -> Query
 }
 
@@ -85,6 +86,7 @@ extension SendMateRequest {
 
 
 struct ReceivedMateRequestDTO: Decodable {
+    @DocumentID var documentId: String?
     var createdAt: Timestamp
     var requestUserId: String
     var mateName: String
@@ -95,6 +97,7 @@ struct ReceivedMateRequestDTO: Decodable {
 extension ReceivedMateRequestDTO {
     func toDomain() -> ReceivedMateRequest {
         ReceivedMateRequest(
+            documentId: self.documentId,
             createdAt: self.createdAt.dateValue(),
             requestUserId: self.requestUserId,
             mateName: self.mateName,
@@ -105,6 +108,7 @@ extension ReceivedMateRequestDTO {
 }
 
 struct ReceivedMateRequest {
+    var documentId: String?
     var createdAt: Date
     var requestUserId: String
     var mateName: String

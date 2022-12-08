@@ -38,17 +38,10 @@ final class DefaultSendMateRequestUseCase: SendMateRequestUseCase {
             receivedUserId: mateId
         )
         
-        let result = await mateRequestRepository.sendMateRequest(request: sendMateRequest)
-        if !result {
-            throw MateRequestError.failed
-        }
+        try await mateRequestRepository.sendMateRequest(request: sendMateRequest)
     }
 }
 
 protocol SendMateRequestUseCase {
     func sendMateRequest(mateId: String) async throws
-}
-
-enum MateRequestError: Error {
-    case failed
 }

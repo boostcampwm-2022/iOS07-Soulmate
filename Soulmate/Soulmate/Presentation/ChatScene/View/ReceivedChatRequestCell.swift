@@ -45,6 +45,14 @@ final class ReceivedChatRequestCell: UITableViewCell {
     func configure(image: UIImage) {
         receivedChatRequestView.configure(image: image)
     }
+    
+    func configureAccept(action: (() -> ())?) {
+        receivedChatRequestView.configureAccept(action: action)
+    }
+    
+    func configureDeny(action: (() -> ())?) {
+        receivedChatRequestView.configureDeny(action: action)
+    }
 }
 
 private extension ReceivedChatRequestCell {

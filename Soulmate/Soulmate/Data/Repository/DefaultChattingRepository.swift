@@ -127,18 +127,6 @@ final class DefaultChattingRepository: ChattingRepository {
         }            
     }
     
-//    func updateLastRead(of chatRoomId: String) async {
-//        guard let uid = try? authRepository.currentUid() else { return }
-//        
-//        let path = "ChatRooms/\(chatRoomId)/LastRead"
-//        
-//        let _ = try? await networkDatabaseApi.update(
-//            table: path,
-//            documentID: uid,
-//            with: ["lastReadTime": Timestamp(date: Date.now)]
-//        )
-//    }
-    
     func updateUnreadCountToZero(of chatRoomId: String, othersId: String) {
         guard let uid = try? authRepository.currentUid() else { return }
         let path = "ChatRooms"
