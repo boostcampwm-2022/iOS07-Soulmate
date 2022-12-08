@@ -20,7 +20,6 @@ final class ChattingRoomViewController: UIViewController {
     private var messageSendSubject: AnyPublisher<Void, Never>?
     
     private var isInitLoad = true
-    private var isLoading = false
     
     private lazy var chatListView: ChatListView = {
         let listView = ChatListView(hostView: self.view)
@@ -63,6 +62,7 @@ final class ChattingRoomViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        addGestures()
         configureView()
         configureLayout()
         setPublishers()
@@ -102,8 +102,8 @@ extension ChattingRoomViewController: NSTextStorageDelegate {
 // MARK: - Load Prev Chats Delegate
 extension ChattingRoomViewController: LoadPrevChatDelegate {
     func loadPrevChats() {
-        print("채팅 로드")
-        // loadPrevChattingsSubject.send(())
+        
+        loadPrevChattingsSubject.send(())
     }
 }
 
@@ -117,28 +117,19 @@ private extension ChattingRoomViewController {
     }
 }
 
+// MARK: - gestures
+private extension ChattingRoomViewController {
+    
+    func addGestures() {
+        let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
+        
+        view.addGestureRecognizer(tapRecognizer)
+    }
+}
+
 // MARK: - UI Configure
 private extension ChattingRoomViewController {
     func configureView() {
-        
-        let hideKeyboardButton = UIBarButtonItem(
-            image: UIImage(systemName: "xmark"),
-            style: .plain,
-            target: self,
-            action: #selector(hideKeyboard)
-        )
-        
-        let loadPrevChattingsButton = UIBarButtonItem(
-            image: UIImage(systemName: "plus.message"),
-            style: .plain,
-            target: self,
-            action: #selector(loadPrevChattings)
-        )
-        
-        self.navigationItem.rightBarButtonItems = [
-            hideKeyboardButton,
-            loadPrevChattingsButton
-        ]
         
         self.title = chatRoomInfo?.mateName
         view.backgroundColor = .white
@@ -147,12 +138,6 @@ private extension ChattingRoomViewController {
     @objc
     func hideKeyboard() {
         view.endEditing(true)
-    }
-    
-    @objc
-    func loadPrevChattings() {
-        isLoading = true
-        loadPrevChattingsSubject.send(())
     }
 
     func configureLayout() {
@@ -213,6 +198,7 @@ private extension ChattingRoomViewController {
             .store(in: &cancellabels)
         
         output.chattingInitLoaded
+            .receive(on: DispatchQueue.main)
             .sink { [weak self] chats in
                 
                 guard !chats.isEmpty else {
@@ -229,19 +215,20 @@ private extension ChattingRoomViewController {
             .store(in: &cancellabels)
         
         output.unreadChattingLoaded
-            .sink { [weak self] chats in
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] chats in                
                 self?.chatListView.append(chats)
             }
             .store(in: &cancellabels)
         
         output.prevChattingLoaded
-            .sink { [weak self] chats in
-//                self?.dataInsert(chats)
-                self?.isLoading = false
+            .sink { [weak self] chats in                
+                self?.chatListView.fillBuffer(with: chats)
             }
             .store(in: &cancellabels)
         
         output.newMessageArrived
+            .receive(on: DispatchQueue.main)
             .sink { [weak self] chats in
                 let diff = (self?.bottomOffset().y ?? 0) - (self?.chatListView.contentOffset.y ?? 0)
                 self?.chatListView.append(chats)                 
@@ -256,14 +243,7 @@ private extension ChattingRoomViewController {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] chat in
                 
-//                guard let index = self?.dataSource?.snapshot().itemIdentifiers.firstIndex(
-//                    where: { old in
-//                        old.id == chat.id
-//                    }) else { return }
-//                guard var items = self?.dataSource?.snapshot().itemIdentifiers else { return }
-//                items[index] = chat
-//
-//                self?.loadData(items)
+                self?.chatListView.update(chat)
             }
             .store(in: &cancellabels)
         

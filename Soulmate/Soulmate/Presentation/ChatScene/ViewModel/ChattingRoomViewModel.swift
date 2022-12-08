@@ -15,11 +15,9 @@ final class ChattingRoomViewModel {
     private let loadUnreadChattingsUseCase: LoadUnreadChattingsUseCase
     private let loadPrevChattingsUseCase: LoadPrevChattingsUseCase
     private let listenOthersChattingsUseCase: ListenOthersChattingUseCase
-    private let listenOtherIsReadingUseCase: ListenOtherIsReadingUseCase
+//    private let listenOtherIsReadingUseCase: ListenOtherIsReadingUseCase
     private let imageKeyUseCase: ImageKeyUseCase
     private let fetchImageUseCase: FetchImageUseCase
-    private var newChattingSet = Set<Chat>()
-
     
     init(
         sendMessageUseCase: SendMessageUseCase,
@@ -27,7 +25,7 @@ final class ChattingRoomViewModel {
         loadUnreadChattingsUseCase: LoadUnreadChattingsUseCase,
         loadPrevChattingsUseCase: LoadPrevChattingsUseCase,
         listenOthersChattingsUseCase: ListenOthersChattingUseCase,
-        listenOtherIsReadingUseCase: ListenOtherIsReadingUseCase,
+//        listenOtherIsReadingUseCase: ListenOtherIsReadingUseCase,
         imageKeyUseCase: ImageKeyUseCase,
         fetchImageUseCase: FetchImageUseCase
     ) {
@@ -36,7 +34,7 @@ final class ChattingRoomViewModel {
         self.loadUnreadChattingsUseCase = loadUnreadChattingsUseCase
         self.loadPrevChattingsUseCase = loadPrevChattingsUseCase
         self.listenOthersChattingsUseCase = listenOthersChattingsUseCase
-        self.listenOtherIsReadingUseCase = listenOtherIsReadingUseCase
+//        self.listenOtherIsReadingUseCase = listenOtherIsReadingUseCase
         self.imageKeyUseCase = imageKeyUseCase
         self.fetchImageUseCase = fetchImageUseCase
     }
@@ -71,15 +69,21 @@ final class ChattingRoomViewModel {
         let output = Output()
         
         input.viewDidLoad
-            .sink { [weak self] _ in
-                self?.loadChattingsUseCase.loadChattings()
+            .sink { _ in
+                Task {
+                    let chats = await self.loadChattingsUseCase.loadChattings()
+                    output.chattingInitLoaded.send(chats)                    
+                    let unReadChats = await self.loadUnreadChattingsUseCase.loadUnreadChattings()
+                    output.unreadChattingLoaded.send(unReadChats)
+                    self.listenOthersChattingsUseCase.listenOthersChattings()
+                }
             }
             .store(in: &cancellables)
         
         input.viewWillDisappear
             .sink { [weak self] _ in
                 self?.listenOthersChattingsUseCase.removeListen()
-                self?.listenOtherIsReadingUseCase.removeListen()
+//                self?.listenOtherIsReadingUseCase.removeListen()
             }
             .store(in: &cancellables)
         
@@ -92,14 +96,19 @@ final class ChattingRoomViewModel {
         
         input.messageSendEvent?
             .throttle(for: 0.3, scheduler: RunLoop.main, latest: true)
-            .sink { [weak self] _ in
-                self?.sendMessageUseCase.sendMessage()
+            .sink { _ in
+                Task {
+                    await self.sendMessageUseCase.sendMessage()
+                }
             }
             .store(in: &cancellables)
         
         input.loadPrevChattings            
-            .sink { [weak self] _ in
-                self?.loadPrevChattingsUseCase.loadPrevChattings()
+            .sink { _ in
+                Task {
+                    let chats = await self.loadPrevChattingsUseCase.loadPrevChattings()
+                    output.prevChattingLoaded.send(chats)
+                }
             }
             .store(in: &cancellables)
         
@@ -109,30 +118,16 @@ final class ChattingRoomViewModel {
             }
             .store(in: &cancellables)
         
-        self.loadChattingsUseCase.initLoadedchattings
-            .sink { [weak self] chats in
-                
-                output.chattingInitLoaded.send(chats)
-                self?.loadUnreadChattingsUseCase.loadUnreadChattings()
-            }
-            .store(in: &cancellables)
+//        self.loadUnreadChattingsUseCase.unreadChattings
+//            .sink { [weak self] chats in
+//
+//                output.unreadChattingLoaded.send(chats)
+//                self?.listenOthersChattingsUseCase.listenOthersChattings()
+//                self?.listenOtherIsReadingUseCase.listenOtherIsReading()
+//            }
+//            .store(in: &cancellables)
         
-        self.loadUnreadChattingsUseCase.unreadChattings
-            .sink { [weak self] chats in
-                
-                output.unreadChattingLoaded.send(chats)                
-                self?.listenOthersChattingsUseCase.listenOthersChattings()
-                self?.listenOtherIsReadingUseCase.listenOtherIsReading()
-            }
-            .store(in: &cancellables)
-        
-        self.loadPrevChattingsUseCase.loadedPrevChatting
-            .sink { chats in
-                output.prevChattingLoaded.send(chats)
-            }
-            .store(in: &cancellables)
-        
-        self.sendMessageUseCase.newMessage
+        self.sendMessageUseCase.myMessage
             .sink { chat in                
                 output.newMessageArrived.send([chat])
             }
@@ -140,24 +135,22 @@ final class ChattingRoomViewModel {
         
         self.sendMessageUseCase.messageSended
             .sink { chat in
-                
                 output.chatUpdated.send(chat)
             }
             .store(in: &cancellables)
-        
-        self.listenOthersChattingsUseCase.newMessages
-            .sink { chats in
 
+        self.listenOthersChattingsUseCase.othersMessages
+            .sink { chats in
+                
                 output.newMessageArrived.send(chats)
             }
             .store(in: &cancellables)
-        
-        self.listenOtherIsReadingUseCase.otherRead
-            .sink { otherId in
-                output.otherRead.send(otherId)
-            }
-            .store(in: &cancellables)
-            
+//
+//        self.listenOtherIsReadingUseCase.otherRead
+//            .sink { otherId in
+//                output.otherRead.send(otherId)
+//            }
+//            .store(in: &cancellables)
 
         return output
     }

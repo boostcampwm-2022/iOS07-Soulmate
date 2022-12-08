@@ -44,31 +44,41 @@ class DefaultChatCoordinator: ChatCoordinator {
     }
     
     func showChatRoom(with info: ChatRoomInfo) {
-        let loadChattingRepository = DefaultLoadChattingsRepository()
+        let networkDatabaseApi = FireStoreNetworkDatabaseApi()
+        let authRepository = DefaultAuthRepository()
+        let chattingRepository = DefaultChattingRepository(authRepository: authRepository, networkDatabaseApi: networkDatabaseApi)
         let profilePhotoRepository = DefaultProfilePhotoRepository(
             networkKeyValueStorageApi: FirebaseNetworkKeyValueStorageApi()
         )
         let imageCacheRepository = DefaultImageCacheRepository(
             imageCacheStorage: NSCacheImageCacheStorage.shared
         )
-        let sendMessageUseCase = DefaultSendMessageUseCase(with: info)
+        let sendMessageUseCase = DefaultSendMessageUseCase(
+            with: info,
+            chattingRepository: chattingRepository,
+            authRepository: authRepository
+        )
         let loadChattingsUseCase = DefaultLoadChattingsUseCase(
             with: info,
-            loadChattingRepository: loadChattingRepository
+            chattingRepository: chattingRepository,
+            authRepository: authRepository
         )
         let loadUnreadChattingsUseCase = DefaultLoadUnreadChattingsUseCase(
             with: info,
-            loadChattingRepository: loadChattingRepository
+            chattingRepository: chattingRepository,
+            authRepository: authRepository
         )
         let loadPrevChattingsUseCase = DefaultLoadPrevChattingsUseCase(
             with: info,
-            loadChattingRepository: loadChattingRepository
+            chattingRepository: chattingRepository,
+            authRepository: authRepository
         )
         let listenOthersChattingsUseCase = DefaultListenOthersChattingUseCase(
             with: info,
-            loadChattingRepository: loadChattingRepository
+            chattingRepository: chattingRepository,
+            authRepository: authRepository
         )
-        let listenOtherIsReadingUseCase = DefaultListenOtherIsReadingUseCase(with: info)
+//        let listenOtherIsReadingUseCase = DefaultListenOtherIsReadingUseCase(with: info)
         let imageKeyUseCase = DefaultImageKeyUseCase()
         let fetchImageUseCase = DefaultFetchImageUseCase(
             profilePhotoRepository: profilePhotoRepository,
@@ -81,7 +91,7 @@ class DefaultChatCoordinator: ChatCoordinator {
             loadUnreadChattingsUseCase: loadUnreadChattingsUseCase,
             loadPrevChattingsUseCase: loadPrevChattingsUseCase,
             listenOthersChattingsUseCase: listenOthersChattingsUseCase,
-            listenOtherIsReadingUseCase: listenOtherIsReadingUseCase,
+//            listenOtherIsReadingUseCase: listenOtherIsReadingUseCase,
             imageKeyUseCase: imageKeyUseCase,
             fetchImageUseCase: fetchImageUseCase
         )

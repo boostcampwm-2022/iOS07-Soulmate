@@ -13,17 +13,21 @@ import FirebaseFirestoreSwift
 final class DefaultSendMessageUseCase: SendMessageUseCase {
     var messageToSend = CurrentValueSubject<String, Never>("")
     var sendButtonEnabled = CurrentValueSubject<Bool, Never>(false)
-    var newMessage = PassthroughSubject<Chat, Never>()
+    var myMessage = PassthroughSubject<Chat, Never>()
     var messageSended = PassthroughSubject<Chat, Never>()
-    
-    let db = Firestore.firestore()
+        
     private let info: ChatRoomInfo
-    private let uid = Auth.auth().currentUser?.uid
-    private let userDocRef: DocumentReference
+    private let chattingRepository: ChattingRepository
+    private let authRepository: AuthRepository     
     
-    init(with info: ChatRoomInfo) {
-        self.info = info
-        self.userDocRef = db.collection("UserDetailInfo").document("uid")
+    init(
+        with info: ChatRoomInfo,
+        chattingRepository: ChattingRepository,
+        authRepository: AuthRepository) {
+        
+            self.info = info
+            self.chattingRepository = chattingRepository
+            self.authRepository = authRepository
     }
     
     func updateMessage(_ text: String) {
@@ -36,48 +40,36 @@ final class DefaultSendMessageUseCase: SendMessageUseCase {
         }
     }
     
-    func sendMessage() {
-        guard let documentId = info.documentId, let uid = self.uid,
+    func sendMessage() async {
+        guard let chatRoomId = info.documentId,
+              let uid = try? authRepository.currentUid(),
               let othersId = info.userIds.first(where: { $0 != uid }) else { return }
-        let chat = Chat(isMe: true, userId: uid, readUsers: [uid], text: messageToSend.value, date: Date.now, state: .sending)
-        newMessage.send(chat)
-        Task { [weak self] in
-            var unreadCount = try await db.collection("ChatRooms").document(documentId).getDocument().data(as: ChatRoomInfoDTO.self).unreadCount
-            // FIXME: force unwrapping 수정하기
-            unreadCount[othersId]! += 1
-            try await db.collection("ChatRooms").document(documentId).updateData(["unreadCount": unreadCount])
-            
-            do {
-                let docRef = try db
-                    .collection("ChatRooms")
-                    .document(documentId)
-                    .collection("Messages")
-                    .addDocument(
-                        from: MessageToSendDTO(
-                            docId: documentId,
-                            text: messageToSend.value,
-                            userId: uid,
-                            readUsers: [uid],
-                            date: .init(date: Date.now)
-                        )
-                    )
-                let messageDoc = try await docRef.getDocument()
-                guard let messageTime = messageDoc.data()?["date"] as? Timestamp else { return }
-                try await db.collection("ChatRooms").document(documentId).updateData(
-                    [
-                        "lastMessage": messageToSend.value,
-                        "lastDate": messageTime
-                    ]
-                )
-                var sendedChat = chat
-                sendedChat.updateState(true, messageTime.dateValue())
-                self?.messageSended.send(sendedChat)
-            }
-            catch {
-                var failedChat = chat
-                failedChat.updateState(false, nil)
-                self?.messageSended.send(failedChat)
-            }
+        
+        let date = Date.now
+        
+        let chat = Chat(isMe: true, userId: uid, readUsers: [uid], text: messageToSend.value, date: date, state: .sending)
+        myMessage.send(chat)
+                
+        let success = await chattingRepository.addMessage(
+            MessageToSendDTO(
+                docId: chatRoomId,
+                text: messageToSend.value,
+                userId: uid,
+                readUsers: [uid],
+                date: .init(date: date)
+            ),
+            to: chatRoomId
+        )
+        
+        if success {
+            var sendedChat = chat
+            sendedChat.updateState(true, date)
+            messageSended.send(sendedChat)
+            await chattingRepository.increaseUnreadCount(of: othersId, in: chatRoomId)
+        } else {
+            var failedChat = chat
+            failedChat.updateState(false, nil)
+            messageSended.send(failedChat)
         }
     }
 }

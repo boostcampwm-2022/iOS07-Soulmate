@@ -13,4 +13,14 @@ struct MessageToSendDTO: Encodable {
     var userId: String
     var readUsers: [String]
     var date: Timestamp
+    
+    func toDict() -> [String: Any] {
+        return [
+            "docId": docId,
+            "text": text,
+            "userId": userId,
+            "readUsers": readUsers,
+            "date": date
+        ]
+    }
 }

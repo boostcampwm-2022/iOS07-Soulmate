@@ -29,6 +29,20 @@ extension Query {
             return self.whereField(entity.field, isLessThanOrEqualTo: entity.value)
         case .isGreaterThanOrEqualTo:
             return self.whereField(entity.field, isGreaterThanOrEqualTo: entity.value)
+        case .order:
+            return self.order(by: entity.field)
+        case .orderDescending:
+            return self.order(by: entity.field, descending: true)
+        case .limit:
+            let number = entity.value as? Int
+            return self.limit(to: number ?? 0)
+        case .limitToLast:
+            let number = entity.value as? Int
+            return self.limit(toLast: number ?? 0)
+        case .startAfterDocument:
+            let doc = entity.value as? DocumentSnapshot
+            // FIXME: - 강제 언래핑 안됨!
+            return self.start(afterDocument: doc!)
         }
     }
 }

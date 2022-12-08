@@ -12,6 +12,7 @@ final class ChatDataSource: NSObject, UICollectionViewDataSource {
     private var chats: [Chat] = []
     private(set) var offsets: [CGFloat] = []
     private var buffer: [Chat] = []
+    var isLoading = false
     
     var heights: [CGFloat] {
         return chats.map { $0.height }
@@ -61,6 +62,15 @@ extension ChatDataSource {
         }
     }
     
+    func update(_ chat: Chat) {
+        guard let index = chats.firstIndex(
+            where: { old in
+                old.id == chat.id
+            })else { return }
+        
+        chats[index] = chat
+    }
+    
     func insertBuffer() -> CGFloat {
         guard !buffer.isEmpty else { return 0 }
         
@@ -78,5 +88,9 @@ extension ChatDataSource {
         buffer = []
         
         return addedHeight
+    }
+    
+    func fillBuffer(with prevChats: [Chat]) {
+        buffer = prevChats + buffer
     }
 }

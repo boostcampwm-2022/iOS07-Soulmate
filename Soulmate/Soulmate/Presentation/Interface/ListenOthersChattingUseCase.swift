@@ -9,8 +9,8 @@ import Combine
 import FirebaseFirestore
 
 protocol ListenOthersChattingUseCase {
-    var newMessages: PassthroughSubject<[Chat], Never> { get }
-    
+    var othersMessages: PassthroughSubject<[Chat], Never> { get }
+        
     func removeListen()
     func listenOthersChattings()
 }

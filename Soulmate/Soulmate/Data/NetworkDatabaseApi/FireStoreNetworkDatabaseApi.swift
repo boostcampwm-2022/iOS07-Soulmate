@@ -18,9 +18,18 @@ class FireStoreNetworkDatabaseApi: NetworkDatabaseApi {
         let encoder = Firestore.Encoder()
         let fetchData = try encoder.encode(data)
         try await collection.document(documentID).setData(fetchData)
+        
     }
     
-    func read<T: Codable>(table: String, documentID: String, type: T.Type) async throws -> T {
+    func create(path: String, data: [String: Any]) async throws -> Bool {
+        if let _ = try? await db.collection(path).addDocument(data: data) {
+            return true
+        }
+        
+        return false
+    }
+    
+    func read<T: Decodable>(table: String, documentID: String, type: T.Type) async throws -> T {
         let snapshot = try await db.collection(table).document(documentID).getDocument()
         return try snapshot.data(as: T.self)
     }
@@ -36,6 +45,19 @@ class FireStoreNetworkDatabaseApi: NetworkDatabaseApi {
         return try snapshot.documents.map {
             try $0.data(as: T.self)
         }
+    }
+    
+    func read<T: Decodable>(path: String, constraints: [QueryEntity], type: T.Type) async throws -> (data: [T], snapshot: QuerySnapshot) {
+        var query = db.collection(path) as Query
+        
+        constraints.forEach {
+            query = query.merge(with: $0)
+        }
+        
+        let snapshot = try await query.getDocuments()
+        let data = try snapshot.documents.map { try $0.data(as: T.self) }
+        
+        return (data, snapshot)
     }
     
     func update(table: String, documentID: String, with fields: [AnyHashable: Any]) async throws {
@@ -75,5 +97,15 @@ class FireStoreNetworkDatabaseApi: NetworkDatabaseApi {
                 }
             }
         }
+    }
+    
+    func query(path: String, constraints: [QueryEntity]) -> Query {
+        var query = db.collection(path) as Query
+        
+        constraints.forEach {
+            query = query.merge(with: $0)
+        }
+        
+        return query
     }
 }
