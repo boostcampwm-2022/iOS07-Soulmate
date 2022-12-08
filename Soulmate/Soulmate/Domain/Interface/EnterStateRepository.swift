@@ -8,6 +8,7 @@
 import FirebaseFirestore
 
 protocol EnterStateRepository {
+    var othersEnterState: Bool { get set }
     func set(state: Bool, in chatRoomId: String, uid: String)
     func listenOtherEnterStateDocRef(in chatRoomId: String, othersId: String) -> DocumentReference
 }

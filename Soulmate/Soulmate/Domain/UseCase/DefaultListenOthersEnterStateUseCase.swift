@@ -13,7 +13,7 @@ import FirebaseFirestoreSwift
 
 final class DefaultListenOthersEnterStateUseCase: ListenOthersEnterStateUseCase {
     private let info: ChatRoomInfo
-    private let enterStateRepository: EnterStateRepository
+    private var enterStateRepository: EnterStateRepository
     private let authRepository: AuthRepository
     private var listenerRegistration: ListenerRegistration?
     
@@ -48,7 +48,7 @@ final class DefaultListenOthersEnterStateUseCase: ListenOthersEnterStateUseCase 
             guard let document = snapshot, err == nil else { return }
             
             if let state = document.data()?["state"] as? Bool {
-                self?.othersEnterState = state
+                self?.enterStateRepository.othersEnterState = state
             }
         }
     }

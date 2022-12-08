@@ -61,7 +61,8 @@ class DefaultChatCoordinator: ChatCoordinator {
         let sendMessageUseCase = DefaultSendMessageUseCase(
             with: info,
             chattingRepository: chattingRepository,
-            authRepository: authRepository
+            authRepository: authRepository,
+            enterStateRepository: enterStateRepository
         )
         let loadChattingsUseCase = DefaultLoadChattingsUseCase(
             with: info,

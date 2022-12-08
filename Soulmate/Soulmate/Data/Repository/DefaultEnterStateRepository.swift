@@ -15,6 +15,8 @@ final class DefaultEnterStateRepository: EnterStateRepository {
     init(authRepository: AuthRepository, networkDatabaseApi: NetworkDatabaseApi) {
         self.networkDatabaseApi = networkDatabaseApi
     }
+    
+    var othersEnterState: Bool = false
 
     func set(state: Bool, in chatRoomId: String, uid: String) {
         let path = "ChatRooms/\(chatRoomId)/EnterState"
