@@ -132,10 +132,16 @@ final class ChatRoomInfoView: UIView {
             unReadMessageCountBadge.isHidden = true
             unReadMessageCounterLabel.text = nil
         }
+                
+        guard let mateId = info.userIds.first(where: { $0 != uid }) else { return }
         
-        mateNameLabel.text = info.mateName
+        mateNameLabel.text = info.userNames[mateId]
         latestChatTime.text = info.lastChatDate?.passedTime()
         latestChatContentLabel.text = info.latestChatContent
+    }
+    
+    func configure(image: UIImage) {
+        mateProfileImageView.image = image
     }
 }
 

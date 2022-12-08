@@ -21,17 +21,45 @@ class DefaultChatCoordinator: ChatCoordinator {
     
     func start() {
         let loadChattingRoomListUseCase = DefaultLoadChattingRoomListUseCase()
+        
+        let networkKeyValueStorageApi = FirebaseNetworkKeyValueStorageApi()
+        let profilePhotoRepository = DefaultProfilePhotoRepository(networkKeyValueStorageApi: networkKeyValueStorageApi)
+        let imageCacheRepository = DefaultImageCacheRepository(imageCacheStorage: NSCacheImageCacheStorage.shared)
+        let fetchImageUseCase = DefaultFetchImageUseCase(
+            profilePhotoRepository: profilePhotoRepository,
+            imageCacheRepository: imageCacheRepository
+        )
         let chatRoomListViewModel = ChatRoomListViewModel(
             coordinator: self,
             loadChattingRoomListUseCase: loadChattingRoomListUseCase,
+            fetchImageUseCase: fetchImageUseCase,
             authUseCase: DefaultAuthUseCase()
         )
         let chatRoomListVC = ChatRoomListViewController(viewModel: chatRoomListViewModel)
         
-        let loadReceivedChatRequestsUseCase = DefaultLoadReceivedChatRequestsUseCase()
+        let networkDatabaseApi = FireStoreNetworkDatabaseApi()
+        let mateRequestRepository = DefaultMateRquestRepository(networkDatabaseApi: networkDatabaseApi)
+        let authRepository = DefaultAuthRepository()
+        let listenMateRequestUseCase = DefaultListenMateRequestUseCase(
+            mateRequestRepository: mateRequestRepository,
+            authRepository: authRepository
+        )
+        
+                
+        let userPreviewRepository = DefaultUserPreviewRepository(networkDatabaseApi: networkDatabaseApi)
+        let chatRoomRepository = DefaultChatRoomRepository(networkDatabaseApi: networkDatabaseApi)
+        
+        let acceptMateRequest = DefaultAcceptMateRequestUseCase(
+            authRepository: authRepository,
+            userPreviewRepository: userPreviewRepository,
+            chatRoomRepository: chatRoomRepository,
+            mateRequestRepository: mateRequestRepository
+        )
         let receivedChatRequestsViewModel = ReceivedChatRequestsViewModel(
             coordinator: self,
-            loadReceivedChatRequestsUseCase: loadReceivedChatRequestsUseCase
+            listenMateRequestUseCase: listenMateRequestUseCase,
+            fetchImageUseCase: fetchImageUseCase,
+            acceptMateRequest: acceptMateRequest
         )
         let receivedChatRequestsVC = ReceivedChatRequestsViewController(viewModel: receivedChatRequestsViewModel)
         
@@ -53,10 +81,16 @@ class DefaultChatCoordinator: ChatCoordinator {
         let imageCacheRepository = DefaultImageCacheRepository(
             imageCacheStorage: NSCacheImageCacheStorage.shared
         )
+        
+        let enterStateRepository = DefaultEnterStateRepository(
+            authRepository: authRepository,
+            networkDatabaseApi: networkDatabaseApi
+        )
         let sendMessageUseCase = DefaultSendMessageUseCase(
             with: info,
             chattingRepository: chattingRepository,
-            authRepository: authRepository
+            authRepository: authRepository,
+            enterStateRepository: enterStateRepository
         )
         let loadChattingsUseCase = DefaultLoadChattingsUseCase(
             with: info,
@@ -78,7 +112,17 @@ class DefaultChatCoordinator: ChatCoordinator {
             chattingRepository: chattingRepository,
             authRepository: authRepository
         )
-//        let listenOtherIsReadingUseCase = DefaultListenOtherIsReadingUseCase(with: info)
+        let listenOthersEnterStateUseCase = DefaultListenOthersEnterStateUseCase(
+            with: info,
+            enterStateRepository: enterStateRepository,
+            authRepository: authRepository
+        )
+        let enterChatRoomUseCase = DefaultEnterChatRoomUseCase(
+            with: info,
+            enterStateRepository: enterStateRepository,
+            authRepository: authRepository
+        )
+        
         let imageKeyUseCase = DefaultImageKeyUseCase()
         let fetchImageUseCase = DefaultFetchImageUseCase(
             profilePhotoRepository: profilePhotoRepository,
@@ -91,7 +135,8 @@ class DefaultChatCoordinator: ChatCoordinator {
             loadUnreadChattingsUseCase: loadUnreadChattingsUseCase,
             loadPrevChattingsUseCase: loadPrevChattingsUseCase,
             listenOthersChattingsUseCase: listenOthersChattingsUseCase,
-//            listenOtherIsReadingUseCase: listenOtherIsReadingUseCase,
+            listenOthersEnterStateUseCase: listenOthersEnterStateUseCase,
+            enterChatRoomUseCase: enterChatRoomUseCase,
             imageKeyUseCase: imageKeyUseCase,
             fetchImageUseCase: fetchImageUseCase
         )

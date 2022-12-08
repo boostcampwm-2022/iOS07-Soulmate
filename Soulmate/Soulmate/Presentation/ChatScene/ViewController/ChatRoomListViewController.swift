@@ -110,6 +110,17 @@ extension ChatRoomListViewController: UITableViewDelegate, UITableViewDataSource
         
         cell.configure(with: info, uid: uid)
         
+        Task {
+            guard let otherId = info.userIds.first(where: { $0 != uid }),
+                  let imageKey = info.userProfileImages[otherId],
+                  let imageData = await self.viewModel?.fetchProfileImage(key: imageKey),
+                  let uiImage = UIImage(data: imageData) else { return }
+            
+            if tableView.cellForRow(at: indexPath) != nil {
+                await MainActor.run { cell.configure(image: uiImage) }
+            }
+        }
+        
         return cell
     }
     

@@ -18,15 +18,25 @@ class FireStoreNetworkDatabaseApi: NetworkDatabaseApi {
         let encoder = Firestore.Encoder()
         let fetchData = try encoder.encode(data)
         try await collection.document(documentID).setData(fetchData)
-        
     }
     
-    func create(path: String, data: [String: Any]) async throws -> Bool {
-        if let _ = try? await db.collection(path).addDocument(data: data) {
-            return true
-        }
+    func create<T: Encodable>(table: String, data: T) async throws -> String {
+        let collection = db.collection(table)
+        let encoder = Firestore.Encoder()
+        let encodedData = try encoder.encode(data)
         
-        return false
+        let docRef = collection.document()
+        try await docRef.setData(encodedData)
+        
+        return docRef.documentID
+    }
+        
+    func create(path: String, data: [String: Any]) async throws {
+        try await db.collection(path).addDocument(data: data)
+    }
+    
+    func create(path: String, documentId: String, data: [String: Any]) async throws {
+        try await db.collection(path).document(documentId).setData(data)
     }
     
     func read<T: Decodable>(table: String, documentID: String, type: T.Type) async throws -> T {
@@ -81,6 +91,10 @@ class FireStoreNetworkDatabaseApi: NetworkDatabaseApi {
             }
         }
     }
+    
+    func update(path: String, documentId: String, with fields: [AnyHashable: Any]) {
+        db.collection(path).document(documentId).updateData(fields)
+    }
 
     func delete(table: String, constraints: [QueryEntity]) async throws {
         var query = db.collection(table) as Query
@@ -99,6 +113,12 @@ class FireStoreNetworkDatabaseApi: NetworkDatabaseApi {
         }
     }
     
+    func delete(path: String, documentId: String) async throws {
+        var docRef = db.collection(path).document(documentId)
+        
+        try await docRef.delete()
+    }
+    
     func query(path: String, constraints: [QueryEntity]) -> Query {
         var query = db.collection(path) as Query
         
@@ -107,5 +127,9 @@ class FireStoreNetworkDatabaseApi: NetworkDatabaseApi {
         }
         
         return query
+    }
+    
+    func documentRef(path: String, documentId: String) -> DocumentReference {
+        return db.collection(path).document(documentId)
     }
 }

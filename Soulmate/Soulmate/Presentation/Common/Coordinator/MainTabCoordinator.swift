@@ -17,22 +17,22 @@ enum TabBarPage: Int, CaseIterable {
     func pageTitleValue() -> String {
         switch self {
         case .home:
-            return "홈"
+            return ""
         case .chat:
-            return "채팅"
+            return ""
         case .myPage:
-            return "내정보"
+            return ""
         }
     }
     
     func pageTabIcon() -> UIImage? {
         switch self {
         case .home:
-            return UIImage(systemName: "house")
+            return UIImage(named: "nav1Off")
         case .chat:
-            return UIImage(systemName: "magnifyingglass")
+            return UIImage(named: "nav2Off")
         case .myPage:
-            return UIImage(systemName: "text.justify")
+            return UIImage(named: "nav3Off")
         }
     }
 }
@@ -54,6 +54,7 @@ final class MainTabCoordinator: NSObject, Coordinator {
     init(navigationController: UINavigationController) {
         self.navigationController = navigationController
         self.tabBarController = UITabBarController()
+        tabBarController.tabBar.tintColor = .mainPurple
     }
     
     func start() {        

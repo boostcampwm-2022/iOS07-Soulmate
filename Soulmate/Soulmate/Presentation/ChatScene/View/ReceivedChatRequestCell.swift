@@ -38,9 +38,20 @@ final class ReceivedChatRequestCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure(with request: ReceivedRequest) {
+    func configure(with request: ReceivedMateRequest) {
         receivedChatRequestView.configure(with: request)
-        
+    }
+    
+    func configure(image: UIImage) {
+        receivedChatRequestView.configure(image: image)
+    }
+    
+    func configureAccept(action: (() -> ())?) {
+        receivedChatRequestView.configureAccept(action: action)
+    }
+    
+    func configureDeny(action: (() -> ())?) {
+        receivedChatRequestView.configureDeny(action: action)
     }
 }
 

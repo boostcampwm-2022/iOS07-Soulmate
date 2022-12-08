@@ -17,6 +17,8 @@ final class ChattingRoomViewController: UIViewController {
     private var loadPrevChattingsSubject = PassthroughSubject<Void, Never>()
     private var newLineInputSubject = PassthroughSubject<Void, Never>()
     private var viewWillDisappearSubject = PassthroughSubject<Void, Never>()
+    private var resignActiveSubject = PassthroughSubject<Void, Never>()
+    private var didBecomeActiveSubejct = PassthroughSubject<Void, Never>()
     private var messageSendSubject: AnyPublisher<Void, Never>?
     
     private var isInitLoad = true
@@ -61,11 +63,11 @@ final class ChattingRoomViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         addGestures()
         configureView()
         configureLayout()
         setPublishers()
+        addNotifications()
         bind()
     }
     
@@ -85,6 +87,40 @@ final class ChattingRoomViewController: UIViewController {
         super.viewWillDisappear(animated)
         
         viewWillDisappearSubject.send(())
+    }
+}
+
+// MARK: - Notification
+extension ChattingRoomViewController {
+    func addNotifications() {
+        
+        let resignNotificationCenter = NotificationCenter.default
+        
+        resignNotificationCenter.addObserver(
+            self,
+            selector: #selector(appMovedToBackground),
+            name: UIApplication.willResignActiveNotification,
+            object: nil
+        )
+        
+        let activeNotificationCenter = NotificationCenter.default
+        
+        activeNotificationCenter.addObserver(
+            self,
+            selector: #selector(appDidActive),
+            name: UIApplication.didBecomeActiveNotification,
+            object: nil
+        )
+    }
+    
+    @objc
+    func appMovedToBackground() {
+        resignActiveSubject.send(())
+    }
+    
+    @objc
+    func appDidActive() {
+        didBecomeActiveSubejct.send(())
     }
 }
 
@@ -131,7 +167,7 @@ private extension ChattingRoomViewController {
 private extension ChattingRoomViewController {
     func configureView() {
         
-        self.title = chatRoomInfo?.mateName
+        self.title = "수정해야함"
         view.backgroundColor = .white
     }
     
@@ -172,6 +208,8 @@ private extension ChattingRoomViewController {
             input: ChattingRoomViewModel.Input(
                 viewDidLoad: Just(()).eraseToAnyPublisher(),
                 viewWillDisappear: viewWillDisappearSubject.eraseToAnyPublisher(),
+                resignActive: resignActiveSubject.eraseToAnyPublisher(),
+                didBecomeActive: didBecomeActiveSubejct.eraseToAnyPublisher(),
                 message: messageSubject.eraseToAnyPublisher(),
                 messageSendEvent: messageSendSubject,
                 loadPrevChattings: loadPrevChattingsSubject.eraseToAnyPublisher()
@@ -247,19 +285,9 @@ private extension ChattingRoomViewController {
             }
             .store(in: &cancellabels)
         
-        output.otherRead            
-            .sink { [weak self] otherId in
-//                guard var items = self?.dataSource?.snapshot().itemIdentifiers else { return }
-//
-//                for i in (0..<items.count).reversed() {
-//
-//                    if items[i].readUsers.contains(otherId) { break }
-//                    var chat = items[i]
-//                    chat.readUsers.append(otherId)
-//                    items[i] = chat
-//                }
-//
-//                self?.loadData(items)
+        output.otherIsEntered
+            .sink { othersId in
+                self.chatListView.update(notContaining: othersId)
             }
             .store(in: &cancellabels)
     }

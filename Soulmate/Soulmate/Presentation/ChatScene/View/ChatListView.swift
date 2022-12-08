@@ -40,11 +40,17 @@ final class ChatListView: UICollectionView {
         guard !data.isEmpty else { return }
         chatDataSource.append(data)
               
-        self.reloadData()        
+        self.reloadData()
     }
     
     func update(_ chat: Chat) {
         chatDataSource.update(chat)
+        
+        self.reloadData()
+    }
+    
+    func update(notContaining othersId: String) {
+        chatDataSource.update(notContaining: othersId)
         
         self.reloadData()
     }

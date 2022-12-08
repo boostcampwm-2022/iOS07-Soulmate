@@ -15,7 +15,6 @@ final class DefaultChattingRepository: ChattingRepository {
     
     var startDocument: QueryDocumentSnapshot?
     var lastDocument: QueryDocumentSnapshot?
-    
     var newMessages = PassthroughSubject<[Chat], Never>()
     
     init(authRepository: AuthRepository, networkDatabaseApi: NetworkDatabaseApi) {
@@ -27,7 +26,7 @@ final class DefaultChattingRepository: ChattingRepository {
         self.startDocument = doc
     }
     
-    func setLastDocument(_ doc: QueryDocumentSnapshot?) {
+    func setLastDocument(_ doc: QueryDocumentSnapshot?) {        
         self.lastDocument = doc
     }
     
@@ -125,28 +124,16 @@ final class DefaultChattingRepository: ChattingRepository {
             var arrReadUsers = readUsers.map { $0 }
             
             docRef.updateData(["readUsers": arrReadUsers])        
-        }
+        }            
     }
     
-    func updateLastRead(of chatRoomId: String) async {
-        guard let uid = try? authRepository.currentUid() else { return }
-        
-        let path = "ChatRooms/\(chatRoomId)/LastRead"
-        
-        let _ = try? await networkDatabaseApi.update(
-            table: path,
-            documentID: uid,
-            with: ["lastReadTime": Timestamp(date: Date.now)]
-        )
-    }
-    
-    func updateUnreadCountToZero(of chatRoomId: String, othersId: String) async {
+    func updateUnreadCountToZero(of chatRoomId: String, othersId: String) {
         guard let uid = try? authRepository.currentUid() else { return }
         let path = "ChatRooms"
         
-        let _ = try? await networkDatabaseApi.update(
-            table: path,
-            documentID: chatRoomId,
+        networkDatabaseApi.update(
+            path: path,
+            documentId: chatRoomId,
             with: ["unreadCount": [uid: 0.0, othersId: 0.0 ]]
         )
     }
@@ -199,6 +186,17 @@ final class DefaultChattingRepository: ChattingRepository {
         if let lastDocument {
             constraints.append(QueryEntity(field: "", value: lastDocument, comparator: .startAfterDocument))
         }
+        
+        let query = networkDatabaseApi.query(path: path, constraints: constraints)
+        
+        return query
+    }
+    
+    func listenOtherIsReading(from chatRoomId: String, userId: String) -> Query {
+        let path = "ChatRooms/\(chatRoomId)/LastRead"
+        var constraints = [
+            QueryEntity(field: "userId", value: userId, comparator: .isEqualTo)
+        ]
         
         let query = networkDatabaseApi.query(path: path, constraints: constraints)
         
