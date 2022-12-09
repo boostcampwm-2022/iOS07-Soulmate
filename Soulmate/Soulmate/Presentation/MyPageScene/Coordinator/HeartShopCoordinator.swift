@@ -24,17 +24,15 @@ class HeartShopCoordinator: Coordinator {
         // TODO: 마이페이지로 돌아왔을때 보유하트 로드해야함..
     }
     
-    func start(completionHandler: @escaping () -> Void) {
-        let repo = DefaultUserPreviewRepository(networkDatabaseApi: FireStoreNetworkDatabaseApi())
-        let usecase = DefaultHeartShopUseCase(userPreviewRepository: repo)
-        let vm = HeartShopViewModel(heartShopUseCase: usecase)
+    func start() {
+        let container = DIContainer.shared.container
+        guard let vm = container.resolve(HeartShopViewModel.self) else { return }
         vm.setActions(
             actions: HeartShopViewModelActions(
                 quitHeartShop: quitHeartShop,
                 chargeFinished: chargeFinished
             )
         )
-        vm.completionHandler = completionHandler
         let vc = HeartShopViewController(viewModel: vm)
         let nav = UINavigationController(rootViewController: vc)
         nav.modalPresentationStyle = .pageSheet

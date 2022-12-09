@@ -14,19 +14,10 @@ struct HeartShopViewModelActions {
 }
 
 class HeartShopViewModel: ViewModelable {
-    // 현재 데이터 바인딩 없음
+
+    // MARK: Interface defined AssociatedType
+    
     typealias Action = HeartShopViewModelActions
-    
-    let quantities = [30, 50, 100]
-    let prices = ["15,000원", "30,000원", "50,000원"]
-    
-    var heartShopUseCase: HeartShopUseCase?
-    var actions: Action?
-    var cancellables = Set<AnyCancellable>()
-    var didFinishCharging = PassthroughSubject<Void, Never>()
-    var completionHandler: (() -> Void)?
-    
-    @Published var selectedCellNumber: Int?
     
     struct Input {
         var didTappedHeartCell: AnyPublisher<Int, Never>
@@ -37,15 +28,35 @@ class HeartShopViewModel: ViewModelable {
         var didFinishCharging: AnyPublisher<Void, Never>
     }
     
+    // MARK: UseCase
+
+    let heartUpdateUseCase: HeartUpdateUseCase
+    
+    // MARK: Properties
+    
+    var actions: Action?
+    var cancellables = Set<AnyCancellable>()
+    var completionHandler: (() -> Void)?
+
+    let quantities = [30, 50, 100]
+    let prices = ["15,000원", "30,000원", "50,000원"]
+    
+    var didFinishCharging = PassthroughSubject<Void, Never>()
+    @Published var selectedCellNumber: Int?
+    
+    // MARK: Configuration
+    
     init(
-        heartShopUseCase: HeartShopUseCase
+        heartUpdateUseCase: HeartUpdateUseCase
     ) {
-        self.heartShopUseCase = heartShopUseCase
+        self.heartUpdateUseCase = heartUpdateUseCase
     }
     
     func setActions(actions: Action) {
         self.actions = actions
     }
+    
+    // MARK: Data Bind
     
     func transform(input: Input) -> Output {
         
@@ -65,19 +76,20 @@ class HeartShopViewModel: ViewModelable {
         return Output(didFinishCharging: didFinishCharging.eraseToAnyPublisher())
     }
     
+    // MARK: Logic
+
     func chargeHeart(row: Int) {
         Task {
             switch row {
             case 1:
-                await heartShopUseCase?.chargeHeart(heart: 30)
+                try? await heartUpdateUseCase.chargeHeart(heart: 30)
             case 2:
-                await heartShopUseCase?.chargeHeart(heart: 50)
+                try? await heartUpdateUseCase.chargeHeart(heart: 50)
             case 3:
-                await heartShopUseCase?.chargeHeart(heart: 100)
+                try? await heartUpdateUseCase.chargeHeart(heart: 100)
             default:
                 break
             }
-            didFinishCharging.send(())
             await MainActor.run {
                 actions?.chargeFinished?()
             }

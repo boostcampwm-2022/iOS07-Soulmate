@@ -110,6 +110,7 @@
 		6A4A007C2941F7300016ED58 /* DefaultMateRquestRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A4A007B2941F7300016ED58 /* DefaultMateRquestRepository.swift */; };
 		6A4A007E2941FB970016ED58 /* DefaultListenMateRequestUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A4A007D2941FB970016ED58 /* DefaultListenMateRequestUseCase.swift */; };
 		6A4A0080294201FC0016ED58 /* DefaultSendMateRequestUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A4A007F294201FC0016ED58 /* DefaultSendMateRequestUseCase.swift */; };
+		6A4A0082294244520016ED58 /* DefaultListenHeartUpdateUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A4A0081294244520016ED58 /* DefaultListenHeartUpdateUseCase.swift */; };
 		6A5ED83D2941C2D800AD9E82 /* DefaultEnterStateRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5ED83C2941C2D800AD9E82 /* DefaultEnterStateRepository.swift */; };
 		6A5ED83F2941C70B00AD9E82 /* EnterStateRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5ED83E2941C70B00AD9E82 /* EnterStateRepository.swift */; };
 		6A5ED8412941C7A100AD9E82 /* DefaultEnterChatRoomUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5ED8402941C7A100AD9E82 /* DefaultEnterChatRoomUseCase.swift */; };
@@ -210,7 +211,7 @@
 		B301025529322FB500481C6C /* HeartShopViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B301025429322FB500481C6C /* HeartShopViewController.swift */; };
 		B301025729329E8A00481C6C /* HeartShopCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B301025629329E8A00481C6C /* HeartShopCell.swift */; };
 		B301025B2934A80E00481C6C /* HeartShopCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B301025A2934A80E00481C6C /* HeartShopCoordinator.swift */; };
-		B301025D293DE90F00481C6C /* DefaultHeartShopUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = B301025C293DE90F00481C6C /* DefaultHeartShopUseCase.swift */; };
+		B301025D293DE90F00481C6C /* DefaultHeartUpdateUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = B301025C293DE90F00481C6C /* DefaultHeartUpdateUseCase.swift */; };
 		B301025F293E0C7C00481C6C /* HeartShopViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B301025E293E0C7C00481C6C /* HeartShopViewModel.swift */; };
 		B303D651292367CF00414293 /* ProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B303D650292367CF00414293 /* ProgressBar.swift */; };
 		B30A8ECE291C953F00ED4906 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = B30A8ECD291C953F00ED4906 /* FirebaseAnalytics */; };
@@ -338,6 +339,7 @@
 		6A4A007B2941F7300016ED58 /* DefaultMateRquestRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultMateRquestRepository.swift; sourceTree = "<group>"; };
 		6A4A007D2941FB970016ED58 /* DefaultListenMateRequestUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultListenMateRequestUseCase.swift; sourceTree = "<group>"; };
 		6A4A007F294201FC0016ED58 /* DefaultSendMateRequestUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultSendMateRequestUseCase.swift; sourceTree = "<group>"; };
+		6A4A0081294244520016ED58 /* DefaultListenHeartUpdateUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultListenHeartUpdateUseCase.swift; sourceTree = "<group>"; };
 		6A5ED83C2941C2D800AD9E82 /* DefaultEnterStateRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultEnterStateRepository.swift; sourceTree = "<group>"; };
 		6A5ED83E2941C70B00AD9E82 /* EnterStateRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterStateRepository.swift; sourceTree = "<group>"; };
 		6A5ED8402941C7A100AD9E82 /* DefaultEnterChatRoomUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultEnterChatRoomUseCase.swift; sourceTree = "<group>"; };
@@ -439,7 +441,7 @@
 		B301025429322FB500481C6C /* HeartShopViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartShopViewController.swift; sourceTree = "<group>"; };
 		B301025629329E8A00481C6C /* HeartShopCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartShopCell.swift; sourceTree = "<group>"; };
 		B301025A2934A80E00481C6C /* HeartShopCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartShopCoordinator.swift; sourceTree = "<group>"; };
-		B301025C293DE90F00481C6C /* DefaultHeartShopUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultHeartShopUseCase.swift; sourceTree = "<group>"; };
+		B301025C293DE90F00481C6C /* DefaultHeartUpdateUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultHeartUpdateUseCase.swift; sourceTree = "<group>"; };
 		B301025E293E0C7C00481C6C /* HeartShopViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = HeartShopViewModel.swift; path = Soulmate/Domain/UseCase/HeartShopViewModel.swift; sourceTree = SOURCE_ROOT; };
 		B303D650292367CF00414293 /* ProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBar.swift; sourceTree = "<group>"; };
 		B30A8F0E291CB4AC00ED4906 /* PhoneNumberViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneNumberViewController.swift; sourceTree = "<group>"; };
@@ -698,12 +700,13 @@
 				6A34C27A2935E5C200A3E57F /* DefaultFetchImageUseCase.swift */,
 				6A9452F42937D3050041B71D /* DefaultDownLoadMyPreviewUseCase.swift */,
 				6A9453002938FAF80041B71D /* DefaultAuthUseCase.swift */,
-				B301025C293DE90F00481C6C /* DefaultHeartShopUseCase.swift */,
+				B301025C293DE90F00481C6C /* DefaultHeartUpdateUseCase.swift */,
 				6A25C643293F31BC00CDC1BC /* DefaultSetDistanceUseCase.swift */,
 				6A25C645293F31C900CDC1BC /* DefaultGetDistanceUseCase.swift */,
 				6A4A007D2941FB970016ED58 /* DefaultListenMateRequestUseCase.swift */,
 				6A4A007F294201FC0016ED58 /* DefaultSendMateRequestUseCase.swift */,
 				6A5ED84829421BEA00AD9E82 /* DefaultAcceptMateRequestUseCase.swift */,
+				6A4A0081294244520016ED58 /* DefaultListenHeartUpdateUseCase.swift */,
 			);
 			path = UseCase;
 			sourceTree = "<group>";
@@ -1278,6 +1281,7 @@
 				6A0041FD2919EE7B0042E02F /* ServiceTermViewController.swift in Sources */,
 				6AB6B9D6292EC59B00A029BD /* DefaultDownLoadPictureUseCase.swift in Sources */,
 				6AB6B9CE292EC15300A029BD /* DefaultMateRecommendationUseCase.swift in Sources */,
+				6A4A0082294244520016ED58 /* DefaultListenHeartUpdateUseCase.swift in Sources */,
 				6A5ED8472941CAC900AD9E82 /* ListenOthersEnterStateUseCase.swift in Sources */,
 				6AFFB5772940AFFA00266E61 /* HomePreviewViewModel.swift in Sources */,
 				6A34C221292E55EA00A3E57F /* MessageInfo.swift in Sources */,
@@ -1338,7 +1342,7 @@
 				6A8C88942919031A009EDBBB /* ViewController.swift in Sources */,
 				6A34C1ED292B3A3A00A3E57F /* ChattingRoomViewModel.swift in Sources */,
 				6AECA1D8293B8C390035A9AE /* ChatListView.swift in Sources */,
-				B301025D293DE90F00481C6C /* DefaultHeartShopUseCase.swift in Sources */,
+				B301025D293DE90F00481C6C /* DefaultHeartUpdateUseCase.swift in Sources */,
 				6A34C230292F273C00A3E57F /* ReceivedChatRequestsViewController.swift in Sources */,
 				6A34C201292C97BC00A3E57F /* ChatRoomListViewModel.swift in Sources */,
 				6A5ED84B29421C6900AD9E82 /* DefaultChatRoomRepository.swift in Sources */,

@@ -13,15 +13,11 @@ struct DetailViewModelActions {
 }
 
 final class DetailViewModel: ViewModelable {
-    var cancellables = Set<AnyCancellable>()
     
+    // MARK: Interface defined AssociatedType
+
     typealias Action = DetailViewModelActions
-    var actions: Action?
-    
-    let downloadPictureUseCase: DownLoadPictureUseCase
-    let downloadDetailInfoUseCase: DownLoadDetailInfoUseCase
-    let sendMateRequestUseCase: SendMateRequestUseCase
-    
+
     struct Input {
         var didTappedMateRegistrationButton: AnyPublisher<Void, Never>
     }
@@ -32,13 +28,24 @@ final class DetailViewModel: ViewModelable {
         var didFetchedGreeting: AnyPublisher<String?, Never>
         var didFetchedBasicInfo: AnyPublisher<DetailBasicInfoViewModel?, Never>
     }
+    
+    // MARK: UseCase
+    
+    let downloadPictureUseCase: DownLoadPictureUseCase
+    let downloadDetailInfoUseCase: DownLoadDetailInfoUseCase
+    let sendMateRequestUseCase: SendMateRequestUseCase
+    
+    // MARK: Properties
+    
+    var actions: Action?
+    var cancellables = Set<AnyCancellable>()
 
     @Published var imageKeyList: [String]?
     @Published var detailPreviewViewModel: DetailPreviewViewModel?
     @Published var greetingMessage: String?
     @Published var basicInfo: DetailBasicInfoViewModel?
     
-
+    // MARK: Configuration
     
     init(
         downloadPictureUseCase: DownLoadPictureUseCase,
@@ -79,6 +86,8 @@ final class DetailViewModel: ViewModelable {
         }
     }
     
+    // MARK: Data Bind
+    
     func transform(input: Input) -> Output {
         
         input.didTappedMateRegistrationButton
@@ -95,12 +104,13 @@ final class DetailViewModel: ViewModelable {
         )
     }
     
+    // MARK: Logic
+    
     func fetchImage(key: String) async throws -> Data? {
         return try await downloadPictureUseCase.downloadPhotoData(keyList: [key]).first
     }
     
     func sendMateRequest() {
-        // 대화 친구 신청 시 처리하는 로직 부분
         Task {
             guard let mateId = detailPreviewViewModel?.uid else { return }
             do {
