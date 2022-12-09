@@ -71,8 +71,8 @@ final class OtherChatView: UIView {
     func configure(with chat: Chat) {
         chatLabel.text = chat.text
         timeLabel.text = chat.date?.aHmm() ?? "..."
-        if let count = unreadCount(of: chat) {
-            readCount.text = "\(count)"
+        if let n = unreadCount(of: chat) {
+            readCount.text = n == 0 ? nil : "\(n)"
         }
     }
     
@@ -108,7 +108,7 @@ final class OtherChatView: UIView {
     }
     
     private func unreadCount(of chat: Chat) -> Int? {
-        guard 0..<2 ~= chat.readUsers.count else { return nil }
+        guard 1...2 ~= chat.readUsers.count else { return nil }
         return 2 - chat.readUsers.count
     }
 }
