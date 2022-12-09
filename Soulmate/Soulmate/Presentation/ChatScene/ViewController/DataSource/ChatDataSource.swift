@@ -8,42 +8,41 @@
 import UIKit
 
 final class ChatDataSource: NSObject, UICollectionViewDataSource {
+
+    struct ChatDateHeader {
+        var date: String
+        var height: CGFloat
+    }
     
-    private var chats: [Chat] = []
-    private(set) var offsets: [CGFloat] = []
+    private(set) var headers: [ChatDateHeader] = []
+    private(set) var chats: [[Chat]] = []
+    private var dateIndex: [String: Int] = [:]
+    private var chatIndex: [String: (section: Int, item: Int)] = [:]
     private var buffer: [Chat] = []
     var isLoading = false
     
-    var heights: [CGFloat] {
-        return chats.map { $0.height }
+    var maxY: CGFloat {
+        var y: CGFloat = 0
+        headers.forEach { y += $0.height }
+        chats.forEach { $0.forEach { y += $0.height } }
+        
+        return y
     }
-    
-    var ids: [String] {
-        return chats.map { $0.id }
-    }
-    
-    var count: Int {
-        return chats.count
-    }
-    
-    var endIndex: Int {
-        return chats.endIndex
-    }
-    
+
     var isBufferEmpty: Bool {
         return buffer.isEmpty
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
+        return headers.count
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return chats.count
+        return chats[section].count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let chat = chats[indexPath.item]
+        let chat = chats[indexPath.section][indexPath.row]
         
         if chat.isMe {
             return MyChatCell.dequeue(from: collectionView, at: indexPath, with: chat)
@@ -51,53 +50,71 @@ final class ChatDataSource: NSObject, UICollectionViewDataSource {
             return OtherChatCell.dequeu(from: collectionView, at: indexPath, with: chat)
         }
     }
+    
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        
+        let header = headers[indexPath.section]
+        
+        return ChatDateHeaderView.dequeu(from: collectionView, at: indexPath, date: header.date)
+    }
 }
 
 extension ChatDataSource {
     
     func append(_ data: [Chat]) {
-        chats += data
         for chat in data {
-            offsets.append((offsets.last ?? 0) + chat.height)
+            
+            guard let stringDate = chat.date?.yyyyMMddEEEE() else { continue }
+            
+            if dateIndex[stringDate] == nil {
+                chats.append([chat])
+                headers.append(ChatDateHeader(date: stringDate, height: 30))
+                dateIndex[stringDate] = chats.count - 1
+                chatIndex[chat.id] = (chats.count - 1, 0)
+            } else if let index = dateIndex[stringDate] {
+                chats[index].append(chat)
+                chatIndex[chat.id] = (chats.count - 1, chats[index].count - 1)
+            }
         }
     }
     
     func update(_ chat: Chat) {
-        guard let index = chats.firstIndex(
-            where: { old in
-                old.id == chat.id
-            })else { return }
+
+        guard let index = chatIndex[chat.id] else { return }
         
-        chats[index] = chat
+        chats[index.section][index.item] = chat
     }
     
     func update(notContaining otherId: String) {
-        for i in (0..<chats.count).reversed() {
-            
-            if chats[i].readUsers.contains(otherId) { continue }
-            var chat = chats[i]
-            chat.readUsers.append(otherId)
-            chats[i] = chat
+
+        for section in (0..<chats.count).reversed() {
+            for item in (0..<chats[section].count).reversed() {
+                if chats[section][item].readUsers.contains(otherId) { break }
+                chats[section][item].readUsers.append(otherId)
+            }
         }
     }
     
     func insertBuffer() -> CGFloat {
         guard !buffer.isEmpty else { return 0 }
         
-        chats = buffer + chats
-        offsets.removeAll()
+        let beforeHeight = maxY
         
-        for chat in chats {
-            offsets.append((offsets.last ?? 0) + chat.height)
-        }
+        let oldChats = chats.flatMap { $0 }
+        let newChats = buffer + oldChats
         
-        let addedHeight = buffer.reduce(0) { partialResult, chat in
-            return partialResult + chat.height
-        }
+        headers.removeAll()
+        chats.removeAll()
+        dateIndex.removeAll()
+        chatIndex.removeAll()
+        
+        append(newChats)
+        
+        let afterHeight = maxY
         
         buffer = []
         
-        return addedHeight
+        return afterHeight - beforeHeight
     }
     
     func fillBuffer(with prevChats: [Chat]) {

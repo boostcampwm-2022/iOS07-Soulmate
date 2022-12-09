@@ -10,7 +10,7 @@ import UIKit
 final class ChatListLayout: UICollectionViewLayout {        
     
     private var computedContentSize: CGSize = .zero
-    private var cellAttributes = [UICollectionViewLayoutAttributes]()
+    private var attributes = [UICollectionViewLayoutAttributes]()
     private var cellIds = [String]()
     
     override var collectionViewContentSize: CGSize {
@@ -20,50 +20,54 @@ final class ChatListLayout: UICollectionViewLayout {
     override func prepare() {
         
         guard let collectionView,
-              let dataSource = collectionView.dataSource as? ChatDataSource,
-              !dataSource.ids.isEmpty else { return }
-        
-        let ids = dataSource.ids
-        let heights = dataSource.heights
-        let yOffsets = dataSource.offsets
-        
-        // FIXME: Refactoring 필요
-        let cacheFirst = cellIds.first ?? ""
-        let cacheLast = cellIds.last ?? ""
-        let dataSourceFirst = ids.first ?? ""
-        let dataSourceLast = ids.last ?? ""
+              let dataSource = collectionView.dataSource as? ChatDataSource else { return }
                 
-        var startItem = 0
+        attributes = [UICollectionViewLayoutAttributes]()
         
-        if cacheFirst == dataSourceFirst && cacheLast == dataSourceLast {
-            return
-        } else if cacheFirst != dataSourceFirst {
-            cellAttributes = [UICollectionViewLayoutAttributes]()
-        } else if cacheFirst == dataSourceFirst && cacheLast != dataSourceLast {
-            startItem = cellAttributes.count
-        }                
+        var yOffset: CGFloat = 0
         
         for section in 0..<collectionView.numberOfSections {
-            for item in startItem..<collectionView.numberOfItems(inSection: section) {
+            
+            let header = dataSource.headers[section]
+            
+            let headerAttributes = UICollectionViewLayoutAttributes(
+                forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+                with: IndexPath(item: 0, section: section)
+            )
+            
+            let headerFrame = CGRect(
+                x: 0,
+                y: yOffset,
+                width: collectionView.bounds.size.width,
+                height: header.height
+            )
+            
+            headerAttributes.frame = headerFrame
+            attributes.append(headerAttributes)
+            yOffset += header.height
+            
+            for item in 0..<collectionView.numberOfItems(inSection: section) {
                 
                 let indexPath = IndexPath(item: item, section: section)
-                                    
-                let cellHeight = heights[item]
+                let chat = dataSource.chats[section][item]
+                
+                let cellHeight = chat.height
                 let cellWidth = collectionView.bounds.size.width
-                let cellOffset = yOffsets[item] - cellHeight
+                let cellOffset = yOffset
                 
                 let itemFrame = CGRect(x: 0, y: cellOffset, width: cellWidth, height: cellHeight)
                 
-                let attributes = UICollectionViewLayoutAttributes(forCellWith: indexPath)
-                attributes.frame = itemFrame
-                cellAttributes.append(attributes)
-                cellIds.append(ids[item])
+                let cellAttributes = UICollectionViewLayoutAttributes(forCellWith: indexPath)
+                cellAttributes.frame = itemFrame
+                attributes.append(cellAttributes)
+                
+                yOffset += cellHeight
             }
         }
         
         let contentWidth = collectionView.bounds.size.width
-        let contentHeight = max(collectionView.bounds.size.height, dataSource.offsets.last ?? 0)
-        
+        let contentHeight = max(collectionView.bounds.size.height, yOffset)
+            
         computedContentSize = CGSize(width: contentWidth, height: contentHeight)
     }        
     
@@ -71,7 +75,7 @@ final class ChatListLayout: UICollectionViewLayout {
         
         var attributeList = [UICollectionViewLayoutAttributes]()
         
-        let index: Int? = binarySearch(cellAttributes) { (attribute) -> ComparisonResult in
+        let index: Int? = binarySearch(attributes) { (attribute) -> ComparisonResult in
             if attribute.frame.intersects(rect) {
                 return .orderedSame
             }
@@ -83,21 +87,17 @@ final class ChatListLayout: UICollectionViewLayout {
         
         guard let index else { return [] }
         
-        for attributes in cellAttributes[..<index].reversed() {
-            guard attributes.frame.maxY >= rect.minY else { break }
-            attributeList.append(attributes)
+        for itemAttributes in attributes[..<index].reversed() {
+            guard itemAttributes.frame.maxY >= rect.minY else { break }
+            attributeList.append(itemAttributes)
         }
         
-        for attributes in cellAttributes[index...] {
-            guard attributes.frame.minY <= rect.maxY else { break }
-            attributeList.append(attributes)
+        for itemAttributes in attributes[index...] {
+            guard itemAttributes.frame.minY <= rect.maxY else { break }
+            attributeList.append(itemAttributes)
         }                
         
         return attributeList
-    }
-    
-    override func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
-        return nil
     }
     
     func binarySearch<T: Any>(_ a: [T], where compare: ((T)-> ComparisonResult)) -> Int? {

@@ -21,6 +21,7 @@ final class ChatListView: UICollectionView {
         self.dataSource = chatDataSource
         MyChatCell.register(with: self)
         OtherChatCell.register(with: self)
+        ChatDateHeaderView.register(with: self)
         
         self.delegate = chatListDelegate
         chatListDelegate.chatList = self
@@ -71,7 +72,7 @@ final class ChatListView: UICollectionView {
     
     func scrollToBottomByOffset() {
         
-        let maxY = chatDataSource.offsets.last ?? 0
+        let maxY = chatDataSource.maxY
         let height = self.bounds.size.height
         let yOffset = maxY - height + self.contentInset.bottom
         

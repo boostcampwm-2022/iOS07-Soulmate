@@ -119,6 +119,8 @@
 		6A5ED84B29421C6900AD9E82 /* DefaultChatRoomRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5ED84A29421C6900AD9E82 /* DefaultChatRoomRepository.swift */; };
 		6A5ED84D2942255000AD9E82 /* ChatRoomRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5ED84C2942255000AD9E82 /* ChatRoomRepository.swift */; };
 		6A5ED84F29422BF800AD9E82 /* AcceptMateRequestUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5ED84E29422BF800AD9E82 /* AcceptMateRequestUseCase.swift */; };
+		6A5ED853294318E000AD9E82 /* ChatDateHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5ED852294318E000AD9E82 /* ChatDateHeaderView.swift */; };
+		6A5ED8552943358200AD9E82 /* Date+compare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5ED8542943358200AD9E82 /* Date+compare.swift */; };
 		6A5ED916293EEE5700A284F7 /* DefaultChattingRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5ED915293EEE5600A284F7 /* DefaultChattingRepository.swift */; };
 		6A5ED918293EEE6000A284F7 /* ChattingRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5ED917293EEE6000A284F7 /* ChattingRepository.swift */; };
 		6A8377A92924A3FC00BC7112 /* RegisterNickNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A8377A82924A3FC00BC7112 /* RegisterNickNameView.swift */; };
@@ -343,6 +345,8 @@
 		6A5ED84A29421C6900AD9E82 /* DefaultChatRoomRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultChatRoomRepository.swift; sourceTree = "<group>"; };
 		6A5ED84C2942255000AD9E82 /* ChatRoomRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomRepository.swift; sourceTree = "<group>"; };
 		6A5ED84E29422BF800AD9E82 /* AcceptMateRequestUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcceptMateRequestUseCase.swift; sourceTree = "<group>"; };
+		6A5ED852294318E000AD9E82 /* ChatDateHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatDateHeaderView.swift; sourceTree = "<group>"; };
+		6A5ED8542943358200AD9E82 /* Date+compare.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+compare.swift"; sourceTree = "<group>"; };
 		6A5ED915293EEE5600A284F7 /* DefaultChattingRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultChattingRepository.swift; sourceTree = "<group>"; };
 		6A5ED917293EEE6000A284F7 /* ChattingRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChattingRepository.swift; sourceTree = "<group>"; };
 		6A8377A82924A3FC00BC7112 /* RegisterNickNameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNickNameView.swift; sourceTree = "<group>"; };
@@ -759,6 +763,7 @@
 		6A34C1D9292B214000A3E57F /* View */ = {
 			isa = PBXGroup;
 			children = (
+				6A5ED852294318E000AD9E82 /* ChatDateHeaderView.swift */,
 				6A34C1DA292B216A00A3E57F /* OtherChatCell.swift */,
 				6A34C1E1292B233300A3E57F /* MyChatCell.swift */,
 				6A34C1DC292B21D800A3E57F /* OtherChatView.swift */,
@@ -809,6 +814,7 @@
 				B331CECF292B854500F17AED /* UIImage.swift */,
 				6A34C20D292DBCD400A3E57F /* Date+toString.swift */,
 				07497020292E7B26002F607D /* Date+toAge.swift */,
+				6A5ED8542943358200AD9E82 /* Date+compare.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -1248,6 +1254,7 @@
 				6A34C27B2935E5C200A3E57F /* DefaultFetchImageUseCase.swift in Sources */,
 				6A34C1DB292B216A00A3E57F /* OtherChatCell.swift in Sources */,
 				6A34C2812936513200A3E57F /* LoadUnreadChattingsUseCase.swift in Sources */,
+				6A5ED853294318E000AD9E82 /* ChatDateHeaderView.swift in Sources */,
 				6A97FE66291CE29E006F6DD9 /* LoginViewModel.swift in Sources */,
 				6AB6B9E0292F2D3700A029BD /* DefaultUpLoadPreviewCase.swift in Sources */,
 				6AB6B95F292BDE7A00A029BD /* FireStoreNetworkDatabaseApi.swift in Sources */,
@@ -1319,6 +1326,7 @@
 				6A34C27D2935E5E600A3E57F /* FetchImageUseCase.swift in Sources */,
 				6A34C1E0292B220500A3E57F /* PaddingLabel.swift in Sources */,
 				07EAD6F92925EBB0001AE220 /* RegisterPhotoView.swift in Sources */,
+				6A5ED8552943358200AD9E82 /* Date+compare.swift in Sources */,
 				6A34C240292FAE8100A3E57F /* PageNavigationView.swift in Sources */,
 				B301025529322FB500481C6C /* HeartShopViewController.swift in Sources */,
 				6AB6B977292C3DD500A029BD /* DefaultProfilePhotoRepository.swift in Sources */,
