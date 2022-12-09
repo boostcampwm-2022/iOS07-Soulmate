@@ -17,19 +17,27 @@ struct LoginViewModelActions {
 
 class LoginViewModel: ViewModelable {
     
-    typealias Action = LoginViewModelActions
+    // MARK: Interface defined AssociatedType
     
-    var downLoadDetailInfoUseCase: DownLoadDetailInfoUseCase
-    var registerStateValidateUseCase: RegisterStateValidateUseCase
+    typealias Action = LoginViewModelActions
     
     struct Input {
         var didTappedPhoneLoginButton: AnyPublisher<Void, Never>
     }
+    
     struct Output {}
-        
-    var bag = Set<AnyCancellable>()
+    
+    // MARK: UseCase
+    
+    var downLoadDetailInfoUseCase: DownLoadDetailInfoUseCase
+    var registerStateValidateUseCase: RegisterStateValidateUseCase
+    
+    // MARK: Properties
     
     var actions: Action?
+    var bag = Set<AnyCancellable>()
+    
+    // MARK: Configuration
     
     init(
         downLoadDetailInfoUseCase: DownLoadDetailInfoUseCase,
@@ -43,6 +51,8 @@ class LoginViewModel: ViewModelable {
         self.actions = actions
     }
     
+    // MARK: Data Bind
+    
     func transform(input: Input) -> Output {
         input.didTappedPhoneLoginButton
             .sink { [weak self] in
@@ -52,6 +62,8 @@ class LoginViewModel: ViewModelable {
         
         return Output()
     }
+    
+    // MARK: Logic
     
     func doneAppleLogin() {
         Task {

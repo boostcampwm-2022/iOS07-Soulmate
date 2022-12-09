@@ -16,25 +16,32 @@ struct PhoneNumberViewModelActions {
 
 class PhoneNumberViewModel: ViewModelable {
     
+    // MARK: Interface defined AssociatedType
+    
     typealias Action = PhoneNumberViewModelActions
-    
-    var bag = Set<AnyCancellable>()
-    
-    var phoneSignInUseCase: PhoneSignInUseCase
-    
-    var actions: Action?
-    
-    @Published var nationCode: String?
-    @Published var phoneNumber: String?
     
     struct Input {
         var didChangedNationCode: AnyPublisher<String?, Never>
         var didChangedPhoneNumber: AnyPublisher<String?, Never>
         var didTouchedNextButton: AnyPublisher<Void, Never>
     }
+    
     struct Output {
         var isNextButtonEnabled: AnyPublisher<Bool, Never>
     }
+    
+    // MARK: UseCase
+    var phoneSignInUseCase: PhoneSignInUseCase
+
+    // MARK: Properties
+    
+    var actions: Action?
+    var bag = Set<AnyCancellable>()
+    
+    @Published var nationCode: String?
+    @Published var phoneNumber: String?
+    
+    // MARK: Configuration
     
     init(phoneSignInUseCase: PhoneSignInUseCase) {
         self.phoneSignInUseCase = phoneSignInUseCase
@@ -43,6 +50,8 @@ class PhoneNumberViewModel: ViewModelable {
     func setActions(actions: Action) {
         self.actions = actions
     }
+    
+    // MARK: Data Bind
     
     func transform(input: Input) -> Output {
         
@@ -73,10 +82,12 @@ class PhoneNumberViewModel: ViewModelable {
         return Output(isNextButtonEnabled: isNextButtonEnabled)
     }
     
+    // MARK: Logic
+    
     func nextButtonTouched() {
         guard var phoneNumber = phoneNumber else { return }
         
-        // 국가코드 부분은 추후 수정
+        // FIXME: 국가코드 부분은 추후 수정
         phoneNumber.removeFirst()
         phoneNumber = "+82" + phoneNumber
         

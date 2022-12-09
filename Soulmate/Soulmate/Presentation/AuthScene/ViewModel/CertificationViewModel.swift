@@ -15,18 +15,10 @@ struct CertificationViewModelActions {
 }
 
 class CertificationViewModel: ViewModelable {
+    
+    // MARK: Interface defined AssociatedType
+
     typealias Action = CertificationViewModelActions
-    
-    var bag = Set<AnyCancellable>()
-    
-    var phoneSignInUseCase: PhoneSignInUseCase
-    var registerStateValidateUseCase: RegisterStateValidateUseCase
-    var downloadDetailInfoUseCase: DownLoadDetailInfoUseCase
-    
-    var actions: CertificationViewModelActions?
-    
-    var phoneNumber: String?
-    @Published var certificationNumber: String = ""
     
     struct Input {
         var didCertificationNumberChanged: AnyPublisher<String, Never>
@@ -36,6 +28,23 @@ class CertificationViewModel: ViewModelable {
     struct Output {
         var nextButtonEnabled: AnyPublisher<Bool, Never>
     }
+    
+    // MARK: UseCase
+    
+    var phoneSignInUseCase: PhoneSignInUseCase
+    var registerStateValidateUseCase: RegisterStateValidateUseCase
+    var downloadDetailInfoUseCase: DownLoadDetailInfoUseCase
+    
+    // MARK: Properties
+    
+    var actions: CertificationViewModelActions?
+    var bag = Set<AnyCancellable>()
+    
+    var phoneNumber: String?
+    
+    @Published var certificationNumber: String = ""
+    
+    // MARK: Configuration
     
     init(
         phoneSignInUseCase: PhoneSignInUseCase,
@@ -50,6 +59,8 @@ class CertificationViewModel: ViewModelable {
     func setActions(actions: Action) {
         self.actions = actions
     }
+    
+    // MARK: Data Bind
     
     func transform(input: Input) -> Output {
 
@@ -72,6 +83,8 @@ class CertificationViewModel: ViewModelable {
         
         return Output(nextButtonEnabled: nextButtonEnabled)
     }
+    
+    // MARK: Data Bind
     
     func nextButtonTouched() {
         Task { [weak self] in
