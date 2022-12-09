@@ -12,16 +12,10 @@ struct DistanceViewModelActions {}
 
 class DistanceViewModel: ViewModelable {
     
+    // MARK: Interface defined AssociatedType
+    
     typealias Action = DistanceViewModelActions
-    var actions: Action?
     
-    var cancellables = Set<AnyCancellable>()
-    
-    let setDistanceUseCase: SetDistanceUseCase
-    let getDistanceUseCase: GetDistanceUseCase
-    
-    @Published var distance: Double
-        
     struct Input {
         var didChangedSliderValue: AnyPublisher<Float, Never>
     }
@@ -29,6 +23,19 @@ class DistanceViewModel: ViewModelable {
     struct Output {
         var didChangedDistanceValue: AnyPublisher<Double, Never>
     }
+    
+    // MARK: UseCase
+    
+    let setDistanceUseCase: SetDistanceUseCase
+    let getDistanceUseCase: GetDistanceUseCase
+    
+    // MARK: Properties
+    var actions: Action?
+    var cancellables = Set<AnyCancellable>()
+    
+    @Published var distance: Double
+        
+    // MARK: Configuration
     
     init(
         setDistanceUseCase: SetDistanceUseCase,
@@ -43,6 +50,8 @@ class DistanceViewModel: ViewModelable {
     func setActions(actions: Action) {
         self.actions = actions
     }
+    
+    // MARK: Data Bind
     
     func transform(input: Input) -> Output {
         input.didChangedSliderValue
@@ -67,6 +76,8 @@ class DistanceViewModel: ViewModelable {
         
         return Output(didChangedDistanceValue: $distance.eraseToAnyPublisher())
     }
+    
+    // MARK: Logic
     
     func finishDistanceSetting() {
         setDistanceUseCase.setDistance(distance: distance)

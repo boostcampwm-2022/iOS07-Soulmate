@@ -15,26 +15,9 @@ struct ModificationViewModelActions {
 
 class ModificationViewModel: ViewModelable {
     
+    // MARK: Interface defined AssociatedType
+
     typealias Action = ModificationViewModelActions
-    
-    var cancelables = Set<AnyCancellable>()
-    
-    var completionHandler: (() -> Void)?
-    
-    var actions: Action?
-    
-    @Published var userDetailInfo: RegisterUserInfo?
-    @Published var userDetailImageData: [Data?] = [nil, nil, nil, nil, nil]
-    var userChatImageData: Data?
-    
-    var didUploadAllInfo = PassthroughSubject<Void, Never>()
-    
-    let downloadDetailInfoUseCase: DownLoadDetailInfoUseCase
-    let downloadPictureUseCase: DownLoadPictureUseCase
-    
-    let uploadMyDetailInfoUseCase: UploadMyDetailInfoUseCase
-    let uploadPictureUseCase: UploadPictureUseCase
-    let uploadMyPreviewUseCase: UploadMyPreviewUseCase
     
     struct Input {
         var didTappedSaveButton: AnyPublisher<Void, Never>
@@ -45,6 +28,29 @@ class ModificationViewModel: ViewModelable {
         var didChangedImageData: AnyPublisher<[Data?], Never>
         var didUploadAllInfo: AnyPublisher<Void, Never>
     }
+    
+    // MARK: UseCase
+    
+    let downloadDetailInfoUseCase: DownLoadDetailInfoUseCase
+    let downloadPictureUseCase: DownLoadPictureUseCase
+    let uploadMyDetailInfoUseCase: UploadMyDetailInfoUseCase
+    let uploadPictureUseCase: UploadPictureUseCase
+    let uploadMyPreviewUseCase: UploadMyPreviewUseCase
+    
+    
+    // MARK: Properties
+    
+    var actions: Action?
+    var cancelables = Set<AnyCancellable>()
+    var completionHandler: (() -> Void)?
+    
+    var userChatImageData: Data?
+    
+    @Published var userDetailInfo: RegisterUserInfo?
+    @Published var userDetailImageData: [Data?] = [nil, nil, nil, nil, nil]
+    var didUploadAllInfo = PassthroughSubject<Void, Never>()
+    
+    // MARK: Configuration
     
     init(
         downloadDetailInfoUseCase: DownLoadDetailInfoUseCase,
@@ -66,6 +72,8 @@ class ModificationViewModel: ViewModelable {
         self.actions = actions
     }
     
+    // MARK: Data Bind
+    
     func transform(input: Input) -> Output {
         input.didTappedSaveButton
             .sink { [weak self] in
@@ -79,6 +87,8 @@ class ModificationViewModel: ViewModelable {
             didUploadAllInfo: didUploadAllInfo.eraseToAnyPublisher()
         )
     }
+    
+    // MARK: Logic
     
     func loadInfo() {
         Task { [weak self] in

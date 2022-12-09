@@ -17,24 +17,9 @@ struct HomeViewModelAction {
 
 final class HomeViewModel: ViewModelable {
     
-    var cancellable = Set<AnyCancellable>()
-    
+    // MARK: Interface defined AssociatedType
+
     typealias Action = HomeViewModelAction
-    var actions: Action?
-    
-    let mateRecommendationUseCase: MateRecommendationUseCase
-    let downloadPictureUseCase: DownLoadPictureUseCase
-    let uploadLocationUseCase: UpLoadLocationUseCase
-    let getDistanceUseCase: GetDistanceUseCase
-    let listenHeartUpdateUseCase: ListenHeartUpdateUseCase
-        
-    
-    @Published var matePreviewViewModelList = [HomePreviewViewModel]()
-    
-    @Published var currentLocation: Location? // 애는 첫 1회만 업댓시 바인딩해서 리프레시할거임, 그다음부턴 프로퍼티처럼 사용됨
-    @Published var distance: Double
-    
-    @Published var heartInfo: UserHeartInfo?
 
     struct Input {
         var viewDidLoad: AnyPublisher<Void, Never>
@@ -47,6 +32,26 @@ final class HomeViewModel: ViewModelable {
         var didUpdatedHeartInfo: AnyPublisher<UserHeartInfo?, Never>
     }
     
+    // MARK: UseCase
+    
+    let mateRecommendationUseCase: MateRecommendationUseCase
+    let downloadPictureUseCase: DownLoadPictureUseCase
+    let uploadLocationUseCase: UpLoadLocationUseCase
+    let getDistanceUseCase: GetDistanceUseCase
+    let listenHeartUpdateUseCase: ListenHeartUpdateUseCase
+    
+    // MARK: Properties
+    
+    var actions: Action?
+    var cancellable = Set<AnyCancellable>()
+    
+    @Published var matePreviewViewModelList = [HomePreviewViewModel]()
+    @Published var currentLocation: Location? // 애는 첫 1회만 업댓시 바인딩해서 리프레시할거임, 그다음부턴 프로퍼티처럼 사용됨
+    @Published var distance: Double
+    @Published var heartInfo: UserHeartInfo?
+
+    // MARK: Configuration
+
     init(
         mateRecommendationUseCase: MateRecommendationUseCase,
         downloadPictureUseCase: DownLoadPictureUseCase,
@@ -68,6 +73,8 @@ final class HomeViewModel: ViewModelable {
     func setActions(actions: Action) {
         self.actions = actions
     }
+    
+    // MARK: Data Bind
     
     func bind() {
         getDistanceUseCase.getDistancePublisher()
@@ -110,8 +117,6 @@ final class HomeViewModel: ViewModelable {
             }
             .store(in: &cancellable)
         
-        // disappear에서 안끄는거 다같이 상의
-
         listenHeartUpdateUseCase.heartInfoSubject
             .sink { [weak self] value in
                 self?.heartInfo = value
@@ -136,6 +141,8 @@ final class HomeViewModel: ViewModelable {
             didUpdatedHeartInfo: $heartInfo.eraseToAnyPublisher()
         )
     }
+    
+    // MARK: Logic
     
     func refresh() {
         Task { [weak self] in

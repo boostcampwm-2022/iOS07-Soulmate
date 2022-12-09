@@ -18,22 +18,9 @@ struct MyPageViewModelActions {
 
 class MyPageViewModel: ViewModelable {
     
+    // MARK: Interface defined AssociatedType
+
     typealias Action = MyPageViewModelActions
-    
-    let downLoadMyPreviewUseCase: DownLoadMyPreviewUseCase
-    let downLoadPictureUseCase: DownLoadPictureUseCase
-    let listenHeartUpdateUseCase: ListenHeartUpdateUseCase
-    
-    let symbols = ["myPageHeart", "myPagePersonalInfo", "distance", "myPagePin"]
-    let titles = ["하트샵 가기", "개인정보 처리방침", "거리 설정하기", "버전정보"]
-    let subTexts = ["", "", "", "v 3.2.20"]
-    
-    var actions: Action?
-    var cancellables = Set<AnyCancellable>()
-    
-    @Published var userProfileImage: Data?
-    @Published var userProfileInfo: UserPreview?
-    @Published var heartInfo: UserHeartInfo?
     
     struct Input {
         var viewDidLoad: AnyPublisher<Void, Never>
@@ -48,6 +35,27 @@ class MyPageViewModel: ViewModelable {
         var didUpdatedHeartInfo: AnyPublisher<UserHeartInfo?, Never>
     }
     
+    // MARK: UseCase
+
+    let downLoadMyPreviewUseCase: DownLoadMyPreviewUseCase
+    let downLoadPictureUseCase: DownLoadPictureUseCase
+    let listenHeartUpdateUseCase: ListenHeartUpdateUseCase
+    
+    // MARK: Properties
+    
+    var actions: Action?
+    var cancellables = Set<AnyCancellable>()
+    
+    let symbols = ["myPageHeart", "myPagePersonalInfo", "distance", "myPagePin"]
+    let titles = ["하트샵 가기", "개인정보 처리방침", "거리 설정하기", "버전정보"]
+    let subTexts = ["", "", "", "v 3.2.20"]
+    
+    @Published var userProfileImage: Data?
+    @Published var userProfileInfo: UserPreview?
+    @Published var heartInfo: UserHeartInfo?
+    
+    // MARK: Configuration
+    
     init(
         downLoadPreviewUseCase: DownLoadMyPreviewUseCase,
         downLoadPictureUseCase: DownLoadPictureUseCase,
@@ -57,13 +65,14 @@ class MyPageViewModel: ViewModelable {
         self.downLoadPictureUseCase = downLoadPictureUseCase
         self.listenHeartUpdateUseCase = listenHeartUpdateUseCase
         
-        // 여기서 해주고 내정보 수정에서 save하고 빠져나올때마다 계속 업댓해주자
         loadInfo()
     }
     
     func setActions(actions: Action) {
         self.actions = actions
     }
+    
+    // MARK: Data Bind
     
     func transform(input: Input) -> Output {
         
@@ -73,7 +82,7 @@ class MyPageViewModel: ViewModelable {
             }
             .store(in: &cancellables)
         
-        // disappear에서 안끄는거 다같이 상의
+        // TODO: disappear에서 안끄는거 다같이 상의
         
         listenHeartUpdateUseCase.heartInfoSubject
             .sink { [weak self] value in
@@ -115,8 +124,9 @@ class MyPageViewModel: ViewModelable {
             didUpdatedImage: $userProfileImage.eraseToAnyPublisher(),
             didUpdatedHeartInfo: $heartInfo.eraseToAnyPublisher()
         )
-        
     }
+    
+    // MARK: Logic
     
     func loadInfo() {
         print("dd")
