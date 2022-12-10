@@ -166,8 +166,14 @@ private extension ChattingRoomViewController {
 // MARK: - UI Configure
 private extension ChattingRoomViewController {
     func configureView() {
+            
+        Task {
+            let mateName = await viewModel?.mateName()
+            await MainActor.run {
+                self.title = mateName
+            }
+        }
         
-        self.title = "수정해야함"
         view.backgroundColor = .white
     }
     

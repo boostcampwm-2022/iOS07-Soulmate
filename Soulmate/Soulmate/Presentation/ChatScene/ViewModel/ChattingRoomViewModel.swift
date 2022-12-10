@@ -19,6 +19,7 @@ final class ChattingRoomViewModel {
     private let enterChatRoomUseCase: EnterChatRoomUseCase
     private let imageKeyUseCase: ImageKeyUseCase
     private let fetchImageUseCase: FetchImageUseCase
+    private let fetchMatePreviewUseCase: FetchMatePreviewUseCase
     
     init(
         sendMessageUseCase: SendMessageUseCase,
@@ -29,7 +30,8 @@ final class ChattingRoomViewModel {
         listenOthersEnterStateUseCase: ListenOthersEnterStateUseCase,
         enterChatRoomUseCase: EnterChatRoomUseCase,
         imageKeyUseCase: ImageKeyUseCase,
-        fetchImageUseCase: FetchImageUseCase
+        fetchImageUseCase: FetchImageUseCase,
+        fetchMatePreviewUseCase: FetchMatePreviewUseCase
     ) {
         self.sendMessageUseCase = sendMessageUseCase
         self.loadChattingsUseCase = loadChattingsUseCase
@@ -40,6 +42,7 @@ final class ChattingRoomViewModel {
         self.enterChatRoomUseCase = enterChatRoomUseCase
         self.imageKeyUseCase = imageKeyUseCase
         self.fetchImageUseCase = fetchImageUseCase
+        self.fetchMatePreviewUseCase = fetchMatePreviewUseCase
     }
     
     struct Input {
@@ -68,6 +71,10 @@ final class ChattingRoomViewModel {
         guard let data = await fetchImageUseCase.fetchImage(for: key) else { return nil }
         
         return data
+    }
+    
+    func mateName() async -> String? {
+        return try? await fetchMatePreviewUseCase.fetchMatePreview()?.name
     }
     
     func transform(input: Input, cancellables: inout Set<AnyCancellable>) -> Output {
