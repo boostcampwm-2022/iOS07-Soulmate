@@ -80,7 +80,7 @@ final class AddPhotoCell: UICollectionViewCell {
                         }
                     } else { // 얼굴 인식 실패했을 경우
                         DispatchQueue.main.async {
-                            self.addPhotoImageView.contentMode = .center
+                            self.addPhotoImageView.contentMode = .scaleAspectFill
                             self.addPhotoImageView.image = UIImage(named: "plusGrey")
                             self.addPhotoImageView.layer.borderColor = UIColor.red.cgColor
                             self.loadingIndicator.stopAnimating()
