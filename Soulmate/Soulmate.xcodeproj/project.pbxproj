@@ -123,6 +123,8 @@
 		6A5ED8552943358200AD9E82 /* Date+compare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5ED8542943358200AD9E82 /* Date+compare.swift */; };
 		6A5ED85B29446BE500AD9E82 /* FetchUserPreviewUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5ED85A29446BE500AD9E82 /* FetchUserPreviewUseCase.swift */; };
 		6A5ED85D29446C0100AD9E82 /* DefaultFetchMatePreviewUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5ED85C29446C0100AD9E82 /* DefaultFetchMatePreviewUseCase.swift */; };
+		6A5ED85F294478CA00AD9E82 /* FetchMateChatImageKeyUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5ED85E294478CA00AD9E82 /* FetchMateChatImageKeyUseCase.swift */; };
+		6A5ED861294478EA00AD9E82 /* DefaultFetchMateChatImageKeyUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5ED860294478EA00AD9E82 /* DefaultFetchMateChatImageKeyUseCase.swift */; };
 		6A5ED916293EEE5700A284F7 /* DefaultChattingRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5ED915293EEE5600A284F7 /* DefaultChattingRepository.swift */; };
 		6A5ED918293EEE6000A284F7 /* ChattingRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5ED917293EEE6000A284F7 /* ChattingRepository.swift */; };
 		6A8377A92924A3FC00BC7112 /* RegisterNickNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A8377A82924A3FC00BC7112 /* RegisterNickNameView.swift */; };
@@ -351,6 +353,8 @@
 		6A5ED8542943358200AD9E82 /* Date+compare.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+compare.swift"; sourceTree = "<group>"; };
 		6A5ED85A29446BE500AD9E82 /* FetchUserPreviewUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchUserPreviewUseCase.swift; sourceTree = "<group>"; };
 		6A5ED85C29446C0100AD9E82 /* DefaultFetchMatePreviewUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultFetchMatePreviewUseCase.swift; sourceTree = "<group>"; };
+		6A5ED85E294478CA00AD9E82 /* FetchMateChatImageKeyUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchMateChatImageKeyUseCase.swift; sourceTree = "<group>"; };
+		6A5ED860294478EA00AD9E82 /* DefaultFetchMateChatImageKeyUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultFetchMateChatImageKeyUseCase.swift; sourceTree = "<group>"; };
 		6A5ED915293EEE5600A284F7 /* DefaultChattingRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultChattingRepository.swift; sourceTree = "<group>"; };
 		6A5ED917293EEE6000A284F7 /* ChattingRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChattingRepository.swift; sourceTree = "<group>"; };
 		6A8377A82924A3FC00BC7112 /* RegisterNickNameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNickNameView.swift; sourceTree = "<group>"; };
@@ -705,6 +709,7 @@
 				6A4A007F294201FC0016ED58 /* DefaultSendMateRequestUseCase.swift */,
 				6A5ED84829421BEA00AD9E82 /* DefaultAcceptMateRequestUseCase.swift */,
 				6A5ED85C29446C0100AD9E82 /* DefaultFetchMatePreviewUseCase.swift */,
+				6A5ED860294478EA00AD9E82 /* DefaultFetchMateChatImageKeyUseCase.swift */,
 			);
 			path = UseCase;
 			sourceTree = "<group>";
@@ -737,6 +742,7 @@
 				6A25C649293F333000CDC1BC /* SetDistanceUseCase.swift */,
 				6A5ED84E29422BF800AD9E82 /* AcceptMateRequestUseCase.swift */,
 				6A5ED85A29446BE500AD9E82 /* FetchUserPreviewUseCase.swift */,
+				6A5ED85E294478CA00AD9E82 /* FetchMateChatImageKeyUseCase.swift */,
 			);
 			path = Interface;
 			sourceTree = "<group>";
@@ -1375,6 +1381,7 @@
 				B301025729329E8A00481C6C /* HeartShopCell.swift in Sources */,
 				6A34C1D8292B211700A3E57F /* Chat.swift in Sources */,
 				6A0041D92919E6B60042E02F /* CoordinatorInterface.swift in Sources */,
+				6A5ED861294478EA00AD9E82 /* DefaultFetchMateChatImageKeyUseCase.swift in Sources */,
 				6A34C236292F372E00A3E57F /* ReceivedChatRequestsViewModel.swift in Sources */,
 				6A0041E02919EB230042E02F /* LoginViewController.swift in Sources */,
 				6A9452F3293699190041B71D /* ModificationPopUpView.swift in Sources */,
@@ -1445,6 +1452,7 @@
 				B3010251292F1A2000481C6C /* MyPageView.swift in Sources */,
 				6A03B7272923E5E300AC15A6 /* PhoneSignInUseCase.swift in Sources */,
 				6AB6B968292BEC3900A029BD /* DefaultRegisterStateValidateUseCase.swift in Sources */,
+				6A5ED85F294478CA00AD9E82 /* FetchMateChatImageKeyUseCase.swift in Sources */,
 				6AB6B966292BE4F500A029BD /* DownLoadDetailInfoUseCase.swift in Sources */,
 				6A9452FB29382EEC0041B71D /* ModificationViewModel.swift in Sources */,
 				07F472A02939063B001DA4D0 /* RecommendView.swift in Sources */,

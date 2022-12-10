@@ -11,7 +11,7 @@ import UIKit
 final class ChattingRoomViewController: UIViewController {
     
     private var chatRoomInfo: ChatRoomInfo?
-    private var viewModel: ChattingRoomViewModel?
+    private(set) var viewModel: ChattingRoomViewModel?
     private var cancellabels = Set<AnyCancellable>()
     private var messageSubject = PassthroughSubject<String?, Never>()
     private var loadPrevChattingsSubject = PassthroughSubject<Void, Never>()
@@ -24,8 +24,11 @@ final class ChattingRoomViewController: UIViewController {
     private var isInitLoad = true
     
     private lazy var chatListView: ChatListView = {
-        let listView = ChatListView(hostView: self.view)
-        listView.loadPrevChatDelegate = self
+        let listView = ChatListView(
+            hostView: self.view,
+            fetchImage: viewModel?.fetchMateImage
+        )
+        listView.loadPrevChatDelegate = self        
         
         return listView
     }()

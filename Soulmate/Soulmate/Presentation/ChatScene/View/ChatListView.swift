@@ -14,11 +14,12 @@ final class ChatListView: UICollectionView {
     let chatDataSource = ChatDataSource()
     let chatListDelegate = ChatListDelegate()
     
-    convenience init(hostView: UIView) {
+    convenience init(hostView: UIView, fetchImage: (() async -> Data?)?) {
         self.init(frame: hostView.bounds, collectionViewLayout: ChatListLayout())
         hostView.addSubview(self)
         self.translatesAutoresizingMaskIntoConstraints = false
         self.dataSource = chatDataSource
+        chatDataSource.fetchImage = fetchImage
         MyChatCell.register(with: self)
         OtherChatCell.register(with: self)
         ChatDateHeaderView.register(with: self)

@@ -135,6 +135,12 @@ class DefaultChatCoordinator: ChatCoordinator {
             authRepository: authRepository
         )
         
+        let fetchMateChatImageKeyUseCase = DefaultFetchMateChatImageKeyUseCase(
+            info: info,
+            authRepository: authRepository,
+            imageKeyUseCase: imageKeyUseCase
+        )
+        
         let viewModel = ChattingRoomViewModel(
             sendMessageUseCase: sendMessageUseCase,
             loadChattingsUseCase: loadChattingsUseCase,
@@ -145,7 +151,8 @@ class DefaultChatCoordinator: ChatCoordinator {
             enterChatRoomUseCase: enterChatRoomUseCase,
             imageKeyUseCase: imageKeyUseCase,
             fetchImageUseCase: fetchImageUseCase,
-            fetchMatePreviewUseCase: fetchMatePreviewUseCase
+            fetchMatePreviewUseCase: fetchMatePreviewUseCase,
+            fetchMateChatImageKeyUseCase: fetchMateChatImageKeyUseCase
         )
         let viewController = ChattingRoomViewController(viewModel: viewModel, chatRoomInfo: info)
         self.navigationController.pushViewController(viewController, animated: true)

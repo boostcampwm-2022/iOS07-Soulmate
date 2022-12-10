@@ -23,6 +23,7 @@ final class ChatListLayout: UICollectionViewLayout {
               let dataSource = collectionView.dataSource as? ChatDataSource else { return }
                 
         attributes = [UICollectionViewLayoutAttributes]()
+        cellIds = [String]()
         
         var yOffset: CGFloat = 0
         
@@ -60,6 +61,7 @@ final class ChatListLayout: UICollectionViewLayout {
                 let cellAttributes = UICollectionViewLayoutAttributes(forCellWith: indexPath)
                 cellAttributes.frame = itemFrame
                 attributes.append(cellAttributes)
+                cellIds.append(chat.id)
                 
                 yOffset += cellHeight
             }

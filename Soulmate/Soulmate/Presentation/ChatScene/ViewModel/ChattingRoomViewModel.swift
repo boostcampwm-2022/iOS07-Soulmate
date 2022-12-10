@@ -20,6 +20,7 @@ final class ChattingRoomViewModel {
     private let imageKeyUseCase: ImageKeyUseCase
     private let fetchImageUseCase: FetchImageUseCase
     private let fetchMatePreviewUseCase: FetchMatePreviewUseCase
+    private let fetchMateChatImageKeyUseCase: FetchMateChatImageKeyUseCase
     
     init(
         sendMessageUseCase: SendMessageUseCase,
@@ -31,7 +32,8 @@ final class ChattingRoomViewModel {
         enterChatRoomUseCase: EnterChatRoomUseCase,
         imageKeyUseCase: ImageKeyUseCase,
         fetchImageUseCase: FetchImageUseCase,
-        fetchMatePreviewUseCase: FetchMatePreviewUseCase
+        fetchMatePreviewUseCase: FetchMatePreviewUseCase,
+        fetchMateChatImageKeyUseCase: FetchMateChatImageKeyUseCase
     ) {
         self.sendMessageUseCase = sendMessageUseCase
         self.loadChattingsUseCase = loadChattingsUseCase
@@ -43,6 +45,7 @@ final class ChattingRoomViewModel {
         self.imageKeyUseCase = imageKeyUseCase
         self.fetchImageUseCase = fetchImageUseCase
         self.fetchMatePreviewUseCase = fetchMatePreviewUseCase
+        self.fetchMateChatImageKeyUseCase = fetchMateChatImageKeyUseCase
     }
     
     struct Input {
@@ -66,15 +69,19 @@ final class ChattingRoomViewModel {
         var otherIsEntered = PassthroughSubject<String, Never>()
     }
     
-    func fetchProfileImage(of uid: String) async -> Data? {
-        guard let key = await imageKeyUseCase.imageKey(from: uid) else { return nil }
-        guard let data = await fetchImageUseCase.fetchImage(for: key) else { return nil }
+    func fetchMateImage() async -> Data? {
+        guard let key = await fetchMateChatImageKeyUseCase.fetchMateChatImageKey(),
+              let data = await fetchImageUseCase.fetchImage(for: key) else { return nil }
         
         return data
     }
     
     func mateName() async -> String? {
         return try? await fetchMatePreviewUseCase.fetchMatePreview()?.name
+    }
+    
+    func uid() async -> String? {
+        return try? await fetchMatePreviewUseCase.fetchMatePreview()?.uid
     }
     
     func transform(input: Input, cancellables: inout Set<AnyCancellable>) -> Output {

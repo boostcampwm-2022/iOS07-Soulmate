@@ -47,8 +47,9 @@ final class ChatListDelegate: NSObject, UIScrollViewDelegate, UICollectionViewDe
     func insertPrevChats() {
         
         let addedHeight = chatList?.insertPrevChats() ?? 0
+        guard addedHeight != 0 else { return }
         
-        chatList?.reloadData()
+        chatList?.reloadData()                
         
         let currentYOffset = chatList?.contentOffset.y ?? 0
                 

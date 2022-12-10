@@ -8,7 +8,7 @@
 import UIKit
 
 final class ChatDataSource: NSObject, UICollectionViewDataSource {
-
+    
     struct ChatDateHeader {
         var date: String
         var height: CGFloat
@@ -20,6 +20,8 @@ final class ChatDataSource: NSObject, UICollectionViewDataSource {
     private var chatIndex: [String: (section: Int, item: Int)] = [:]
     private var buffer: [Chat] = []
     var isLoading = false
+    
+    var fetchImage: (() async -> Data?)?
     
     var maxY: CGFloat {
         var y: CGFloat = 0
@@ -47,7 +49,21 @@ final class ChatDataSource: NSObject, UICollectionViewDataSource {
         if chat.isMe {
             return MyChatCell.dequeue(from: collectionView, at: indexPath, with: chat)
         } else {
-            return OtherChatCell.dequeu(from: collectionView, at: indexPath, with: chat)
+            let otherChatCell = OtherChatCell.dequeu(from: collectionView, at: indexPath, with: chat)
+            
+            Task {
+                guard let imageData = await fetchImage?(),
+                      let image = UIImage(data: imageData) else { return }
+                
+                await MainActor.run {
+                    if collectionView.cellForItem(at: indexPath) != nil {
+                        otherChatCell.set(image: image)
+                    }
+                }
+            }
+            
+            
+            return otherChatCell
         }
     }
     
