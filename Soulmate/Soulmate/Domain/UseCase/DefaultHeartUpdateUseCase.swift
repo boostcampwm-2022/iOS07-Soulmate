@@ -9,6 +9,7 @@ import Foundation
 import FirebaseAuth
 
 protocol HeartUpdateUseCase {
+    func registerHeart(heart: Int) async throws
     func chargeHeart(heart: Int) async throws
 }
 
@@ -23,6 +24,11 @@ class DefaultHeartUpdateUseCase: HeartUpdateUseCase {
     ) {
         self.userHeartInfoRepository = userHeartInfoRepository
         self.authRepository = authRepository
+    }
+    
+    func registerHeart(heart: Int) async throws {
+        let uid = try authRepository.currentUid()
+        try await userHeartInfoRepository.registerHeart(uid: uid, heartInfo: UserHeartInfo(heart: heart))
     }
     
     func chargeHeart(heart: Int) async throws {

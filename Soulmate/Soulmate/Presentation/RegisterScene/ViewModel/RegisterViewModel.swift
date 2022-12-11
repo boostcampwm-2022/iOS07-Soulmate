@@ -220,10 +220,9 @@ class RegisterViewModel: ViewModelable {
                 name: self?.nickName,
                 birth: self?.birth,
                 imageKey: keys.first,
-                chatImageKey: chatImageKey,
-                heart: 30
+                chatImageKey: chatImageKey
             )
-            try await uploadPreviewUseCase.uploadPreview(userPreview: userPreview)
+            try await uploadPreviewUseCase.registerPreview(userPreview: userPreview)
 
             let userInfo = RegisterUserInfo(
                 gender: self?.genderType,
@@ -237,7 +236,7 @@ class RegisterViewModel: ViewModelable {
                 imageList: keys
             )
             try await uploadDetailInfoUseCase.uploadDetailInfo(registerUserInfo: userInfo)
-            try await heartUpdateUseCase.chargeHeart(heart: 30)
+            try await heartUpdateUseCase.registerHeart(heart: 30)
             
             let diff = CFAbsoluteTimeGetCurrent() - start
             try await Task.sleep(nanoseconds: UInt64((5 > diff ? 5 - diff : 0) * 1_000_000_000))

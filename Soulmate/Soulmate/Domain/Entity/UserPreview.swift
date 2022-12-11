@@ -16,7 +16,6 @@ struct UserPreview {
     var imageKey: String?
     var chatImageKey: String?
     var location: Location?
-    var heart: Int?
 }
 
 extension UserPreview {
@@ -28,8 +27,7 @@ extension UserPreview {
             birth: self.birth,
             imageKey: self.imageKey,
             chatImageKey: self.chatImageKey,
-            location: self.location?.toGeoPoint() ?? nil,
-            heart: self.heart
+            location: self.location?.toGeoPoint() ?? nil
         )
     }
 }

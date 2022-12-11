@@ -39,24 +39,29 @@ final class HomeViewController: UIViewController {
         return imageView
     }()
     
-    private lazy var heart: UIImageView = {
-        let imageView = UIImageView()
-        imageView.image = UIImage(named: "heart")
-        imageView.frame = CGRect(x: 0, y: 0, width: 17.07, height: 14.06)
-        imageView.contentMode = .scaleAspectFit
-        self.view.addSubview(imageView)
-        return imageView
-    }()
+//    private lazy var heart: UIImageView = {
+//        let imageView = UIImageView()
+//        imageView.image = UIImage(named: "heart")
+//        imageView.frame = CGRect(x: 0, y: 0, width: 17.07, height: 14.06)
+//        imageView.contentMode = .scaleAspectFit
+//        self.view.addSubview(imageView)
+//        return imageView
+//    }()
 
     
-    private lazy var numOfHeartLabel: UILabel = {
-        let label = UILabel()
-        label.text = "00"
-        label.frame = CGRect(x: 0, y: 0, width: 18, height: 18)
-        label.textColor = UIColor.labelDarkGrey
-        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 15)
-        self.view.addSubview(label)
-        return label
+    private lazy var numOfHeartButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("00", for: .normal)
+        button.setTitleColor(UIColor.labelDarkGrey, for: .normal)
+        button.setImage(UIImage(named: "heart"), for: .normal)
+        button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 15)
+        
+        button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: -5)
+        button.contentEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 5)
+        
+        self.view.addSubview(button)
+
+        return button
     }()
     
     private lazy var collectionView: UICollectionView = {
@@ -198,7 +203,8 @@ private extension HomeViewController {
             input: HomeViewModel.Input(
                 viewDidLoad: Just(()).eraseToAnyPublisher(),
                 didTappedRefreshButton: refreshButtonTapSubject.eraseToAnyPublisher(),
-                didSelectedMateCollectionCell: collectionViewSelectSubject.eraseToAnyPublisher()
+                didSelectedMateCollectionCell: collectionViewSelectSubject.eraseToAnyPublisher(),
+                didTappedHeartButton: numOfHeartButton.tapPublisher().eraseToAnyPublisher()
             )
         )
 
@@ -216,7 +222,7 @@ private extension HomeViewController {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] heartInfo in
                 guard let heart = heartInfo.heart else { return }
-                self?.numOfHeartLabel.text = "\(heart)"
+                self?.numOfHeartButton.setTitle("\(heart)", for: .normal)
             }
             .store(in: &bag)
     }
@@ -234,16 +240,18 @@ private extension HomeViewController {
             $0.height.equalTo(18)
         }
         
-        heart.snp.makeConstraints {
-            $0.right.equalToSuperview().offset(-45.46)
-            $0.top.equalTo(view.snp.top).offset(65.97)
-            $0.width.equalTo(17.07)
-            $0.height.equalTo(14.06)
-        }
+//        heart.snp.makeConstraints {
+//            $0.right.equalToSuperview().offset(-45.46)
+//            $0.top.equalTo(view.snp.top).offset(65.97)
+//            $0.width.equalTo(17.07)
+//            $0.height.equalTo(14.06)
+//        }
         
-        numOfHeartLabel.snp.makeConstraints {
+        numOfHeartButton.snp.makeConstraints {
             $0.right.equalToSuperview().offset(-20)
             $0.top.equalTo(view.snp.top).offset(64)
+            $0.height.equalTo(18)
+            $0.width.equalTo(70)
         }
         
         collectionView.snp.makeConstraints {

@@ -81,9 +81,7 @@ class MyPageViewModel: ViewModelable {
                 self?.listenHeartUpdateUseCase.listenHeartUpdate()
             }
             .store(in: &cancellables)
-        
-        // TODO: disappear에서 안끄는거 다같이 상의
-        
+                
         listenHeartUpdateUseCase.heartInfoSubject
             .sink { [weak self] value in
                 self?.heartInfo = value

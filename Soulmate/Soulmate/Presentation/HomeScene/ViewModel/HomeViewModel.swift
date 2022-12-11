@@ -13,6 +13,7 @@ import CoreLocation
 
 struct HomeViewModelAction {
     var showDetailVC: ((DetailPreviewViewModel) -> Void)?
+    var showHeartShopFlow: (() -> Void)?
 }
 
 final class HomeViewModel: ViewModelable {
@@ -25,6 +26,7 @@ final class HomeViewModel: ViewModelable {
         var viewDidLoad: AnyPublisher<Void, Never>
         var didTappedRefreshButton: AnyPublisher<Void, Never>
         var didSelectedMateCollectionCell: AnyPublisher<Int, Never>
+        var didTappedHeartButton: AnyPublisher<Void, Never>
     }
     
     struct Output {
@@ -136,6 +138,13 @@ final class HomeViewModel: ViewModelable {
             }
             .store(in: &cancellable)
 
+        input.didTappedHeartButton
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] in
+                self?.actions?.showHeartShopFlow?()
+            }
+            .store(in: &cancellable)
+        
         return Output(
             didRefreshedPreviewList: $matePreviewViewModelList.eraseToAnyPublisher(),
             didUpdatedHeartInfo: $heartInfo.eraseToAnyPublisher()

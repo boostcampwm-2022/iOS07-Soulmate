@@ -8,5 +8,6 @@
 import Foundation
 
 protocol UploadMyPreviewUseCase {
-    func uploadPreview(userPreview: UserPreview) async throws
+    func registerPreview(userPreview: UserPreview) async throws
+    func updatePreview(userPreview: UserPreview) async throws
 }
