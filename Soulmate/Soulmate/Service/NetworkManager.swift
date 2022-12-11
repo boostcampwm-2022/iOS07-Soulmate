@@ -51,4 +51,8 @@ final class NetworkMonitor {
             connectionType = .unknown
         }
     }
+    
+    deinit {
+        stopMonitoring()
+    }
 }
