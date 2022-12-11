@@ -14,7 +14,17 @@ protocol RegisterPhotoViewDelegate: AnyObject {
     func presentPhotoPicker(_ registerPhotoView: RegisterPhotoView)
 }
 
+enum RegisterPhotoViewSectionKind: Int, CaseIterable {
+    case main = 0
+}
+
+enum RegisterPhotoViewItemKind: Hashable {
+    case main(RegisterImageItemViewModel)
+}
+
 final class RegisterPhotoView: UIView {
+    
+    var cancellable = Set<AnyCancellable>()
     
     var pickingItem: Int?
     @Published var imageList: [Data?] = [nil, nil, nil, nil, nil]
@@ -31,19 +41,16 @@ final class RegisterPhotoView: UIView {
         return headerView
     }()
     
+    private var dataSource: UICollectionViewDiffableDataSource<RegisterPhotoViewSectionKind, RegisterPhotoViewItemKind>!
     lazy var collectionView: UICollectionView = {
-        var layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .vertical
-        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        
-        let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        cv.register(AddPhotoCell.self, forCellWithReuseIdentifier: "AddPhotoCell")
-        cv.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+
+        let cv = UICollectionView(frame: .zero, collectionViewLayout: self.createLayout())
         cv.allowsMultipleSelection = false
         cv.showsVerticalScrollIndicator = false
         cv.bounces = false
         cv.isPagingEnabled = false
         cv.backgroundColor = .clear
+        cv.delegate = self
         
         self.addSubview(cv)
         return cv
@@ -62,26 +69,31 @@ final class RegisterPhotoView: UIView {
         
         configureView()
         configureLayout()
+        
+        configureDataSource()
         bind()
     }
     
     func imageListPublisher() -> AnyPublisher<[Data?], Never> {
-        return $imageList.eraseToAnyPublisher()
+        return $imageList
+            .eraseToAnyPublisher()
     }
 
 }
 
 private extension RegisterPhotoView {
-    private func bind() {
-
-    }
     
+    private func bind() {
+        $imageList
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] value in
+                self?.snapshotDataSoucre()
+            }
+            .store(in: &cancellable)
+    }
+
     private func configureView() {
         self.backgroundColor = .systemBackground
-        
-        collectionView.delegate = self
-        collectionView.dataSource = self
-        
     }
     
     private func configureLayout() {
@@ -100,78 +112,90 @@ private extension RegisterPhotoView {
     }
 }
 
-extension RegisterPhotoView: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 5
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "AddPhotoCell", for: indexPath) as? AddPhotoCell else { return UICollectionViewCell() }
-        cell.fill(with: imageList[indexPath.row])
-        return cell
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width: CGFloat
-        let height: CGFloat
+
+extension RegisterPhotoView {
+
+    // MARK: CollectionView compositional layout
+
+    private func createImageSection() -> NSCollectionLayoutSection {
+        let topItemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1/2), heightDimension: .fractionalHeight(1.0))
+        let topItem = NSCollectionLayoutItem(layoutSize: topItemSize)
+        topItem.contentInsets = NSDirectionalEdgeInsets(top: 4, leading: 4, bottom: 4, trailing: 4)
+
         
-        if indexPath.item == 0 || indexPath.item == 1 {
-            width = 171.5
-            height = 171.5
-            collectionView.contentInset = centerItemsInCollectionView(cellWidth: width, numberOfItems: 2, spaceBetweenCell: 10, collectionView: collectionView)
-        } else {
-            width = 112
-            height = 112
-            collectionView.contentInset = centerItemsInCollectionView(cellWidth: width, numberOfItems: 3, spaceBetweenCell: 10, collectionView: collectionView)
+        let bottomItemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1/3), heightDimension: .fractionalHeight(1.0))
+        let bottomItem = NSCollectionLayoutItem(layoutSize: bottomItemSize)
+        bottomItem.contentInsets = NSDirectionalEdgeInsets(top: 4, leading: 4, bottom: 4, trailing: 4)
+        
+        let topGroup = NSCollectionLayoutGroup.horizontal(
+            layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
+                                              heightDimension: .fractionalWidth(1/2)),
+            subitem: topItem, count: 2)
+        
+        let bottomGroup = NSCollectionLayoutGroup.horizontal(
+            layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
+                                              heightDimension: .fractionalWidth(1/3)),
+            subitem: topItem, count: 3)
+
+        let nestedGroup = NSCollectionLayoutGroup.vertical(
+            layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
+                                              heightDimension: .fractionalWidth(1/3 + 1/2)),
+            subitems: [topGroup, bottomGroup])
+        
+        let section = NSCollectionLayoutSection(group: nestedGroup)
+        section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10)
+
+        return section
+    }
+
+    private func createLayout() -> UICollectionViewLayout {
+        return UICollectionViewCompositionalLayout { [weak self] (sectionIndex: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
+
+            guard let sectionKind = RegisterPhotoViewSectionKind(rawValue: sectionIndex) else { return nil }
+
+            // MARK: Item Layout
+
+            switch sectionKind {
+            case .main:
+                return self?.createImageSection()
+            }
         }
-        return CGSize(width: width, height: height)
+    }
+
+    private func configureDataSource() {
+
+        // MARK: Cell Registration
+
+        let imageCellRegistration = UICollectionView.CellRegistration<AddPhotoCell, RegisterImageItemViewModel> { (cell, indexPath, identifier) in
+            cell.fill(with: identifier.data)
+        }
+        
+        // MARK: DataSoucre Cell Provider
+
+        dataSource = UICollectionViewDiffableDataSource<RegisterPhotoViewSectionKind, RegisterPhotoViewItemKind>(collectionView: collectionView) { collectionView, indexPath, item in
+            
+            switch item {
+            case .main(let imageViewModel):
+                return collectionView.dequeueConfiguredReusableCell(using: imageCellRegistration, for: indexPath, item: imageViewModel)
+            }
+        }
+        snapshotDataSoucre()
     }
     
+    func snapshotDataSoucre() {
+        var snapshot = NSDiffableDataSourceSnapshot<RegisterPhotoViewSectionKind, RegisterPhotoViewItemKind>()
+        snapshot.appendSections(RegisterPhotoViewSectionKind.allCases)
+        let targetSource = imageList.enumerated().map { (index, value) in
+            return RegisterPhotoViewItemKind.main(RegisterImageItemViewModel(index: index, data: value))
+        }
+        snapshot.appendItems(targetSource, toSection: .main)
+        self.dataSource.apply(snapshot, animatingDifferences: false)
+    }
+}
+
+extension RegisterPhotoView: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         pickingItem = indexPath.row
         delegate?.presentPhotoPicker(self)
     }
-    
-    private func centerItemsInCollectionView(cellWidth: Double, numberOfItems: Double, spaceBetweenCell: Double, collectionView: UICollectionView) -> UIEdgeInsets {
-        let totalWidth = cellWidth * numberOfItems
-        let totalSpacingWidth = spaceBetweenCell * (numberOfItems - 1)
-        let leftInset = (collectionView.frame.width - CGFloat(totalWidth + totalSpacingWidth)) / 2
-        let rightInset = leftInset
-        return UIEdgeInsets(top: 0, left: leftInset, bottom: 0, right: rightInset)
-    }
 }
-
-//extension RegisterPhotoView: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-//    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
-//        guard let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage else { return }
-//
-//        //dismiss(animated: true, completion: nil)
-//    }
-//}
-
-
-
-
-//#if DEBUG
-//import SwiftUI
-//struct PhotoViewControllerRepresentable: UIViewControllerRepresentable {
-//    func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {
-//        // leave this empty
-//    }
-//    @available(iOS 13.0.0, *)
-//    func makeUIViewController(context: Context) -> some UIViewController {
-//        PhotoViewController()
-//    }
-//    @available(iOS 13.0, *)
-//    struct SnapKitVCRepresentable_PreviewProvider: PreviewProvider {
-//        static var previews: some View {
-//            Group {
-//                PhotoViewControllerRepresentable()
-//                    .ignoresSafeArea()
-//                    .previewDisplayName("Preview")
-//                    .previewDevice(PreviewDevice(rawValue: "iPhone 14"))
-//            }
-//        }
-//    }
-//} #endif
