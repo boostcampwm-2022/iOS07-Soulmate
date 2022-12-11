@@ -84,52 +84,38 @@ final class ChatDataSource: UICollectionViewDiffableDataSource<ChatDateHeader, S
     
     func update(_ chat: Chat) {
         
-//
-//        var snapshot = snapshot()
-//        guard var index = snapshot.itemIdentifiers.firstIndex(
-//            where: {
-//                $0.id == chat.id
-//            }
-//        ) else { return }
-//
-//        var items = snapshot.itemIdentifiers
-//        items[index] = chat
-//
-//        snapshot.deleteAllItems()
-//        snapshot.appendItems(items)
-//
-//        apply(snapshot)
+        var snapshot = snapshot()
+        
+        chatDictionary[chat.id] = chat
+        snapshot.reconfigureItems([chat.id])
+        
+        apply(snapshot)
     }
     
     func update(notContaining otherId: String) {
-//
-//        var snapshot = snapshot()
-//        var items = snapshot.itemIdentifiers
-//
-//        let updated = items.map { item in
-//            var chat = item
-//
-//            if !chat.readUsers.contains(otherId) {
-//                chat.readUsers.append(otherId)
-//            }
-//
-//            return chat
-//        }
-//
-//        snapshot.deleteAllItems()
-//        snapshot.appendItems(updated)
-//
-//        apply(snapshot)
+        
+        var snapshot = snapshot()
+        var updateIds = chatDictionary
+            .filter { !$0.value.readUsers.contains(otherId) }
+            .map { $0.key }
+        
+        updateIds.forEach { key in
+            chatDictionary[key]?.readUsers.append(otherId)
+        }
+        
+        snapshot.reconfigureItems(updateIds)
+        
+        apply(snapshot)
     }
     
     func insertBuffer() -> CGFloat {
 
-        var snapshot = snapshot()
+        let snapshot = snapshot()
 
         guard !buffer.isEmpty else { return 0 }
                 
         let beforeHeight = maxY
-        var chats = buffer + snapshot.itemIdentifiers.compactMap { chatDictionary[$0] }
+        let chats = buffer + snapshot.itemIdentifiers.compactMap { chatDictionary[$0] }
 
         appendAfterRemoveAll(chats)
 
