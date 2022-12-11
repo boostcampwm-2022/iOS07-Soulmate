@@ -26,6 +26,7 @@ final class PartnerCell: UICollectionViewCell {
         imageView.image = nil
         imageView.layer.cornerRadius = 14
         imageView.layer.cornerCurve = .continuous
+        imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
         partnerView.addSubview(imageView)
         return imageView
