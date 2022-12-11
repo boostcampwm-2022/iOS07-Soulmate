@@ -46,21 +46,23 @@ final class ChatListLayout: UICollectionViewLayout {
             attributes.append(headerAttributes)
             yOffset += dataSource.headerHeight
             
-            snapshot.itemIdentifiers(inSection: sectionIdentifier).enumerated().forEach { item, chat in
+            snapshot.itemIdentifiers(inSection: sectionIdentifier).enumerated().forEach { item, chatId in
                 
-                let indexPath = IndexPath(item: item, section: section)                
-                
-                let cellHeight = chat.height
-                let cellWidth = collectionView.bounds.size.width
-                let cellOffset = yOffset
-                
-                let itemFrame = CGRect(x: 0, y: cellOffset, width: cellWidth, height: cellHeight)
-                
-                let cellAttributes = UICollectionViewLayoutAttributes(forCellWith: indexPath)
-                cellAttributes.frame = itemFrame
-                attributes.append(cellAttributes)
-                
-                yOffset += cellHeight
+                if let chat = dataSource.chatDictionary[chatId] {
+                    let indexPath = IndexPath(item: item, section: section)                
+                    
+                    let cellHeight = chat.height
+                    let cellWidth = collectionView.bounds.size.width
+                    let cellOffset = yOffset
+                    
+                    let itemFrame = CGRect(x: 0, y: cellOffset, width: cellWidth, height: cellHeight)
+                    
+                    let cellAttributes = UICollectionViewLayoutAttributes(forCellWith: indexPath)
+                    cellAttributes.frame = itemFrame
+                    attributes.append(cellAttributes)
+                    
+                    yOffset += cellHeight
+                }
             }
         }
         

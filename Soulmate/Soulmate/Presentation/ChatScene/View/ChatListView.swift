@@ -78,7 +78,9 @@ private extension ChatListView {
     func createDateSource(fetchImage: (() async -> Data?)?) -> ChatDataSource {
         
         let dataSource = ChatDataSource(
-            collectionView: self) { collectionView, indexPath, chat in
+            collectionView: self) { [weak self] collectionView, indexPath, id in
+                
+                guard let chat = self?.chatDataSource?.chatDictionary[id] else { return nil }
                 
                 if chat.isMe {
                     return MyChatCell.dequeue(from: collectionView, at: indexPath, with: chat)
