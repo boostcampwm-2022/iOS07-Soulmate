@@ -44,6 +44,15 @@ final class ProfileCell: UICollectionViewCell {
         return imageView
     }()
     
+    private lazy var partnerAddress: UILabel = {
+        let label = UILabel()
+        label.frame = CGRect(x: 0, y: 0, width: 32, height: 20)
+        label.textColor = UIColor.labelGrey
+        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 15)
+        partnerSubView.addSubview(label)
+        return label
+    }()
+    
     private lazy var partnerDistance: UILabel = {
         let label = UILabel()
         label.frame = CGRect(x: 0, y: 0, width: 32, height: 20)
@@ -88,9 +97,15 @@ final class ProfileCell: UICollectionViewCell {
             $0.bottom.equalToSuperview().inset(25)
         }
         
-        partnerDistance.snp.makeConstraints {
+        partnerAddress.snp.makeConstraints {
             $0.top.equalToSuperview().inset(56)
             $0.leading.equalToSuperview().inset(44)
+            $0.bottom.equalToSuperview().inset(24)
+        }
+        
+        partnerDistance.snp.makeConstraints {
+            $0.top.equalToSuperview().inset(56)
+            $0.leading.equalTo(partnerAddress.snp.trailing).offset(6)
             $0.bottom.equalToSuperview().inset(24)
         }
         
@@ -112,6 +127,7 @@ final class ProfileCell: UICollectionViewCell {
     
     func fill(previewViewModel: DetailPreviewViewModel) {
         partnerName.text = previewViewModel.name
+        partnerAddress.text = previewViewModel.address ?? "위치 정보 없음"
         partnerDistance.text = previewViewModel.distance
         partnerAge.text = previewViewModel.age
     }

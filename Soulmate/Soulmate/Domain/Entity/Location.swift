@@ -22,9 +22,14 @@ extension Location {
         )
     }
     
-    func toDistance(from: CLLocation) -> CLLocationDistance {
-        let toPoint = CLLocation(latitude: self.latitude, longitude: self.longitude)
-        return toPoint.distance(from: from)
+    func address() async throws -> String? {
+        let location = CLLocation(latitude: self.latitude, longitude: self.longitude)
+        let placeMark = try await CLGeocoder().reverseGeocodeLocation(location, preferredLocale: Locale(identifier: "Ko-kr"))
+        guard let place = placeMark.first,
+              let locality = place.locality,
+              let subLocality = place.subLocality else { return nil }
+        
+        return "\(locality) \(subLocality)"
     }
     
     static func distance(from: Location, to: Location) -> Double {

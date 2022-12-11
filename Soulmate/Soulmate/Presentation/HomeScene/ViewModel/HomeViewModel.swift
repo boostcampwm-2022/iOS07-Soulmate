@@ -158,23 +158,28 @@ final class HomeViewModel: ViewModelable {
             guard let currentLocation = self?.currentLocation  else { return }
             let previewList = try await mateRecommendationUseCase
                 .fetchDistanceFilteredRecommendedMate(from: currentLocation, distance: distance)
-                        
-            self?.matePreviewViewModelList = previewList.map { preview -> HomePreviewViewModel in
+
+            var homePreviewViewModelList: [HomePreviewViewModel] = []
+            
+            for preview in previewList {
                 guard let uid = preview.uid,
                       let imageKey = preview.imageKey,
                       let name = preview.name,
                       let birth = preview.birth,
-                      let location = preview.location else { fatalError() }
-                
-                return HomePreviewViewModel(
-                    uid: uid,
-                    imageKey: imageKey,
-                    name: name,
-                    age: String(birth.toAge()),
-                    distance: String(format: "%.2fkm", Location.distance(from: currentLocation, to: location))
+                      let location = preview.location else { continue }
+                homePreviewViewModelList.append(
+                    HomePreviewViewModel(
+                        uid: uid,
+                        imageKey: imageKey,
+                        name: name,
+                        age: String(birth.toAge()),
+                        address: try await location.address(),
+                        distance: String(format: "%.2fkm", Location.distance(from: currentLocation, to: location))
+                    )
                 )
             }
-                        
+            
+            self?.matePreviewViewModelList = homePreviewViewModelList
         }
     }
     
@@ -188,6 +193,7 @@ final class HomeViewModel: ViewModelable {
             uid: selectedMatePreviewViewModel.uid,
             name: selectedMatePreviewViewModel.name,
             age: selectedMatePreviewViewModel.age,
+            address: selectedMatePreviewViewModel.address,
             distance: selectedMatePreviewViewModel.distance
         )
         actions?.showDetailVC?(detailPreviewViewModel)
