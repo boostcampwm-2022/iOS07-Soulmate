@@ -138,6 +138,17 @@ extension ChattingRoomViewController: NSTextStorageDelegate {
     }
 }
 
+// MARK: - TextField Delegate
+extension ChattingRoomViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        
+        guard let text = textField.text, !text.isEmpty else { return false }
+        
+        newLineInputSubject.send(())        
+        return false
+    }
+}
+
 // MARK: - Load Prev Chats Delegate
 extension ChattingRoomViewController: LoadPrevChatDelegate {
     func loadPrevChats() {
@@ -213,18 +224,26 @@ private extension ChattingRoomViewController {
         
         guard let viewModel else { return }
         
+        
         let output = viewModel.transform(
             input: ChattingRoomViewModel.Input(
                 viewDidLoad: Just(()).eraseToAnyPublisher(),
                 viewWillDisappear: viewWillDisappearSubject.eraseToAnyPublisher(),
                 resignActive: resignActiveSubject.eraseToAnyPublisher(),
                 didBecomeActive: didBecomeActiveSubejct.eraseToAnyPublisher(),
-                message: messageSubject.eraseToAnyPublisher(),
+                message: composeBar.textPublisher(),
                 messageSendEvent: messageSendSubject,
                 loadPrevChattings: loadPrevChattingsSubject.eraseToAnyPublisher()
             ),
             cancellables: &cancellabels
         )
+        
+        output.messageClear
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                self?.composeBar.messageInput.text = nil
+            }
+            .store(in: &cancellabels)
         
         output.keyboardHeight
             .sink { [weak self] height in
@@ -234,6 +253,7 @@ private extension ChattingRoomViewController {
             .store(in: &cancellabels)
         
         output.sendButtonEnabled
+            .receive(on: DispatchQueue.main)
             .sink { [weak self] isEnabled in
                 
                 if isEnabled {

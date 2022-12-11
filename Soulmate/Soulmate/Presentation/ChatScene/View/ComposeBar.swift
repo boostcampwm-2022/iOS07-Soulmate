@@ -11,7 +11,7 @@ import UIKit
 final class ComposeBar: UIView {
     
     @IBOutlet var contentView: UIView!
-    @IBOutlet weak var messageInput: UITextView!
+    @IBOutlet weak var messageInput: UITextField!
     @IBOutlet weak var sendButton: UIButton!
     
     override init(frame: CGRect) {
@@ -26,12 +26,12 @@ final class ComposeBar: UIView {
         return .zero
     }
     
-    func configure(with delegate: NSTextStorageDelegate) {
+    func configure(with delegate: UITextFieldDelegate) {
         Bundle.main.loadNibNamed("ComposeBar", owner: self)
         addSubview(contentView)
         contentView.frame = self.frame
         contentView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        messageInput.textStorage.delegate = delegate
+        messageInput.delegate = delegate
         sendButton.isEnabled = false
     }
     
@@ -43,6 +43,10 @@ final class ComposeBar: UIView {
     func deactivateSendButton() {
         sendButton.isEnabled = false
         sendButton.setImage(UIImage(named: "messageOff"), for: .normal)
+    }
+    
+    func textPublisher() -> AnyPublisher<String?, Never> {
+        return messageInput.textPublisher()
     }
     
     func sendButtonPublisher() -> AnyPublisher<Void, Never> {

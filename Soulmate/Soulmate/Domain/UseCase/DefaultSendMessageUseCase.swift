@@ -56,12 +56,14 @@ final class DefaultSendMessageUseCase: SendMessageUseCase {
         }
         
         let chat = Chat(isMe: true, userId: uid, readUsers: readUsers, text: messageToSend.value, date: date, state: .sending)
+        
         myMessage.send(chat)
+        updateMessage("")
                 
         let success = await chattingRepository.addMessage(
             MessageToSendDTO(
                 docId: chatRoomId,
-                text: messageToSend.value,
+                text: chat.text,
                 userId: uid,
                 readUsers: [uid],
                 date: .init(date: date)

@@ -67,6 +67,7 @@ final class ChattingRoomViewModel {
         var newMessageArrived = PassthroughSubject<[Chat], Never>()
         var keyboardHeight = KeyboardMonitor().$keyboardHeight
         var otherIsEntered = PassthroughSubject<String, Never>()
+        var messageClear = PassthroughSubject<Void, Never>()
     }
     
     func fetchMateImage() async -> Data? {
@@ -155,6 +156,7 @@ final class ChattingRoomViewModel {
         self.sendMessageUseCase.myMessage
             .sink { chat in                
                 output.newMessageArrived.send([chat])
+                output.messageClear.send(())
             }
             .store(in: &cancellables)
         
