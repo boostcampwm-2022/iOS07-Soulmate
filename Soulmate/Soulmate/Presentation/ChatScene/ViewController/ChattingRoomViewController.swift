@@ -254,7 +254,7 @@ private extension ChattingRoomViewController {
                 }
                 
                 if self?.isInitLoad ?? false {
-                    self?.chatListView.load(chats)
+                    self?.chatListView.append(chats)
                     self?.isInitLoad = false
                     self?.chatListView.scrollToBottomByOffset()
                 }

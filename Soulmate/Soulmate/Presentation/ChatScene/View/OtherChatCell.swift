@@ -41,12 +41,7 @@ final class OtherChatCell: UICollectionViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        otherChatView.set(image: nil)
-    }
-    
+
     func configure(from chat: Chat) {
         otherChatView.configure(with: chat)
     }

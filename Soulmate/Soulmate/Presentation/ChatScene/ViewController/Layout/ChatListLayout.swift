@@ -11,7 +11,6 @@ final class ChatListLayout: UICollectionViewLayout {
     
     private var computedContentSize: CGSize = .zero
     private var attributes = [UICollectionViewLayoutAttributes]()
-    private var cellIds = [String]()
     
     override var collectionViewContentSize: CGSize {
         return computedContentSize
@@ -22,14 +21,14 @@ final class ChatListLayout: UICollectionViewLayout {
         guard let collectionView,
               let dataSource = collectionView.dataSource as? ChatDataSource else { return }
                 
-        attributes = [UICollectionViewLayoutAttributes]()
-        cellIds = [String]()
+        attributes = [UICollectionViewLayoutAttributes]()        
         
+        let snapshot = dataSource.snapshot()
         var yOffset: CGFloat = 0
         
-        for section in 0..<collectionView.numberOfSections {
+        snapshot.sectionIdentifiers.enumerated().forEach { section, sectionIdentifier in
             
-            let header = dataSource.headers[section]
+            let header = sectionIdentifier
             
             let headerAttributes = UICollectionViewLayoutAttributes(
                 forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
@@ -40,17 +39,16 @@ final class ChatListLayout: UICollectionViewLayout {
                 x: 0,
                 y: yOffset,
                 width: collectionView.bounds.size.width,
-                height: header.height
+                height: dataSource.headerHeight
             )
             
             headerAttributes.frame = headerFrame
             attributes.append(headerAttributes)
-            yOffset += header.height
+            yOffset += dataSource.headerHeight
             
-            for item in 0..<collectionView.numberOfItems(inSection: section) {
+            snapshot.itemIdentifiers(inSection: sectionIdentifier).enumerated().forEach { item, chat in
                 
-                let indexPath = IndexPath(item: item, section: section)
-                let chat = dataSource.chats[section][item]
+                let indexPath = IndexPath(item: item, section: section)                
                 
                 let cellHeight = chat.height
                 let cellWidth = collectionView.bounds.size.width
@@ -61,7 +59,6 @@ final class ChatListLayout: UICollectionViewLayout {
                 let cellAttributes = UICollectionViewLayoutAttributes(forCellWith: indexPath)
                 cellAttributes.frame = itemFrame
                 attributes.append(cellAttributes)
-                cellIds.append(chat.id)
                 
                 yOffset += cellHeight
             }
