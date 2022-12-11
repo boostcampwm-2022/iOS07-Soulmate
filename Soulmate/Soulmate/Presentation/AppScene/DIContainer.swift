@@ -416,7 +416,8 @@ extension DIContainer {
             return RegisterViewModel(
                 uploadDetailInfoUseCase: r.resolve(UploadMyDetailInfoUseCase.self)!,
                 uploadPictureUseCase: r.resolve(UploadPictureUseCase.self)!,
-                uploadPreviewUseCase: r.resolve(UploadMyPreviewUseCase.self)!
+                uploadPreviewUseCase: r.resolve(UploadMyPreviewUseCase.self)!,
+                heartUpdateUseCase: r.resolve(HeartUpdateUseCase.self)!
             )
         }
         .inObjectScope(.graph)

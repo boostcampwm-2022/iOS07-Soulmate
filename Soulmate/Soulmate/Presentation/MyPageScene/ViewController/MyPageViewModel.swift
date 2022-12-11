@@ -129,7 +129,6 @@ class MyPageViewModel: ViewModelable {
     // MARK: Logic
     
     func loadInfo() {
-        print("dd")
         Task { [weak self] in
             let preview = try await downLoadMyPreviewUseCase.downloadPreview()
             self?.userProfileInfo = preview

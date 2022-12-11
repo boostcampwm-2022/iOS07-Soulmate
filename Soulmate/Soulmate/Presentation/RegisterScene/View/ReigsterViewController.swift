@@ -74,7 +74,8 @@ class RegisterViewController: UIViewController {
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        if self.isMovingFromParent {
+        // 첫 페이지에서 pop 될 때 코디네이터 종료 및 로그아웃 용
+        if self.isMovingFromParent && currentPage == 0 {
             viewModel?.quit()
         }
     }

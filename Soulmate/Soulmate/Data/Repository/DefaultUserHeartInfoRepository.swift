@@ -24,17 +24,17 @@ final class DefaultUserHeartInfoRepository: UserHeartInfoRepository {
     }
     
     func updateHeart(uid: String, heartInfo: UserHeartInfo) async throws {
-        let prevHeartInfo = try await networkDatabaseApi.read(
+        let prevHeartInfo = try? await networkDatabaseApi.read(
             table: path,
             documentID: uid,
             type: UserHeartInfoDTO.self
         ).toModel()
         
-        guard let addingHeart = heartInfo.heart,
-              let prevHeart = prevHeartInfo.heart else { return }
-
-        let newHeartInfo = UserHeartInfo(heart: prevHeart + addingHeart)
+        let prevHeart = prevHeartInfo?.heart
+        guard let addingHeart = heartInfo.heart else { return }
         
+        let newHeartInfo = UserHeartInfo(heart: prevHeart ?? 0 + addingHeart)
+
         try await networkDatabaseApi.create(
             table: path,
             documentID: uid,

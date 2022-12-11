@@ -45,12 +45,14 @@ class RegisterViewModel: ViewModelable {
     var uploadDetailInfoUseCase: UploadMyDetailInfoUseCase
     var uploadPictureUseCase: UploadPictureUseCase
     var uploadPreviewUseCase: UploadMyPreviewUseCase
+    var heartUpdateUseCase: HeartUpdateUseCase
     
     // MARK: Properties
     
     var actions: Action?
     var bag = Set<AnyCancellable>()
     
+    var currentPage: Int?
     var chatImageData: Data?
 
     var didAllInfoUploaded = PassthroughSubject<Void, Never>()
@@ -69,11 +71,13 @@ class RegisterViewModel: ViewModelable {
     init(
         uploadDetailInfoUseCase: UploadMyDetailInfoUseCase,
         uploadPictureUseCase: UploadPictureUseCase,
-        uploadPreviewUseCase: UploadMyPreviewUseCase
+        uploadPreviewUseCase: UploadMyPreviewUseCase,
+        heartUpdateUseCase: HeartUpdateUseCase
     ) {
         self.uploadDetailInfoUseCase = uploadDetailInfoUseCase
         self.uploadPictureUseCase = uploadPictureUseCase
         self.uploadPreviewUseCase = uploadPreviewUseCase
+        self.heartUpdateUseCase = heartUpdateUseCase
     }
     
     func setPrevRegisterInfo(registerUserInfo: RegisterUserInfo?) {
@@ -100,6 +104,7 @@ class RegisterViewModel: ViewModelable {
         let valueChangedInCurrentPage = PassthroughSubject<Bool, Never>()
         let valueInChangedPage = input.didChangedPageIndex
             .map { [weak self] index in
+                self?.currentPage = index
                 guard let self else { return true }
                 switch index {
                 case 0: return self.genderType != nil
@@ -171,8 +176,9 @@ class RegisterViewModel: ViewModelable {
             }
             .store(in: &bag)
         
-        input.didTappedNextButton.combineLatest(input.didChangedPageIndex)
-            .sink { [weak self] (_, index) in
+        input.didTappedNextButton
+            .sink { [weak self] _ in
+                guard let index = self?.currentPage else { return }
                 switch index {
                 case 0...8:
                     self?.register()
@@ -231,6 +237,7 @@ class RegisterViewModel: ViewModelable {
                 imageList: keys
             )
             try await uploadDetailInfoUseCase.uploadDetailInfo(registerUserInfo: userInfo)
+            try await heartUpdateUseCase.chargeHeart(heart: 30)
             
             let diff = CFAbsoluteTimeGetCurrent() - start
             try await Task.sleep(nanoseconds: UInt64((5 > diff ? 5 - diff : 0) * 1_000_000_000))
