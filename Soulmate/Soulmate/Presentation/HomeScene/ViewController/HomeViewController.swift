@@ -32,7 +32,6 @@ final class HomeViewController: UIViewController {
     private lazy var logo: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "logo")
-        imageView.frame = CGRect(x: 0, y: 0, width: 140, height: 18)
         imageView.contentMode = .scaleAspectFit
         self.view.addSubview(imageView)
         return imageView
@@ -45,8 +44,7 @@ final class HomeViewController: UIViewController {
         button.setImage(UIImage(named: "heart"), for: .normal)
         button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 15)
         
-        button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: -5)
-        button.contentEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 5)
+        button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 0)
         
         self.view.addSubview(button)
 
@@ -259,14 +257,13 @@ private extension HomeViewController {
             $0.left.equalToSuperview().offset(20)
             $0.top.equalTo(view.snp.top).offset(64)
             $0.width.equalTo(140)
-            $0.height.equalTo(18)
         }
 
         numOfHeartButton.snp.makeConstraints {
             $0.right.equalToSuperview().offset(-20)
             $0.centerY.equalTo(logo.snp.centerY)
             $0.height.equalTo(28)
-            $0.width.equalTo(70)
+            $0.width.equalTo(50)
         }
         
         collectionView.snp.makeConstraints {
