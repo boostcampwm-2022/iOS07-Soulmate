@@ -8,10 +8,10 @@
 import Foundation
 
 struct ModificationImageViewModel: Hashable {
-    var uuid = UUID().uuidString
+    var index: Int
     var imageData: Data
     
     func hash(into hasher: inout Hasher) {
-        hasher.combine(self.uuid)
+        hasher.combine(self.index)
     }
 }

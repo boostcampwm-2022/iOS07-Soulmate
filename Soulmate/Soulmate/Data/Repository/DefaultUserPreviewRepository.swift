@@ -66,11 +66,25 @@ class DefaultUserPreviewRepository: UserPreviewRepository {
         }
     }
     
-    func uploadPreview(userUid: String, userPreview: UserPreview) async throws {
+    func registerPreview(userUid: String, userPreview: UserPreview) async throws {
         try await networkDatabaseApi.create(
             table: collectionTitle,
             documentID: userUid,
             data: userPreview.toDTO()
+        )
+    }
+    
+    func updatePreview(userUid: String, userPreview: UserPreview) async throws {
+        let dto = userPreview.toDTO()
+        try await networkDatabaseApi.update(path: collectionTitle,
+                                  documentId: userUid,
+                                  with: [
+                                    "gender": dto.gender,
+                                    "name": dto.name,
+                                    "birth": dto.birth,
+                                    "imageKey": dto.imageKey,
+                                    "chatImageKey": dto.chatImageKey
+                                  ]
         )
     }
     
@@ -92,14 +106,5 @@ class DefaultUserPreviewRepository: UserPreviewRepository {
         )
         .toDomain()
     }
-    
-    func updateHeart(userUid: String, heart: Int) async throws {
-        try await networkDatabaseApi.update(
-            table: collectionTitle,
-            documentID: userUid,
-            with: [
-                "heart": FieldValue.increment(Int64(heart))
-            ]
-        )
-    }
+
 }

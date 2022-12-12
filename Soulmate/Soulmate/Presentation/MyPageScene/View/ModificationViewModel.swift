@@ -114,10 +114,9 @@ class ModificationViewModel: ViewModelable {
                 name: userDetailInfo.nickName,
                 birth: userDetailInfo.birthDay,
                 imageKey: ImageKeyList.first,
-                chatImageKey: chatImageKey,
-                heart: 30
+                chatImageKey: chatImageKey
             )
-            try await uploadMyPreviewUseCase.uploadPreview(userPreview: userPreview)
+            try await uploadMyPreviewUseCase.updatePreview(userPreview: userPreview)
 
             userDetailInfo.imageList = ImageKeyList
             try await uploadMyDetailInfoUseCase.uploadDetailInfo(registerUserInfo: userDetailInfo)

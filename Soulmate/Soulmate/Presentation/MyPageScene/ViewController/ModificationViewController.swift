@@ -25,6 +25,11 @@ enum ModificationSectionKind: Int, CaseIterable {
     }
 }
 
+enum ModificationItemKind: Hashable {
+    case profileImage(ModificationImageViewModel)
+    case profileInfo(ModificationInfoViewModel)
+}
+
 class ModificationViewController: UIViewController {
     
     var cancelables = Set<AnyCancellable>()
@@ -34,7 +39,7 @@ class ModificationViewController: UIViewController {
     
     static let headerElementKind = "header-element-kind"
 
-    private var dataSource: UICollectionViewDiffableDataSource<ModificationSectionKind, AnyHashable>!
+    private var dataSource: UICollectionViewDiffableDataSource<ModificationSectionKind, ModificationItemKind>!
     private var collectionView: UICollectionView!
     
     private lazy var saveButton: UIButton = {
@@ -85,16 +90,16 @@ class ModificationViewController: UIViewController {
             .compactMap { $0 }
             .receive(on: DispatchQueue.main)
             .sink { [weak self] value in
-                var sectionSnapshot = NSDiffableDataSourceSectionSnapshot<AnyHashable>()
+                var sectionSnapshot = NSDiffableDataSourceSectionSnapshot<ModificationItemKind>()
                 sectionSnapshot.append([
-                    ModificationInfoViewModel(key: "성별", value: value.gender?.rawValue ?? ""),
-                    ModificationInfoViewModel(key: "닉네임", value: value.nickName ?? ""),
-                    ModificationInfoViewModel(key: "생년월일", value: value.birthDay?.yyyyMMdd() ?? ""),
-                    ModificationInfoViewModel(key: "키", value: String(value.height ?? 0)),
-                    ModificationInfoViewModel(key: "MBTI", value: value.mbti?.toString() ?? ""),
-                    ModificationInfoViewModel(key: "흡연여부", value: value.smokingType?.rawValue ?? ""),
-                    ModificationInfoViewModel(key: "음주여부", value: value.drinkingType?.rawValue ?? ""),
-                    ModificationInfoViewModel(key: "소개", value: value.aboutMe ?? "")
+                    ModificationItemKind.profileInfo(ModificationInfoViewModel(key: "성별", value: value.gender?.rawValue ?? "")),
+                    ModificationItemKind.profileInfo(ModificationInfoViewModel(key: "닉네임", value: value.nickName ?? "")),
+                    ModificationItemKind.profileInfo(ModificationInfoViewModel(key: "생년월일", value: value.birthDay?.yyyyMMdd() ?? "")),
+                    ModificationItemKind.profileInfo(ModificationInfoViewModel(key: "키", value: String(value.height ?? 0))),
+                    ModificationItemKind.profileInfo(ModificationInfoViewModel(key: "MBTI", value: value.mbti?.toString() ?? "")),
+                    ModificationItemKind.profileInfo(ModificationInfoViewModel(key: "흡연여부", value: value.smokingType?.rawValue ?? "")),
+                    ModificationItemKind.profileInfo(ModificationInfoViewModel(key: "음주여부", value: value.drinkingType?.rawValue ?? "")),
+                    ModificationItemKind.profileInfo(ModificationInfoViewModel(key: "소개", value: value.aboutMe ?? ""))
                 ])
                 self?.dataSource.apply(sectionSnapshot, to: .profileInfo)
             }
@@ -103,8 +108,11 @@ class ModificationViewController: UIViewController {
         output.didChangedImageData
             .receive(on: DispatchQueue.main)
             .sink { [weak self] value in
-                var sectionSnapshot = NSDiffableDataSourceSectionSnapshot<AnyHashable>()
-                sectionSnapshot.append(value.map { ModificationImageViewModel(imageData: $0 ?? Data())})
+                var sectionSnapshot = NSDiffableDataSourceSectionSnapshot<ModificationItemKind>()
+                let snapshotTarget = value.enumerated().map { (index, value) in
+                    return ModificationItemKind.profileImage(ModificationImageViewModel(index: index, imageData: value ?? Data()))
+                }
+                sectionSnapshot.append(snapshotTarget)
                 self?.dataSource.apply(sectionSnapshot, to: .profileImage)
             }
             .store(in: &cancelables)
@@ -246,14 +254,12 @@ extension ModificationViewController {
         
         // MARK: DataSoucre Cell Provider
 
-        dataSource = UICollectionViewDiffableDataSource<ModificationSectionKind, AnyHashable>(collectionView: collectionView) { collectionView, indexPath, item in
+        dataSource = UICollectionViewDiffableDataSource<ModificationSectionKind, ModificationItemKind>(collectionView: collectionView) { collectionView, indexPath, item in
             switch item {
-            case let imageViewModel as ModificationImageViewModel:
+            case .profileImage(let imageViewModel):
                 return collectionView.dequeueConfiguredReusableCell(using: imageCellRegistration, for: indexPath, item: imageViewModel)
-            case let infoViewModel as ModificationInfoViewModel:
+            case .profileInfo(let infoViewModel):
                 return collectionView.dequeueConfiguredReusableCell(using: infoCellRegistration, for: indexPath, item: infoViewModel)
-            default:
-                fatalError()
             }
         }
         
@@ -265,7 +271,7 @@ extension ModificationViewController {
         }
 
         // 초기 데이터 셋팅(섹션 셋팅)
-        var snapshot = NSDiffableDataSourceSnapshot<ModificationSectionKind, AnyHashable>()
+        var snapshot = NSDiffableDataSourceSnapshot<ModificationSectionKind, ModificationItemKind>()
         snapshot.appendSections(ModificationSectionKind.allCases)
         self.dataSource.apply(snapshot, animatingDifferences: false)
     }

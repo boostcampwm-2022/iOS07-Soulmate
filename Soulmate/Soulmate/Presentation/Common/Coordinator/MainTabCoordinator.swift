@@ -6,7 +6,7 @@
 //
 
 import Foundation
-
+import FirebaseAuth
 import UIKit
 
 enum TabBarPage: Int, CaseIterable {
@@ -60,7 +60,6 @@ final class MainTabCoordinator: NSObject, Coordinator {
     func start() {        
         let pages = TabBarPage.allCases
         let controllers: [UINavigationController] = pages.map { getTabController($0) }
-    
         self.navigationController.setNavigationBarHidden(true, animated: false)
         prepareTabBarController(withTabControllers: controllers)
     }

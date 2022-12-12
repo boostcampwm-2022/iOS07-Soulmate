@@ -17,7 +17,6 @@ struct UserPreviewDTO: Codable {
     var imageKey: String?
     var chatImageKey: String?
     var location: GeoPoint?
-    var heart: Int?
 }
 
 extension UserPreviewDTO {
@@ -43,8 +42,7 @@ extension UserPreviewDTO {
             birth: self.birth,
             imageKey: self.imageKey,
             chatImageKey: self.chatImageKey,
-            location: locationInstance,
-            heart: self.heart
+            location: locationInstance
         )
     }
 }

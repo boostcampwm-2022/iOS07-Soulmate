@@ -31,7 +31,8 @@ final class HomeCoordinator: Coordinator {
 
         vm.setActions(
             actions: HomeViewModelAction(
-                showDetailVC: showDetailVC
+                showDetailVC: showDetailVC,
+                showHeartShopFlow: showHeartShopFlow
             )
         )
         let vc = HomeViewController(viewModel: vm)
@@ -49,5 +50,20 @@ final class HomeCoordinator: Coordinator {
         let vc = DetailViewController(viewModel: vm)
         
         self?.navigationController.present(vc, animated: true)
+    }
+    
+    lazy var showHeartShopFlow: () -> Void = { [weak self] in
+        let coordinator = HeartShopCoordinator(navigationController: self?.navigationController ?? UINavigationController())
+        self?.childCoordinators.append(coordinator)
+        coordinator.finishDelegate = self
+        coordinator.start()
+    }
+}
+
+extension HomeCoordinator: CoordinatorFinishDelegate {
+    func coordinatorDidFinish(childCoordinator: Coordinator) {
+        childCoordinators = childCoordinators.filter {
+            $0.type != childCoordinator.type
+        }
     }
 }

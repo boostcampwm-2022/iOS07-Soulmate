@@ -46,8 +46,8 @@ class MyPageViewModel: ViewModelable {
     var actions: Action?
     var cancellables = Set<AnyCancellable>()
     
-    let symbols = ["myPageHeart", "myPagePersonalInfo", "distance", "myPagePin"]
-    let titles = ["하트샵 가기", "개인정보 처리방침", "거리 설정하기", "버전정보"]
+    let symbols = ["myPageHeart", "myPagePersonalInfo", "distance", "myPagePin", ""]
+    let titles = ["하트샵 가기", "개인정보 처리방침", "거리 설정하기", "버전정보", "로그아웃"]
     let subTexts = ["", "", "", "v 3.2.20"]
     
     @Published var userProfileImage: Data?
@@ -81,9 +81,7 @@ class MyPageViewModel: ViewModelable {
                 self?.listenHeartUpdateUseCase.listenHeartUpdate()
             }
             .store(in: &cancellables)
-        
-        // TODO: disappear에서 안끄는거 다같이 상의
-        
+                
         listenHeartUpdateUseCase.heartInfoSubject
             .sink { [weak self] value in
                 self?.heartInfo = value
@@ -129,7 +127,6 @@ class MyPageViewModel: ViewModelable {
     // MARK: Logic
     
     func loadInfo() {
-        print("dd")
         Task { [weak self] in
             let preview = try await downLoadMyPreviewUseCase.downloadPreview()
             self?.userProfileInfo = preview

@@ -11,7 +11,8 @@ struct DetailPreviewViewModel: Hashable {
     let uid: String
     let name: String
     let age: String
-    let distance: String
+    let address: String?
+    let distance: String?
     
     func hash(into hasher: inout Hasher) {
         hasher.combine(uid)

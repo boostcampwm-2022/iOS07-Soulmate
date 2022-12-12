@@ -26,6 +26,7 @@ final class PartnerCell: UICollectionViewCell {
         imageView.image = nil
         imageView.layer.cornerRadius = 14
         imageView.layer.cornerCurve = .continuous
+        imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
         partnerView.addSubview(imageView)
         return imageView
@@ -85,6 +86,14 @@ final class PartnerCell: UICollectionViewCell {
         return imageView
     }()
     
+    private lazy var partnerAddressLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = UIColor.white
+        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 15)
+        partnerSubview.addSubview(label)
+        return label
+    }()
+    
     private lazy var partnerDistance: UILabel = {
         let label = UILabel()
         label.textColor = UIColor.white
@@ -108,6 +117,7 @@ final class PartnerCell: UICollectionViewCell {
         partnerImageView.image = nil
         partnerName.text = "-"
         partnerAge.text = "-"
+        partnerAddressLabel.text = "-"
         partnerDistance.text = "-"
     }
     
@@ -119,6 +129,7 @@ final class PartnerCell: UICollectionViewCell {
     func fill(previewViewModel: HomePreviewViewModel) {
         self.partnerName.text = previewViewModel.name
         self.partnerAge.text = previewViewModel.age
+        self.partnerAddressLabel.text = previewViewModel.address ?? "위치 정보 없음"
         self.partnerDistance.text = previewViewModel.distance
     }
     
@@ -155,9 +166,15 @@ private extension PartnerCell {
             $0.bottom.equalToSuperview().inset(25)
         }
         
-        partnerDistance.snp.makeConstraints {
+        partnerAddressLabel.snp.makeConstraints {
             $0.top.equalToSuperview().inset(56)
             $0.leading.equalToSuperview().inset(44)
+            $0.bottom.equalToSuperview().inset(24)
+        }
+        
+        partnerDistance.snp.makeConstraints {
+            $0.top.equalToSuperview().inset(56)
+            $0.leading.equalTo(partnerAddressLabel.snp.trailing).offset(6)
             $0.bottom.equalToSuperview().inset(24)
         }
         

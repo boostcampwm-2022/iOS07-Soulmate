@@ -21,8 +21,13 @@ class DefaultUploadMyPreviewUseCase: UploadMyPreviewUseCase {
         self.authRepository = authRepository
     }
     
-    func uploadPreview(userPreview: UserPreview) async throws {
+    func updatePreview(userPreview: UserPreview) async throws {
         let uid = try authRepository.currentUid()
-        try await userPreviewRepository.uploadPreview(userUid: uid, userPreview: userPreview)
+        try await userPreviewRepository.updatePreview(userUid: uid, userPreview: userPreview)
+    }
+    
+    func registerPreview(userPreview: UserPreview) async throws {
+        let uid = try authRepository.currentUid()
+        try await userPreviewRepository.registerPreview(userUid: uid, userPreview: userPreview)
     }
 }
