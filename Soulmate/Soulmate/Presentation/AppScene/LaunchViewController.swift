@@ -10,57 +10,26 @@ import UIKit
 import SnapKit
 
 final class LaunchViewController: UIViewController {
-    lazy var animator = UIDynamicAnimator(referenceView: logoImage as UIView)
-    lazy var gravity = UIGravityBehavior()
-    lazy var collider = UICollisionBehavior()
-    lazy var dynamicItemBehavior = UIDynamicItemBehavior()
     
-    private let logoImage: UIImageView = {
+    private lazy var logo: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "emoji")
+        view.addSubview(imageView)
+        imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFit
-        return imageView
-    }()
-    
-    private let confettiImage: UIImageView = {
-        let imageView = UIImageView()
-        imageView.image = UIImage(named: "Confetti")
-        imageView.contentMode = .scaleAspectFit
+        imageView.image = UIImage(named: "logo")
+        
         return imageView
     }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .borderPurple
-        self.view.addSubview(logoImage)
-        self.view.addSubview(confettiImage)
-
-        animatedLayout()
-    }
-    
-    private func animatedLayout() {
-        logoImage.snp.makeConstraints {
-            $0.centerX.centerY.equalToSuperview()
-        }
+        view.backgroundColor = .white
         
-        confettiImage.snp.makeConstraints {
-            $0.centerX.centerY.equalToSuperview()
+        logo.snp.makeConstraints {
+            $0.width.equalTo(192)
+            $0.centerX.equalTo(view.snp.centerX)
+            $0.centerY.equalTo(view.snp.centerY)
         }
-        
-        UIView.animate(
-            withDuration: 2,
-            delay: 0,
-            options: UIView.AnimationOptions.curveEaseOut,
-            animations: {
-                self.view.backgroundColor = .white
-                
-                self.logoImage.alpha = 0.05
-                self.logoImage.transform = CGAffineTransform(scaleX: 10, y: 10)
-                 
-                self.confettiImage.alpha = 0
-            },
-            completion: nil
-        )
     }
 }
 

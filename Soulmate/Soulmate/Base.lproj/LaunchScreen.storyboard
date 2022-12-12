@@ -20,9 +20,9 @@
                                 <rect key="frame" x="100.66666666666669" y="413" width="192" height="26"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="BoostCamp 2022. iOS07" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="n7p-4p-YAp">
-                                <rect key="frame" x="110.66666666666669" y="808.66666666666663" width="172" height="19.333333333333371"/>
+                                <rect key="frame" x="110.66666666666669" y="798.66666666666663" width="172" height="19.333333333333371"/>
                                 <fontDescription key="fontDescription" name="AppleSDGothicNeo-Bold" family="Apple SD Gothic Neo" pointSize="16"/>
-                                <color key="textColor" name="labelDarkGrey"/>
+                                <color key="textColor" name="labelGrey"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
@@ -32,7 +32,7 @@
                             <constraint firstItem="n7p-4p-YAp" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="1TY-qg-hF1"/>
                             <constraint firstItem="dvc-iA-sgv" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="Cag-8M-pvr"/>
                             <constraint firstItem="dvc-iA-sgv" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="Uel-7Z-OCf"/>
-                            <constraint firstItem="n7p-4p-YAp" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" constant="10" id="dge-Q1-D1m"/>
+                            <constraint firstItem="n7p-4p-YAp" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="dge-Q1-D1m"/>
                         </constraints>
                     </view>
                 </viewController>
@@ -43,8 +43,8 @@
     </scenes>
     <resources>
         <image name="logo" width="192" height="26"/>
-        <namedColor name="labelDarkGrey">
-            <color red="0.36470588235294116" green="0.36862745098039218" blue="0.396078431372549" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        <namedColor name="labelGrey">
+            <color red="0.6470588235294118" green="0.65490196078431373" blue="0.68627450980392157" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>
