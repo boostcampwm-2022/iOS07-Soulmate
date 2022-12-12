@@ -129,6 +129,7 @@
 		6A5ED85D29446C0100AD9E82 /* DefaultFetchMatePreviewUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5ED85C29446C0100AD9E82 /* DefaultFetchMatePreviewUseCase.swift */; };
 		6A5ED85F294478CA00AD9E82 /* FetchMateChatImageKeyUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5ED85E294478CA00AD9E82 /* FetchMateChatImageKeyUseCase.swift */; };
 		6A5ED861294478EA00AD9E82 /* DefaultFetchMateChatImageKeyUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5ED860294478EA00AD9E82 /* DefaultFetchMateChatImageKeyUseCase.swift */; };
+		6A5ED8632946E66A00AD9E82 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 6A5ED8622946E66A00AD9E82 /* FirebaseMessaging */; };
 		6A5ED916293EEE5700A284F7 /* DefaultChattingRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5ED915293EEE5600A284F7 /* DefaultChattingRepository.swift */; };
 		6A5ED918293EEE6000A284F7 /* ChattingRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5ED917293EEE6000A284F7 /* ChattingRepository.swift */; };
 		6A8377A92924A3FC00BC7112 /* RegisterNickNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A8377A82924A3FC00BC7112 /* RegisterNickNameView.swift */; };
@@ -480,6 +481,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6A5ED8632946E66A00AD9E82 /* FirebaseMessaging in Frameworks */,
 				B31A682A291A4257001D35E9 /* Then in Frameworks */,
 				B31A682D291A42BC001D35E9 /* SnapKit in Frameworks */,
 				B30A8ECE291C953F00ED4906 /* FirebaseAnalytics in Frameworks */,
@@ -1195,6 +1197,7 @@
 				B30A8ED3291C953F00ED4906 /* FirebaseStorage */,
 				6AB6B963292BE1EA00A029BD /* FirebaseFirestoreSwift */,
 				6A945303293DDEBA0041B71D /* Swinject */,
+				6A5ED8622946E66A00AD9E82 /* FirebaseMessaging */,
 			);
 			productName = Soulmate;
 			productReference = 6A8C888C2919031A009EDBBB /* Soulmate.app */;
@@ -1648,9 +1651,11 @@
 				CODE_SIGN_ENTITLEMENTS = Soulmate/Soulmate.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = CU5DL5JJWC;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Soulmate/Info.plist;
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "sample--";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "sample--";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -1677,9 +1682,11 @@
 				CODE_SIGN_ENTITLEMENTS = Soulmate/Soulmate.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = CU5DL5JJWC;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Soulmate/Info.plist;
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "sample--";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "sample--";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -1757,6 +1764,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		6A5ED8622946E66A00AD9E82 /* FirebaseMessaging */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B30A8ECC291C953F00ED4906 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseMessaging;
+		};
 		6A945303293DDEBA0041B71D /* Swinject */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 6A945302293DDEBA0041B71D /* XCRemoteSwiftPackageReference "Swinject" */;

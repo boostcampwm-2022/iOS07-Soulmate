@@ -2,14 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>UIBackgroundModes</key>
-	<array>
-		<string>location</string>
-	</array>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>sample--</string>
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>sample--</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -40,5 +32,11 @@
 			</array>
 		</dict>
 	</dict>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>fetch</string>
+		<string>location</string>
+		<string>remote-notification</string>
+	</array>
 </dict>
 </plist>
