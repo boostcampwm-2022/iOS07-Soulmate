@@ -8,7 +8,7 @@
 import UIKit
 
 final class HomeCoordinator: Coordinator {
-    var finishDelegate: CoordinatorFinishDelegate?
+    weak var finishDelegate: CoordinatorFinishDelegate?
     
     var navigationController: UINavigationController
     

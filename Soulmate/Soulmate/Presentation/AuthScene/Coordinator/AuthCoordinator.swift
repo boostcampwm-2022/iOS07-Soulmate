@@ -15,7 +15,7 @@ class AuthCoordinator: Coordinator {
         case register(RegisterUserInfo?)
     }
     
-    var finishDelegate: CoordinatorFinishDelegate?
+    weak var finishDelegate: CoordinatorFinishDelegate?
     
     var navigationController: UINavigationController
     
