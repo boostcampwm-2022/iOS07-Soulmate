@@ -23,7 +23,8 @@ final class RecommendFooterView: UICollectionReusableView {
         button.layer.borderWidth = 2
         button.layer.borderColor = UIColor.borderPurple?.cgColor
         addSubview(button)
-        button.addTarget(self, action: #selector(didTouchedButton), for: .touchUpInside)
+        button.addTarget(self, action: #selector(didTouchedButtonUp), for: .touchUpInside)
+        button.addTarget(self, action: #selector(didTouchedButtonDown), for: .touchDown)
         return button
     }()
     
@@ -56,8 +57,27 @@ final class RecommendFooterView: UICollectionReusableView {
         self.buttonTappedHandler = handler
     }
     
-    @objc func didTouchedButton() {
-        buttonTappedHandler?()
+    @objc func didTouchedButtonUp() {
+        print("touchUpInside")
+        //buttonTappedHandler?()
+        UIView.animate(withDuration: 0,
+                       delay: 0,
+                       options: .curveEaseOut,
+                       animations: {
+            self.transform = .identity
+            self.alpha = 1
+        })
+    }
+    
+    @objc func didTouchedButtonDown() {
+        print("touchDown")
+        UIView.animate(withDuration: 0,
+                       delay: 0,
+                       options: .curveEaseOut,
+                       animations: {
+            self.transform = .init(scaleX: 0.97, y: 0.97)
+            self.alpha = 0.97
+        })
     }
 
 }
