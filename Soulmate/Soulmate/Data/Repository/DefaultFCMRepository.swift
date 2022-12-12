@@ -17,7 +17,7 @@ final class DefaultFCMRepository: FCMRepository {
         self.networkDatabaseApi = networkDatabaseApi
     }
     
-    func token(of uid: String) async -> String? {
+    private func token(of uid: String) async -> String? {
         let path = "UserToken/\(uid)"
         
         let tokenDoc = try? await networkDatabaseApi.read(
@@ -26,16 +26,15 @@ final class DefaultFCMRepository: FCMRepository {
             type: UserToken.self
         )
         
-        
         return tokenDoc?.token
     }
     
-    func sendChattingFCM(to name: String, message: String, uid: String) async {
+    func sendChattingFCM(to mateId: String, title: String, message: String) async {
         
-        guard let token = await token(of: uid) else { return }
+        guard let token = await token(of: mateId) else { return }
         
         let dto = FCMMessageSendDTO(
-            title: name,
+            title: title,
             body: message,
             data: "",
             to: token)

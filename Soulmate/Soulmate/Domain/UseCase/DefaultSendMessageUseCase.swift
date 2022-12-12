@@ -20,18 +20,24 @@ final class DefaultSendMessageUseCase: SendMessageUseCase {
     private let chattingRepository: ChattingRepository
     private let authRepository: AuthRepository
     private let enterStateRepository: EnterStateRepository
+    private let fcmRepository: FCMRepository
+    private let userPreviewRepository: UserPreviewRepository
     
     
     init(
         with info: ChatRoomInfo,
         chattingRepository: ChattingRepository,
         authRepository: AuthRepository,
-        enterStateRepository: EnterStateRepository) {
+        enterStateRepository: EnterStateRepository,
+        fcmRepository: FCMRepository,
+        userPreviewRepository: UserPreviewRepository) {
         
             self.info = info
             self.chattingRepository = chattingRepository
             self.authRepository = authRepository
             self.enterStateRepository = enterStateRepository
+            self.fcmRepository = fcmRepository
+            self.userPreviewRepository = userPreviewRepository
     }
     
     func updateMessage(_ text: String) {
@@ -79,6 +85,15 @@ final class DefaultSendMessageUseCase: SendMessageUseCase {
             if !enterStateRepository.othersEnterState {
                 await chattingRepository.increaseUnreadCount(of: othersId, in: chatRoomId)
             }
+            
+            guard let name = try? await userPreviewRepository.downloadPreview(
+                userUid: uid).name else { return }
+            
+            await fcmRepository.sendChattingFCM(
+                to: othersId,
+                title: name,
+                message: chat.text
+            )
         } else {
             var failedChat = chat
             failedChat.updateState(false, nil)

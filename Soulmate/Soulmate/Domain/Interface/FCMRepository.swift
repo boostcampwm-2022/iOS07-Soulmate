@@ -8,5 +8,6 @@
 import Foundation
 
 protocol FCMRepository {
+    func sendChattingFCM(to mateId: String, title: String, message: String) async
     func updateFCMToken(for uid: String, token: String)
 }
