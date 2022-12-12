@@ -73,8 +73,6 @@ class GradientButton: UIButton {
     }()
     
     @objc func didTouchedButtonUp() {
-        print("touchUpInside")
-        //buttonTappedHandler?()
         UIView.animate(withDuration: 0,
                        delay: 0,
                        options: .curveEaseOut,
@@ -85,7 +83,6 @@ class GradientButton: UIButton {
     }
     
     @objc func didTouchedButtonDown() {
-        print("touchDown")
         UIView.animate(withDuration: 0,
                        delay: 0,
                        options: .curveEaseOut,

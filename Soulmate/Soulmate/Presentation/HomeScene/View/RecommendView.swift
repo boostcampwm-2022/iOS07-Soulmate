@@ -58,8 +58,7 @@ final class RecommendFooterView: UICollectionReusableView {
     }
     
     @objc func didTouchedButtonUp() {
-        print("touchUpInside")
-        //buttonTappedHandler?()
+        buttonTappedHandler?()
         UIView.animate(withDuration: 0,
                        delay: 0,
                        options: .curveEaseOut,
@@ -70,7 +69,6 @@ final class RecommendFooterView: UICollectionReusableView {
     }
     
     @objc func didTouchedButtonDown() {
-        print("touchDown")
         UIView.animate(withDuration: 0,
                        delay: 0,
                        options: .curveEaseOut,
