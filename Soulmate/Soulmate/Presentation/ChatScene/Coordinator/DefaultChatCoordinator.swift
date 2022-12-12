@@ -73,6 +73,7 @@ class DefaultChatCoordinator: ChatCoordinator {
     
     func showChatRoom(with info: ChatRoomInfo) {
         let networkDatabaseApi = FireStoreNetworkDatabaseApi()
+        let urlSessionAPI = DefaultURLSessionAPI()
         let authRepository = DefaultAuthRepository()
         let chattingRepository = DefaultChattingRepository(authRepository: authRepository, networkDatabaseApi: networkDatabaseApi)
         let profilePhotoRepository = DefaultProfilePhotoRepository(
@@ -87,11 +88,17 @@ class DefaultChatCoordinator: ChatCoordinator {
             networkDatabaseApi: networkDatabaseApi
         )
         let userPreviewRepository = DefaultUserPreviewRepository(networkDatabaseApi: networkDatabaseApi)
+        let fcmRepository = DefaultFCMRepository(
+            urlSessionAPI: urlSessionAPI,
+            networkDatabaseApi: networkDatabaseApi
+        )
         let sendMessageUseCase = DefaultSendMessageUseCase(
             with: info,
             chattingRepository: chattingRepository,
             authRepository: authRepository,
-            enterStateRepository: enterStateRepository
+            enterStateRepository: enterStateRepository,
+            fcmRepository: fcmRepository,
+            userPreviewRepository: userPreviewRepository
         )
         let loadChattingsUseCase = DefaultLoadChattingsUseCase(
             with: info,
