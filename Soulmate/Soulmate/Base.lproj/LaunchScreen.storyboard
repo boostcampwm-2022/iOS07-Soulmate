@@ -16,8 +16,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="emoji" translatesAutoresizingMaskIntoConstraints="NO" id="dvc-iA-sgv">
-                                <rect key="frame" x="33" y="306.66666666666669" width="327.33333333333331" height="239.00000000000006"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="dvc-iA-sgv">
+                                <rect key="frame" x="100.66666666666669" y="413" width="192" height="26"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="BoostCamp 2022. iOS07" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="n7p-4p-YAp">
                                 <rect key="frame" x="110.66666666666669" y="808.66666666666663" width="172" height="19.333333333333371"/>
@@ -27,7 +27,7 @@
                             </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
-                        <color key="backgroundColor" name="borderPurple"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="n7p-4p-YAp" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="1TY-qg-hF1"/>
                             <constraint firstItem="dvc-iA-sgv" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="Cag-8M-pvr"/>
@@ -42,10 +42,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="emoji" width="327.33334350585938" height="239"/>
-        <namedColor name="borderPurple">
-            <color red="0.77647058823529413" green="0.62745098039215685" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
+        <image name="logo" width="192" height="26"/>
         <namedColor name="labelDarkGrey">
             <color red="0.36470588235294116" green="0.36862745098039218" blue="0.396078431372549" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
