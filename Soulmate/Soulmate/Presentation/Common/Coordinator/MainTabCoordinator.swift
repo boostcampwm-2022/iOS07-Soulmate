@@ -52,7 +52,6 @@ final class MainTabCoordinator: NSObject, Coordinator {
     private var currentPage: TabBarPage = .home
     
     lazy var showAuthSignInFlow: () -> Void = { [weak self] in
-        print(self?.finishDelegate)
         guard let appCoordinator = self?.finishDelegate as? AppCoordinator else { return }
         
         self?.finish()
