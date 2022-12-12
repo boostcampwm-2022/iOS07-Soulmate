@@ -14,7 +14,7 @@ enum URLSessionAPIError: Error {
     case invalidStatusCodeError
 }
 
-final class DefaultURLSessionAPI {
+final class DefaultURLSessionAPI: URLSessionAPI {
     private enum HTTPMethod: String {
         case post = "POST"
     }
@@ -29,7 +29,7 @@ final class DefaultURLSessionAPI {
                 url: urlString,
                 bodyData: data,
                 header: header
-            )                    
+            )
             
             return result
     }
