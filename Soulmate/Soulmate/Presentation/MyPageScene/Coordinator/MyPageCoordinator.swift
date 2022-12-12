@@ -29,7 +29,8 @@ class MyPageCoordinator: Coordinator {
                 showMyInfoEditFlow: showModificationVC,
                 showServiceTermFlow: showServiceTermVC,
                 showHeartShopFlow: showHeartShopVC,
-                showDistanceFlow: showDistanceVC
+                showDistanceFlow: showDistanceVC,
+                showSignOutFlow: didSignOut
             )
         )
         let vc = MyPageViewController(viewModel: vm)
@@ -74,6 +75,13 @@ class MyPageCoordinator: Coordinator {
     
     lazy var didFinishModification: () -> Void = { [weak self] in
         self?.navigationController.popToRootViewController(animated: true)
+    }
+    
+    lazy var didSignOut: () -> Void = { [weak self] in
+        guard let mainTabCoordinator = self?.finishDelegate as? MainTabCoordinator else { return }
+        
+        self?.finish()
+        mainTabCoordinator.showAuthSignInFlow()
     }
 }
 
