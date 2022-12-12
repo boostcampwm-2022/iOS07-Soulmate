@@ -264,8 +264,8 @@ private extension HomeViewController {
 
         numOfHeartButton.snp.makeConstraints {
             $0.right.equalToSuperview().offset(-20)
-            $0.top.equalTo(view.snp.top).offset(64)
-            $0.height.equalTo(18)
+            $0.centerY.equalTo(logo.snp.centerY)
+            $0.height.equalTo(28)
             $0.width.equalTo(70)
         }
         
