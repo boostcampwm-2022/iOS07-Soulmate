@@ -49,6 +49,23 @@ final class ReceivedChatRequestsViewController: UIViewController {
         configureView()
         configureLayout()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        if !NetworkMonitor.shared.isConnected {
+            showPopUp(title: "네트워크 접속 불가🕸️",
+                      message: "네트워크 연결 상태를 확인해주세요.",
+                      leftActionTitle: "취소",
+                      rightActionTitle: "설정",
+                      rightActionCompletion: { // 설정 켜기
+                guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
+                if UIApplication.shared.canOpenURL(url) {
+                    UIApplication.shared.open(url)
+                }
+            })
+        }
+    }
 }
 
 private extension ReceivedChatRequestsViewController {
