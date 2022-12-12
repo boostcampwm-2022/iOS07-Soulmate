@@ -7,97 +7,123 @@
 
 import UIKit
 
-final class ChatDataSource: NSObject, UICollectionViewDataSource {
-    
-    private var chats: [Chat] = []
-    private(set) var offsets: [CGFloat] = []
+struct ChatDateHeader: Hashable {
+    var date: String
+}
+
+final class ChatDataSource: UICollectionViewDiffableDataSource<ChatDateHeader, String> {
+
+    let headerHeight: CGFloat = 30
+    var chatDictionary: [String: Chat] = [:]
     private var buffer: [Chat] = []
     var isLoading = false
     
-    var heights: [CGFloat] {
-        return chats.map { $0.height }
-    }
-    
-    var ids: [String] {
-        return chats.map { $0.id }
-    }
-    
-    var count: Int {
-        return chats.count
-    }
-    
-    var endIndex: Int {
-        return chats.endIndex
+    var maxY: CGFloat {
+        var y: CGFloat = 0
+        let snapshot = snapshot()
+        snapshot.sectionIdentifiers.forEach { _ in y += headerHeight }
+        chatDictionary.values.forEach { y += $0.height }
+        
+        return y
     }
     
     var isBufferEmpty: Bool {
         return buffer.isEmpty
     }
     
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return chats.count
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let chat = chats[indexPath.item]
+    func appendAfterRemoveAll(_ data: [Chat]) {
+        var snapshot = snapshot()
+        snapshot.deleteAllItems()
+        chatDictionary.removeAll()
         
-        if chat.isMe {
-            return MyChatCell.dequeue(from: collectionView, at: indexPath, with: chat)
-        } else {
-            return OtherChatCell.dequeu(from: collectionView, at: indexPath, with: chat)
+        var sections = snapshot.sectionIdentifiers
+        
+        for chat in data {
+            
+            guard let stringDate = chat.date?.yyyyMMddEEEE() else { continue }
+            let chatDateHeader = ChatDateHeader(date: stringDate)
+            
+            if !sections.contains(chatDateHeader) {
+                
+                sections.append(chatDateHeader)
+                snapshot.appendSections([chatDateHeader])
+                snapshot.appendItems([chat.id], toSection: chatDateHeader)
+                chatDictionary[chat.id] = chat
+            } else {
+                snapshot.appendItems([chat.id], toSection: chatDateHeader)
+                chatDictionary[chat.id] = chat
+            }
         }
+        
+        self.applySnapshotUsingReloadData(snapshot)
     }
-}
-
-extension ChatDataSource {
     
     func append(_ data: [Chat]) {
-        chats += data
+        
+        var snapshot = snapshot()
+        var sections = snapshot.sectionIdentifiers
+        
         for chat in data {
-            offsets.append((offsets.last ?? 0) + chat.height)
+            
+            guard let stringDate = chat.date?.yyyyMMddEEEE() else { continue }
+            let chatDateHeader = ChatDateHeader(date: stringDate)
+        
+            if !sections.contains(chatDateHeader) {
+                sections.append(chatDateHeader)
+                snapshot.appendSections([chatDateHeader])
+                snapshot.appendItems([chat.id], toSection: chatDateHeader)
+                chatDictionary[chat.id] = chat
+            } else {
+                snapshot.appendItems([chat.id], toSection: chatDateHeader)
+                chatDictionary[chat.id] = chat
+            }
         }
+        
+        self.applySnapshotUsingReloadData(snapshot)
     }
     
     func update(_ chat: Chat) {
-        guard let index = chats.firstIndex(
-            where: { old in
-                old.id == chat.id
-            })else { return }
         
-        chats[index] = chat
+        var snapshot = snapshot()
+        
+        chatDictionary[chat.id] = chat
+        snapshot.reconfigureItems([chat.id])
+        
+        apply(snapshot)
     }
     
     func update(notContaining otherId: String) {
-        for i in (0..<chats.count).reversed() {
-            
-            if chats[i].readUsers.contains(otherId) { continue }
-            var chat = chats[i]
-            chat.readUsers.append(otherId)
-            chats[i] = chat
+        
+        var snapshot = snapshot()
+        var updateIds = chatDictionary
+            .filter { !$0.value.readUsers.contains(otherId) }
+            .map { $0.key }
+        
+        updateIds.forEach { key in
+            chatDictionary[key]?.readUsers.append(otherId)
         }
+        
+        snapshot.reconfigureItems(updateIds)
+        
+        apply(snapshot)
     }
     
     func insertBuffer() -> CGFloat {
+
+        let snapshot = snapshot()
+
         guard !buffer.isEmpty else { return 0 }
-        
-        chats = buffer + chats
-        offsets.removeAll()
-        
-        for chat in chats {
-            offsets.append((offsets.last ?? 0) + chat.height)
-        }
-        
-        let addedHeight = buffer.reduce(0) { partialResult, chat in
-            return partialResult + chat.height
-        }
-        
+                
+        let beforeHeight = maxY
+        let chats = buffer + snapshot.itemIdentifiers.compactMap { chatDictionary[$0] }
+
+        appendAfterRemoveAll(chats)
+
+        let afterHeight = maxY
+
         buffer = []
-        
-        return addedHeight
+
+        return afterHeight - beforeHeight
     }
     
     func fillBuffer(with prevChats: [Chat]) {

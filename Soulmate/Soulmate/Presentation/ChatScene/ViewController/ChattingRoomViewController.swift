@@ -11,7 +11,7 @@ import UIKit
 final class ChattingRoomViewController: UIViewController {
     
     private var chatRoomInfo: ChatRoomInfo?
-    private var viewModel: ChattingRoomViewModel?
+    private(set) var viewModel: ChattingRoomViewModel?
     private var cancellabels = Set<AnyCancellable>()
     private var messageSubject = PassthroughSubject<String?, Never>()
     private var loadPrevChattingsSubject = PassthroughSubject<Void, Never>()
@@ -24,8 +24,11 @@ final class ChattingRoomViewController: UIViewController {
     private var isInitLoad = true
     
     private lazy var chatListView: ChatListView = {
-        let listView = ChatListView(hostView: self.view)
-        listView.loadPrevChatDelegate = self
+        let listView = ChatListView(
+            hostView: self.view,
+            fetchImage: viewModel?.fetchMateImage
+        )
+        listView.loadPrevChatDelegate = self        
         
         return listView
     }()
@@ -135,6 +138,17 @@ extension ChattingRoomViewController: NSTextStorageDelegate {
     }
 }
 
+// MARK: - TextField Delegate
+extension ChattingRoomViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        
+        guard let text = textField.text, !text.isEmpty else { return false }
+        
+        newLineInputSubject.send(())        
+        return false
+    }
+}
+
 // MARK: - Load Prev Chats Delegate
 extension ChattingRoomViewController: LoadPrevChatDelegate {
     func loadPrevChats() {
@@ -166,8 +180,14 @@ private extension ChattingRoomViewController {
 // MARK: - UI Configure
 private extension ChattingRoomViewController {
     func configureView() {
+            
+        Task {
+            let mateName = await viewModel?.mateName()
+            await MainActor.run {
+                self.title = mateName
+            }
+        }
         
-        self.title = "수정해야함"
         view.backgroundColor = .white
     }
     
@@ -204,18 +224,26 @@ private extension ChattingRoomViewController {
         
         guard let viewModel else { return }
         
+        
         let output = viewModel.transform(
             input: ChattingRoomViewModel.Input(
                 viewDidLoad: Just(()).eraseToAnyPublisher(),
                 viewWillDisappear: viewWillDisappearSubject.eraseToAnyPublisher(),
                 resignActive: resignActiveSubject.eraseToAnyPublisher(),
                 didBecomeActive: didBecomeActiveSubejct.eraseToAnyPublisher(),
-                message: messageSubject.eraseToAnyPublisher(),
+                message: composeBar.textPublisher(),
                 messageSendEvent: messageSendSubject,
                 loadPrevChattings: loadPrevChattingsSubject.eraseToAnyPublisher()
             ),
             cancellables: &cancellabels
         )
+        
+        output.messageClear
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                self?.composeBar.messageInput.text = nil
+            }
+            .store(in: &cancellabels)
         
         output.keyboardHeight
             .sink { [weak self] height in
@@ -225,6 +253,7 @@ private extension ChattingRoomViewController {
             .store(in: &cancellabels)
         
         output.sendButtonEnabled
+            .receive(on: DispatchQueue.main)
             .sink { [weak self] isEnabled in
                 
                 if isEnabled {
@@ -245,7 +274,7 @@ private extension ChattingRoomViewController {
                 }
                 
                 if self?.isInitLoad ?? false {
-                    self?.chatListView.load(chats)
+                    self?.chatListView.append(chats)
                     self?.isInitLoad = false
                     self?.chatListView.scrollToBottomByOffset()
                 }

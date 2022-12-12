@@ -11,7 +11,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ComposeBar" customModule="Soulmate" customModuleProvider="target">
             <connections>
                 <outlet property="contentView" destination="iN0-l3-epB" id="cRK-6T-a1F"/>
-                <outlet property="messageInput" destination="HTP-vV-AcX" id="FfK-DH-fT6"/>
+                <outlet property="messageInput" destination="hFu-vj-Ijc" id="331-Jp-k83"/>
                 <outlet property="sendButton" destination="bjm-ql-Yyf" id="Bja-IX-5fK"/>
             </connections>
         </placeholder>
@@ -30,18 +30,8 @@
                                 <constraint firstAttribute="height" constant="1" id="zWp-m0-LfC"/>
                             </constraints>
                         </view>
-                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="HTP-vV-AcX">
-                            <rect key="frame" x="16" y="5" width="315" height="50"/>
-                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                            <constraints>
-                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="36" id="JEf-RZ-dZj"/>
-                            </constraints>
-                            <color key="textColor" systemColor="labelColor"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                        </textView>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bjm-ql-Yyf">
-                            <rect key="frame" x="341" y="12" width="36" height="36"/>
+                            <rect key="frame" x="341" y="12.666666666666671" width="36" height="36"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="36" id="0Rl-YH-EqG"/>
                                 <constraint firstAttribute="width" constant="36" id="GbF-83-z2B"/>
@@ -49,18 +39,23 @@
                             <state key="normal" title="Button"/>
                             <buttonConfiguration key="configuration" style="plain" image="messageOff"/>
                         </button>
+                        <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="hFu-vj-Ijc">
+                            <rect key="frame" x="16" y="6" width="315" height="49"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                            <textInputTraits key="textInputTraits"/>
+                        </textField>
                     </subviews>
                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     <constraints>
-                        <constraint firstItem="bjm-ql-Yyf" firstAttribute="centerY" secondItem="HTP-vV-AcX" secondAttribute="centerY" id="6AB-Z3-kqF"/>
+                        <constraint firstItem="bjm-ql-Yyf" firstAttribute="centerY" secondItem="hFu-vj-Ijc" secondAttribute="centerY" id="0vy-wq-oYG"/>
+                        <constraint firstItem="hFu-vj-Ijc" firstAttribute="leading" secondItem="shT-SB-K2r" secondAttribute="leading" constant="16" id="3ty-e2-wZb"/>
                         <constraint firstItem="sPi-Z1-2N0" firstAttribute="top" secondItem="shT-SB-K2r" secondAttribute="top" id="R11-EV-GXv"/>
-                        <constraint firstItem="bjm-ql-Yyf" firstAttribute="leading" secondItem="HTP-vV-AcX" secondAttribute="trailing" constant="10" id="Scc-m0-haM"/>
                         <constraint firstAttribute="trailing" secondItem="sPi-Z1-2N0" secondAttribute="trailing" id="eq8-Qy-gsh"/>
-                        <constraint firstItem="HTP-vV-AcX" firstAttribute="leading" secondItem="shT-SB-K2r" secondAttribute="leading" constant="16" id="gJb-e4-n4m"/>
-                        <constraint firstAttribute="bottom" secondItem="HTP-vV-AcX" secondAttribute="bottom" constant="5" id="i6m-7D-S6H"/>
-                        <constraint firstItem="HTP-vV-AcX" firstAttribute="top" secondItem="shT-SB-K2r" secondAttribute="top" constant="5" id="nLT-5b-uv0"/>
+                        <constraint firstItem="hFu-vj-Ijc" firstAttribute="top" secondItem="sPi-Z1-2N0" secondAttribute="bottom" constant="5" id="gjp-m3-4Mz"/>
                         <constraint firstAttribute="trailing" secondItem="bjm-ql-Yyf" secondAttribute="trailing" constant="16" id="sc7-1r-zBU"/>
+                        <constraint firstAttribute="bottom" secondItem="hFu-vj-Ijc" secondAttribute="bottom" constant="5" id="sdr-8Y-r7B"/>
                         <constraint firstItem="sPi-Z1-2N0" firstAttribute="leading" secondItem="shT-SB-K2r" secondAttribute="leading" id="vyK-PJ-WzR"/>
+                        <constraint firstItem="bjm-ql-Yyf" firstAttribute="leading" secondItem="hFu-vj-Ijc" secondAttribute="trailing" constant="10" id="wBE-HX-cl0"/>
                     </constraints>
                 </view>
             </subviews>
@@ -78,9 +73,6 @@
     </objects>
     <resources>
         <image name="messageOff" width="32" height="32"/>
-        <systemColor name="labelColor">
-            <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

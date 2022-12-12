@@ -47,12 +47,10 @@ final class ChatListDelegate: NSObject, UIScrollViewDelegate, UICollectionViewDe
     func insertPrevChats() {
         
         let addedHeight = chatList?.insertPrevChats() ?? 0
-        
-        chatList?.reloadData()
-        
+        guard addedHeight != 0 else { return }
+
         let currentYOffset = chatList?.contentOffset.y ?? 0
                 
-        
         chatList?.setContentOffset(CGPoint(x: 0, y: currentYOffset + addedHeight), animated: false)
     }
 }

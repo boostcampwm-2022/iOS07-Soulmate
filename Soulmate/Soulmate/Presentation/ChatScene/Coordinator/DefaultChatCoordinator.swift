@@ -86,6 +86,7 @@ class DefaultChatCoordinator: ChatCoordinator {
             authRepository: authRepository,
             networkDatabaseApi: networkDatabaseApi
         )
+        let userPreviewRepository = DefaultUserPreviewRepository(networkDatabaseApi: networkDatabaseApi)
         let sendMessageUseCase = DefaultSendMessageUseCase(
             with: info,
             chattingRepository: chattingRepository,
@@ -128,6 +129,17 @@ class DefaultChatCoordinator: ChatCoordinator {
             profilePhotoRepository: profilePhotoRepository,
             imageCacheRepository: imageCacheRepository
         )
+        let fetchMatePreviewUseCase = DefaultFetchMatePreviewUseCase(
+            info: info,
+            userPreviewRepository: userPreviewRepository,
+            authRepository: authRepository
+        )
+        
+        let fetchMateChatImageKeyUseCase = DefaultFetchMateChatImageKeyUseCase(
+            info: info,
+            authRepository: authRepository,
+            imageKeyUseCase: imageKeyUseCase
+        )
         
         let viewModel = ChattingRoomViewModel(
             sendMessageUseCase: sendMessageUseCase,
@@ -138,7 +150,9 @@ class DefaultChatCoordinator: ChatCoordinator {
             listenOthersEnterStateUseCase: listenOthersEnterStateUseCase,
             enterChatRoomUseCase: enterChatRoomUseCase,
             imageKeyUseCase: imageKeyUseCase,
-            fetchImageUseCase: fetchImageUseCase
+            fetchImageUseCase: fetchImageUseCase,
+            fetchMatePreviewUseCase: fetchMatePreviewUseCase,
+            fetchMateChatImageKeyUseCase: fetchMateChatImageKeyUseCase
         )
         let viewController = ChattingRoomViewController(viewModel: viewModel, chatRoomInfo: info)
         self.navigationController.pushViewController(viewController, animated: true)
