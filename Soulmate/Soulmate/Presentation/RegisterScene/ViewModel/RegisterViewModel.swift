@@ -16,28 +16,9 @@ struct RegisterViewModelAction {
 
 class RegisterViewModel: ViewModelable {
     
+    // MARK: Interface defined AssociatedType
+    
     typealias Action = RegisterViewModelAction
-    
-    var actions: Action?
-    
-    var bag = Set<AnyCancellable>()
-    
-    var uploadDetailInfoUseCase: UploadMyDetailInfoUseCase
-    var uploadPictureUseCase: UploadPictureUseCase
-    var uploadPreviewUseCase: UploadMyPreviewUseCase
-    
-    var didAllInfoUploaded = PassthroughSubject<Void, Never>()
-    
-    @Published var genderType: GenderType?
-    @Published var nickName: String?
-    @Published var height: Int = Int()
-    @Published var birth: Date = Date()
-    @Published var mbti: Mbti?
-    @Published var smokingType: SmokingType?
-    @Published var drinkingType: DrinkingType?
-    @Published var introduction: String?
-    @Published var photoData: [Data?] = [nil, nil, nil, nil, nil]
-    var chatImageData: Data?
     
     struct Input {
         var didChangedPageIndex: AnyPublisher<Int, Never>
@@ -58,6 +39,32 @@ class RegisterViewModel: ViewModelable {
         var isProfilImageSetted: AnyPublisher<Data?, Never>
         var isAllInfoUploaded: AnyPublisher<Void, Never>
     }
+    
+    // MARK: UseCase
+    
+    var uploadDetailInfoUseCase: UploadMyDetailInfoUseCase
+    var uploadPictureUseCase: UploadPictureUseCase
+    var uploadPreviewUseCase: UploadMyPreviewUseCase
+    
+    // MARK: Properties
+    
+    var actions: Action?
+    var bag = Set<AnyCancellable>()
+    
+    var chatImageData: Data?
+
+    var didAllInfoUploaded = PassthroughSubject<Void, Never>()
+    @Published var genderType: GenderType?
+    @Published var nickName: String?
+    @Published var height: Int = Int()
+    @Published var birth: Date = Date()
+    @Published var mbti: Mbti?
+    @Published var smokingType: SmokingType?
+    @Published var drinkingType: DrinkingType?
+    @Published var introduction: String?
+    @Published var photoData: [Data?] = [nil, nil, nil, nil, nil]
+    
+    // MARK: Configuration
     
     init(
         uploadDetailInfoUseCase: UploadMyDetailInfoUseCase,
@@ -85,6 +92,8 @@ class RegisterViewModel: ViewModelable {
     func setActions(actions: Action) {
         self.actions = actions
     }
+    
+    // MARK: Data Bind
     
     func transform(input: Input) -> Output {
         
@@ -184,6 +193,8 @@ class RegisterViewModel: ViewModelable {
             isAllInfoUploaded: didAllInfoUploaded.eraseToAnyPublisher()
         )
     }
+    
+    // MARK: Logic
     
     func quit() {
         actions?.quitRegister?()

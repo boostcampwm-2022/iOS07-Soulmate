@@ -6,3 +6,14 @@
 //
 
 import Foundation
+
+struct UserHeartInfo {
+    var uid: String?
+    var heart: Int?
+}
+
+extension UserHeartInfo {
+    func toDTO() -> UserHeartInfoDTO {
+        return UserHeartInfoDTO(uid: self.uid, heart: self.heart)
+    }
+}

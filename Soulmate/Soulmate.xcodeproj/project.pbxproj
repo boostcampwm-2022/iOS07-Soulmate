@@ -13,6 +13,7 @@
 		077F73252935E41800FD86D6 /* LaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 077F73242935E41800FD86D6 /* LaunchViewController.swift */; };
 		0788A3C029349965003ADB7D /* LoadingIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0788A3BF29349965003ADB7D /* LoadingIndicator.swift */; };
 		07B61AC2292B6C510009BC8A /* DetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07B61AC1292B6C510009BC8A /* DetailViewModel.swift */; };
+		07C3D1AF29420045008DFF09 /* CustomAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07C3D1AE29420045008DFF09 /* CustomAlert.swift */; };
 		07DDDF272924A7C600CB398C /* RegisterBirthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DDDF262924A7C600CB398C /* RegisterBirthView.swift */; };
 		07DDDF292924B2D500CB398C /* RegisterHeightView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DDDF282924B2D500CB398C /* RegisterHeightView.swift */; };
 		07EAD6F92925EBB0001AE220 /* RegisterPhotoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07EAD6F82925EBB0001AE220 /* RegisterPhotoView.swift */; };
@@ -109,6 +110,7 @@
 		6A4A007C2941F7300016ED58 /* DefaultMateRquestRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A4A007B2941F7300016ED58 /* DefaultMateRquestRepository.swift */; };
 		6A4A007E2941FB970016ED58 /* DefaultListenMateRequestUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A4A007D2941FB970016ED58 /* DefaultListenMateRequestUseCase.swift */; };
 		6A4A0080294201FC0016ED58 /* DefaultSendMateRequestUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A4A007F294201FC0016ED58 /* DefaultSendMateRequestUseCase.swift */; };
+		6A4A0082294244520016ED58 /* DefaultListenHeartUpdateUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A4A0081294244520016ED58 /* DefaultListenHeartUpdateUseCase.swift */; };
 		6A5ED83D2941C2D800AD9E82 /* DefaultEnterStateRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5ED83C2941C2D800AD9E82 /* DefaultEnterStateRepository.swift */; };
 		6A5ED83F2941C70B00AD9E82 /* EnterStateRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5ED83E2941C70B00AD9E82 /* EnterStateRepository.swift */; };
 		6A5ED8412941C7A100AD9E82 /* DefaultEnterChatRoomUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5ED8402941C7A100AD9E82 /* DefaultEnterChatRoomUseCase.swift */; };
@@ -215,7 +217,7 @@
 		B301025529322FB500481C6C /* HeartShopViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B301025429322FB500481C6C /* HeartShopViewController.swift */; };
 		B301025729329E8A00481C6C /* HeartShopCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B301025629329E8A00481C6C /* HeartShopCell.swift */; };
 		B301025B2934A80E00481C6C /* HeartShopCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B301025A2934A80E00481C6C /* HeartShopCoordinator.swift */; };
-		B301025D293DE90F00481C6C /* DefaultHeartShopUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = B301025C293DE90F00481C6C /* DefaultHeartShopUseCase.swift */; };
+		B301025D293DE90F00481C6C /* DefaultHeartUpdateUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = B301025C293DE90F00481C6C /* DefaultHeartUpdateUseCase.swift */; };
 		B301025F293E0C7C00481C6C /* HeartShopViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B301025E293E0C7C00481C6C /* HeartShopViewModel.swift */; };
 		B303D651292367CF00414293 /* ProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B303D650292367CF00414293 /* ProgressBar.swift */; };
 		B30A8ECE291C953F00ED4906 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = B30A8ECD291C953F00ED4906 /* FirebaseAnalytics */; };
@@ -231,6 +233,9 @@
 		B31A682A291A4257001D35E9 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = B31A6829291A4257001D35E9 /* Then */; };
 		B31A682D291A42BC001D35E9 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = B31A682C291A42BC001D35E9 /* SnapKit */; };
 		B331CED0292B854500F17AED /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B331CECF292B854500F17AED /* UIImage.swift */; };
+		B34124562942208800580F45 /* UserHeartInfoDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = B34124552942208800580F45 /* UserHeartInfoDTO.swift */; };
+		B3412458294220B500580F45 /* UserHeartInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3412457294220B500580F45 /* UserHeartInfo.swift */; };
+		B341245A294220D100580F45 /* DefaultUserHeartInfoRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3412459294220D100580F45 /* DefaultUserHeartInfoRepository.swift */; };
 		B3B03B48292CB877000AF283 /* MyPageMenuCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B03B47292CB877000AF283 /* MyPageMenuCollectionViewCell.swift */; };
 		B3B03B4A292DECFF000AF283 /* MyPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B03B49292DECFF000AF283 /* MyPageViewModel.swift */; };
 		B3E029A9291DDC1500931FA2 /* GradientButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3E029A8291DDC1500931FA2 /* GradientButton.swift */; };
@@ -243,6 +248,7 @@
 		077F73242935E41800FD86D6 /* LaunchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchViewController.swift; sourceTree = "<group>"; };
 		0788A3BF29349965003ADB7D /* LoadingIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingIndicator.swift; sourceTree = "<group>"; };
 		07B61AC1292B6C510009BC8A /* DetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewModel.swift; sourceTree = "<group>"; };
+		07C3D1AE29420045008DFF09 /* CustomAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAlert.swift; sourceTree = "<group>"; };
 		07DDDF262924A7C600CB398C /* RegisterBirthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterBirthView.swift; sourceTree = "<group>"; };
 		07DDDF282924B2D500CB398C /* RegisterHeightView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterHeightView.swift; sourceTree = "<group>"; };
 		07EAD6F82925EBB0001AE220 /* RegisterPhotoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterPhotoView.swift; sourceTree = "<group>"; };
@@ -339,6 +345,7 @@
 		6A4A007B2941F7300016ED58 /* DefaultMateRquestRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultMateRquestRepository.swift; sourceTree = "<group>"; };
 		6A4A007D2941FB970016ED58 /* DefaultListenMateRequestUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultListenMateRequestUseCase.swift; sourceTree = "<group>"; };
 		6A4A007F294201FC0016ED58 /* DefaultSendMateRequestUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultSendMateRequestUseCase.swift; sourceTree = "<group>"; };
+		6A4A0081294244520016ED58 /* DefaultListenHeartUpdateUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultListenHeartUpdateUseCase.swift; sourceTree = "<group>"; };
 		6A5ED83C2941C2D800AD9E82 /* DefaultEnterStateRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultEnterStateRepository.swift; sourceTree = "<group>"; };
 		6A5ED83E2941C70B00AD9E82 /* EnterStateRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterStateRepository.swift; sourceTree = "<group>"; };
 		6A5ED8402941C7A100AD9E82 /* DefaultEnterChatRoomUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultEnterChatRoomUseCase.swift; sourceTree = "<group>"; };
@@ -446,7 +453,7 @@
 		B301025429322FB500481C6C /* HeartShopViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartShopViewController.swift; sourceTree = "<group>"; };
 		B301025629329E8A00481C6C /* HeartShopCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartShopCell.swift; sourceTree = "<group>"; };
 		B301025A2934A80E00481C6C /* HeartShopCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartShopCoordinator.swift; sourceTree = "<group>"; };
-		B301025C293DE90F00481C6C /* DefaultHeartShopUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultHeartShopUseCase.swift; sourceTree = "<group>"; };
+		B301025C293DE90F00481C6C /* DefaultHeartUpdateUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultHeartUpdateUseCase.swift; sourceTree = "<group>"; };
 		B301025E293E0C7C00481C6C /* HeartShopViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = HeartShopViewModel.swift; path = Soulmate/Domain/UseCase/HeartShopViewModel.swift; sourceTree = SOURCE_ROOT; };
 		B303D650292367CF00414293 /* ProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBar.swift; sourceTree = "<group>"; };
 		B30A8F0E291CB4AC00ED4906 /* PhoneNumberViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneNumberViewController.swift; sourceTree = "<group>"; };
@@ -456,6 +463,9 @@
 		B311F4A92925EC7100806E86 /* RegisterMbtiView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterMbtiView.swift; sourceTree = "<group>"; };
 		B31A68262919F5D2001D35E9 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		B331CECF292B854500F17AED /* UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
+		B34124552942208800580F45 /* UserHeartInfoDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserHeartInfoDTO.swift; sourceTree = "<group>"; };
+		B3412457294220B500580F45 /* UserHeartInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserHeartInfo.swift; sourceTree = "<group>"; };
+		B3412459294220D100580F45 /* DefaultUserHeartInfoRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultUserHeartInfoRepository.swift; sourceTree = "<group>"; };
 		B3B03B47292CB877000AF283 /* MyPageMenuCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageMenuCollectionViewCell.swift; sourceTree = "<group>"; };
 		B3B03B49292DECFF000AF283 /* MyPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MyPageViewModel.swift; path = Soulmate/Presentation/MyPageScene/ViewController/MyPageViewModel.swift; sourceTree = SOURCE_ROOT; };
 		B3E029A8291DDC1500931FA2 /* GradientButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientButton.swift; sourceTree = "<group>"; };
@@ -702,7 +712,7 @@
 				6A34C27A2935E5C200A3E57F /* DefaultFetchImageUseCase.swift */,
 				6A9452F42937D3050041B71D /* DefaultDownLoadMyPreviewUseCase.swift */,
 				6A9453002938FAF80041B71D /* DefaultAuthUseCase.swift */,
-				B301025C293DE90F00481C6C /* DefaultHeartShopUseCase.swift */,
+				B301025C293DE90F00481C6C /* DefaultHeartUpdateUseCase.swift */,
 				6A25C643293F31BC00CDC1BC /* DefaultSetDistanceUseCase.swift */,
 				6A25C645293F31C900CDC1BC /* DefaultGetDistanceUseCase.swift */,
 				6A4A007D2941FB970016ED58 /* DefaultListenMateRequestUseCase.swift */,
@@ -710,6 +720,7 @@
 				6A5ED84829421BEA00AD9E82 /* DefaultAcceptMateRequestUseCase.swift */,
 				6A5ED85C29446C0100AD9E82 /* DefaultFetchMatePreviewUseCase.swift */,
 				6A5ED860294478EA00AD9E82 /* DefaultFetchMateChatImageKeyUseCase.swift */,
+				6A4A0081294244520016ED58 /* DefaultListenHeartUpdateUseCase.swift */,
 			);
 			path = UseCase;
 			sourceTree = "<group>";
@@ -768,6 +779,7 @@
 				6AB6B9DD292F259500A029BD /* UserPreview.swift */,
 				6AB6B9E5292F3D9C00A029BD /* Location.swift */,
 				6A34C23D292F415700A3E57F /* ReceivedRequest.swift */,
+				B3412457294220B500580F45 /* UserHeartInfo.swift */,
 			);
 			path = Entity;
 			sourceTree = "<group>";
@@ -990,6 +1002,7 @@
 				6A9452C829349CE90041B71D /* DefaultImageCacheRepository.swift */,
 				6A25C63F293E671400CDC1BC /* DefaultAuthRepository.swift */,
 				6A5ED915293EEE5600A284F7 /* DefaultChattingRepository.swift */,
+				B3412459294220D100580F45 /* DefaultUserHeartInfoRepository.swift */,
 				6A5ED84A29421C6900AD9E82 /* DefaultChatRoomRepository.swift */,
 				6A5ED83C2941C2D800AD9E82 /* DefaultEnterStateRepository.swift */,
 				6A4A007B2941F7300016ED58 /* DefaultMateRquestRepository.swift */,
@@ -1040,6 +1053,7 @@
 				6A34C21E292E559B00A3E57F /* MessageInfoDTO.swift */,
 				6A34C222292E654F00A3E57F /* MessageToSendDTO.swift */,
 				6A34C23B292F40B000A3E57F /* ReceivedRequestDTO.swift */,
+				B34124552942208800580F45 /* UserHeartInfoDTO.swift */,
 			);
 			path = DataTransferObject;
 			sourceTree = "<group>";
@@ -1144,6 +1158,7 @@
 				B301025629329E8A00481C6C /* HeartShopCell.swift */,
 				07EAD6FA2925F6B5001AE220 /* AddPhotoCell.swift */,
 				0788A3BF29349965003ADB7D /* LoadingIndicator.swift */,
+				07C3D1AE29420045008DFF09 /* CustomAlert.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -1285,6 +1300,7 @@
 				6A0041FD2919EE7B0042E02F /* ServiceTermViewController.swift in Sources */,
 				6AB6B9D6292EC59B00A029BD /* DefaultDownLoadPictureUseCase.swift in Sources */,
 				6AB6B9CE292EC15300A029BD /* DefaultMateRecommendationUseCase.swift in Sources */,
+				6A4A0082294244520016ED58 /* DefaultListenHeartUpdateUseCase.swift in Sources */,
 				6A5ED8472941CAC900AD9E82 /* ListenOthersEnterStateUseCase.swift in Sources */,
 				6AFFB5772940AFFA00266E61 /* HomePreviewViewModel.swift in Sources */,
 				6A34C221292E55EA00A3E57F /* MessageInfo.swift in Sources */,
@@ -1347,7 +1363,7 @@
 				6A8C88942919031A009EDBBB /* ViewController.swift in Sources */,
 				6A34C1ED292B3A3A00A3E57F /* ChattingRoomViewModel.swift in Sources */,
 				6AECA1D8293B8C390035A9AE /* ChatListView.swift in Sources */,
-				B301025D293DE90F00481C6C /* DefaultHeartShopUseCase.swift in Sources */,
+				B301025D293DE90F00481C6C /* DefaultHeartUpdateUseCase.swift in Sources */,
 				6A34C230292F273C00A3E57F /* ReceivedChatRequestsViewController.swift in Sources */,
 				6A34C201292C97BC00A3E57F /* ChatRoomListViewModel.swift in Sources */,
 				6A5ED84B29421C6900AD9E82 /* DefaultChatRoomRepository.swift in Sources */,
@@ -1396,8 +1412,10 @@
 				07EE0F18292C893D00E761C4 /* PhotoFooterView.swift in Sources */,
 				6A945306293DDF030041B71D /* DIContainer.swift in Sources */,
 				6A34C232292F29EA00A3E57F /* ReceivedChatRequestView.swift in Sources */,
+				B3412458294220B500580F45 /* UserHeartInfo.swift in Sources */,
 				6AB6B9BD292D82F800A029BD /* SignOutUseCase.swift in Sources */,
 				6A3F91A72924A45300F1D901 /* RegisterSelectableView.swift in Sources */,
+				B341245A294220D100580F45 /* DefaultUserHeartInfoRepository.swift in Sources */,
 				6A34C27129346F2700A3E57F /* LoadPrevChattingsUseCase.swift in Sources */,
 				6A34C238292F392100A3E57F /* LoadReceivedChatRequestsUseCase.swift in Sources */,
 				6A34C1FF292C944D00A3E57F /* ChatRoomInfoCell.swift in Sources */,
@@ -1438,6 +1456,7 @@
 				6AECA1D2293B865C0035A9AE /* ChatDataSource.swift in Sources */,
 				6AB6B96E292BF2F400A029BD /* DefaultUploadMyDetailInfoUseCase.swift in Sources */,
 				6A8377AD2924BCB400BC7112 /* RegisterCongraturationsView.swift in Sources */,
+				07C3D1AF29420045008DFF09 /* CustomAlert.swift in Sources */,
 				6AB6B9A4292D733700A029BD /* UserDetailInfoRepository.swift in Sources */,
 				07EE0F11292C86EC00E761C4 /* ProfileCell.swift in Sources */,
 				B331CED0292B854500F17AED /* UIImage.swift in Sources */,
@@ -1470,6 +1489,7 @@
 				07DDDF272924A7C600CB398C /* RegisterBirthView.swift in Sources */,
 				6AB6B95D292BDE7A00A029BD /* NetworkDatabaseApi.swift in Sources */,
 				6A34C27F29364AFA00A3E57F /* DefaultLoadUnreadChattingsUseCase.swift in Sources */,
+				B34124562942208800580F45 /* UserHeartInfoDTO.swift in Sources */,
 				6A34C211292DD38000A3E57F /* DefaultChatCoordinator.swift in Sources */,
 				07B61AC2292B6C510009BC8A /* DetailViewModel.swift in Sources */,
 				6A0041D72919E68D0042E02F /* MainTabCoordinator.swift in Sources */,

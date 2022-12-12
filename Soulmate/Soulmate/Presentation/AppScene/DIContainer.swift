@@ -44,6 +44,8 @@ final class DIContainer {
         registerAuthRepository()
         
         registerMateRequestRepository()
+        
+        registerUserHeartInfoRepository()
     }
     
     func registerUseCase() {
@@ -79,6 +81,10 @@ final class DIContainer {
         registerListenMateRequestUseCase()
         
         registerSendMateRequestUseCase()
+        
+        registerHeartUpdateUseCase()
+        
+        registerListenHeartUpdateUseCase()
     }
     
     func registerViewModel() {
@@ -100,6 +106,8 @@ final class DIContainer {
         registerModificationViewModel()
         
         registerDistanceViewModel()
+        
+        registerHeartShopViewModel()
     }
     
     
@@ -183,6 +191,12 @@ extension DIContainer {
             return DefaultMateRquestRepository(
                 networkDatabaseApi: r.resolve(NetworkDatabaseApi.self)!
             )
+        }
+    }
+    
+    func registerUserHeartInfoRepository() {
+        container.register(UserHeartInfoRepository.self) { r in
+            return DefaultUserHeartInfoRepository(networkDatabaseApi: r.resolve(NetworkDatabaseApi.self)!)
         }
     }
     
@@ -341,6 +355,26 @@ extension DIContainer {
         .inObjectScope(.container)
     }
     
+    func registerListenHeartUpdateUseCase() {
+        container.register(ListenHeartUpdateUseCase.self) { r in
+            return DefaultListenHeartUpdateUseCase(
+                userHeartInfoRepository: r.resolve(UserHeartInfoRepository.self)!,
+                authRepository: r.resolve(AuthRepository.self)!
+            )
+        }
+        .inObjectScope(.graph)
+    }
+    
+    func registerHeartUpdateUseCase() {
+        container.register(HeartUpdateUseCase.self) { r in
+            return DefaultHeartUpdateUseCase(
+                userHeartInfoRepository: r.resolve(UserHeartInfoRepository.self)!,
+                authRepository: r.resolve(AuthRepository.self)!
+            )
+        }
+        .inObjectScope(.container)
+    }
+    
     
 }
 
@@ -394,7 +428,8 @@ extension DIContainer {
                 mateRecommendationUseCase: r.resolve(MateRecommendationUseCase.self)!,
                 downloadPictureUseCase: r.resolve(DownLoadPictureUseCase.self)!,
                 uploadLocationUseCase: r.resolve(UpLoadLocationUseCase.self)!,
-                getDistanceUseCase: r.resolve(GetDistanceUseCase.self)!
+                getDistanceUseCase: r.resolve(GetDistanceUseCase.self)!,
+                listenHeartUpdateUseCase: r.resolve(ListenHeartUpdateUseCase.self)!
             )
         }
         .inObjectScope(.graph)
@@ -415,7 +450,8 @@ extension DIContainer {
         container.register(MyPageViewModel.self) { r in
             return MyPageViewModel(
                 downLoadPreviewUseCase: r.resolve(DownLoadMyPreviewUseCase.self)!,
-                downLoadPictureUseCase: r.resolve(DownLoadPictureUseCase.self)!
+                downLoadPictureUseCase: r.resolve(DownLoadPictureUseCase.self)!,
+                listenHeartUpdateUseCase: r.resolve(ListenHeartUpdateUseCase.self)!
             )
         }
         .inObjectScope(.graph)
@@ -442,5 +478,11 @@ extension DIContainer {
             )
         }
         .inObjectScope(.graph)
+    }
+    
+    func registerHeartShopViewModel() {
+        container.register(HeartShopViewModel.self) { r in
+            return HeartShopViewModel(heartUpdateUseCase: r.resolve(HeartUpdateUseCase.self)!)
+        }
     }
 }

@@ -85,7 +85,7 @@ private extension DetailViewController {
                 didTappedMateRegistrationButton: applyButton.tapPublisher()
             )
         )
-                
+        
         output.didFetchedImageKeyList
             .compactMap { $0 }
             .receive(on: DispatchQueue.main)
@@ -130,7 +130,7 @@ private extension DetailViewController {
     
     private func configureView() {
         self.view.backgroundColor = .systemBackground
-
+        
     }
     
     private func configureLayout() {
@@ -138,23 +138,23 @@ private extension DetailViewController {
             $0.leading.trailing.top.equalTo(self.view.safeAreaLayoutGuide)
             $0.bottom.equalTo(applyButton.snp.top)
         }
-         
+        
         applyButton.snp.makeConstraints {
             $0.leading.trailing.equalTo(self.view.safeAreaLayoutGuide).inset(20)
             $0.bottom.equalTo(self.view.snp.bottom).inset(46)
             $0.height.equalTo(54)
         }
     }
-
+    
     func configureDataSource() {
-
+        
         // MARK: Cell Registration
         
         let photoCellRegistration = UICollectionView.CellRegistration<PhotoCell, String> { (cell, indexPath, identifier) in
             Task { [weak self] in
                 guard let data = try await self?.viewModel?.fetchImage(key: identifier),
                       let uiImage = UIImage(data: data) else { return }
-
+                
                 await MainActor.run {
                     cell.fill(image: uiImage)
                 }
@@ -183,7 +183,7 @@ private extension DetailViewController {
         
         // MARK: DataSource Configuration
         
-        self.dataSource = UICollectionViewDiffableDataSource<SectionKind, ItemKind>(collectionView: self.collectionView) { [weak self] (collectionView, indexPath, item) -> UICollectionViewCell? in
+        self.dataSource = UICollectionViewDiffableDataSource<SectionKind, ItemKind>(collectionView: self.collectionView) { (collectionView, indexPath, item) -> UICollectionViewCell? in
             switch item {
             case .photo(let imageKey):
                 return collectionView.dequeueConfiguredReusableCell(using: photoCellRegistration, for: indexPath, item: imageKey)
@@ -193,12 +193,10 @@ private extension DetailViewController {
                 return collectionView.dequeueConfiguredReusableCell(using: greetingCellRegistration, for: indexPath, item: greetingMessage)
             case .basicInfo(let infoViewModel):
                 return collectionView.dequeueConfiguredReusableCell(using: infoCellRegistration, for: indexPath, item: infoViewModel)
-            default:
-                fatalError("no item kind error")
             }
         }
         
-        self.dataSource?.supplementaryViewProvider = { [weak self] (collectionView, kind, indexPath) in
+        self.dataSource?.supplementaryViewProvider = { (collectionView, kind, indexPath) in
             return collectionView.dequeueConfiguredReusableSupplementary(using: footerViewRegistration, for: indexPath)
         }
         
@@ -206,7 +204,6 @@ private extension DetailViewController {
         snapshot.appendSections(SectionKind.allCases)
         self.dataSource?.apply(snapshot, animatingDifferences: false)
     }
-    
 }
 
 extension DetailViewController {
