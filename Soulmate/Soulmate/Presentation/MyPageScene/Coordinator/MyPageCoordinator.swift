@@ -8,7 +8,7 @@
 import UIKit
 
 class MyPageCoordinator: Coordinator {
-    var finishDelegate: CoordinatorFinishDelegate?
+    weak var finishDelegate: CoordinatorFinishDelegate?
     
     var navigationController: UINavigationController
     
