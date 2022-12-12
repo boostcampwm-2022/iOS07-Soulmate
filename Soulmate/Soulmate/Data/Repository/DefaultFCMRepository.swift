@@ -17,10 +17,31 @@ final class DefaultFCMRepository: FCMRepository {
         self.networkDatabaseApi = networkDatabaseApi
     }
     
-    func sendChattingFCM(to name: String, message: String,  token: String) async {
+    func token(of uid: String) async -> String? {
+        let path = "UserToken/\(uid)"
+        
+        let tokenDoc = try? await networkDatabaseApi.read(
+            table: path,
+            documentID: uid,
+            type: UserToken.self
+        )
+        
+        
+        return tokenDoc?.token
+    }
+    
+    func sendChattingFCM(to name: String, message: String, uid: String) async {
+        
+        guard let token = await token(of: uid) else { return }
+        
+        let dto = FCMMessageSendDTO(
+            title: name,
+            body: message,
+            data: "",
+            to: token)
         
         let _ = await urlSessionAPI.post(
-            "",
+            dto,
             url: "https://fcm.googleapis.com/fcm/send",
             header: [
                 "Content-Type": "application/json",
