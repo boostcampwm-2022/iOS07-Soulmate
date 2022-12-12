@@ -19,13 +19,13 @@ final class DefaultFCMRepository: FCMRepository {
     
     func sendChattingFCM(to name: String, message: String,  token: String) async {
         
-        await urlSessionAPI.post(
+        let _ = await urlSessionAPI.post(
             "",
             url: "https://fcm.googleapis.com/fcm/send",
             header: [
                 "Content-Type": "application/json",
                 "Accept": "application/json",
-                "Authorization": "server-key"
+                "Authorization": Bundle.main.serverKey
             ]
         )
     }
