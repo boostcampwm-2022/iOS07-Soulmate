@@ -72,6 +72,7 @@ final class HomeViewController: UIViewController {
         label.backgroundColor = .white
         label.layer.borderWidth = 2
         label.layer.borderColor = UIColor.gray.cgColor
+        label.isHidden = true
         self.view.addSubview(label)
         return label
     }()
