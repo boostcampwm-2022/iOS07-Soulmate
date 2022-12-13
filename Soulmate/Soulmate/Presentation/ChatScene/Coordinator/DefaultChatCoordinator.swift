@@ -8,7 +8,7 @@
 import UIKit
 
 class DefaultChatCoordinator: ChatCoordinator {
-    var finishDelegate: CoordinatorFinishDelegate?
+    weak var finishDelegate: CoordinatorFinishDelegate?
     var navigationController: UINavigationController
     var childCoordinators: [Coordinator] = []
 

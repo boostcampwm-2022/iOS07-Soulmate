@@ -65,7 +65,7 @@ final class AppCoordinator: Coordinator {
         }
     }
     
-    private func showAuthSignInFlow() {
+    func showAuthSignInFlow() {
         let navigation = UINavigationController()
         window.rootViewController = navigation
         

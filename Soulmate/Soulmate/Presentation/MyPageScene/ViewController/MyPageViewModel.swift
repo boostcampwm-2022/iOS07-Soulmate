@@ -14,6 +14,7 @@ struct MyPageViewModelActions {
     var showServiceTermFlow: (() -> Void)?
     var showHeartShopFlow: (() -> Void)?
     var showDistanceFlow: (() -> Void)?
+    var showSignOutFlow: (() -> Void)?
 }
 
 class MyPageViewModel: ViewModelable {
@@ -40,15 +41,16 @@ class MyPageViewModel: ViewModelable {
     let downLoadMyPreviewUseCase: DownLoadMyPreviewUseCase
     let downLoadPictureUseCase: DownLoadPictureUseCase
     let listenHeartUpdateUseCase: ListenHeartUpdateUseCase
+    let signOutUseCase: SignOutUseCase
     
     // MARK: Properties
     
     var actions: Action?
     var cancellables = Set<AnyCancellable>()
     
-    let symbols = ["myPageHeart", "myPagePersonalInfo", "distance", "myPagePin", ""]
-    let titles = ["하트샵 가기", "개인정보 처리방침", "거리 설정하기", "버전정보", "로그아웃"]
-    let subTexts = ["", "", "", "v 3.2.20"]
+    let symbols = ["myPageHeart", "myPagePersonalInfo", "distance", "myPagePin", "signOut", ""]
+    let titles = ["하트샵 가기", "개인정보 처리방침", "거리 설정하기", "버전정보", "로그아웃", "회원탈퇴"]
+    let subTexts = ["", "", "", "v 3.2.20", "", ""]
     
     @Published var userProfileImage: Data?
     @Published var userProfileInfo: UserPreview?
@@ -59,11 +61,13 @@ class MyPageViewModel: ViewModelable {
     init(
         downLoadPreviewUseCase: DownLoadMyPreviewUseCase,
         downLoadPictureUseCase: DownLoadPictureUseCase,
-        listenHeartUpdateUseCase: ListenHeartUpdateUseCase
+        listenHeartUpdateUseCase: ListenHeartUpdateUseCase,
+        signOutUseCase: SignOutUseCase
     ) {
         self.downLoadMyPreviewUseCase = downLoadPreviewUseCase
         self.downLoadPictureUseCase = downLoadPictureUseCase
         self.listenHeartUpdateUseCase = listenHeartUpdateUseCase
+        self.signOutUseCase = signOutUseCase
         
         loadInfo()
     }
@@ -111,6 +115,13 @@ class MyPageViewModel: ViewModelable {
                     self?.actions?.showServiceTermFlow?()
                 case 2:
                     self?.actions?.showDistanceFlow?()
+                case 4:
+                    do {
+                        try self?.signOutUseCase.signOut()
+                    } catch {
+                        fatalError("SignOut error")
+                    }
+                    self?.actions?.showSignOutFlow?()
                 default:
                     break
                 }
