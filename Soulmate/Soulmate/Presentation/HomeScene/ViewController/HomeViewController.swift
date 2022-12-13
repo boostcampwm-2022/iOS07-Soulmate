@@ -204,11 +204,12 @@ private extension HomeViewController {
             return HomePreviewViewModelWrapper(index: $0)
         }
         snapshot.append(targetSource.map { return .main($0) })
+
         dataSource?.apply(snapshot, to: .main) { [weak self] in
             self?.collectionView.isScrollEnabled = false
             self?.collectionView.allowsSelection = false
         }
-        collectionView.contentOffset.y = 0
+        self.collectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
     }
 }
 
