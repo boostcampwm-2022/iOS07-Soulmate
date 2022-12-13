@@ -39,11 +39,10 @@ final class HomeViewController: UIViewController {
     
     private lazy var numOfHeartButton: UIButton = {
         let button = UIButton()
-        button.setTitle("00", for: .normal)
         button.setTitleColor(UIColor.labelDarkGrey, for: .normal)
         button.setImage(UIImage(named: "heart"), for: .normal)
         button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 15)
-        
+        button.contentHorizontalAlignment = .right
         button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 0)
         
         self.view.addSubview(button)
@@ -325,16 +324,16 @@ private extension HomeViewController {
     
     func configureLayout() {
         logo.snp.makeConstraints {
-            $0.left.equalToSuperview().offset(20)
-            $0.top.equalTo(view.snp.top).offset(64)
+            $0.leading.equalToSuperview().inset(20)
+            $0.top.equalTo(view.snp.top).inset(64)
             $0.width.equalTo(140)
         }
 
         numOfHeartButton.snp.makeConstraints {
-            $0.right.equalToSuperview().offset(-20)
+            $0.trailing.equalToSuperview().inset(20)
             $0.centerY.equalTo(logo.snp.centerY)
             $0.height.equalTo(28)
-            $0.width.equalTo(50)
+            $0.width.equalTo(100)
         }
         
         collectionView.snp.makeConstraints {
