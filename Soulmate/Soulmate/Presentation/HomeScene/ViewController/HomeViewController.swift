@@ -65,13 +65,11 @@ final class HomeViewController: UIViewController {
     private lazy var hiddenLabel: UILabel = {
         let label = UILabel()
         label.text = "가까운 거리에 추천 상대가 없습니다."
-        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 18)
+        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 15)
         label.textColor = .gray
         label.textAlignment = .center
         label.layer.cornerRadius = 10
         label.backgroundColor = .white
-        label.layer.borderWidth = 2
-        label.layer.borderColor = UIColor.gray.cgColor
         label.isHidden = true
         self.view.addSubview(label)
         return label
@@ -335,10 +333,8 @@ private extension HomeViewController {
         }
         
         hiddenLabel.snp.makeConstraints {
-            $0.top.equalTo(logo.snp.bottom).offset(20)
-            $0.centerX.equalToSuperview()
+            $0.centerX.centerY.equalToSuperview()
             $0.height.equalTo(54)
-            $0.width.equalToSuperview().inset(30)
         }
     }
     
