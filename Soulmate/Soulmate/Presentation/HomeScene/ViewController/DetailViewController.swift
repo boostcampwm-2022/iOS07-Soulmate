@@ -158,7 +158,7 @@ private extension DetailViewController {
             .sink { [weak self] in
                 self?.showPopUp(
                     title: "하트 부족",
-                    message: "하트를 충전 후 다시 시도해 주세요!",
+                    message: "하트가 부족합니다. 충전하러 갈까요?",
                     leftActionTitle: "취소",
                     rightActionTitle: "충전하기",
                     rightActionCompletion: {
