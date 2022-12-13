@@ -122,15 +122,6 @@ final class HomeViewController: UIViewController {
                 }
             })
         }
-        
-        if self.viewModel?.matePreviewViewModelList.count == 0 {
-            self.hiddenLabel.isHidden = false
-            self.collectionView.isHidden = true
-        } else {
-            self.collectionView.isHidden = false
-            self.hiddenLabel.isHidden = true
-        }
-        
     }
 }
 
@@ -280,6 +271,14 @@ private extension HomeViewController {
             .compactMap { $0 }
             .receive(on: DispatchQueue.main)
             .sink { [weak self] previewViewModelList in
+                if previewViewModelList.count == 0 {
+                    self?.collectionView.isHidden = true
+                    self?.hiddenLabel.isHidden = false
+                } else {
+                    self?.collectionView.isHidden = false
+                    self?.hiddenLabel.isHidden = true
+                }
+
                 var snapshot = NSDiffableDataSourceSectionSnapshot<ItemKind>()
                 snapshot.append(previewViewModelList.enumerated().map { index, value in
                     return ItemKind.main(HomePreviewViewModelWrapper(index: index, previewViewModel: value))
