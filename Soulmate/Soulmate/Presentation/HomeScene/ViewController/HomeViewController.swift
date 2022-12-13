@@ -62,6 +62,19 @@ final class HomeViewController: UIViewController {
         return collection
     }()
     
+    private lazy var hiddenLabel: UILabel = {
+        let label = UILabel()
+        label.text = "가까운 거리에 추천 상대가 없습니다."
+        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 15)
+        label.textColor = .gray
+        label.textAlignment = .center
+        label.layer.cornerRadius = 10
+        label.backgroundColor = .white
+        label.isHidden = true
+        self.view.addSubview(label)
+        return label
+    }()
+    
     private var dataSource: UICollectionViewDiffableDataSource<SectionKind, ItemKind>?
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
@@ -257,6 +270,14 @@ private extension HomeViewController {
             .compactMap { $0 }
             .receive(on: DispatchQueue.main)
             .sink { [weak self] previewViewModelList in
+                if previewViewModelList.count == 0 {
+                    self?.collectionView.isHidden = true
+                    self?.hiddenLabel.isHidden = false
+                } else {
+                    self?.collectionView.isHidden = false
+                    self?.hiddenLabel.isHidden = true
+                }
+
                 var snapshot = NSDiffableDataSourceSectionSnapshot<ItemKind>()
                 snapshot.append(previewViewModelList.enumerated().map { index, value in
                     return ItemKind.main(HomePreviewViewModelWrapper(index: index, previewViewModel: value))
@@ -309,6 +330,11 @@ private extension HomeViewController {
             $0.bottom.equalToSuperview()
             $0.centerX.equalToSuperview()
             $0.width.equalToSuperview().inset(20)
+        }
+        
+        hiddenLabel.snp.makeConstraints {
+            $0.centerX.centerY.equalToSuperview()
+            $0.height.equalTo(54)
         }
     }
     

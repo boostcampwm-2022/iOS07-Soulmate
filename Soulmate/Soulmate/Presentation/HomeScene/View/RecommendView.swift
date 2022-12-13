@@ -30,6 +30,8 @@ final class RecommendFooterView: UICollectionReusableView {
         addSubview(button)
         button.addTarget(self, action: #selector(didTouchedButtonUp), for: .touchUpInside)
         button.addTarget(self, action: #selector(didTouchedButtonDown), for: .touchDown)
+        button.addTarget(self, action: #selector(didTouchedButtonUp), for: .touchCancel)
+        button.addTarget(self, action: #selector(didTouchedButtonUp), for: .touchDragExit)
         return button
     }()
     
