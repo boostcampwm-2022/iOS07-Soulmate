@@ -16,7 +16,8 @@ final class CustomAlert: UIViewController {
     private lazy var containerView: UIView = {
         let view = UIView()
         view.backgroundColor = .white.withAlphaComponent(0.9)
-        view.layer.cornerRadius = 30
+        view.layer.cornerRadius = 12
+        view.layer.cornerCurve = .continuous
         view.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
         return view
     }()
@@ -42,7 +43,7 @@ final class CustomAlert: UIViewController {
         label.textAlignment = .center
         label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 22)
         label.numberOfLines = 0
-        label.textColor = .messagePurple
+        label.textColor = .black
         return label
     }()
     
@@ -135,7 +136,8 @@ final class CustomAlert: UIViewController {
         button.setTitleColor(titleColor, for: .normal)
         button.setBackgroundImage(backgroundColor.image(), for: .normal)
         
-        button.layer.cornerRadius = 12.0
+        button.layer.cornerRadius = 6.0
+        button.layer.cornerCurve = .continuous
         button.layer.masksToBounds = true
         
         let action = UIAction { _ in

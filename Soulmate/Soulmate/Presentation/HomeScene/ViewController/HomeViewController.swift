@@ -316,7 +316,7 @@ private extension HomeViewController {
                 self?.showPopUp(title: "하트 부족",
                                 message: "하트가 부족합니다. 충전하러 갈까요?",
                                 leftActionTitle: "취소",
-                                rightActionTitle: "충전소",
+                                rightActionTitle: "충전하기",
                                 rightActionCompletion: {
                     self?.viewModel?.actions?.showHeartShopFlow?()
                 })
