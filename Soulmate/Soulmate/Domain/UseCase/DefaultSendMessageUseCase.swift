@@ -89,11 +89,11 @@ final class DefaultSendMessageUseCase: SendMessageUseCase {
             guard let name = try? await userPreviewRepository.downloadPreview(
                 userUid: uid).name else { return }
             
-            await fcmRepository.sendChattingFCM(
-                to: othersId,
-                title: name,
-                message: chat.text
-            )
+//            await fcmRepository.sendChattingFCM(
+//                to: othersId,
+//                title: name,
+//                message: chat.text
+//            )
         } else {
             var failedChat = chat
             failedChat.updateState(false, nil)
