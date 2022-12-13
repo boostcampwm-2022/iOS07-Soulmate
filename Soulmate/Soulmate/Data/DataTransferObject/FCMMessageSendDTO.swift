@@ -33,4 +33,13 @@ struct FCMMessageSendDTO<T: Codable>: Codable {
         self.contentAvailable = true
         self.mutableContent = true
     }
+    
+    enum CodingKeys: String, CodingKey {
+        case notification
+        case data
+        case to
+        case priority
+        case contentAvailable = "content_available"
+        case mutableContent = "mutable_content"
+    }
 }

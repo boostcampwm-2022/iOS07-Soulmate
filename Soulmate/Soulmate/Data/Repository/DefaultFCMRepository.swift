@@ -7,6 +7,10 @@
 
 import Firebase
 
+struct EmptyData: Codable {
+    var value: String
+}
+
 final class DefaultFCMRepository: FCMRepository {
     
     private let urlSessionAPI: URLSessionAPI
@@ -18,7 +22,7 @@ final class DefaultFCMRepository: FCMRepository {
     }
     
     private func token(of uid: String) async -> String? {
-        let path = "UserToken/\(uid)"
+        let path = "UserToken"
         
         let tokenDoc = try? await networkDatabaseApi.read(
             table: path,
@@ -32,11 +36,11 @@ final class DefaultFCMRepository: FCMRepository {
     func sendChattingFCM(to mateId: String, title: String, message: String) async {
         
         guard let token = await token(of: mateId) else { return }
-        
+
         let dto = FCMMessageSendDTO(
             title: title,
             body: message,
-            data: "",
+            data: EmptyData(value: ""),
             to: token)
         
         let _ = await urlSessionAPI.post(
