@@ -24,6 +24,13 @@ final class DefaultChatRoomRepository: ChatRoomRepository {
         try await createEnterState(chatRoomId: docId, ids: info.userIds)
     }
     
+    func deleteChatRoom(_ info: ChatRoomInfo) async throws {
+        let path = "ChatRooms"
+        guard let documentId = info.documentId else { return }
+        
+        try await networkDatabaseApi.delete(path: path, documentId: documentId)
+    }
+    
     func createEnterState(chatRoomId: String, ids: [String]) async throws {
         let path = "ChatRooms/\(chatRoomId)/EnterState"
         

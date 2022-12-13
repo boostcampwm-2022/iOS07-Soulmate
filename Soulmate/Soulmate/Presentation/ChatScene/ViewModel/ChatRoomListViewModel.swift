@@ -14,6 +14,8 @@ final class ChatRoomListViewModel {
     private let loadChattingRoomListUseCase: LoadChattingRoomListUseCase
     private let fetchImageUseCase: FetchImageUseCase
     private let authUseCase: AuthUseCase
+    private let deleteChatRoomUseCase: DeleteChatRoomUseCase
+    
     var chattingList: [ChatRoomInfo] {
         loadChattingRoomListUseCase.chattingRoomList.value
     }
@@ -21,6 +23,7 @@ final class ChatRoomListViewModel {
     struct Input {
         var viewDidLoad: AnyPublisher<Void, Never>
         var didSelectRowAt: AnyPublisher<Int, Never>
+        var deleteChatRoomEvent: AnyPublisher<Int, Never>
     }
     
     struct Output {
@@ -31,11 +34,13 @@ final class ChatRoomListViewModel {
         coordinator: ChatCoordinator,
         loadChattingRoomListUseCase: LoadChattingRoomListUseCase,
         fetchImageUseCase: FetchImageUseCase,
-        authUseCase: AuthUseCase) {
+        authUseCase: AuthUseCase,
+        deleteChatRoomUseCase: DeleteChatRoomUseCase) {
             self.coordinator = coordinator
             self.loadChattingRoomListUseCase = loadChattingRoomListUseCase
             self.fetchImageUseCase = fetchImageUseCase
             self.authUseCase = authUseCase
+            self.deleteChatRoomUseCase = deleteChatRoomUseCase
         }
     
     func transform(input: Input, cancellables: inout Set<AnyCancellable>) -> Output {
@@ -51,6 +56,16 @@ final class ChatRoomListViewModel {
             .sink { [weak self] index in
                 if let info = self?.chattingList[index] {
                     self?.coordinator?.showChatRoom(with: info)
+                }
+            }
+            .store(in: &cancellables)
+        
+        input.deleteChatRoomEvent
+            .sink { index in
+                                
+                Task {
+                    let info = self.chattingList[index]
+                    await self.deleteChatRoomUseCase.execute(chatRoomInfo: info)
                 }
             }
             .store(in: &cancellables)

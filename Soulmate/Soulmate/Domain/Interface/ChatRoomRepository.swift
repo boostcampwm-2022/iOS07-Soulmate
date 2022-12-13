@@ -9,4 +9,5 @@ import Foundation
 
 protocol ChatRoomRepository {
     func createChatRoom(from info: ChatRoomInfo) async throws
+    func deleteChatRoom(_ info: ChatRoomInfo) async throws
 }

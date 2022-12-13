@@ -14,6 +14,7 @@ final class ChatRoomListViewController: UIViewController {
     private var viewModel: ChatRoomListViewModel?
     private var cancellables = Set<AnyCancellable>()
     private let rowSelectSubject = PassthroughSubject<Int, Never>()
+    private let deleteChatRoomSubject = PassthroughSubject<Int, Never>()
     
     private lazy var chattingListView: UITableView = {
         let tableView = UITableView()
@@ -80,7 +81,8 @@ private extension ChatRoomListViewController {
         let output = viewModel?.transform(
             input: ChatRoomListViewModel.Input(
                 viewDidLoad: Just(()).eraseToAnyPublisher(),
-                didSelectRowAt: rowSelectSubject.eraseToAnyPublisher()
+                didSelectRowAt: rowSelectSubject.eraseToAnyPublisher(),
+                deleteChatRoomEvent: deleteChatRoomSubject.eraseToAnyPublisher()
             ),
             cancellables: &cancellables
         )
@@ -147,8 +149,9 @@ extension ChatRoomListViewController: UITableViewDelegate, UITableViewDataSource
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        
         if editingStyle == .delete {
-            
+            deleteChatRoomSubject.send(indexPath.row)
         }
     }
 }
