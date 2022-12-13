@@ -14,6 +14,7 @@ final class ReceivedChatRequestsViewModel {
     private let listenMateRequestUseCase: ListenMateRequestUseCase
     private let fetchImageUseCase: FetchImageUseCase
     private let acceptMateRequest: AcceptMateRequestUseCase
+    private let deleteMateRequestUseCase: DeleteMateRequestUseCase
     var requests: [ReceivedMateRequest] {
         return listenMateRequestUseCase.mateRequestListSubject.value
     }
@@ -32,12 +33,14 @@ final class ReceivedChatRequestsViewModel {
         coordinator: ChatCoordinator,
         listenMateRequestUseCase: ListenMateRequestUseCase,
         fetchImageUseCase: FetchImageUseCase,
-        acceptMateRequest: AcceptMateRequestUseCase
+        acceptMateRequest: AcceptMateRequestUseCase,
+        deleteMateRequestUseCase: DeleteMateRequestUseCase
     ) {
         self.coordinator = coordinator
         self.listenMateRequestUseCase = listenMateRequestUseCase
         self.fetchImageUseCase = fetchImageUseCase
         self.acceptMateRequest = acceptMateRequest
+        self.deleteMateRequestUseCase = deleteMateRequestUseCase
     }
     
     func transform(input: Input, cancellables: inout Set<AnyCancellable>) -> Output {
@@ -59,7 +62,9 @@ final class ReceivedChatRequestsViewModel {
         
         input.requestDeny
             .sink { docId in
-                
+                Task {
+                    try await self.deleteMateRequestUseCase.execute(requestId: docId)
+                }
             }
             .store(in: &cancellables)
         

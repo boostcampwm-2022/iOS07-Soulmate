@@ -463,7 +463,8 @@ extension DIContainer {
                 uploadLocationUseCase: r.resolve(UpLoadLocationUseCase.self)!,
                 getDistanceUseCase: r.resolve(GetDistanceUseCase.self)!,
                 listenHeartUpdateUseCase: r.resolve(ListenHeartUpdateUseCase.self)!,
-                updateFCMTokenUseCase: r.resolve(UpdateFCMTokenUseCase.self)!
+                updateFCMTokenUseCase: r.resolve(UpdateFCMTokenUseCase.self)!,
+                heartUpdateUseCase: r.resolve(HeartUpdateUseCase.self)!
             )
         }
         .inObjectScope(.graph)
@@ -474,7 +475,8 @@ extension DIContainer {
             return DetailViewModel(
                 downloadPictureUseCase: r.resolve(DownLoadPictureUseCase.self)!,
                 downloadDetailInfoUseCase: r.resolve(DownLoadDetailInfoUseCase.self)!,
-                sendMateRequestUseCase: r.resolve(SendMateRequestUseCase.self)!
+                sendMateRequestUseCase: r.resolve(SendMateRequestUseCase.self)!,
+                heartUpdateUseCase: r.resolve(HeartUpdateUseCase.self)!
             )
         }
         .inObjectScope(.graph)
@@ -521,3 +523,4 @@ extension DIContainer {
         }
     }
 }
+

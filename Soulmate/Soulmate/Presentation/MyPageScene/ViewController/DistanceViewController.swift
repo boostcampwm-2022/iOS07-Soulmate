@@ -119,20 +119,22 @@ private extension DistanceViewController {
     
     func configureLayout() {
         registerHeaderStackView.snp.makeConstraints {
-            $0.top.equalTo(self.view.safeAreaLayoutGuide.snp.top).offset(50)
+            $0.top.equalTo(self.view.safeAreaLayoutGuide.snp.top).offset(30)
             $0.leading.equalTo(self.view.safeAreaLayoutGuide.snp.leading).offset(20)
             $0.trailing.equalTo(self.view.safeAreaLayoutGuide.snp.trailing).offset(-20)
         }
         
         slider.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview().inset(40)
-            $0.top.equalTo(registerHeaderStackView.snp.bottom).offset(30)
+            //$0.top.equalTo(registerHeaderStackView.snp.bottom).offset(30)
+            $0.centerY.equalToSuperview().offset(-20)
             $0.height.equalTo(10)
         }
         
         distanceMessageLabel.snp.makeConstraints {
             $0.centerX.equalToSuperview()
-            $0.top.equalTo(slider.snp.bottom).offset(30)
+            $0.centerY.equalToSuperview().offset(20)
+
         }
     }
 }

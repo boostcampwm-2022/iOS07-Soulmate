@@ -152,6 +152,13 @@ private extension DetailViewController {
                 self?.dataSource?.apply(snapshot, to: .basicInfo)
             }
             .store(in: &cancellables)
+        
+        output.lessHeart
+            .receive(on: DispatchQueue.main)
+            .sink {
+                print("하트부족!")
+            }
+            .store(in: &cancellables)
     }
     
     private func configureView() {

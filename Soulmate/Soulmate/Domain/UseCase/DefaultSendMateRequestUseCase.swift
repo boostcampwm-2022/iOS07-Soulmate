@@ -27,6 +27,7 @@ final class DefaultSendMateRequestUseCase: SendMateRequestUseCase {
     }
  
     func sendMateRequest(mateId: String) async throws {
+                
         let userId = try authRepository.currentUid()
         let userPreview = try await userPreviewRepository.downloadPreview(userUid: userId)
         

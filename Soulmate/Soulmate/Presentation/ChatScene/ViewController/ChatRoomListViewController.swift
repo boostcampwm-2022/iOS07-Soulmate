@@ -28,7 +28,18 @@ final class ChatRoomListViewController: UIViewController {
         return tableView
     }()
     
-    
+    private lazy var hiddenLabel: UILabel = {
+        let label = UILabel()
+        label.text = "먼저 대화 친구를 요청해 보세요!"
+        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 15)
+        label.textColor = .gray
+        label.textAlignment = .center
+        label.layer.cornerRadius = 10
+        label.backgroundColor = .white
+        label.isHidden = true
+        self.view.addSubview(label)
+        return label
+    }()
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -89,6 +100,15 @@ private extension ChatRoomListViewController {
         
         output?.listLoaded
             .sink { [weak self] _ in
+                if let count = self?.viewModel?.chattingList.count,
+                   count == 0 {
+                    self?.chattingListView.isHidden = true
+                    self?.hiddenLabel.isHidden = false
+                } else {
+                    self?.chattingListView.isHidden = false
+                    self?.hiddenLabel.isHidden = true
+                }
+                
                 self?.chattingListView.reloadData()
             }
             .store(in: &cancellables)
@@ -105,6 +125,11 @@ private extension ChatRoomListViewController {
             $0.leading.equalTo(view.snp.leading)
             $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
             $0.trailing.equalTo(view.snp.trailing)
+        }
+        
+        hiddenLabel.snp.makeConstraints {
+            $0.centerX.centerY.equalToSuperview()
+            $0.height.equalTo(54)
         }
     }
 }

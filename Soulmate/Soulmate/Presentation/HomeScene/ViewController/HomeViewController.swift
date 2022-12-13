@@ -309,6 +309,13 @@ private extension HomeViewController {
                 self?.fakeSnapshot()
             }
             .store(in: &cancellables)
+        
+        output.lessHeart
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] in
+                print("하트 부족")
+            }
+            .store(in: &cancellables)
     }
     
     func configureView() {
