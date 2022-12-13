@@ -17,6 +17,8 @@ final class PartnerCell: UICollectionViewCell {
         view.layer.cornerCurve = .continuous
         view.clipsToBounds = true
         addSubview(view)
+        view.isSkeletonable = true
+        view.isSkeletonAnimatable = false
         return view
     }()
     
@@ -29,21 +31,21 @@ final class PartnerCell: UICollectionViewCell {
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
         partnerView.addSubview(imageView)
+        imageView.isSkeletonable = true
+        imageView.isSkeletonAnimatable = false
+
         return imageView
     }()
-    
-    private lazy var loadingIndicator: LoadingIndicator = {
-       let loading = LoadingIndicator()
-        partnerImageView.addSubview(loading)
-        return loading
-    }()
-    
+
     private lazy var partnerSubview: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor.clear
         view.layer.cornerRadius = 14
         view.layer.addSublayer(gradientLayer)
         partnerView.addSubview(view)
+        view.isSkeletonable = true
+        view.isSkeletonAnimatable = false
+
         return view
     }()
     
@@ -66,7 +68,9 @@ final class PartnerCell: UICollectionViewCell {
         let label = UILabel()
         label.textColor = UIColor.white
         label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 22)
-        partnerSubview.addSubview(label)
+        label.isSkeletonable = true
+        label.isSkeletonAnimatable = false
+        
         return label
     }()
     
@@ -74,7 +78,9 @@ final class PartnerCell: UICollectionViewCell {
         let label = UILabel()
         label.textColor = UIColor.white
         label.font = UIFont(name: "AppleSDGothicNeo-Light", size: 22)
-        partnerSubview.addSubview(label)
+        label.isSkeletonable = true
+        label.isSkeletonAnimatable = false
+
         return label
     }()
     
@@ -82,7 +88,6 @@ final class PartnerCell: UICollectionViewCell {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "mapGrey")
         imageView.contentMode = .scaleAspectFit
-        partnerSubview.addSubview(imageView)
         return imageView
     }()
     
@@ -90,7 +95,9 @@ final class PartnerCell: UICollectionViewCell {
         let label = UILabel()
         label.textColor = UIColor.white
         label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 15)
-        partnerSubview.addSubview(label)
+        label.isSkeletonable = true
+        label.isSkeletonAnimatable = false
+
         return label
     }()
     
@@ -98,13 +105,16 @@ final class PartnerCell: UICollectionViewCell {
         let label = UILabel()
         label.textColor = UIColor.white
         label.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 15)
-        partnerSubview.addSubview(label)
+        label.isSkeletonable = true
+        label.isSkeletonAnimatable = false
         return label
     }()
  
     override init(frame: CGRect) {
         super.init(frame: frame)
         configureLayout()
+        self.isSkeletonable = true
+        self.isSkeletonAnimatable = false
     }
     
     required init?(coder: NSCoder) {
@@ -113,7 +123,6 @@ final class PartnerCell: UICollectionViewCell {
 
     override func prepareForReuse() {
         super.prepareForReuse()
-
         partnerImageView.image = nil
         partnerName.text = "-"
         partnerAge.text = "-"
@@ -124,6 +133,23 @@ final class PartnerCell: UICollectionViewCell {
     override func layoutSublayers(of layer: CALayer) {
         super.layoutSublayers(of: layer)
         gradientLayer.frame = partnerSubview.bounds
+        
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        if isSkeletonable {
+            skeletonLayoutSubviews()
+        }
+    }
+    
+    func activateSkeleton() {
+        self.showSkeleton()
+    }
+    
+    func deactivateSkeleton() {
+        self.hideSkeleton()
     }
     
     func fill(previewViewModel: HomePreviewViewModel) {
@@ -135,10 +161,7 @@ final class PartnerCell: UICollectionViewCell {
     
     func fill(userImage: UIImage) {
         self.partnerImageView.image = userImage
-        
-        loadingIndicator.stopAnimating()
     }
-    
 }
 
 private extension PartnerCell {
@@ -146,36 +169,6 @@ private extension PartnerCell {
         
         partnerImageView.snp.makeConstraints {
             $0.width.height.equalToSuperview()
-        }
-        
-        partnerName.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(24)
-            $0.leading.equalToSuperview().inset(20)
-            $0.bottom.equalToSuperview().inset(50)
-        }
-        
-        partnerAge.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(24)
-            $0.leading.equalTo(partnerName.snp.trailing).offset(6)
-            $0.bottom.equalToSuperview().inset(50)
-        }
-        
-        partnerMapImageView.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(57)
-            $0.leading.equalToSuperview().inset(22.48)
-            $0.bottom.equalToSuperview().inset(25)
-        }
-        
-        partnerAddressLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(56)
-            $0.leading.equalToSuperview().inset(44)
-            $0.bottom.equalToSuperview().inset(24)
-        }
-        
-        partnerDistance.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(56)
-            $0.leading.equalTo(partnerAddressLabel.snp.trailing).offset(6)
-            $0.bottom.equalToSuperview().inset(24)
         }
         
         partnerSubview.snp.makeConstraints {
@@ -188,22 +181,62 @@ private extension PartnerCell {
             $0.width.equalToSuperview()
             $0.height.equalTo(partnerView.snp.width)
         }
-        
-        loadingIndicator.snp.makeConstraints {
-            $0.center.equalToSuperview()
+
+        configureUpperLabelStackViewLayout()
+        configureLowerLabelStackViewLayout()
+    }
+    
+    func configureUpperLabelStackViewLayout() {
+        let upperLabelStackView = UIStackView(frame: .zero)
+        upperLabelStackView.axis = .horizontal
+        upperLabelStackView.alignment = .leading
+        upperLabelStackView.distribution = .equalSpacing
+        upperLabelStackView.spacing = 6
+        [partnerName, partnerAge].forEach {
+            upperLabelStackView.addArrangedSubview($0)
         }
+        partnerSubview.addSubview(upperLabelStackView)
+        upperLabelStackView.snp.makeConstraints {
+            $0.top.equalToSuperview().inset(24)
+            $0.leading.equalToSuperview().inset(20)
+            $0.bottom.equalToSuperview().inset(50)
+            $0.width.lessThanOrEqualTo(300)
+        }
+        
+        upperLabelStackView.isSkeletonable = true
+        upperLabelStackView.isSkeletonAnimatable = true
+        upperLabelStackView.skeletonAnimationType = .gradient
+    }
+    
+    func configureLowerLabelStackViewLayout() {
+        let lowerLabelStackView = UIStackView(frame: .zero)
+        lowerLabelStackView.axis = .horizontal
+        lowerLabelStackView.alignment = .leading
+        lowerLabelStackView.distribution = .equalSpacing
+        lowerLabelStackView.spacing = 6
+        [partnerMapImageView, partnerAddressLabel, partnerDistance].forEach {
+            lowerLabelStackView.addArrangedSubview($0)
+        }
+        
+        partnerSubview.addSubview(lowerLabelStackView)
+        
+        partnerMapImageView.snp.makeConstraints {
+            $0.width.equalTo(13)
+            $0.height.equalTo(18)
+        }
+        
+        lowerLabelStackView.snp.makeConstraints {
+            $0.top.equalToSuperview().inset(56)
+            $0.leading.equalToSuperview().inset(20)
+            $0.bottom.equalToSuperview().inset(24)
+            $0.width.lessThanOrEqualTo(300)
+        }
+        
+        lowerLabelStackView.isSkeletonable = true
+        lowerLabelStackView.isSkeletonAnimatable = true
+        lowerLabelStackView.skeletonAnimationType = .gradient
     }
 }
 
-#if canImport(SwiftUI) && DEBUG
-import SwiftUI
 
-struct PartenerCellPreview: PreviewProvider {
-    static var previews: some View {
-        UIViewPreview {
-            let preview = PartnerCell()
-            return preview
-        }.previewLayout(.fixed(width: 350, height: 50))
-    }
-}
-#endif
+

@@ -13,9 +13,7 @@ import CoreLocation
 final class HomeViewController: UIViewController {
     
     var bag = Set<AnyCancellable>()
-    
     var locationManager: CLLocationManager?
-
     private var viewModel: HomeViewModel?
     
     enum SectionKind: Int, CaseIterable {
@@ -23,7 +21,7 @@ final class HomeViewController: UIViewController {
     }
     
     enum ItemKind: Hashable {
-        case main(HomePreviewViewModel)
+        case main(HomePreviewViewModelWrapper)
     }
 
     var refreshButtonTapSubject = PassthroughSubject<Void, Never>()
@@ -38,21 +36,12 @@ final class HomeViewController: UIViewController {
         self.view.addSubview(imageView)
         return imageView
     }()
-    
-//    private lazy var heart: UIImageView = {
-//        let imageView = UIImageView()
-//        imageView.image = UIImage(named: "heart")
-//        imageView.frame = CGRect(x: 0, y: 0, width: 17.07, height: 14.06)
-//        imageView.contentMode = .scaleAspectFit
-//        self.view.addSubview(imageView)
-//        return imageView
-//    }()
 
     
     private lazy var numOfHeartButton: UIButton = {
         let button = UIButton()
         button.setTitle("00", for: .normal)
-        button.setTitleColor(UIColor.labelDarkGrey, for: .normal)
+        button.setTitleColor(UIColor.darkGray, for: .normal)
         button.setImage(UIImage(named: "heart"), for: .normal)
         button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 15)
         
@@ -99,26 +88,11 @@ final class HomeViewController: UIViewController {
         
         bind()
         
+        configureDataSource()
+        fakeSnapshot()
+        
         configureLocationService()
         
-        configureDataSource()
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-
-        if !NetworkMonitor.shared.isConnected {
-            showPopUp(title: "네트워크 접속 불가🕸️",
-                      message: "네트워크 연결 상태를 확인해주세요.",
-                      leftActionTitle: "취소",
-                      rightActionTitle: "설정",
-                      rightActionCompletion: { // 설정 켜기
-                guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
-                if UIApplication.shared.canOpenURL(url) {
-                    UIApplication.shared.open(url)
-                }
-            })
-        }
     }
 
     func configureLocationService() {
@@ -133,15 +107,24 @@ final class HomeViewController: UIViewController {
         locationManager?.startUpdatingLocation()
         locationManager?.startMonitoringSignificantLocationChanges()
     }
-    
+}
+
+// MARK: CollectionView Configuration
+
+private extension HomeViewController {
     func configureDataSource() {
 
         // MARK: Cell Registration
         
-        let previewCellRegistration = UICollectionView.CellRegistration<PartnerCell, HomePreviewViewModel> { (cell, indexPath, identifier) in
-            cell.fill(previewViewModel: identifier)
+        let previewCellRegistration = UICollectionView.CellRegistration<PartnerCell, HomePreviewViewModelWrapper> { (cell, indexPath, identifier) in
+            guard let viewModel = identifier.previewViewModel else {
+                cell.activateSkeleton()
+                return
+            }
+            cell.deactivateSkeleton() // TODO: Active 한지 state를 업댓안해서 지금은 isSkeletonable이면 다 재귀돌음
+            cell.fill(previewViewModel: viewModel)
             Task { [weak self] in
-                guard let data = try await self?.viewModel?.fetchImage(key: identifier.imageKey),
+                guard let data = try await self?.viewModel?.fetchImage(key: viewModel.imageKey),
                       let uiImage = UIImage(data: data) else { return }
 
                 await MainActor.run {
@@ -149,7 +132,6 @@ final class HomeViewController: UIViewController {
                 }
             }
         }
-
         
         let footerViewRegistration = UICollectionView.SupplementaryRegistration
         <RecommendFooterView>(elementKind: RecommendFooterView.footerKind) { [weak self] supplementaryView, string, indexPath in
@@ -210,6 +192,25 @@ final class HomeViewController: UIViewController {
     }
 }
 
+// MARK: CollectionView Diffable Snapshot
+
+private extension HomeViewController {
+    // 로딩전에 스켈레톤
+    func fakeSnapshot() {
+        let estimatedNumberOfRows = Int(ceil(self.view.frame.height / (self.view.frame.width - 20)))
+        var snapshot = NSDiffableDataSourceSectionSnapshot<ItemKind>()
+        var targetSource = (0..<estimatedNumberOfRows).map {
+            return HomePreviewViewModelWrapper(index: $0)
+        }
+        snapshot.append(targetSource.map { return .main($0) })
+        dataSource?.apply(snapshot, to: .main) { [weak self] in
+            self?.collectionView.isScrollEnabled = false
+            self?.collectionView.allowsSelection = false
+        }
+        collectionView.contentOffset.y = 0
+    }
+}
+
 // MARK: - View Generators
 
 private extension HomeViewController {
@@ -229,8 +230,13 @@ private extension HomeViewController {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] previewViewModelList in
                 var snapshot = NSDiffableDataSourceSectionSnapshot<ItemKind>()
-                snapshot.append(previewViewModelList.map { return ItemKind.main($0) })
-                self?.dataSource?.apply(snapshot, to: .main)
+                snapshot.append(previewViewModelList.enumerated().map { index, value in
+                    return ItemKind.main(HomePreviewViewModelWrapper(index: index, previewViewModel: value))
+                })
+                self?.dataSource?.apply(snapshot, to: .main) { [weak self] in
+                    self?.collectionView.isScrollEnabled = true
+                    self?.collectionView.allowsSelection = true
+                }
             }
             .store(in: &bag)
         
@@ -240,6 +246,13 @@ private extension HomeViewController {
             .sink { [weak self] heartInfo in
                 guard let heart = heartInfo.heart else { return }
                 self?.numOfHeartButton.setTitle("\(heart)", for: .normal)
+            }
+            .store(in: &bag)
+        
+        output.didStartRefreshing
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] in
+                self?.fakeSnapshot()
             }
             .store(in: &bag)
     }
@@ -256,13 +269,6 @@ private extension HomeViewController {
             $0.width.equalTo(140)
             $0.height.equalTo(18)
         }
-        
-//        heart.snp.makeConstraints {
-//            $0.right.equalToSuperview().offset(-45.46)
-//            $0.top.equalTo(view.snp.top).offset(65.97)
-//            $0.width.equalTo(17.07)
-//            $0.height.equalTo(14.06)
-//        }
         
         numOfHeartButton.snp.makeConstraints {
             $0.right.equalToSuperview().offset(-20)

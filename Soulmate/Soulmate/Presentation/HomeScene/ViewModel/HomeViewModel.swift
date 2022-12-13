@@ -32,6 +32,7 @@ final class HomeViewModel: ViewModelable {
     struct Output {
         var didRefreshedPreviewList: AnyPublisher<[HomePreviewViewModel], Never>
         var didUpdatedHeartInfo: AnyPublisher<UserHeartInfo?, Never>
+        var didStartRefreshing: AnyPublisher<Void, Never>
     }
     
     // MARK: UseCase
@@ -51,6 +52,8 @@ final class HomeViewModel: ViewModelable {
     @Published var currentLocation: Location? // 애는 첫 1회만 업댓시 바인딩해서 리프레시할거임, 그다음부턴 프로퍼티처럼 사용됨
     @Published var distance: Double
     @Published var heartInfo: UserHeartInfo?
+    
+    var refreshStartEventPublisher = PassthroughSubject<Void, Never>()
 
     // MARK: Configuration
 
@@ -86,8 +89,8 @@ final class HomeViewModel: ViewModelable {
         $currentLocation
             .compactMap { $0 }
             .first()
-            .sink { value in
-                self.refresh()
+            .sink { [weak self] value in
+                self?.refresh()
             }
             .store(in: &cancellable)
         
@@ -147,14 +150,19 @@ final class HomeViewModel: ViewModelable {
         
         return Output(
             didRefreshedPreviewList: $matePreviewViewModelList.eraseToAnyPublisher(),
-            didUpdatedHeartInfo: $heartInfo.eraseToAnyPublisher()
+            didUpdatedHeartInfo: $heartInfo.eraseToAnyPublisher(),
+            didStartRefreshing: refreshStartEventPublisher.eraseToAnyPublisher()
         )
     }
     
     // MARK: Logic
     
     func refresh() {
+        refreshStartEventPublisher.send(())
+        
         Task { [weak self] in
+            let start = CFAbsoluteTimeGetCurrent()
+
             guard let currentLocation = self?.currentLocation  else { return }
             let previewList = try await mateRecommendationUseCase
                 .fetchDistanceFilteredRecommendedMate(from: currentLocation, distance: distance)
@@ -178,6 +186,9 @@ final class HomeViewModel: ViewModelable {
                     )
                 )
             }
+            
+            let diff = CFAbsoluteTimeGetCurrent() - start
+            try await Task.sleep(nanoseconds: UInt64((2 > diff ? 2 - diff : 0) * 1_000_000_000))
             
             self?.matePreviewViewModelList = homePreviewViewModelList
         }
