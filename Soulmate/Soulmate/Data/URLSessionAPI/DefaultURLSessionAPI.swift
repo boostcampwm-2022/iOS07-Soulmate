@@ -39,7 +39,7 @@ final class DefaultURLSessionAPI: URLSessionAPI {
         url: String,
         bodyData: T,
         header: [String: String]?) async -> Result<Data?, URLSessionAPIError> {
-        
+            
             guard let url = URL(string: url) else { return .failure(.invalidURLError) }
             guard let body = postPayload(from: bodyData) else {
                 return .failure(.bodyEncodeError)
@@ -62,9 +62,8 @@ final class DefaultURLSessionAPI: URLSessionAPI {
     }
     
     private func postPayload<T: Codable>(from body: T) -> Data? {
-        guard let data = body as? Data else { return nil }
-        
-        return try? JSONEncoder().encode(data)
+                
+        return try? JSONEncoder().encode(body)
     }
     
     private func urlRequest(

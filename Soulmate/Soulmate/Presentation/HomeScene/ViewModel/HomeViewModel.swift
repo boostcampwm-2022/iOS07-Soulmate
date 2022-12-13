@@ -121,8 +121,8 @@ final class HomeViewModel: ViewModelable {
             .store(in: &cancellables)
         
         input.tokenUpdateEvent
-            .sink { token in
-                
+            .sink { [weak self] token in
+                self?.updateFCMTokenUseCase.execute(token: token)
             }
             .store(in: &cancellables)
         
