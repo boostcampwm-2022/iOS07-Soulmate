@@ -39,11 +39,10 @@ final class HomeViewController: UIViewController {
     
     private lazy var numOfHeartButton: UIButton = {
         let button = UIButton()
-        button.setTitle("00", for: .normal)
         button.setTitleColor(UIColor.labelDarkGrey, for: .normal)
         button.setImage(UIImage(named: "heart"), for: .normal)
         button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 15)
-        
+        button.contentHorizontalAlignment = .right
         button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 0)
         
         self.view.addSubview(button)
@@ -56,6 +55,7 @@ final class HomeViewController: UIViewController {
         let collection = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collection.showsVerticalScrollIndicator = false
         collection.bounces = true
+        collection.delaysContentTouches = false
         collection.isPagingEnabled = false
         collection.backgroundColor = .clear
         self.view.addSubview(collection)
@@ -313,7 +313,13 @@ private extension HomeViewController {
         output.lessHeart
             .receive(on: DispatchQueue.main)
             .sink { [weak self] in
-                print("하트 부족")
+                self?.showPopUp(title: "하트 부족",
+                                message: "하트가 부족합니다. 충전하러 갈까요?",
+                                leftActionTitle: "취소",
+                                rightActionTitle: "충전소",
+                                rightActionCompletion: {
+                    self?.viewModel?.actions?.showHeartShopFlow?()
+                })
             }
             .store(in: &cancellables)
     }
@@ -325,16 +331,16 @@ private extension HomeViewController {
     
     func configureLayout() {
         logo.snp.makeConstraints {
-            $0.left.equalToSuperview().offset(20)
-            $0.top.equalTo(view.snp.top).offset(64)
+            $0.leading.equalToSuperview().inset(20)
+            $0.top.equalTo(view.snp.top).inset(64)
             $0.width.equalTo(140)
         }
 
         numOfHeartButton.snp.makeConstraints {
-            $0.right.equalToSuperview().offset(-20)
+            $0.trailing.equalToSuperview().inset(20)
             $0.centerY.equalTo(logo.snp.centerY)
             $0.height.equalTo(28)
-            $0.width.equalTo(50)
+            $0.width.equalTo(100)
         }
         
         collectionView.snp.makeConstraints {
