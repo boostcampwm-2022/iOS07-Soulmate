@@ -29,6 +29,19 @@ final class ReceivedChatRequestsViewController: UIViewController {
         return tableView
     }()
     
+    private lazy var hiddenLabel: UILabel = {
+        let label = UILabel()
+        label.text = "아직 받은 대화요청이 없어요."
+        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 15)
+        label.textColor = .gray
+        label.textAlignment = .center
+        label.layer.cornerRadius = 10
+        label.backgroundColor = .white
+        label.isHidden = true
+        self.view.addSubview(label)
+        return label
+    }()
+    
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
@@ -98,16 +111,28 @@ private extension ReceivedChatRequestsViewController {
             $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
             $0.trailing.equalTo(view.snp.trailing)
         }
+        
+        hiddenLabel.snp.makeConstraints {
+            $0.centerX.centerY.equalToSuperview()
+            $0.height.equalTo(54)
+        }
     }
 }
 
 extension ReceivedChatRequestsViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if viewModel?.requests.count == 0 {
+            self.chatRequestsView.isHidden = true
+            self.hiddenLabel.isHidden = false
+        } else {
+            self.chatRequestsView.isHidden = false
+            self.hiddenLabel.isHidden = true
+        }
+        
         return viewModel?.requests.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         guard let request = viewModel?.requests[indexPath.row] else { return UITableViewCell() }
         
         guard let cell = tableView.dequeueReusableCell(
@@ -138,6 +163,4 @@ extension ReceivedChatRequestsViewController: UITableViewDelegate, UITableViewDa
         
         return cell
     }
-    
-    
 }
