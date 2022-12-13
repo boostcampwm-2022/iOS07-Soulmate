@@ -40,6 +40,8 @@ class GradientButton: UIButton {
         self.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .bold)
         self.addTarget(self, action: #selector(didTouchedButtonUp), for: .touchUpInside)
         self.addTarget(self, action: #selector(didTouchedButtonDown), for: .touchDown)
+        self.addTarget(self, action: #selector(didTouchedButtonUp), for: .touchCancel)
+        self.addTarget(self, action: #selector(didTouchedButtonUp), for: .touchDragExit)
     }
     
     convenience init(title: String) {
