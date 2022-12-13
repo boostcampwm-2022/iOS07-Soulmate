@@ -26,7 +26,6 @@ final class RecommendFooterView: UICollectionReusableView {
         button.layer.cornerRadius = 10
         button.layer.cornerCurve = .continuous
         button.backgroundColor = .white
-        button.layer.borderWidth = 2
         button.layer.borderColor = UIColor.mainPurple?.cgColor
         addSubview(button)
         button.addTarget(self, action: #selector(didTouchedButtonUp), for: .touchUpInside)
@@ -53,7 +52,8 @@ final class RecommendFooterView: UICollectionReusableView {
     
     func configureLayout() {
         recommendAgainButton.snp.makeConstraints {
-            $0.centerX.centerY.equalToSuperview()
+            $0.centerX.equalToSuperview()
+            $0.top.equalToSuperview().offset(20)
             $0.leading.trailing.equalToSuperview()
             $0.height.equalTo(54)
         }
@@ -118,6 +118,7 @@ private extension RecommendFooterView {
         
         button.configuration = config
         
+        button.layer.borderWidth = 2.5
         button.layer.borderColor = UIColor.mainPurple?.cgColor
     }
     
@@ -139,6 +140,7 @@ private extension RecommendFooterView {
         
         button.configuration = config
         
+        button.layer.borderWidth = 3
         button.layer.borderColor = UIColor.labelDarkGrey?.cgColor
     }
 }
