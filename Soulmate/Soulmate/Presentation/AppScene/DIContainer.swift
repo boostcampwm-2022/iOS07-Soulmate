@@ -372,6 +372,7 @@ extension DIContainer {
             return DefaultSendMateRequestUseCase(
                 mateRequestRepository: r.resolve(MateRequestRepository.self)!,
                 userPreviewRepository: r.resolve(UserPreviewRepository.self)!,
+                userHeartInfoRepository: r.resolve(UserHeartInfoRepository.self)!,
                 authRepository: r.resolve(AuthRepository.self)!,
                 fcmRepository: r.resolve(FCMRepository.self)!
             )
@@ -521,3 +522,4 @@ extension DIContainer {
         }
     }
 }
+
