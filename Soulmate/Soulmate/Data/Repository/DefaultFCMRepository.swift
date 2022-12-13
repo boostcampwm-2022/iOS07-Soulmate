@@ -75,13 +75,14 @@ final class DefaultFCMRepository: FCMRepository {
         )
     }
     
-    func updateFCMToken(for uid: String, token: String) {
+    func updateFCMToken(for uid: String, token: String) async throws {
         
         let path = "UserToken"
         
-        networkDatabaseApi.update(
+        try await networkDatabaseApi.create(
             path: path,
             documentId: uid,
-            with: ["token": token])
+            data: ["token": token]
+        )
     }
 }

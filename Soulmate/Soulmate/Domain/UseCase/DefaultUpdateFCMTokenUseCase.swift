@@ -20,9 +20,10 @@ final class DefaultUpdateFCMTokenUseCase: UpdateFCMTokenUseCase {
             self.fcmRepository = fcmRepository
     }
     
-    func execute(token: String) {
+    func execute(token: String) async throws {
         if let uid = try? authRepository.currentUid() {
-            fcmRepository.updateFCMToken(for: uid, token: token)
+            try await fcmRepository.updateFCMToken(for: uid, token: token)
         }
+        
     }
 }

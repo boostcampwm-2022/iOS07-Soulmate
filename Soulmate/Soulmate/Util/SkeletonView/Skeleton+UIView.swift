@@ -66,7 +66,7 @@ extension UIView {
 
         layer.insertSkeletonLayer(
             skeletonLayer,
-            atIndex: UInt32.max
+            atIndex: 0
         ) { [weak self] in
             guard let self = self else { return }
             (self as? UITextView)?.setContentOffset(.zero, animated: false)

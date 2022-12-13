@@ -128,9 +128,14 @@ final class HomeViewController: UIViewController {
 private extension HomeViewController {
     
     func updateToken() {
-        if let token = UserDefaults.standard.string(forKey: UserDefaultKey.fcmToken) {
-            tokenUpdateSubject.send(token)
-        }
+        print("homeVC update token")
+        UserDefaults.standard
+            .publisher(for: \.token)
+            .compactMap { $0 }
+            .sink { [weak self] token in
+                self?.tokenUpdateSubject.send(token)
+            }
+            .store(in: &cancellables)
     }
 }
 

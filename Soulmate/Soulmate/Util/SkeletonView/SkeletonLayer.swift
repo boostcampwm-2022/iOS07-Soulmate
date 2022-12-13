@@ -25,12 +25,9 @@ struct SkeletonLayer {
     }
     
     func layoutIfNeeded() {
-        if let bounds = holder?.definedMaxBounds {
-            maskLayer.bounds = bounds
-        }
-        if let radius = holder?.layer.cornerRadius {
-            maskLayer.cornerRadius = radius
-        }
+        guard let holder = holder else { return }
+        maskLayer.bounds = holder.definedMaxBounds
+        maskLayer.cornerRadius = holder.layer.cornerRadius
     }
     
     func start(completion: (() -> Void)? = nil) {
