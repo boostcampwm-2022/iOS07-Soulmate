@@ -38,10 +38,10 @@ class DefaultMateRecommendationUseCase: MateRecommendationUseCase {
             distance: distance
         )
         
-        if previewList.count <= 4 {
+        if previewList.count <= 2 {
             return previewList
         } else {
-            let indexList = randomIndex(recommendCount: 4, endIndex: previewList.count - 1)
+            let indexList = randomIndex(recommendCount: 2, endIndex: previewList.count - 1)
             var randPreviewList = [UserPreview]()
             indexList.forEach {
                 randPreviewList.append(previewList[$0])

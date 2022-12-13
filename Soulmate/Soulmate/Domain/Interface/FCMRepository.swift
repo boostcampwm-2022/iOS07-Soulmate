@@ -10,5 +10,5 @@ import Foundation
 protocol FCMRepository {
     func sendChattingFCM(to mateId: String, title: String, message: String) async
     func sendMateRequestFCM(to mateId: String, name: String) async
-    func updateFCMToken(for uid: String, token: String)
+    func updateFCMToken(for uid: String, token: String) async throws
 }

@@ -124,7 +124,9 @@ final class HomeViewModel: ViewModelable {
         
         input.tokenUpdateEvent
             .sink { [weak self] token in
-                self?.updateFCMTokenUseCase.execute(token: token)
+                Task { [weak self] in
+                    try await self?.updateFCMTokenUseCase.execute(token: token)
+                }
             }
             .store(in: &cancellables)
         
@@ -237,5 +239,9 @@ extension UserDefaults {
     
     @objc dynamic var latestLocation: Data? {
         return data(forKey: "latestLocation")
+    }
+    
+    @objc dynamic var token: String? {
+        return string(forKey: UserDefaultKey.fcmToken)
     }
 }

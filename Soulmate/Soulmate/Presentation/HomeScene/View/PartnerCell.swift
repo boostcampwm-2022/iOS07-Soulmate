@@ -192,6 +192,7 @@ private extension PartnerCell {
         upperLabelStackView.alignment = .leading
         upperLabelStackView.distribution = .equalSpacing
         upperLabelStackView.spacing = 6
+        upperLabelStackView.layer.cornerRadius = 5
         [partnerName, partnerAge].forEach {
             upperLabelStackView.addArrangedSubview($0)
         }
@@ -214,6 +215,7 @@ private extension PartnerCell {
         lowerLabelStackView.alignment = .leading
         lowerLabelStackView.distribution = .equalSpacing
         lowerLabelStackView.spacing = 6
+        lowerLabelStackView.layer.cornerRadius = 5
         [partnerMapImageView, partnerAddressLabel, partnerDistance].forEach {
             lowerLabelStackView.addArrangedSubview($0)
         }

@@ -9,5 +9,5 @@ import Foundation
 
 protocol UpdateFCMTokenUseCase {
     
-    func execute(token: String)
+    func execute(token: String) async throws
 }

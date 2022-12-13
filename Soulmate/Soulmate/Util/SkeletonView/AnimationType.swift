@@ -16,7 +16,7 @@ enum AnimationType {
         switch self {
         case .gradient:
             let layer = CAGradientLayer()
-            layer.colors = [UIColor.systemGray2.cgColor, UIColor.systemGray5.cgColor, UIColor.systemGray2.cgColor]
+            layer.colors = [UIColor.systemGray4.cgColor, UIColor.systemGray6.cgColor, UIColor.systemGray4.cgColor]
             layer.locations = [0, 0.5, 1]
             return layer
         case .flash:
