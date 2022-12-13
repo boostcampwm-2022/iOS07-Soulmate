@@ -31,7 +31,7 @@ final class ReceivedChatRequestsViewController: UIViewController {
     
     private lazy var hiddenLabel: UILabel = {
         let label = UILabel()
-        label.text = "아직 받은 대화요청이 없어요."
+        label.text = "아직 받은 대화신청이 없어요."
         label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 15)
         label.textColor = .gray
         label.textAlignment = .center
