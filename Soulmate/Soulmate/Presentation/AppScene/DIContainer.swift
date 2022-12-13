@@ -27,6 +27,8 @@ final class DIContainer {
         registerNetworkKeyValueStorageApi()
         
         registerNetworkDatabaseApi()
+        
+        registerURLSessionAPI()
     }
     
     func registerRepository() {
@@ -46,6 +48,8 @@ final class DIContainer {
         registerMateRequestRepository()
         
         registerUserHeartInfoRepository()
+        
+        registerFCMRepository()
     }
     
     func registerUseCase() {
@@ -85,6 +89,8 @@ final class DIContainer {
         registerHeartUpdateUseCase()
         
         registerListenHeartUpdateUseCase()
+        
+        registerUpdateFCMTokenUseCase()
     }
     
     func registerViewModel() {
@@ -133,6 +139,13 @@ extension DIContainer {
     func registerNetworkDatabaseApi() {
         container.register(NetworkDatabaseApi.self) { _ in
             return FireStoreNetworkDatabaseApi()
+        }
+        .inObjectScope(.container)
+    }
+    
+    func registerURLSessionAPI() {
+        container.register(URLSessionAPI.self) { _ in
+            return DefaultURLSessionAPI()
         }
         .inObjectScope(.container)
     }
@@ -198,6 +211,16 @@ extension DIContainer {
         container.register(UserHeartInfoRepository.self) { r in
             return DefaultUserHeartInfoRepository(networkDatabaseApi: r.resolve(NetworkDatabaseApi.self)!)
         }
+    }
+    
+    func registerFCMRepository() {
+        container.register(FCMRepository.self) { r in
+            return DefaultFCMRepository(
+                urlSessionAPI: r.resolve(URLSessionAPI.self)!,
+                networkDatabaseApi: r.resolve(NetworkDatabaseApi.self)!
+            )
+        }
+        .inObjectScope(.container)
     }
     
 }
@@ -375,7 +398,15 @@ extension DIContainer {
         .inObjectScope(.container)
     }
     
-    
+    func registerUpdateFCMTokenUseCase() {
+        container.register(UpdateFCMTokenUseCase.self) { r in
+            return DefaultUpdateFCMTokenUseCase(
+                authRepository: r.resolve(AuthRepository.self)!,
+                fcmRepository: r.resolve(FCMRepository.self)!
+            )
+        }
+        .inObjectScope(.container)
+    }
 }
 
 extension DIContainer {
@@ -430,7 +461,8 @@ extension DIContainer {
                 downloadPictureUseCase: r.resolve(DownLoadPictureUseCase.self)!,
                 uploadLocationUseCase: r.resolve(UpLoadLocationUseCase.self)!,
                 getDistanceUseCase: r.resolve(GetDistanceUseCase.self)!,
-                listenHeartUpdateUseCase: r.resolve(ListenHeartUpdateUseCase.self)!
+                listenHeartUpdateUseCase: r.resolve(ListenHeartUpdateUseCase.self)!,
+                updateFCMTokenUseCase: r.resolve(UpdateFCMTokenUseCase.self)!
             )
         }
         .inObjectScope(.graph)

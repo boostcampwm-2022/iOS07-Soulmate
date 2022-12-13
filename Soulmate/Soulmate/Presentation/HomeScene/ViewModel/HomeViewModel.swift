@@ -41,6 +41,7 @@ final class HomeViewModel: ViewModelable {
     let uploadLocationUseCase: UpLoadLocationUseCase
     let getDistanceUseCase: GetDistanceUseCase
     let listenHeartUpdateUseCase: ListenHeartUpdateUseCase
+    let updateFCMTokenUseCase: UpdateFCMTokenUseCase
     
     // MARK: Properties
     var actions: Action?
@@ -58,13 +59,15 @@ final class HomeViewModel: ViewModelable {
         downloadPictureUseCase: DownLoadPictureUseCase,
         uploadLocationUseCase: UpLoadLocationUseCase,
         getDistanceUseCase: GetDistanceUseCase,
-        listenHeartUpdateUseCase: ListenHeartUpdateUseCase
+        listenHeartUpdateUseCase: ListenHeartUpdateUseCase,
+        updateFCMTokenUseCase: UpdateFCMTokenUseCase
     ) {
         self.mateRecommendationUseCase = mateRecommendationUseCase
         self.downloadPictureUseCase = downloadPictureUseCase
         self.uploadLocationUseCase = uploadLocationUseCase
         self.getDistanceUseCase = getDistanceUseCase
         self.listenHeartUpdateUseCase = listenHeartUpdateUseCase
+        self.updateFCMTokenUseCase = updateFCMTokenUseCase
         
         self.distance = getDistanceUseCase.getDistance()
         
