@@ -75,6 +75,7 @@ class ModificationViewController: UIViewController {
     
     func configureView() {
         navigationItem.setRightBarButton(UIBarButtonItem(customView: saveButton), animated: true)
+        navigationItem.title = "내 정보 수정"
     }
     
     func bind() {
