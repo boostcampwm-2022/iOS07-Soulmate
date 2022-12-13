@@ -66,14 +66,13 @@ extension UIView {
     func addSkeletonLayer() {
         let skeletonLayer = SkeletonLayer(animationType: self.skeletonAnimationType, skeletonHolder: self)
         self.skeletonLayer = skeletonLayer
-        
+
         layer.insertSkeletonLayer(
             skeletonLayer,
             atIndex: UInt32.max
         ) { [weak self] in
             guard let self = self else { return }
             (self as? UITextView)?.setContentOffset(.zero, animated: false)
-            
             self.startSkeletonAnimation()
         }
     }
@@ -107,7 +106,9 @@ extension UIView {
     
     // 제일 최상단 뷰에서 실행
     func showSkeleton() {
+        guard !isRootSkeletonActive else { return }
         recursiveShowSkeleton(root: self)
+        isRootSkeletonActive = true
     }
     
     func recursiveShowSkeleton(root: UIView? = nil) {
@@ -136,7 +137,9 @@ extension UIView {
         )
     }
     func hideSkeleton() {
+        guard isRootSkeletonActive else { return }
         recursiveHideSkeleton()
+        isRootSkeletonActive = false
     }
     
     func recursiveHideSkeleton(root: UIView? = nil) {
@@ -165,23 +168,23 @@ extension UIView {
 extension UIView {
     
     var subviewsSkeletonables: [UIView] {
-        subviews.filter { $0.isSkeletonable }
+        subviews.filter { $0.isRecursiveSkeletonable }
     }
     
     private struct KeyHolder {
-        static var isSkeletonable: UInt8 = 0
+        static var isRecursiveSkeletonable: UInt8 = 0
         static var skeletonLayer: UInt8 = 1
         static var isSkeletonAnimatable: UInt8 = 2
         static var skeletonAnimationType: UInt8 = 3
+        static var isRootSkeletonActive: UInt8 = 4
     }
     
-    var isSkeletonable: Bool {
+    var isRecursiveSkeletonable: Bool {
         get {
-            (objc_getAssociatedObject(self, &KeyHolder.isSkeletonable) as? Bool) ?? false
+            (objc_getAssociatedObject(self, &KeyHolder.isRecursiveSkeletonable) as? Bool) ?? false
         }
-        
         set {
-            objc_setAssociatedObject(self, &KeyHolder.isSkeletonable, newValue, .OBJC_ASSOCIATION_COPY)
+            objc_setAssociatedObject(self, &KeyHolder.isRecursiveSkeletonable, newValue, .OBJC_ASSOCIATION_COPY)
         }
     }
     
@@ -209,6 +212,16 @@ extension UIView {
         }
         set {
             objc_setAssociatedObject(self, &KeyHolder.skeletonAnimationType, newValue, .OBJC_ASSOCIATION_COPY)
+        }
+    }
+    
+    var isRootSkeletonActive: Bool {
+        get {
+            (objc_getAssociatedObject(self, &KeyHolder.isRootSkeletonActive) as? Bool) ?? false
+        }
+        
+        set {
+            objc_setAssociatedObject(self, &KeyHolder.isRootSkeletonActive, newValue, .OBJC_ASSOCIATION_COPY)
         }
     }
 }

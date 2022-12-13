@@ -10,6 +10,7 @@ import CoreLocation
 import SnapKit
 
 final class PartnerCell: UICollectionViewCell {
+    
     private lazy var partnerView: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor.clear
@@ -17,7 +18,7 @@ final class PartnerCell: UICollectionViewCell {
         view.layer.cornerCurve = .continuous
         view.clipsToBounds = true
         addSubview(view)
-        view.isSkeletonable = true
+        view.isRecursiveSkeletonable = true
         view.isSkeletonAnimatable = false
         return view
     }()
@@ -31,7 +32,7 @@ final class PartnerCell: UICollectionViewCell {
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
         partnerView.addSubview(imageView)
-        imageView.isSkeletonable = true
+        imageView.isRecursiveSkeletonable = true
         imageView.isSkeletonAnimatable = false
 
         return imageView
@@ -43,7 +44,7 @@ final class PartnerCell: UICollectionViewCell {
         view.layer.cornerRadius = 14
         view.layer.addSublayer(gradientLayer)
         partnerView.addSubview(view)
-        view.isSkeletonable = true
+        view.isRecursiveSkeletonable = true
         view.isSkeletonAnimatable = false
 
         return view
@@ -68,7 +69,7 @@ final class PartnerCell: UICollectionViewCell {
         let label = UILabel()
         label.textColor = UIColor.white
         label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 22)
-        label.isSkeletonable = true
+        label.isRecursiveSkeletonable = true
         label.isSkeletonAnimatable = false
         
         return label
@@ -78,7 +79,7 @@ final class PartnerCell: UICollectionViewCell {
         let label = UILabel()
         label.textColor = UIColor.white
         label.font = UIFont(name: "AppleSDGothicNeo-Light", size: 22)
-        label.isSkeletonable = true
+        label.isRecursiveSkeletonable = true
         label.isSkeletonAnimatable = false
 
         return label
@@ -88,6 +89,7 @@ final class PartnerCell: UICollectionViewCell {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "mapGrey")
         imageView.contentMode = .scaleAspectFit
+        imageView.isHidden = true
         return imageView
     }()
     
@@ -95,7 +97,7 @@ final class PartnerCell: UICollectionViewCell {
         let label = UILabel()
         label.textColor = UIColor.white
         label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 15)
-        label.isSkeletonable = true
+        label.isRecursiveSkeletonable = true
         label.isSkeletonAnimatable = false
 
         return label
@@ -105,7 +107,7 @@ final class PartnerCell: UICollectionViewCell {
         let label = UILabel()
         label.textColor = UIColor.white
         label.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 15)
-        label.isSkeletonable = true
+        label.isRecursiveSkeletonable = true
         label.isSkeletonAnimatable = false
         return label
     }()
@@ -113,7 +115,7 @@ final class PartnerCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         configureLayout()
-        self.isSkeletonable = true
+        self.isRecursiveSkeletonable = true
         self.isSkeletonAnimatable = false
     }
     
@@ -124,22 +126,19 @@ final class PartnerCell: UICollectionViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         partnerImageView.image = nil
-        partnerName.text = "-"
-        partnerAge.text = "-"
-        partnerAddressLabel.text = "-"
-        partnerDistance.text = "-"
+        partnerName.text = nil
+        partnerAge.text = nil
+        partnerAddressLabel.text = nil
+        partnerDistance.text = nil
+        
+        partnerMapImageView.isHidden = true
     }
     
     override func layoutSublayers(of layer: CALayer) {
         super.layoutSublayers(of: layer)
         gradientLayer.frame = partnerSubview.bounds
         
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        
-        if isSkeletonable {
+        if isRecursiveSkeletonable {
             skeletonLayoutSubviews()
         }
     }
@@ -157,6 +156,8 @@ final class PartnerCell: UICollectionViewCell {
         self.partnerAge.text = previewViewModel.age
         self.partnerAddressLabel.text = previewViewModel.address ?? "위치 정보 없음"
         self.partnerDistance.text = previewViewModel.distance
+        
+        self.partnerMapImageView.isHidden = false
     }
     
     func fill(userImage: UIImage) {
@@ -203,7 +204,7 @@ private extension PartnerCell {
             $0.width.lessThanOrEqualTo(300)
         }
         
-        upperLabelStackView.isSkeletonable = true
+        upperLabelStackView.isRecursiveSkeletonable = true
         upperLabelStackView.isSkeletonAnimatable = true
         upperLabelStackView.skeletonAnimationType = .gradient
     }
@@ -232,7 +233,7 @@ private extension PartnerCell {
             $0.width.lessThanOrEqualTo(300)
         }
         
-        lowerLabelStackView.isSkeletonable = true
+        lowerLabelStackView.isRecursiveSkeletonable = true
         lowerLabelStackView.isSkeletonAnimatable = true
         lowerLabelStackView.skeletonAnimationType = .gradient
     }

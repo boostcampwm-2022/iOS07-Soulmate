@@ -30,7 +30,7 @@ final class HomeViewModel: ViewModelable {
     }
     
     struct Output {
-        var didRefreshedPreviewList: AnyPublisher<[HomePreviewViewModel], Never>
+        var didRefreshedPreviewList: AnyPublisher<[HomePreviewViewModel]?, Never>
         var didUpdatedHeartInfo: AnyPublisher<UserHeartInfo?, Never>
         var didStartRefreshing: AnyPublisher<Void, Never>
     }
@@ -48,7 +48,7 @@ final class HomeViewModel: ViewModelable {
     var actions: Action?
     var cancellable = Set<AnyCancellable>()
     
-    @Published var matePreviewViewModelList = [HomePreviewViewModel]()
+    @Published var matePreviewViewModelList: [HomePreviewViewModel]?
     @Published var currentLocation: Location? // 애는 첫 1회만 업댓시 바인딩해서 리프레시할거임, 그다음부턴 프로퍼티처럼 사용됨
     @Published var distance: Double
     @Published var heartInfo: UserHeartInfo?
@@ -71,8 +71,6 @@ final class HomeViewModel: ViewModelable {
         self.listenHeartUpdateUseCase = listenHeartUpdateUseCase
         
         self.distance = getDistanceUseCase.getDistance()
-        
-        self.bind()
     }
 
     func setActions(actions: Action) {
@@ -119,6 +117,7 @@ final class HomeViewModel: ViewModelable {
         input.viewDidLoad
             .sink { [weak self] in
                 self?.listenHeartUpdateUseCase.listenHeartUpdate()
+                self?.bind()
             }
             .store(in: &cancellable)
         
@@ -199,7 +198,7 @@ final class HomeViewModel: ViewModelable {
     }
     
     func mateSelected(index: Int) {
-        let selectedMatePreviewViewModel = matePreviewViewModelList[index]
+        guard let selectedMatePreviewViewModel = matePreviewViewModelList?[index] else { return }
         let detailPreviewViewModel = DetailPreviewViewModel(
             uid: selectedMatePreviewViewModel.uid,
             name: selectedMatePreviewViewModel.name,

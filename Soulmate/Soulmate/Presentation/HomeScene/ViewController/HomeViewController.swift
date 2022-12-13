@@ -89,7 +89,6 @@ final class HomeViewController: UIViewController {
         bind()
         
         configureDataSource()
-        fakeSnapshot()
         
         configureLocationService()
         
@@ -121,7 +120,7 @@ private extension HomeViewController {
                 cell.activateSkeleton()
                 return
             }
-            cell.deactivateSkeleton() // TODO: Active 한지 state를 업댓안해서 지금은 isSkeletonable이면 다 재귀돌음
+            cell.deactivateSkeleton()
             cell.fill(previewViewModel: viewModel)
             Task { [weak self] in
                 guard let data = try await self?.viewModel?.fetchImage(key: viewModel.imageKey),
@@ -158,6 +157,8 @@ private extension HomeViewController {
         var snapshot = NSDiffableDataSourceSnapshot<SectionKind, ItemKind>()
         snapshot.appendSections(SectionKind.allCases)
         self.dataSource?.apply(snapshot, animatingDifferences: false)
+        
+        fakeSnapshot()
     }
     
     private func createCompositionalLayout() -> UICollectionViewCompositionalLayout {
@@ -192,10 +193,10 @@ private extension HomeViewController {
     }
 }
 
-// MARK: CollectionView Diffable Snapshot
+// MARK: CollectionView Skeleton Diffable Snapshot
 
 private extension HomeViewController {
-    // 로딩전에 스켈레톤
+    
     func fakeSnapshot() {
         let estimatedNumberOfRows = Int(ceil(self.view.frame.height / (self.view.frame.width - 20)))
         var snapshot = NSDiffableDataSourceSectionSnapshot<ItemKind>()
@@ -227,6 +228,7 @@ private extension HomeViewController {
         )
 
         output.didRefreshedPreviewList
+            .compactMap { $0 }
             .receive(on: DispatchQueue.main)
             .sink { [weak self] previewViewModelList in
                 var snapshot = NSDiffableDataSourceSectionSnapshot<ItemKind>()
