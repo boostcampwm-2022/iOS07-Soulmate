@@ -64,7 +64,7 @@ final class HomeViewController: UIViewController {
     
     private lazy var hiddenLabel: UILabel = {
         let label = UILabel()
-        label.text = "가까운 거리에 추천 상대가 없습니다."
+        label.text = "가까운 거리에 추천 상대가 없어요."
         label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 15)
         label.textColor = .gray
         label.textAlignment = .center
