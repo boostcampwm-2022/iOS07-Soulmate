@@ -12,10 +12,8 @@ import CoreLocation
 
 final class HomeViewController: UIViewController {
     
-    var bag = Set<AnyCancellable>()
-    
+    var cancellables = Set<AnyCancellable>()
     var locationManager: CLLocationManager?
-
     private var viewModel: HomeViewModel?
     
     enum SectionKind: Int, CaseIterable {
@@ -28,26 +26,16 @@ final class HomeViewController: UIViewController {
 
     var refreshButtonTapSubject = PassthroughSubject<Void, Never>()
     var collectionViewSelectSubject = PassthroughSubject<Int, Never>()
+    var tokenUpdateSubject = PassthroughSubject<String, Never>()
     
     // MARK: - UI
     private lazy var logo: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "logo")
-        imageView.frame = CGRect(x: 0, y: 0, width: 140, height: 18)
         imageView.contentMode = .scaleAspectFit
         self.view.addSubview(imageView)
         return imageView
     }()
-    
-//    private lazy var heart: UIImageView = {
-//        let imageView = UIImageView()
-//        imageView.image = UIImage(named: "heart")
-//        imageView.frame = CGRect(x: 0, y: 0, width: 17.07, height: 14.06)
-//        imageView.contentMode = .scaleAspectFit
-//        self.view.addSubview(imageView)
-//        return imageView
-//    }()
-
     
     private lazy var numOfHeartButton: UIButton = {
         let button = UIButton()
@@ -56,8 +44,7 @@ final class HomeViewController: UIViewController {
         button.setImage(UIImage(named: "heart"), for: .normal)
         button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 15)
         
-        button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: -5)
-        button.contentEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 5)
+        button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 0)
         
         self.view.addSubview(button)
 
@@ -100,8 +87,9 @@ final class HomeViewController: UIViewController {
         bind()
         
         configureLocationService()
-        
         configureDataSource()
+        
+        updateToken()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -120,7 +108,20 @@ final class HomeViewController: UIViewController {
             })
         }
     }
+}
 
+// MARK: - Read UserDefault
+private extension HomeViewController {
+    
+    func updateToken() {
+        if let token = UserDefaults.standard.string(forKey: UserDefaultKey.fcmToken) {
+            tokenUpdateSubject.send(token)
+        }
+    }
+}
+
+// MARK: - CLLocation
+private extension HomeViewController {
     func configureLocationService() {
         locationManager = CLLocationManager()
         
@@ -133,7 +134,10 @@ final class HomeViewController: UIViewController {
         locationManager?.startUpdatingLocation()
         locationManager?.startMonitoringSignificantLocationChanges()
     }
-    
+}
+
+// MARK: - DataSource
+private extension HomeViewController {
     func configureDataSource() {
 
         // MARK: Cell Registration
@@ -160,8 +164,7 @@ final class HomeViewController: UIViewController {
             }
         }
         
-        // MARK: DataSource Configuration
-        
+        // MARK: DataSource Configuration        
         self.dataSource = UICollectionViewDiffableDataSource<SectionKind, ItemKind>(collectionView: self.collectionView) { (collectionView, indexPath, item) -> UICollectionViewCell? in
             switch item {
             case .main(let previewViewModel):
@@ -211,7 +214,6 @@ final class HomeViewController: UIViewController {
 }
 
 // MARK: - View Generators
-
 private extension HomeViewController {
     func bind() {
         guard let viewModel = viewModel else { return }
@@ -221,7 +223,8 @@ private extension HomeViewController {
                 viewDidLoad: Just(()).eraseToAnyPublisher(),
                 didTappedRefreshButton: refreshButtonTapSubject.eraseToAnyPublisher(),
                 didSelectedMateCollectionCell: collectionViewSelectSubject.eraseToAnyPublisher(),
-                didTappedHeartButton: numOfHeartButton.tapPublisher().eraseToAnyPublisher()
+                didTappedHeartButton: numOfHeartButton.tapPublisher().eraseToAnyPublisher(),
+                tokenUpdateEvent: tokenUpdateSubject.eraseToAnyPublisher()
             )
         )
 
@@ -232,7 +235,7 @@ private extension HomeViewController {
                 snapshot.append(previewViewModelList.map { return ItemKind.main($0) })
                 self?.dataSource?.apply(snapshot, to: .main)
             }
-            .store(in: &bag)
+            .store(in: &cancellables)
         
         output.didUpdatedHeartInfo
             .compactMap { $0 }
@@ -241,7 +244,7 @@ private extension HomeViewController {
                 guard let heart = heartInfo.heart else { return }
                 self?.numOfHeartButton.setTitle("\(heart)", for: .normal)
             }
-            .store(in: &bag)
+            .store(in: &cancellables)
     }
     
     func configureView() {
@@ -254,21 +257,13 @@ private extension HomeViewController {
             $0.left.equalToSuperview().offset(20)
             $0.top.equalTo(view.snp.top).offset(64)
             $0.width.equalTo(140)
-            $0.height.equalTo(18)
         }
-        
-//        heart.snp.makeConstraints {
-//            $0.right.equalToSuperview().offset(-45.46)
-//            $0.top.equalTo(view.snp.top).offset(65.97)
-//            $0.width.equalTo(17.07)
-//            $0.height.equalTo(14.06)
-//        }
-        
+
         numOfHeartButton.snp.makeConstraints {
             $0.right.equalToSuperview().offset(-20)
-            $0.top.equalTo(view.snp.top).offset(64)
-            $0.height.equalTo(18)
-            $0.width.equalTo(70)
+            $0.centerY.equalTo(logo.snp.centerY)
+            $0.height.equalTo(28)
+            $0.width.equalTo(50)
         }
         
         collectionView.snp.makeConstraints {
@@ -295,6 +290,7 @@ private extension HomeViewController {
      }
 }
 
+// MARK: - CollectionView Delegate
 extension HomeViewController: UICollectionViewDelegate {
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -307,6 +303,7 @@ extension HomeViewController: UICollectionViewDelegate {
     }
 }
 
+// MARK: - CL Delegate
 extension HomeViewController: CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {

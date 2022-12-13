@@ -27,6 +27,7 @@ final class HomeViewModel: ViewModelable {
         var didTappedRefreshButton: AnyPublisher<Void, Never>
         var didSelectedMateCollectionCell: AnyPublisher<Int, Never>
         var didTappedHeartButton: AnyPublisher<Void, Never>
+        var tokenUpdateEvent: AnyPublisher<String, Never>
     }
     
     struct Output {
@@ -35,17 +36,16 @@ final class HomeViewModel: ViewModelable {
     }
     
     // MARK: UseCase
-    
     let mateRecommendationUseCase: MateRecommendationUseCase
     let downloadPictureUseCase: DownLoadPictureUseCase
     let uploadLocationUseCase: UpLoadLocationUseCase
     let getDistanceUseCase: GetDistanceUseCase
     let listenHeartUpdateUseCase: ListenHeartUpdateUseCase
+    let updateFCMTokenUseCase: UpdateFCMTokenUseCase
     
     // MARK: Properties
-    
     var actions: Action?
-    var cancellable = Set<AnyCancellable>()
+    var cancellables = Set<AnyCancellable>()
     
     @Published var matePreviewViewModelList = [HomePreviewViewModel]()
     @Published var currentLocation: Location? // 애는 첫 1회만 업댓시 바인딩해서 리프레시할거임, 그다음부턴 프로퍼티처럼 사용됨
@@ -59,13 +59,15 @@ final class HomeViewModel: ViewModelable {
         downloadPictureUseCase: DownLoadPictureUseCase,
         uploadLocationUseCase: UpLoadLocationUseCase,
         getDistanceUseCase: GetDistanceUseCase,
-        listenHeartUpdateUseCase: ListenHeartUpdateUseCase
+        listenHeartUpdateUseCase: ListenHeartUpdateUseCase,
+        updateFCMTokenUseCase: UpdateFCMTokenUseCase
     ) {
         self.mateRecommendationUseCase = mateRecommendationUseCase
         self.downloadPictureUseCase = downloadPictureUseCase
         self.uploadLocationUseCase = uploadLocationUseCase
         self.getDistanceUseCase = getDistanceUseCase
         self.listenHeartUpdateUseCase = listenHeartUpdateUseCase
+        self.updateFCMTokenUseCase = updateFCMTokenUseCase
         
         self.distance = getDistanceUseCase.getDistance()
         
@@ -77,11 +79,10 @@ final class HomeViewModel: ViewModelable {
     }
     
     // MARK: Data Bind
-    
     func bind() {
         getDistanceUseCase.getDistancePublisher()
             .assign(to: \.distance, on: self)
-            .store(in: &cancellable)
+            .store(in: &cancellables)
         
         $currentLocation
             .compactMap { $0 }
@@ -89,14 +90,14 @@ final class HomeViewModel: ViewModelable {
             .sink { value in
                 self.refresh()
             }
-            .store(in: &cancellable)
+            .store(in: &cancellables)
         
         $distance
             .dropFirst()
             .sink { [weak self] value in
                 self?.refresh()
             }
-            .store(in: &cancellable)
+            .store(in: &cancellables)
     }
     
     func transform(input: Input) -> Output {
@@ -117,33 +118,39 @@ final class HomeViewModel: ViewModelable {
             .sink { [weak self] in
                 self?.listenHeartUpdateUseCase.listenHeartUpdate()
             }
-            .store(in: &cancellable)
+            .store(in: &cancellables)
         
-        listenHeartUpdateUseCase.heartInfoSubject
-            .sink { [weak self] value in
-                self?.heartInfo = value
+        input.tokenUpdateEvent
+            .sink { token in
+                
             }
-            .store(in: &cancellable)
+            .store(in: &cancellables)
         
         input.didTappedRefreshButton
             .sink { [weak self] _ in
                 self?.refresh()
             }
-            .store(in: &cancellable)
+            .store(in: &cancellables)
         
         input.didSelectedMateCollectionCell
             .receive(on: DispatchQueue.main)
             .sink { [weak self] index in
                 self?.mateSelected(index: index)
             }
-            .store(in: &cancellable)
+            .store(in: &cancellables)
 
         input.didTappedHeartButton
             .receive(on: DispatchQueue.main)
             .sink { [weak self] in
                 self?.actions?.showHeartShopFlow?()
             }
-            .store(in: &cancellable)
+            .store(in: &cancellables)
+        
+        listenHeartUpdateUseCase.heartInfoSubject
+            .sink { [weak self] value in
+                self?.heartInfo = value
+            }
+            .store(in: &cancellables)
         
         return Output(
             didRefreshedPreviewList: $matePreviewViewModelList.eraseToAnyPublisher(),
