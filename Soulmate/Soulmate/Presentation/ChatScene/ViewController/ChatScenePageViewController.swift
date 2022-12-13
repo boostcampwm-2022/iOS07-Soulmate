@@ -26,8 +26,10 @@ final class ChatScenePageViewController: UIViewController {
         view.addSubview(navView)
         navView.translatesAutoresizingMaskIntoConstraints = false
         navView.configure(
+            hostView: self.view,
             with: ["채팅 목록", "받은 요청"],
-            delegate: self
+            delegate: self,
+            editModeToggle: chatRoomListViewController?.editModeToggle
         )
         navView.setPage(index: 0)
         
@@ -85,8 +87,8 @@ private extension ChatScenePageViewController {
     func configureLayout() {
         pageNavigationView.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide.snp.top)
-            $0.centerX.equalTo(view.snp.centerX)
-        }
+            $0.centerX.equalTo(view.snp.centerX)            
+        }                
         
         pageViewController.view.snp.makeConstraints {
             $0.top.equalTo(pageNavigationView.snp.bottom)
