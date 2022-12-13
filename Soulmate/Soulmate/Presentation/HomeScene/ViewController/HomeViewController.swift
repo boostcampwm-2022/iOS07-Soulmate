@@ -62,6 +62,20 @@ final class HomeViewController: UIViewController {
         return collection
     }()
     
+    private lazy var hiddenLabel: UILabel = {
+        let label = UILabel()
+        label.text = "가까운 거리에 추천 상대가 없습니다."
+        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 18)
+        label.textColor = .gray
+        label.textAlignment = .center
+        label.layer.cornerRadius = 10
+        label.backgroundColor = .white
+        label.layer.borderWidth = 2
+        label.layer.borderColor = UIColor.gray.cgColor
+        self.view.addSubview(label)
+        return label
+    }()
+    
     private var dataSource: UICollectionViewDiffableDataSource<SectionKind, ItemKind>?
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
@@ -107,6 +121,15 @@ final class HomeViewController: UIViewController {
                 }
             })
         }
+        
+        if self.viewModel?.matePreviewViewModelList.count == 0 {
+            self.hiddenLabel.isHidden = false
+            self.collectionView.isHidden = true
+        } else {
+            self.collectionView.isHidden = false
+            self.hiddenLabel.isHidden = true
+        }
+        
     }
 }
 
@@ -153,7 +176,6 @@ private extension HomeViewController {
                 }
             }
         }
-
         
         let footerViewRegistration = UICollectionView.SupplementaryRegistration
         <RecommendFooterView>(elementKind: RecommendFooterView.footerKind) { [weak self] supplementaryView, string, indexPath in
@@ -271,6 +293,13 @@ private extension HomeViewController {
             $0.bottom.equalToSuperview()
             $0.centerX.equalToSuperview()
             $0.width.equalToSuperview().inset(20)
+        }
+        
+        hiddenLabel.snp.makeConstraints {
+            $0.top.equalTo(logo.snp.bottom).offset(20)
+            $0.centerX.equalToSuperview()
+            $0.height.equalTo(54)
+            $0.width.equalToSuperview().inset(30)
         }
     }
     
