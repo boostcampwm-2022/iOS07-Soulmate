@@ -55,6 +55,7 @@ final class HomeViewController: UIViewController {
         let collection = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collection.showsVerticalScrollIndicator = false
         collection.bounces = true
+        collection.delaysContentTouches = false
         collection.isPagingEnabled = false
         collection.backgroundColor = .clear
         self.view.addSubview(collection)
@@ -312,7 +313,13 @@ private extension HomeViewController {
         output.lessHeart
             .receive(on: DispatchQueue.main)
             .sink { [weak self] in
-                print("하트 부족")
+                self?.showPopUp(title: "하트 부족",
+                                message: "하트가 부족합니다. 충전하러 갈까요?",
+                                leftActionTitle: "취소",
+                                rightActionTitle: "충전소",
+                                rightActionCompletion: {
+                    self?.viewModel?.actions?.showHeartShopFlow?()
+                })
             }
             .store(in: &cancellables)
     }
