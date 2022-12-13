@@ -44,7 +44,7 @@ final class HomeCoordinator: Coordinator {
         let container = DIContainer.shared.container
         guard let vm = container.resolve(DetailViewModel.self) else { return }
         
-        vm.setActions(actions: DetailViewModelActions())
+        vm.setActions(actions: DetailViewModelActions(showHeartShopFlow: self?.showHeartShopFlow))
         vm.setUser(detailPreviewViewModel: detailPreviewViewModel)
         
         let vc = DetailViewController(viewModel: vm)

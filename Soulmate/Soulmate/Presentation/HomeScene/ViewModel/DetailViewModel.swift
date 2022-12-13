@@ -9,7 +9,7 @@ import Foundation
 import Combine
 
 struct DetailViewModelActions {
-    
+    var showHeartShopFlow: (() -> Void)?
 }
 
 final class DetailViewModel: ViewModelable {
@@ -28,6 +28,7 @@ final class DetailViewModel: ViewModelable {
         var didFetchedGreeting: AnyPublisher<String?, Never>
         var didFetchedBasicInfo: AnyPublisher<DetailBasicInfoViewModel?, Never>
         var lessHeart: AnyPublisher<Void, Never>
+        var didFinishedRequest: AnyPublisher<Void, Never>
     }
     
     // MARK: UseCase
@@ -48,6 +49,7 @@ final class DetailViewModel: ViewModelable {
     @Published var basicInfo: DetailBasicInfoViewModel?
     
     var lessHeartEventPublisher = PassthroughSubject<Void, Never>()
+    var didFinishedRequest = PassthroughSubject<Void, Never>()
     
     // MARK: Configuration
     
@@ -108,7 +110,8 @@ final class DetailViewModel: ViewModelable {
             didFetchedPreview: $detailPreviewViewModel.eraseToAnyPublisher(),
             didFetchedGreeting: $greetingMessage.eraseToAnyPublisher(),
             didFetchedBasicInfo: $basicInfo.eraseToAnyPublisher(),
-            lessHeart: lessHeartEventPublisher.eraseToAnyPublisher()
+            lessHeart: lessHeartEventPublisher.eraseToAnyPublisher(),
+            didFinishedRequest: didFinishedRequest.eraseToAnyPublisher()
         )
     }
     
@@ -122,8 +125,9 @@ final class DetailViewModel: ViewModelable {
         Task {
             guard let mateId = detailPreviewViewModel?.uid else { return }
             do {
-                try await heartUpdateUseCase.updateHeart(heart: -20)
+                try await heartUpdateUseCase.updateHeart(heart: -10)
                 try await self.sendMateRequestUseCase.sendMateRequest(mateId: mateId)
+                self.didFinishedRequest.send(())
             }
             catch HeartShopError.lessHeart {
                 self.lessHeartEventPublisher.send(())
