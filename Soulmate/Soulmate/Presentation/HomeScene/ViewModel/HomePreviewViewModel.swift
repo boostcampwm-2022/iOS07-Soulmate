@@ -19,3 +19,12 @@ struct HomePreviewViewModel: Hashable {
         hasher.combine(uid)
     }
 }
+
+struct HomePreviewViewModelWrapper: Hashable {
+    var index: Int
+    var previewViewModel: HomePreviewViewModel?
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(index)
+    }
+}

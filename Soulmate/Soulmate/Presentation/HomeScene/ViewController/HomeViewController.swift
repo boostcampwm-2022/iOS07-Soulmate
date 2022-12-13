@@ -13,6 +13,7 @@ import CoreLocation
 final class HomeViewController: UIViewController {
     
     var cancellables = Set<AnyCancellable>()
+
     var locationManager: CLLocationManager?
     private var viewModel: HomeViewModel?
     
@@ -21,7 +22,7 @@ final class HomeViewController: UIViewController {
     }
     
     enum ItemKind: Hashable {
-        case main(HomePreviewViewModel)
+        case main(HomePreviewViewModelWrapper)
     }
 
     var refreshButtonTapSubject = PassthroughSubject<Void, Never>()
@@ -40,7 +41,7 @@ final class HomeViewController: UIViewController {
     private lazy var numOfHeartButton: UIButton = {
         let button = UIButton()
         button.setTitle("00", for: .normal)
-        button.setTitleColor(UIColor.labelDarkGrey, for: .normal)
+        button.setTitleColor(UIColor.darkGray, for: .normal)
         button.setImage(UIImage(named: "heart"), for: .normal)
         button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 15)
         
@@ -86,7 +87,10 @@ final class HomeViewController: UIViewController {
         
         bind()
         
+        configureDataSource()
+        
         configureLocationService()
+
         configureDataSource()
         
         updateToken()
@@ -136,16 +140,23 @@ private extension HomeViewController {
     }
 }
 
+
 // MARK: - DataSource
+
 private extension HomeViewController {
     func configureDataSource() {
 
         // MARK: Cell Registration
         
-        let previewCellRegistration = UICollectionView.CellRegistration<PartnerCell, HomePreviewViewModel> { (cell, indexPath, identifier) in
-            cell.fill(previewViewModel: identifier)
+        let previewCellRegistration = UICollectionView.CellRegistration<PartnerCell, HomePreviewViewModelWrapper> { (cell, indexPath, identifier) in
+            guard let viewModel = identifier.previewViewModel else {
+                cell.activateSkeleton()
+                return
+            }
+            cell.deactivateSkeleton()
+            cell.fill(previewViewModel: viewModel)
             Task { [weak self] in
-                guard let data = try await self?.viewModel?.fetchImage(key: identifier.imageKey),
+                guard let data = try await self?.viewModel?.fetchImage(key: viewModel.imageKey),
                       let uiImage = UIImage(data: data) else { return }
 
                 await MainActor.run {
@@ -153,7 +164,6 @@ private extension HomeViewController {
                 }
             }
         }
-
         
         let footerViewRegistration = UICollectionView.SupplementaryRegistration
         <RecommendFooterView>(elementKind: RecommendFooterView.footerKind) { [weak self] supplementaryView, string, indexPath in
@@ -179,6 +189,8 @@ private extension HomeViewController {
         var snapshot = NSDiffableDataSourceSnapshot<SectionKind, ItemKind>()
         snapshot.appendSections(SectionKind.allCases)
         self.dataSource?.apply(snapshot, animatingDifferences: false)
+        
+        fakeSnapshot()
     }
     
     private func createCompositionalLayout() -> UICollectionViewCompositionalLayout {
@@ -213,6 +225,26 @@ private extension HomeViewController {
     }
 }
 
+// MARK: CollectionView Skeleton Diffable Snapshot
+
+private extension HomeViewController {
+    
+    func fakeSnapshot() {
+        let estimatedNumberOfRows = Int(ceil(self.view.frame.height / (self.view.frame.width - 20)))
+        var snapshot = NSDiffableDataSourceSectionSnapshot<ItemKind>()
+        var targetSource = (0..<estimatedNumberOfRows).map {
+            return HomePreviewViewModelWrapper(index: $0)
+        }
+        snapshot.append(targetSource.map { return .main($0) })
+
+        dataSource?.apply(snapshot, to: .main) { [weak self] in
+            self?.collectionView.isScrollEnabled = false
+            self?.collectionView.allowsSelection = false
+        }
+        self.collectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
+    }
+}
+
 // MARK: - View Generators
 private extension HomeViewController {
     func bind() {
@@ -229,11 +261,17 @@ private extension HomeViewController {
         )
 
         output.didRefreshedPreviewList
+            .compactMap { $0 }
             .receive(on: DispatchQueue.main)
             .sink { [weak self] previewViewModelList in
                 var snapshot = NSDiffableDataSourceSectionSnapshot<ItemKind>()
-                snapshot.append(previewViewModelList.map { return ItemKind.main($0) })
-                self?.dataSource?.apply(snapshot, to: .main)
+                snapshot.append(previewViewModelList.enumerated().map { index, value in
+                    return ItemKind.main(HomePreviewViewModelWrapper(index: index, previewViewModel: value))
+                })
+                self?.dataSource?.apply(snapshot, to: .main) { [weak self] in
+                    self?.collectionView.isScrollEnabled = true
+                    self?.collectionView.allowsSelection = true
+                }
             }
             .store(in: &cancellables)
         
@@ -243,6 +281,13 @@ private extension HomeViewController {
             .sink { [weak self] heartInfo in
                 guard let heart = heartInfo.heart else { return }
                 self?.numOfHeartButton.setTitle("\(heart)", for: .normal)
+            }
+            .store(in: &cancellables)
+        
+        output.didStartRefreshing
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] in
+                self?.fakeSnapshot()
             }
             .store(in: &cancellables)
     }
