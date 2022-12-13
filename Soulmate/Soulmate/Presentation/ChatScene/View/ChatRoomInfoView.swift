@@ -143,6 +143,10 @@ final class ChatRoomInfoView: UIView {
     func configure(image: UIImage) {
         mateProfileImageView.image = image
     }
+    
+    func resetImage() {
+        mateProfileImageView.image = nil
+    }
 }
 
 private extension ChatRoomInfoView {
