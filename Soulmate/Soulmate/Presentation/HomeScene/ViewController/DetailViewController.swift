@@ -155,8 +155,24 @@ private extension DetailViewController {
         
         output.lessHeart
             .receive(on: DispatchQueue.main)
-            .sink {
-                print("하트부족!")
+            .sink { [weak self] in
+                self?.showPopUp(
+                    title: "하트 부족",
+                    message: "하트를 충전 후 다시 시도해 주세요!",
+                    leftActionTitle: "취소",
+                    rightActionTitle: "충전하기",
+                    rightActionCompletion: {
+                        self?.dismiss(animated: true)
+                        self?.viewModel?.actions?.showHeartShopFlow?()
+                    }
+                )
+            }
+            .store(in: &cancellables)
+        
+        output.didFinishedRequest
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] in
+                self?.dismiss(animated: true)
             }
             .store(in: &cancellables)
     }
