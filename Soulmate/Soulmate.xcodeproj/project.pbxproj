@@ -117,6 +117,7 @@
 		6A4A00C42948A6B40016ED58 /* Skeleton+UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A4A00C32948A6B40016ED58 /* Skeleton+UIView.swift */; };
 		6A4A00C62948A6CE0016ED58 /* SkeletonAnimationBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A4A00C52948A6CE0016ED58 /* SkeletonAnimationBuilder.swift */; };
 		6A4A00C82948A6E10016ED58 /* SkeletonLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A4A00C72948A6E10016ED58 /* SkeletonLayer.swift */; };
+		6A4A00CA2948AAEF0016ED58 /* PrivacyInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6A4A00C92948AAEF0016ED58 /* PrivacyInfo.plist */; };
 		6A5ED83D2941C2D800AD9E82 /* DefaultEnterStateRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5ED83C2941C2D800AD9E82 /* DefaultEnterStateRepository.swift */; };
 		6A5ED83F2941C70B00AD9E82 /* EnterStateRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5ED83E2941C70B00AD9E82 /* EnterStateRepository.swift */; };
 		6A5ED8412941C7A100AD9E82 /* DefaultEnterChatRoomUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5ED8402941C7A100AD9E82 /* DefaultEnterChatRoomUseCase.swift */; };
@@ -371,6 +372,7 @@
 		6A4A00C32948A6B40016ED58 /* Skeleton+UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Skeleton+UIView.swift"; sourceTree = "<group>"; };
 		6A4A00C52948A6CE0016ED58 /* SkeletonAnimationBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkeletonAnimationBuilder.swift; sourceTree = "<group>"; };
 		6A4A00C72948A6E10016ED58 /* SkeletonLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkeletonLayer.swift; sourceTree = "<group>"; };
+		6A4A00C92948AAEF0016ED58 /* PrivacyInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = PrivacyInfo.plist; sourceTree = "<group>"; };
 		6A5ED83C2941C2D800AD9E82 /* DefaultEnterStateRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultEnterStateRepository.swift; sourceTree = "<group>"; };
 		6A5ED83E2941C70B00AD9E82 /* EnterStateRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterStateRepository.swift; sourceTree = "<group>"; };
 		6A5ED8402941C7A100AD9E82 /* DefaultEnterChatRoomUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultEnterChatRoomUseCase.swift; sourceTree = "<group>"; };
@@ -982,6 +984,7 @@
 				6A8C88982919031D009EDBBB /* Assets.xcassets */,
 				6A8C889A2919031D009EDBBB /* LaunchScreen.storyboard */,
 				6A8C889D2919031D009EDBBB /* Info.plist */,
+				6A4A00C92948AAEF0016ED58 /* PrivacyInfo.plist */,
 				6A8B0723292330D100492123 /* GoogleService-Info.plist */,
 				6A5ED87629476D5100AD9E82 /* PrivacyInfo.plist */,
 				B31A68262919F5D2001D35E9 /* .swiftlint.yml */,
@@ -1316,6 +1319,7 @@
 				6A8C889C2919031D009EDBBB /* LaunchScreen.storyboard in Resources */,
 				6A34C1E6292B260F00A3E57F /* ComposeBar.xib in Resources */,
 				6A8B0724292330D100492123 /* GoogleService-Info.plist in Resources */,
+				6A4A00CA2948AAEF0016ED58 /* PrivacyInfo.plist in Resources */,
 				6A8C88992919031D009EDBBB /* Assets.xcassets in Resources */,
 				6A8C88972919031A009EDBBB /* Main.storyboard in Resources */,
 			);
