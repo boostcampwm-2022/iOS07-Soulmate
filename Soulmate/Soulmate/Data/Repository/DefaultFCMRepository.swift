@@ -37,11 +37,32 @@ final class DefaultFCMRepository: FCMRepository {
         
         guard let token = await token(of: mateId) else { return }
 
-        let dto = FCMMessageSendDTO(
+        let dto = FCMDTO(
             title: title,
             body: message,
             data: EmptyData(value: ""),
             to: token)
+        
+        let _ = await urlSessionAPI.post(
+            dto,
+            url: "https://fcm.googleapis.com/fcm/send",
+            header: [
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "Authorization": Bundle.main.serverKey
+            ]
+        )
+    }
+    
+    func sendMateRequestFCM(to mateId: String, name: String) async {
+        guard let token = await token(of: mateId) else { return }
+        
+        let dto = FCMDTO(
+            title: "\(name)",
+            body: "새로운 대화요청 🔥",
+            data: EmptyData(value: ""),
+            to: token
+        )
         
         let _ = await urlSessionAPI.post(
             dto,
