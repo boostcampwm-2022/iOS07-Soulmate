@@ -114,7 +114,7 @@ class FireStoreNetworkDatabaseApi: NetworkDatabaseApi {
     }
     
     func delete(path: String, documentId: String) async throws {
-        var docRef = db.collection(path).document(documentId)
+        let docRef = db.collection(path).document(documentId)
         
         try await docRef.delete()
     }
