@@ -39,6 +39,10 @@ final class ChatRoomInfoCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func prepareForReuse() {
+        chatRoomInfoView.resetImage()
+    }
+    
     func configure(with info: ChatRoomInfo, uid: String) {
         chatRoomInfoView.configure(with: info, uid: uid)
     }

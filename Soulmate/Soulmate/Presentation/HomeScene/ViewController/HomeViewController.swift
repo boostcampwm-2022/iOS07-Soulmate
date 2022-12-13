@@ -224,7 +224,7 @@ private extension HomeViewController {
         
         let section = NSCollectionLayoutSection(group: group)
         section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 20, trailing: 0)
-        let footerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(54))
+        let footerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(114))
         let footer = NSCollectionLayoutBoundarySupplementaryItem(
             layoutSize: footerSize,
             elementKind: RecommendFooterView.footerKind,
