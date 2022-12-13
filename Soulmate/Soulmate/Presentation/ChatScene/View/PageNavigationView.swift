@@ -30,8 +30,7 @@ final class PageNavigationView: UIView {
         hostView?.addSubview(button)
         button.translatesAutoresizingMaskIntoConstraints = false
         let image = UIImage(systemName: "slider.horizontal.3")?
-            .withRenderingMode(.alwaysTemplate)
-        button.setImage(image, for: .normal)
+            .withRenderingMode(.alwaysTemplate)        
         button.tintColor = .darkGray
         
         let attributes: [NSAttributedString.Key: Any] = [
@@ -43,6 +42,7 @@ final class PageNavigationView: UIView {
             NSAttributedString(string: "", attributes: attributes)
         )
         config.titleAlignment = .trailing
+        config.image = image
         config.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
         
         button.configuration = config

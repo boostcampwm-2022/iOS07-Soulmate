@@ -58,6 +58,7 @@ final class HomeViewController: UIViewController {
         collection.bounces = true
         collection.isPagingEnabled = false
         collection.backgroundColor = .clear
+        collection.delaysContentTouches = false
         self.view.addSubview(collection)
         return collection
     }()
@@ -158,9 +159,7 @@ private extension HomeViewController {
         let footerViewRegistration = UICollectionView.SupplementaryRegistration
         <RecommendFooterView>(elementKind: RecommendFooterView.footerKind) { [weak self] supplementaryView, string, indexPath in
             supplementaryView.configureButtonHandler {
-                self?.showPopUp(title: "다시한번 추천받기", message: "하트❤️ 10개가 소비되어요~", rightActionCompletion: {
-                    self?.refreshButtonTapSubject.send(())
-                })
+                self?.refreshButtonTapSubject.send(())
             }
         }
         
