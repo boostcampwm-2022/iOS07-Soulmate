@@ -58,11 +58,14 @@ class DefaultChatCoordinator: ChatCoordinator {
         )
         let chatRoomListVC = ChatRoomListViewController(viewModel: chatRoomListViewModel)
         
+        let deleteMateRequest = DefaultDeleteMateRequestUseCase(mateRequestRepository: mateRequestRepository)
+        
         let receivedChatRequestsViewModel = ReceivedChatRequestsViewModel(
             coordinator: self,
             listenMateRequestUseCase: listenMateRequestUseCase,
             fetchImageUseCase: fetchImageUseCase,
-            acceptMateRequest: acceptMateRequest
+            acceptMateRequest: acceptMateRequest,
+            deleteMateRequestUseCase: deleteMateRequest
         )
         let receivedChatRequestsVC = ReceivedChatRequestsViewController(viewModel: receivedChatRequestsViewModel)
         

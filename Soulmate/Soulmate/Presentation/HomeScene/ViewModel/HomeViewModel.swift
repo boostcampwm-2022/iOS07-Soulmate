@@ -34,6 +34,7 @@ final class HomeViewModel: ViewModelable {
         var didRefreshedPreviewList: AnyPublisher<[HomePreviewViewModel]?, Never>
         var didUpdatedHeartInfo: AnyPublisher<UserHeartInfo?, Never>
         var didStartRefreshing: AnyPublisher<Void, Never>
+        var lessHeart: AnyPublisher<Void, Never>
     }
     
     // MARK: UseCase
@@ -43,6 +44,7 @@ final class HomeViewModel: ViewModelable {
     let getDistanceUseCase: GetDistanceUseCase
     let listenHeartUpdateUseCase: ListenHeartUpdateUseCase
     let updateFCMTokenUseCase: UpdateFCMTokenUseCase
+    let heartUpdateUseCase: HeartUpdateUseCase
     
     // MARK: Properties
     var actions: Action?
@@ -54,6 +56,7 @@ final class HomeViewModel: ViewModelable {
     @Published var heartInfo: UserHeartInfo?
     
     var refreshStartEventPublisher = PassthroughSubject<Void, Never>()
+    var lessHeartEventPublisher = PassthroughSubject<Void, Never>()
 
     // MARK: Configuration
 
@@ -63,7 +66,8 @@ final class HomeViewModel: ViewModelable {
         uploadLocationUseCase: UpLoadLocationUseCase,
         getDistanceUseCase: GetDistanceUseCase,
         listenHeartUpdateUseCase: ListenHeartUpdateUseCase,
-        updateFCMTokenUseCase: UpdateFCMTokenUseCase
+        updateFCMTokenUseCase: UpdateFCMTokenUseCase,
+        heartUpdateUseCase: HeartUpdateUseCase
     ) {
         self.mateRecommendationUseCase = mateRecommendationUseCase
         self.downloadPictureUseCase = downloadPictureUseCase
@@ -71,6 +75,7 @@ final class HomeViewModel: ViewModelable {
         self.getDistanceUseCase = getDistanceUseCase
         self.listenHeartUpdateUseCase = listenHeartUpdateUseCase
         self.updateFCMTokenUseCase = updateFCMTokenUseCase
+        self.heartUpdateUseCase = heartUpdateUseCase
         
         self.distance = getDistanceUseCase.getDistance()
     }
@@ -89,14 +94,14 @@ final class HomeViewModel: ViewModelable {
             .compactMap { $0 }
             .first()
             .sink { value in
-                self.refresh()
+                self.refresh(isInit: true)
             }
             .store(in: &cancellables)
         
         $distance
             .dropFirst()
             .sink { [weak self] value in
-                self?.refresh()
+                self?.refresh(isInit: true)
             }
             .store(in: &cancellables)
     }
@@ -132,7 +137,7 @@ final class HomeViewModel: ViewModelable {
         
         input.didTappedRefreshButton
             .sink { [weak self] _ in
-                self?.refresh()
+                self?.refresh(isInit: false)
             }
             .store(in: &cancellables)
         
@@ -159,18 +164,27 @@ final class HomeViewModel: ViewModelable {
         return Output(
             didRefreshedPreviewList: $matePreviewViewModelList.eraseToAnyPublisher(),
             didUpdatedHeartInfo: $heartInfo.eraseToAnyPublisher(),
-            didStartRefreshing: refreshStartEventPublisher.eraseToAnyPublisher()
+            didStartRefreshing: refreshStartEventPublisher.eraseToAnyPublisher(),
+            lessHeart: lessHeartEventPublisher.eraseToAnyPublisher()
         )
     }
     
     // MARK: Logic
     
-    func refresh() {
-        refreshStartEventPublisher.send(())
+    func refresh(isInit: Bool) {
         
         Task { [weak self] in
             let start = CFAbsoluteTimeGetCurrent()
-
+            do {
+                if !isInit {
+                    try await heartUpdateUseCase.updateHeart(heart: -10)
+                }
+            }
+            catch HeartShopError.lessHeart {
+                self?.lessHeartEventPublisher.send(())
+                return
+            }
+            refreshStartEventPublisher.send(())
             guard let currentLocation = self?.currentLocation  else { return }
             let previewList = try await mateRecommendationUseCase
                 .fetchDistanceFilteredRecommendedMate(from: currentLocation, distance: distance)

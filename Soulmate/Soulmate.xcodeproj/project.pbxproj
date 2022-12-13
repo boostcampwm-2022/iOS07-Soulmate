@@ -118,6 +118,8 @@
 		6A4A00C62948A6CE0016ED58 /* SkeletonAnimationBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A4A00C52948A6CE0016ED58 /* SkeletonAnimationBuilder.swift */; };
 		6A4A00C82948A6E10016ED58 /* SkeletonLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A4A00C72948A6E10016ED58 /* SkeletonLayer.swift */; };
 		6A4A00CA2948AAEF0016ED58 /* PrivacyInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6A4A00C92948AAEF0016ED58 /* PrivacyInfo.plist */; };
+		6A4A00CC2948DF6D0016ED58 /* DefaultDeleteMateRequestUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A4A00CB2948DF6D0016ED58 /* DefaultDeleteMateRequestUseCase.swift */; };
+		6A4A00CE2948E0210016ED58 /* DeleteMateRequestUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A4A00CD2948E0210016ED58 /* DeleteMateRequestUseCase.swift */; };
 		6A5ED83D2941C2D800AD9E82 /* DefaultEnterStateRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5ED83C2941C2D800AD9E82 /* DefaultEnterStateRepository.swift */; };
 		6A5ED83F2941C70B00AD9E82 /* EnterStateRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5ED83E2941C70B00AD9E82 /* EnterStateRepository.swift */; };
 		6A5ED8412941C7A100AD9E82 /* DefaultEnterChatRoomUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5ED8402941C7A100AD9E82 /* DefaultEnterChatRoomUseCase.swift */; };
@@ -374,6 +376,8 @@
 		6A4A00C52948A6CE0016ED58 /* SkeletonAnimationBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkeletonAnimationBuilder.swift; sourceTree = "<group>"; };
 		6A4A00C72948A6E10016ED58 /* SkeletonLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkeletonLayer.swift; sourceTree = "<group>"; };
 		6A4A00C92948AAEF0016ED58 /* PrivacyInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = PrivacyInfo.plist; sourceTree = "<group>"; };
+		6A4A00CB2948DF6D0016ED58 /* DefaultDeleteMateRequestUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultDeleteMateRequestUseCase.swift; sourceTree = "<group>"; };
+		6A4A00CD2948E0210016ED58 /* DeleteMateRequestUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteMateRequestUseCase.swift; sourceTree = "<group>"; };
 		6A5ED83C2941C2D800AD9E82 /* DefaultEnterStateRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultEnterStateRepository.swift; sourceTree = "<group>"; };
 		6A5ED83E2941C70B00AD9E82 /* EnterStateRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterStateRepository.swift; sourceTree = "<group>"; };
 		6A5ED8402941C7A100AD9E82 /* DefaultEnterChatRoomUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultEnterChatRoomUseCase.swift; sourceTree = "<group>"; };
@@ -765,6 +769,7 @@
 				6A4A0081294244520016ED58 /* DefaultListenHeartUpdateUseCase.swift */,
 				6A5ED8742947664800AD9E82 /* DefaultUpdateFCMTokenUseCase.swift */,
 				6A5ED8862948A74400AD9E82 /* DefaultDeleteChatRoomUseCase.swift */,
+				6A4A00CB2948DF6D0016ED58 /* DefaultDeleteMateRequestUseCase.swift */,
 			);
 			path = UseCase;
 			sourceTree = "<group>";
@@ -800,6 +805,7 @@
 				6A5ED85E294478CA00AD9E82 /* FetchMateChatImageKeyUseCase.swift */,
 				6A5ED8722947661E00AD9E82 /* UpdateFCMTokenUseCase.swift */,
 				6A5ED8842948A72200AD9E82 /* DeleteChatRoomUseCase.swift */,
+				6A4A00CD2948E0210016ED58 /* DeleteMateRequestUseCase.swift */,
 			);
 			path = Interface;
 			sourceTree = "<group>";
@@ -1444,6 +1450,7 @@
 				6A5ED8552943358200AD9E82 /* Date+compare.swift in Sources */,
 				6A34C240292FAE8100A3E57F /* PageNavigationView.swift in Sources */,
 				B301025529322FB500481C6C /* HeartShopViewController.swift in Sources */,
+				6A4A00CE2948E0210016ED58 /* DeleteMateRequestUseCase.swift in Sources */,
 				6AB6B977292C3DD500A029BD /* DefaultProfilePhotoRepository.swift in Sources */,
 				07DDDF292924B2D500CB398C /* RegisterHeightView.swift in Sources */,
 				6A5ED8852948A72300AD9E82 /* DeleteChatRoomUseCase.swift in Sources */,
@@ -1572,6 +1579,7 @@
 				6A9452FB29382EEC0041B71D /* ModificationViewModel.swift in Sources */,
 				07F472A02939063B001DA4D0 /* RecommendView.swift in Sources */,
 				6A34C1D3292B202B00A3E57F /* ChattingRoomViewController.swift in Sources */,
+				6A4A00CC2948DF6D0016ED58 /* DefaultDeleteMateRequestUseCase.swift in Sources */,
 				6A25C64A293F333000CDC1BC /* SetDistanceUseCase.swift in Sources */,
 				6AB6B9DC292F23C600A029BD /* UserPreviewDTO.swift in Sources */,
 				6A45AA3D2925701200F85D2C /* UIDatePicker+Publisher.swift in Sources */,

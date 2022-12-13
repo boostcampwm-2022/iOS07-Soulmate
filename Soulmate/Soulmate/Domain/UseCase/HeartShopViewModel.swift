@@ -82,11 +82,11 @@ class HeartShopViewModel: ViewModelable {
         Task {
             switch row {
             case 1:
-                try? await heartUpdateUseCase.chargeHeart(heart: 30)
+                try? await heartUpdateUseCase.updateHeart(heart: 30)
             case 2:
-                try? await heartUpdateUseCase.chargeHeart(heart: 50)
+                try? await heartUpdateUseCase.updateHeart(heart: 50)
             case 3:
-                try? await heartUpdateUseCase.chargeHeart(heart: 100)
+                try? await heartUpdateUseCase.updateHeart(heart: 100)
             default:
                 break
             }

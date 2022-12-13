@@ -27,6 +27,7 @@ final class DetailViewModel: ViewModelable {
         var didFetchedPreview: AnyPublisher<DetailPreviewViewModel?, Never>
         var didFetchedGreeting: AnyPublisher<String?, Never>
         var didFetchedBasicInfo: AnyPublisher<DetailBasicInfoViewModel?, Never>
+        var lessHeart: AnyPublisher<Void, Never>
     }
     
     // MARK: UseCase
@@ -34,6 +35,7 @@ final class DetailViewModel: ViewModelable {
     let downloadPictureUseCase: DownLoadPictureUseCase
     let downloadDetailInfoUseCase: DownLoadDetailInfoUseCase
     let sendMateRequestUseCase: SendMateRequestUseCase
+    let heartUpdateUseCase: HeartUpdateUseCase
     
     // MARK: Properties
     
@@ -45,16 +47,20 @@ final class DetailViewModel: ViewModelable {
     @Published var greetingMessage: String?
     @Published var basicInfo: DetailBasicInfoViewModel?
     
+    var lessHeartEventPublisher = PassthroughSubject<Void, Never>()
+    
     // MARK: Configuration
     
     init(
         downloadPictureUseCase: DownLoadPictureUseCase,
         downloadDetailInfoUseCase: DownLoadDetailInfoUseCase,
-        sendMateRequestUseCase: SendMateRequestUseCase
+        sendMateRequestUseCase: SendMateRequestUseCase,
+        heartUpdateUseCase: HeartUpdateUseCase
     ) {
         self.downloadPictureUseCase = downloadPictureUseCase
         self.downloadDetailInfoUseCase = downloadDetailInfoUseCase
         self.sendMateRequestUseCase = sendMateRequestUseCase
+        self.heartUpdateUseCase = heartUpdateUseCase
     }
     
     func setActions(actions: Action) {
@@ -100,7 +106,8 @@ final class DetailViewModel: ViewModelable {
             didFetchedImageKeyList: $imageKeyList.eraseToAnyPublisher(),
             didFetchedPreview: $detailPreviewViewModel.eraseToAnyPublisher(),
             didFetchedGreeting: $greetingMessage.eraseToAnyPublisher(),
-            didFetchedBasicInfo: $basicInfo.eraseToAnyPublisher()
+            didFetchedBasicInfo: $basicInfo.eraseToAnyPublisher(),
+            lessHeart: lessHeartEventPublisher.eraseToAnyPublisher()
         )
     }
     
@@ -114,8 +121,11 @@ final class DetailViewModel: ViewModelable {
         Task {
             guard let mateId = detailPreviewViewModel?.uid else { return }
             do {
+                try await heartUpdateUseCase.updateHeart(heart: -20)
                 try await self.sendMateRequestUseCase.sendMateRequest(mateId: mateId)
-                
+            }
+            catch HeartShopError.lessHeart {
+                self.lessHeartEventPublisher.send(())
             }
             catch {
                 print("error")
