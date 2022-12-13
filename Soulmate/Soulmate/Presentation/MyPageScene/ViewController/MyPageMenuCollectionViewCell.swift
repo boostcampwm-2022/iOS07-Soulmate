@@ -15,7 +15,7 @@ class MyPageMenuCollectionViewCell: UICollectionViewCell {
     lazy var symbol: UIImageView = {
         let image = UIImage(named: "AppIcon")
         let imageView = UIImageView(image: image)
-        imageView.contentMode = .center
+        imageView.contentMode = .scaleAspectFill
         self.addSubview(imageView)
         return imageView
     }()

@@ -118,7 +118,7 @@ extension MyPageViewController: UICollectionViewDataSource, UICollectionViewDele
         cell.symbol.image = UIImage(named: viewModel?.symbols[indexPath.row] ?? "checkOff")
         cell.title.text = viewModel?.titles[indexPath.row]
         if (4...5).contains(indexPath.row) {
-            cell.title.textColor = .systemRed
+            cell.title.textColor = .messagePurple
         }
         cell.trailingDescription.text = viewModel?.subTexts[indexPath.row]
         return cell

@@ -76,7 +76,7 @@ class DefaultUserPreviewRepository: UserPreviewRepository {
     
     func updatePreview(userUid: String, userPreview: UserPreview) async throws {
         let dto = userPreview.toDTO()
-        try await networkDatabaseApi.update(path: collectionTitle,
+        networkDatabaseApi.update(path: collectionTitle,
                                   documentId: userUid,
                                   with: [
                                     "gender": dto.gender,
