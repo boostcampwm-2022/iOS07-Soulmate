@@ -223,8 +223,8 @@ private extension HomeViewController {
         group.contentInsets = .init(top: 5, leading: 5, bottom: 5, trailing: 5)
         
         let section = NSCollectionLayoutSection(group: group)
-        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 20, trailing: 0)
-        let footerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(114))
+        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
+        let footerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(94))
         let footer = NSCollectionLayoutBoundarySupplementaryItem(
             layoutSize: footerSize,
             elementKind: RecommendFooterView.footerKind,
@@ -331,7 +331,7 @@ private extension HomeViewController {
         }
         
         collectionView.snp.makeConstraints {
-            $0.top.equalTo(logo.snp.bottom).offset(20)
+            $0.top.equalTo(logo.snp.bottom).offset(5)
             $0.bottom.equalToSuperview()
             $0.centerX.equalToSuperview()
             $0.width.equalToSuperview().inset(20)
