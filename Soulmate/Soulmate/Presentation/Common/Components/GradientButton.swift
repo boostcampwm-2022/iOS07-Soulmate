@@ -17,21 +17,7 @@ class GradientButton: UIButton {
         fatalError("init(coder:) has not been implemented")
     }
     
-//    private func configure(title: String) {
-//        var config = UIButton.Configuration.plain()
-//        config.contentInsets = NSDirectionalEdgeInsets(top: 16, leading: 0, bottom: 16, trailing: 0)
-//        let attr: [NSAttributedString.Key : Any] = [
-//            NSAttributedString.Key.foregroundColor: UIColor.white,
-//            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 18, weight: .bold)
-//        ]
-//        let attrString = NSAttributedString(string: title, attributes: attr)
-//        config.attributedTitle = AttributedString(attrString)
-//        config.baseBackgroundColor = UIColor.gray
-//        self.configuration = config
-//        self.layer.cornerRadius = 12
-//        self.layer.cornerCurve = .continuous
-//    }
-    private func configure(title: String) {
+    func configure(title: String) {
         self.setTitle(title, for: .normal)
         self.setTitleColor(.white, for: .normal)
         self.backgroundColor = .gray
@@ -58,7 +44,7 @@ class GradientButton: UIButton {
         }
     }
     
-    private lazy var gradientLayer: CAGradientLayer = {
+    lazy var gradientLayer: CAGradientLayer = {
         let l = CAGradientLayer()
         l.frame = self.bounds
         l.colors = [

@@ -23,7 +23,7 @@ final class RecommendFooterView: UICollectionReusableView {
     private lazy var recommendAgainButton: UIButton = {
         let button = UIButton(frame: .zero)
         guideMode(button)
-        button.layer.cornerRadius = 10
+        button.layer.cornerRadius = 12
         button.layer.cornerCurve = .continuous
         button.backgroundColor = .white
         button.layer.borderColor = UIColor.mainPurple?.cgColor

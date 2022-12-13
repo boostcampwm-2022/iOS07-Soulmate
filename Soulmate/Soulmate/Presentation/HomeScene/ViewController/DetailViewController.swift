@@ -16,6 +16,7 @@ final class DetailViewController: UIViewController {
     
     private let currentImagePageSubject = PassthroughSubject<Int, Never>()
     private let totalImagePageSubject = PassthroughSubject<Int, Never>()
+    private let sendMateRequestSubject = PassthroughSubject<Void, Never>()
     
     enum SectionKind: Int, CaseIterable {
         case photo
@@ -45,7 +46,8 @@ final class DetailViewController: UIViewController {
     }()
     
     private lazy var applyButton: GradientButton = {
-        let button = GradientButton(title: "대화친구 신청하기")
+        let button = HeartConsumeGradientButton(title: "대화친구 신청하기")
+        button.configureButtonHandler(handler: sendMateRequestEvent)
         self.view.addSubview(button)
         return button
     }()
@@ -92,6 +94,13 @@ final class DetailViewController: UIViewController {
     }
 }
 
+// MARK: - Private Functions
+private extension DetailViewController {
+    func sendMateRequestEvent() {
+        sendMateRequestSubject.send(())
+    }
+}
+
 // MARK: - configure
 private extension DetailViewController {
     private func bind() {
@@ -99,7 +108,7 @@ private extension DetailViewController {
         
         let output = viewModel.transform(
             input: DetailViewModel.Input(
-                didTappedMateRegistrationButton: applyButton.tapPublisher()
+                didTappedMateRegistrationButton: sendMateRequestSubject.eraseToAnyPublisher()
             )
         )
         

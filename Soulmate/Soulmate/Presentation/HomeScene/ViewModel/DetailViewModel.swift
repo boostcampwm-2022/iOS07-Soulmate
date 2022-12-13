@@ -92,6 +92,7 @@ final class DetailViewModel: ViewModelable {
         
         input.didTappedMateRegistrationButton
             .sink { [weak self] _ in
+                
                 self?.sendMateRequest()
             }
             .store(in: &cancellables)
