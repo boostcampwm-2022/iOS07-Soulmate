@@ -62,6 +62,7 @@ final class MainTabCoordinator: NSObject, Coordinator {
         self.navigationController = navigationController
         self.tabBarController = UITabBarController()
         tabBarController.tabBar.tintColor = .mainPurple
+        tabBarController.tabBar.unselectedItemTintColor = .symbolGrey
     }
     
     func start() {        

@@ -12,15 +12,18 @@ final class DefaultSendMateRequestUseCase: SendMateRequestUseCase {
     private let mateRequestRepository: MateRequestRepository
     private let userPreviewRepository: UserPreviewRepository
     private let authRepository: AuthRepository
+    private let fcmRepository: FCMRepository
     
     init(
         mateRequestRepository: MateRequestRepository,
         userPreviewRepository: UserPreviewRepository,
-        authRepository: AuthRepository
+        authRepository: AuthRepository,
+        fcmRepository: FCMRepository
     ) {
         self.mateRequestRepository = mateRequestRepository
         self.authRepository = authRepository
         self.userPreviewRepository = userPreviewRepository
+        self.fcmRepository = fcmRepository
     }
  
     func sendMateRequest(mateId: String) async throws {
@@ -38,7 +41,12 @@ final class DefaultSendMateRequestUseCase: SendMateRequestUseCase {
             receivedUserId: mateId
         )
         
-        try await mateRequestRepository.sendMateRequest(request: sendMateRequest)
+        do {
+            try await mateRequestRepository.sendMateRequest(request: sendMateRequest)
+            await fcmRepository.sendMateRequestFCM(to: mateId, name: name)
+        } catch {
+            print("대화요청 실패")
+        }
     }
 }
 

@@ -58,6 +58,7 @@ final class HomeViewController: UIViewController {
         collection.bounces = true
         collection.isPagingEnabled = false
         collection.backgroundColor = .clear
+        collection.delaysContentTouches = false
         self.view.addSubview(collection)
         return collection
     }()
@@ -180,9 +181,7 @@ private extension HomeViewController {
         let footerViewRegistration = UICollectionView.SupplementaryRegistration
         <RecommendFooterView>(elementKind: RecommendFooterView.footerKind) { [weak self] supplementaryView, string, indexPath in
             supplementaryView.configureButtonHandler {
-                self?.showPopUp(title: "다시한번 추천받기", message: "하트❤️ 10개가 소비되어요~", rightActionCompletion: {
-                    self?.refreshButtonTapSubject.send(())
-                })
+                self?.refreshButtonTapSubject.send(())
             }
         }
         
@@ -221,8 +220,8 @@ private extension HomeViewController {
         group.contentInsets = .init(top: 5, leading: 5, bottom: 5, trailing: 5)
         
         let section = NSCollectionLayoutSection(group: group)
-        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 20, trailing: 0)
-        let footerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(54))
+        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
+        let footerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(114))
         let footer = NSCollectionLayoutBoundarySupplementaryItem(
             layoutSize: footerSize,
             elementKind: RecommendFooterView.footerKind,
@@ -275,6 +274,7 @@ private extension HomeViewController {
     }
     
     func configureLayout() {
+        
         logo.snp.makeConstraints {
             $0.left.equalToSuperview().offset(20)
             $0.top.equalTo(view.snp.top).offset(64)
@@ -289,7 +289,7 @@ private extension HomeViewController {
         }
         
         collectionView.snp.makeConstraints {
-            $0.top.equalTo(logo.snp.bottom).offset(20)
+            $0.top.equalTo(logo.snp.bottom).offset(5)
             $0.bottom.equalToSuperview()
             $0.centerX.equalToSuperview()
             $0.width.equalToSuperview().inset(20)

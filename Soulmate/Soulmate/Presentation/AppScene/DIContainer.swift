@@ -372,7 +372,8 @@ extension DIContainer {
             return DefaultSendMateRequestUseCase(
                 mateRequestRepository: r.resolve(MateRequestRepository.self)!,
                 userPreviewRepository: r.resolve(UserPreviewRepository.self)!,
-                authRepository: r.resolve(AuthRepository.self)!
+                authRepository: r.resolve(AuthRepository.self)!,
+                fcmRepository: r.resolve(FCMRepository.self)!
             )
         }
         .inObjectScope(.container)

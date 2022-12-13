@@ -68,6 +68,10 @@ final class ChatRoomListViewController: UIViewController {
         
         navigationController?.setNavigationBarHidden(true, animated: false)
     }
+    
+    func editModeToggle() {
+        chattingListView.setEditing(!chattingListView.isEditing, animated: true)
+    }
 }
 
 private extension ChatRoomListViewController {
@@ -140,5 +144,11 @@ extension ChatRoomListViewController: UITableViewDelegate, UITableViewDataSource
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         rowSelectSubject.send(indexPath.row)
         tableView.deselectRow(at: indexPath, animated: false)
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            
+        }
     }
 }

@@ -11,17 +11,22 @@ import SnapKit
 
 final class RecommendFooterView: UICollectionReusableView {
     
+    enum ButtonState {
+        case guide
+        case heart
+    }
+    
     static var footerKind = "Recommend-Footer-View"
+    
+    private var state: ButtonState = .guide
     
     private lazy var recommendAgainButton: UIButton = {
         let button = UIButton(frame: .zero)
-        button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 18)
-        button.setTitle("한번 더 추천받기", for: .normal)
-        button.setTitleColor(.messagePurple, for: .normal)
+        guideMode(button)
         button.layer.cornerRadius = 10
+        button.layer.cornerCurve = .continuous
         button.backgroundColor = .white
-        button.layer.borderWidth = 2
-        button.layer.borderColor = UIColor.borderPurple?.cgColor
+        button.layer.borderColor = UIColor.mainPurple?.cgColor
         addSubview(button)
         button.addTarget(self, action: #selector(didTouchedButtonUp), for: .touchUpInside)
         button.addTarget(self, action: #selector(didTouchedButtonDown), for: .touchDown)
@@ -49,7 +54,8 @@ final class RecommendFooterView: UICollectionReusableView {
     
     func configureLayout() {
         recommendAgainButton.snp.makeConstraints {
-            $0.centerX.centerY.equalToSuperview()
+            $0.centerX.equalToSuperview()
+            $0.top.equalToSuperview().offset(20)
             $0.leading.trailing.equalToSuperview()
             $0.height.equalTo(54)
         }
@@ -60,7 +66,13 @@ final class RecommendFooterView: UICollectionReusableView {
     }
     
     @objc func didTouchedButtonUp() {
-        buttonTappedHandler?()
+        
+        if state == .heart {
+            buttonTappedHandler?()
+        }
+        
+        toggleState()
+        
         UIView.animate(withDuration: 0,
                        delay: 0,
                        options: .curveEaseOut,
@@ -79,5 +91,58 @@ final class RecommendFooterView: UICollectionReusableView {
             self.alpha = 0.97
         })
     }
+}
 
+private extension RecommendFooterView {
+    func toggleState() {
+        if state == .guide {
+            heartMode(recommendAgainButton)
+            state = .heart
+        } else {
+            guideMode(recommendAgainButton)
+            state = .guide
+        }
+    }
+    
+    func guideMode(_ button: UIButton) {
+        
+        var config = UIButton.Configuration.plain()
+        let text = "한번 더 추천받기"
+        let nsStr = NSMutableAttributedString(string: text)
+        let attrs: [NSAttributedString.Key: Any] = [
+            .font: UIFont(name: "AppleSDGothicNeo-Bold", size: 18) ?? UIFont.systemFont(ofSize: 18),
+            .foregroundColor: UIColor.mainPurple ?? .black
+        ]
+        nsStr.addAttributes(
+            attrs
+            , range: (text as NSString).range(of: text))
+        config.attributedTitle = AttributedString(nsStr)
+        
+        button.configuration = config
+        
+        button.layer.borderWidth = 2.5
+        button.layer.borderColor = UIColor.mainPurple?.cgColor
+    }
+    
+    func heartMode(_ button: UIButton) {
+        
+        var config = UIButton.Configuration.plain()
+        let text = "-10"
+        let nsStr = NSMutableAttributedString(string: text)
+        let attrs: [NSAttributedString.Key: Any] = [
+            .font: UIFont.systemFont(ofSize: 20, weight: .bold),
+            .foregroundColor: UIColor.labelDarkGrey ?? .black
+        ]
+        nsStr.addAttributes(
+            attrs
+            , range: (text as NSString).range(of: text))
+        config.attributedTitle = AttributedString(nsStr)
+        config.image = UIImage(named: "heart")?.withRenderingMode(.alwaysOriginal)
+        config.imagePadding = 10
+        
+        button.configuration = config
+        
+        button.layer.borderWidth = 3
+        button.layer.borderColor = UIColor.labelDarkGrey?.cgColor
+    }
 }
