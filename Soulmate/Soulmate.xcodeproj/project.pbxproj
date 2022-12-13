@@ -112,6 +112,11 @@
 		6A4A0080294201FC0016ED58 /* DefaultSendMateRequestUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A4A007F294201FC0016ED58 /* DefaultSendMateRequestUseCase.swift */; };
 		6A4A0082294244520016ED58 /* DefaultListenHeartUpdateUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A4A0081294244520016ED58 /* DefaultListenHeartUpdateUseCase.swift */; };
 		6A4A008429465E310016ED58 /* RegisterImageItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A4A008329465E310016ED58 /* RegisterImageItemViewModel.swift */; };
+		6A4A00C02948A66D0016ED58 /* AnimationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A4A00BF2948A66D0016ED58 /* AnimationType.swift */; };
+		6A4A00C22948A6970016ED58 /* Skeleton+CALayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A4A00C12948A6970016ED58 /* Skeleton+CALayer.swift */; };
+		6A4A00C42948A6B40016ED58 /* Skeleton+UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A4A00C32948A6B40016ED58 /* Skeleton+UIView.swift */; };
+		6A4A00C62948A6CE0016ED58 /* SkeletonAnimationBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A4A00C52948A6CE0016ED58 /* SkeletonAnimationBuilder.swift */; };
+		6A4A00C82948A6E10016ED58 /* SkeletonLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A4A00C72948A6E10016ED58 /* SkeletonLayer.swift */; };
 		6A5ED83D2941C2D800AD9E82 /* DefaultEnterStateRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5ED83C2941C2D800AD9E82 /* DefaultEnterStateRepository.swift */; };
 		6A5ED83F2941C70B00AD9E82 /* EnterStateRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5ED83E2941C70B00AD9E82 /* EnterStateRepository.swift */; };
 		6A5ED8412941C7A100AD9E82 /* DefaultEnterChatRoomUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5ED8402941C7A100AD9E82 /* DefaultEnterChatRoomUseCase.swift */; };
@@ -361,6 +366,11 @@
 		6A4A007F294201FC0016ED58 /* DefaultSendMateRequestUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultSendMateRequestUseCase.swift; sourceTree = "<group>"; };
 		6A4A0081294244520016ED58 /* DefaultListenHeartUpdateUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultListenHeartUpdateUseCase.swift; sourceTree = "<group>"; };
 		6A4A008329465E310016ED58 /* RegisterImageItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterImageItemViewModel.swift; sourceTree = "<group>"; };
+		6A4A00BF2948A66D0016ED58 /* AnimationType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationType.swift; sourceTree = "<group>"; };
+		6A4A00C12948A6970016ED58 /* Skeleton+CALayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Skeleton+CALayer.swift"; sourceTree = "<group>"; };
+		6A4A00C32948A6B40016ED58 /* Skeleton+UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Skeleton+UIView.swift"; sourceTree = "<group>"; };
+		6A4A00C52948A6CE0016ED58 /* SkeletonAnimationBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkeletonAnimationBuilder.swift; sourceTree = "<group>"; };
+		6A4A00C72948A6E10016ED58 /* SkeletonLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkeletonLayer.swift; sourceTree = "<group>"; };
 		6A5ED83C2941C2D800AD9E82 /* DefaultEnterStateRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultEnterStateRepository.swift; sourceTree = "<group>"; };
 		6A5ED83E2941C70B00AD9E82 /* EnterStateRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterStateRepository.swift; sourceTree = "<group>"; };
 		6A5ED8402941C7A100AD9E82 /* DefaultEnterChatRoomUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultEnterChatRoomUseCase.swift; sourceTree = "<group>"; };
@@ -912,6 +922,18 @@
 			path = Coordinator;
 			sourceTree = "<group>";
 		};
+		6A4A00BE2948A6510016ED58 /* SkeletonView */ = {
+			isa = PBXGroup;
+			children = (
+				6A4A00BF2948A66D0016ED58 /* AnimationType.swift */,
+				6A4A00C12948A6970016ED58 /* Skeleton+CALayer.swift */,
+				6A4A00C32948A6B40016ED58 /* Skeleton+UIView.swift */,
+				6A4A00C52948A6CE0016ED58 /* SkeletonAnimationBuilder.swift */,
+				6A4A00C72948A6E10016ED58 /* SkeletonLayer.swift */,
+			);
+			path = SkeletonView;
+			sourceTree = "<group>";
+		};
 		6A5ED8642946FE9700AD9E82 /* URLSessionAPI */ = {
 			isa = PBXGroup;
 			children = (
@@ -1005,6 +1027,7 @@
 		6A97FE61291CE0A4006F6DD9 /* Util */ = {
 			isa = PBXGroup;
 			children = (
+				6A4A00BE2948A6510016ED58 /* SkeletonView */,
 				6A5ED871294764EB00AD9E82 /* Constant */,
 				6A444531291EA22D009AE2E5 /* Extension */,
 			);
@@ -1339,6 +1362,7 @@
 				6AB6B95F292BDE7A00A029BD /* FireStoreNetworkDatabaseApi.swift in Sources */,
 				6AB6B9E2292F2DB900A029BD /* UpLoadPreviewUseCase.swift in Sources */,
 				6AB6B970292C2C7500A029BD /* DefaultUpLoadPictureUseCase.swift in Sources */,
+				6A4A00C42948A6B40016ED58 /* Skeleton+UIView.swift in Sources */,
 				B3E029A9291DDC1500931FA2 /* GradientButton.swift in Sources */,
 				6A5ED916293EEE5700A284F7 /* DefaultChattingRepository.swift in Sources */,
 				6ADEE4EC29221CD900AD328B /* UITextField+Publisher.swift in Sources */,
@@ -1406,6 +1430,7 @@
 				6AB6B9DE292F259500A029BD /* UserPreview.swift in Sources */,
 				6A444533291EA23F009AE2E5 /* UIColor.swift in Sources */,
 				B311F4AA2925EC7100806E86 /* RegisterMbtiView.swift in Sources */,
+				6A4A00C02948A66D0016ED58 /* AnimationType.swift in Sources */,
 				6A5ED83D2941C2D800AD9E82 /* DefaultEnterStateRepository.swift in Sources */,
 				6A34C27D2935E5E600A3E57F /* FetchImageUseCase.swift in Sources */,
 				6A34C1E0292B220500A3E57F /* PaddingLabel.swift in Sources */,
@@ -1447,6 +1472,7 @@
 				6A9452F12935EFDF0041B71D /* ModificationInfoCell.swift in Sources */,
 				6A34C213292DD39000A3E57F /* ChatCoordinator.swift in Sources */,
 				6A5ED8662946FF6600AD9E82 /* URLSessionAPI.swift in Sources */,
+				6A4A00C22948A6970016ED58 /* Skeleton+CALayer.swift in Sources */,
 				6A34C234292F29F800A3E57F /* ReceivedChatRequestCell.swift in Sources */,
 				6A34C2792935D4F900A3E57F /* DefaultImageKeyUseCase.swift in Sources */,
 				6A5ED883294840E300AD9E82 /* FCMNotification.swift in Sources */,
@@ -1474,6 +1500,7 @@
 				6A3F91A72924A45300F1D901 /* RegisterSelectableView.swift in Sources */,
 				B341245A294220D100580F45 /* DefaultUserHeartInfoRepository.swift in Sources */,
 				6A5ED87B29477EC000AD9E82 /* UserTokenDTO.swift in Sources */,
+				6A4A00C62948A6CE0016ED58 /* SkeletonAnimationBuilder.swift in Sources */,
 				6A34C27129346F2700A3E57F /* LoadPrevChattingsUseCase.swift in Sources */,
 				6A34C238292F392100A3E57F /* LoadReceivedChatRequestsUseCase.swift in Sources */,
 				6A34C1FF292C944D00A3E57F /* ChatRoomInfoCell.swift in Sources */,
@@ -1546,6 +1573,7 @@
 				074F3B0B292261EA00D36C89 /* PartnerCell.swift in Sources */,
 				6A5ED8452941C8FE00AD9E82 /* DefaultListenOthersEnterStateUseCase.swift in Sources */,
 				6A5ED86C2947134200AD9E82 /* DefaultFCMRepository.swift in Sources */,
+				6A4A00C82948A6E10016ED58 /* SkeletonLayer.swift in Sources */,
 				6A45AA5F292794B500F85D2C /* ReigsterViewController.swift in Sources */,
 				6A9452CB29349EB40041B71D /* ImageCacheRepository.swift in Sources */,
 				6A5ED8432941C8BE00AD9E82 /* EnterChatRoomUseCase.swift in Sources */,
