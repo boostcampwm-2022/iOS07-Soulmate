@@ -162,7 +162,7 @@ final class MyPageView: UIView {
         collectionView.snp.makeConstraints {
             $0.top.equalTo(remainingHeartButton.snp.bottom).offset(32)
             $0.leading.trailing.equalToSuperview()
-            $0.height.equalTo(300)
+            $0.bottom.equalToSuperview()
         }
     }
     

@@ -9,7 +9,7 @@ import UIKit
 
 class PhoneLoginCoordinator: Coordinator {
     
-    var finishDelegate: CoordinatorFinishDelegate?
+    weak var finishDelegate: CoordinatorFinishDelegate?
     
     var navigationController: UINavigationController
     

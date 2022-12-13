@@ -107,7 +107,7 @@ private extension MyPageViewController {
 extension MyPageViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 4
+        return 5
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -117,6 +117,9 @@ extension MyPageViewController: UICollectionViewDataSource, UICollectionViewDele
     
         cell.symbol.image = UIImage(named: viewModel?.symbols[indexPath.row] ?? "checkOff")
         cell.title.text = viewModel?.titles[indexPath.row]
+        if (4...5).contains(indexPath.row) {
+            cell.title.textColor = .messagePurple
+        }
         cell.trailingDescription.text = viewModel?.subTexts[indexPath.row]
         return cell
     }
@@ -133,6 +136,12 @@ extension MyPageViewController: UICollectionViewDataSource, UICollectionViewDele
             rowSelectSubject.send(1)
         case 2:
             rowSelectSubject.send(2)
+        case 4:
+            showPopUp(title: "로그아웃",
+                      message: "로그아웃 하시겠습니까?",
+                      rightActionCompletion: { [weak self] in
+                self?.rowSelectSubject.send(4)
+            })
         default:
             break
         }

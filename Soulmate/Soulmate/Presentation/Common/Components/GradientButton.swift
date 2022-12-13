@@ -38,6 +38,8 @@ class GradientButton: UIButton {
         self.layer.cornerRadius = 12
         self.layer.cornerCurve = .continuous
         self.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .bold)
+        self.addTarget(self, action: #selector(didTouchedButtonUp), for: .touchUpInside)
+        self.addTarget(self, action: #selector(didTouchedButtonDown), for: .touchDown)
     }
     
     convenience init(title: String) {
@@ -70,4 +72,23 @@ class GradientButton: UIButton {
         return l
     }()
     
+    @objc func didTouchedButtonUp() {
+        UIView.animate(withDuration: 0,
+                       delay: 0,
+                       options: .curveEaseOut,
+                       animations: {
+            self.transform = .identity
+            self.alpha = 1
+        })
+    }
+    
+    @objc func didTouchedButtonDown() {
+        UIView.animate(withDuration: 0,
+                       delay: 0,
+                       options: .curveEaseOut,
+                       animations: {
+            self.transform = .init(scaleX: 0.97, y: 0.97)
+            self.alpha = 0.97
+        })
+    }
 }

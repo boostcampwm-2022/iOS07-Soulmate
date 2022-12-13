@@ -484,7 +484,8 @@ extension DIContainer {
             return MyPageViewModel(
                 downLoadPreviewUseCase: r.resolve(DownLoadMyPreviewUseCase.self)!,
                 downLoadPictureUseCase: r.resolve(DownLoadPictureUseCase.self)!,
-                listenHeartUpdateUseCase: r.resolve(ListenHeartUpdateUseCase.self)!
+                listenHeartUpdateUseCase: r.resolve(ListenHeartUpdateUseCase.self)!,
+                signOutUseCase: r.resolve(SignOutUseCase.self)!
             )
         }
         .inObjectScope(.graph)
