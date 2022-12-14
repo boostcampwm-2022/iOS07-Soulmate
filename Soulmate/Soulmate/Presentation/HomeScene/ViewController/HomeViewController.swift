@@ -260,10 +260,10 @@ private extension HomeViewController {
         }
 
         numOfHeartButton.snp.makeConstraints {
-            $0.right.equalToSuperview().offset(-20)
+            $0.right.equalToSuperview().inset(10)
             $0.centerY.equalTo(logo.snp.centerY)
             $0.height.equalTo(28)
-            $0.width.equalTo(50)
+            $0.width.equalTo(100)
         }
         
         collectionView.snp.makeConstraints {

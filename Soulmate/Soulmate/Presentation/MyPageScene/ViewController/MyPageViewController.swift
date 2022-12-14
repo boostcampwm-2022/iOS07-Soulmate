@@ -107,7 +107,7 @@ private extension MyPageViewController {
 extension MyPageViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 5
+        return 6
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -141,6 +141,12 @@ extension MyPageViewController: UICollectionViewDataSource, UICollectionViewDele
                       message: "로그아웃 하시겠습니까?",
                       rightActionCompletion: { [weak self] in
                 self?.rowSelectSubject.send(4)
+            })
+        case 5:
+            showPopUp(title: "회원탈퇴",
+                      message: "정말로 회원탈퇴하시겠습니까?",
+                      rightActionCompletion: { [weak self] in
+                self?.rowSelectSubject.send(5)
             })
         default:
             break

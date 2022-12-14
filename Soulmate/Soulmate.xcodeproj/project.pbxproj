@@ -137,7 +137,6 @@
 		6A5ED870294764D800AD9E82 /* UserDefaultKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5ED86F294764D800AD9E82 /* UserDefaultKey.swift */; };
 		6A5ED8732947661E00AD9E82 /* UpdateFCMTokenUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5ED8722947661E00AD9E82 /* UpdateFCMTokenUseCase.swift */; };
 		6A5ED8752947664800AD9E82 /* DefaultUpdateFCMTokenUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5ED8742947664800AD9E82 /* DefaultUpdateFCMTokenUseCase.swift */; };
-		6A5ED87729476D5100AD9E82 /* PrivacyInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6A5ED87629476D5100AD9E82 /* PrivacyInfo.plist */; };
 		6A5ED87929476DD300AD9E82 /* Bundle+serverKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5ED87829476DD300AD9E82 /* Bundle+serverKey.swift */; };
 		6A5ED87B29477EC000AD9E82 /* UserTokenDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5ED87A29477EC000AD9E82 /* UserTokenDTO.swift */; };
 		6A5ED916293EEE5700A284F7 /* DefaultChattingRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5ED915293EEE5600A284F7 /* DefaultChattingRepository.swift */; };
@@ -384,7 +383,6 @@
 		6A5ED86F294764D800AD9E82 /* UserDefaultKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultKey.swift; sourceTree = "<group>"; };
 		6A5ED8722947661E00AD9E82 /* UpdateFCMTokenUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateFCMTokenUseCase.swift; sourceTree = "<group>"; };
 		6A5ED8742947664800AD9E82 /* DefaultUpdateFCMTokenUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultUpdateFCMTokenUseCase.swift; sourceTree = "<group>"; };
-		6A5ED87629476D5100AD9E82 /* PrivacyInfo.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = PrivacyInfo.plist; sourceTree = "<group>"; };
 		6A5ED87829476DD300AD9E82 /* Bundle+serverKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+serverKey.swift"; sourceTree = "<group>"; };
 		6A5ED87A29477EC000AD9E82 /* UserTokenDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserTokenDTO.swift; sourceTree = "<group>"; };
 		6A5ED915293EEE5600A284F7 /* DefaultChattingRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultChattingRepository.swift; sourceTree = "<group>"; };
@@ -959,7 +957,6 @@
 				6A8C889A2919031D009EDBBB /* LaunchScreen.storyboard */,
 				6A8C889D2919031D009EDBBB /* Info.plist */,
 				6A8B0723292330D100492123 /* GoogleService-Info.plist */,
-				6A5ED87629476D5100AD9E82 /* PrivacyInfo.plist */,
 				B31A68262919F5D2001D35E9 /* .swiftlint.yml */,
 			);
 			path = Soulmate;
@@ -1285,7 +1282,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6A5ED87729476D5100AD9E82 /* PrivacyInfo.plist in Resources */,
 				B31A68272919F5D2001D35E9 /* .swiftlint.yml in Resources */,
 				6A8C889C2919031D009EDBBB /* LaunchScreen.storyboard in Resources */,
 				6A34C1E6292B260F00A3E57F /* ComposeBar.xib in Resources */,

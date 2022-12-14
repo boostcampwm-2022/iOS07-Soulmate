@@ -105,10 +105,24 @@ private extension ChatRoomListViewController {
 
 extension ChatRoomListViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        if viewModel?.chattingList.count == 0 {
+            return 1
+        }
+        
         return viewModel?.chattingList.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        if viewModel?.chattingList.count == 0 {
+            let cell = UITableViewCell()
+            var content = cell.defaultContentConfiguration()
+            content.text = "현재 채팅 중인 상대가 없어요 😞"
+            content.textProperties.alignment = .center
+            cell.contentConfiguration = content
+            return cell
+        }
         
         guard let info = viewModel?.chattingList[indexPath.row],
               let uid = viewModel?.userUid() else {
@@ -140,5 +154,13 @@ extension ChatRoomListViewController: UITableViewDelegate, UITableViewDataSource
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         rowSelectSubject.send(indexPath.row)
         tableView.deselectRow(at: indexPath, animated: false)
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if viewModel?.chattingList.count == 0 {
+            return UIScreen.main.bounds.size.height - 200
+        } else {
+            return 90
+        }
     }
 }
