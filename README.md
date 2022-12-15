@@ -16,3 +16,11 @@ S012_김종헌 | S039_이상민 | S048_장승태 | S058_한종우
 [프로젝트 소개](https://www.notion.so/boostcamp-wm/iOS07-Soulmate-51dd58f741e74bb080646869d2386908)
 
 [Wiki](https://github.com/boostcampwm-2022/iOS07-Soulmate/wiki)
+
+## 시연 영상
+
+[![시연 영상](http://img.youtube.com/vi/L6gdEtzyeEM/0.jpg)](https://youtu.be/L6gdEtzyeEM)
+
+## 기술발표 영상
+
+[![기술발표 영상](http://img.youtube.com/vi/87pnNuv8rSE/0.jpg)](https://youtu.be/87pnNuv8rSE)
