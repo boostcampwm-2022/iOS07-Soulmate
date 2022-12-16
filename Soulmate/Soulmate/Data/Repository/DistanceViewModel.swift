@@ -57,15 +57,15 @@ class DistanceViewModel: ViewModelable {
         input.didChangedSliderValue
             .map { value -> Double in
                 switch value {
-                case 0:
+                case 0..<0.47:
                     return 5
-                case 1:
+                case 0.47..<1.47:
                     return 10
-                case 2:
+                case 1.47..<2.47:
                     return 20
-                case 3:
+                case 2.47..<3.47:
                     return 50
-                case 4:
+                case 3.47...4:
                     return 1000
                 default:
                     fatalError()

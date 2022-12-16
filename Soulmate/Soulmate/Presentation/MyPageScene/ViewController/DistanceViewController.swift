@@ -8,9 +8,10 @@
 import UIKit
 import Combine
 
+import SnapKit
+
 class DistanceViewController: UIViewController {
     var bag = Set<AnyCancellable>()
-    
     var viewModel: DistanceViewModel?
     
     lazy var registerHeaderStackView: RegisterHeaderStackView = {
@@ -23,11 +24,13 @@ class DistanceViewController: UIViewController {
         return headerView
     }()
     
-    private lazy var slider: UISlider = {
-        let slider = UISlider(frame: .zero)
+    private lazy var customSlider: CustomSlider = {
+        let slider = CustomSlider(frame: .zero)
         slider.minimumValue = 0
         slider.maximumValue = 4
         slider.tintColor = .mainPurple
+        slider.minimumTrackTintColor = .borderPurple
+        slider.isContinuous = false
         self.view.addSubview(slider)
         return slider
     }()
@@ -58,18 +61,23 @@ class DistanceViewController: UIViewController {
         
         bind()
     }
-    
+
+    override func viewDidLayoutSubviews() {
+        configureSlider()
+    }
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
         viewModel?.finishDistanceSetting()
     }
     
-    @objc func sliderValueDidChange(sender: UISlider) {
-        let step: Float = 1
-        let roundedValue = round(sender.value / step) * step
-        sender.value = roundedValue
-    }
+//    @objc func sliderValueDidChange(sender: UISlider) {
+////        let step: Float = 1
+////        let roundedValue = round(sender.value / step) * step
+////        sender.value = roundedValue
+//        print(sender.value)
+//    }
 }
 
 // MARK: Configure View Controller
@@ -78,7 +86,7 @@ private extension DistanceViewController {
     func bind() {
         guard let viewModel = viewModel else { return }
         
-        let sliderPublisher = slider
+        let sliderPublisher = customSlider
             .valuePublisher()
             .removeDuplicates()
             .eraseToAnyPublisher()
@@ -95,15 +103,15 @@ private extension DistanceViewController {
                 self?.distanceMessageLabel.text = "\(Int(value))km 내의 메이트만 탐색할게요!"
                 switch value {
                 case 5:
-                    self?.slider.value = 0
+                    self?.customSlider.value = 0
                 case 10:
-                    self?.slider.value = 1
+                    self?.customSlider.value = 1
                 case 20:
-                    self?.slider.value = 2
+                    self?.customSlider.value = 2
                 case 50:
-                    self?.slider.value = 3
+                    self?.customSlider.value = 3
                 case 1000:
-                    self?.slider.value = 4
+                    self?.customSlider.value = 4
                 default:
                     fatalError()
                 }
@@ -113,8 +121,7 @@ private extension DistanceViewController {
     
     func configureView() {
         self.view.backgroundColor = .systemBackground
-        slider.addTarget(self, action:#selector(sliderValueDidChange(sender:)), for: .valueChanged)
-
+//        customSlider.addTarget(self, action:#selector(sliderValueDidChange(sender:)), for: .valueChanged)
     }
     
     func configureLayout() {
@@ -124,7 +131,7 @@ private extension DistanceViewController {
             $0.trailing.equalTo(self.view.safeAreaLayoutGuide.snp.trailing).offset(-20)
         }
         
-        slider.snp.makeConstraints {
+        customSlider.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview().inset(40)
             //$0.top.equalTo(registerHeaderStackView.snp.bottom).offset(30)
             $0.centerY.equalToSuperview().offset(-20)
@@ -135,6 +142,21 @@ private extension DistanceViewController {
             $0.centerX.equalToSuperview()
             $0.centerY.equalToSuperview().offset(20)
 
+        }
+    }
+    
+    func configureSlider() {
+        let thumb = customSlider.thumbImage(radius: 30)
+        customSlider.setThumbImage(thumb, for: .normal)
+        var views = [UIView(), UIView(), UIView(), UIView()]
+        for i in 1..<views.count {
+            views[i] = UIView(frame: CGRect(x: 11 + ((customSlider.frame.size.width - 24) / 4) * CGFloat(i),
+                                            y: (customSlider.frame.size.height) / 3,
+                                            width: 2,
+                                            height: 12))
+            views[i].backgroundColor = .white
+            views[i].isUserInteractionEnabled = false
+            customSlider.insertSubview(views[i], belowSubview: customSlider)
         }
     }
 }
