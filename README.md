@@ -9,10 +9,19 @@ S012_김종헌 | S039_이상민 | S048_장승태 | S058_한종우
 ![Image](https://user-images.githubusercontent.com/69361087/205692643-26e58fcd-4f55-4f0a-a747-178aeebf69e0.png)
 
 
-원하는 이성을 소개해주는 거리기반 소개팅 어플리케이션 입니다. 😘
+`원하는 이성을 소개해주는 거리기반 소개팅 어플리케이션 입니다. 😘`
 
 
 ## For More Information
-[프로젝트 소개](https://www.notion.so/boostcamp-wm/iOS07-Soulmate-51dd58f741e74bb080646869d2386908)
 
-[Wiki](https://github.com/boostcampwm-2022/iOS07-Soulmate/wiki)
+### [프로젝트 소개](https://www.notion.so/boostcamp-wm/iOS07-Soulmate-51dd58f741e74bb080646869d2386908)
+
+### [Wiki](https://github.com/boostcampwm-2022/iOS07-Soulmate/wiki)
+
+## 시연 영상
+
+[![시연 영상](http://img.youtube.com/vi/L6gdEtzyeEM/0.jpg)](https://youtu.be/L6gdEtzyeEM)
+
+## 기술발표 영상
+
+[![기술발표 영상](http://img.youtube.com/vi/87pnNuv8rSE/0.jpg)](https://youtu.be/87pnNuv8rSE)
