@@ -17,8 +17,6 @@ final class PartnerCell: UICollectionViewCell {
         view.layer.cornerCurve = .continuous
         view.clipsToBounds = true
         addSubview(view)
-        view.isRecursiveSkeletonable = true
-        view.isSkeletonAnimatable = false
         return view
     }()
     
@@ -31,8 +29,6 @@ final class PartnerCell: UICollectionViewCell {
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
         partnerView.addSubview(imageView)
-        imageView.isRecursiveSkeletonable = true
-        imageView.isSkeletonAnimatable = false
 
         return imageView
     }()
@@ -43,8 +39,6 @@ final class PartnerCell: UICollectionViewCell {
         view.layer.cornerRadius = 14
         view.layer.addSublayer(gradientLayer)
         partnerView.addSubview(view)
-        view.isRecursiveSkeletonable = true
-        view.isSkeletonAnimatable = false
 
         return view
     }()
@@ -68,8 +62,6 @@ final class PartnerCell: UICollectionViewCell {
         let label = UILabel()
         label.textColor = UIColor.white
         label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 22)
-        label.isRecursiveSkeletonable = true
-        label.isSkeletonAnimatable = false
         
         return label
     }()
@@ -78,8 +70,6 @@ final class PartnerCell: UICollectionViewCell {
         let label = UILabel()
         label.textColor = UIColor.white
         label.font = UIFont(name: "AppleSDGothicNeo-Light", size: 22)
-        label.isRecursiveSkeletonable = true
-        label.isSkeletonAnimatable = false
 
         return label
     }()
@@ -96,8 +86,6 @@ final class PartnerCell: UICollectionViewCell {
         let label = UILabel()
         label.textColor = UIColor.white
         label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 15)
-        label.isRecursiveSkeletonable = true
-        label.isSkeletonAnimatable = false
 
         return label
     }()
@@ -106,16 +94,12 @@ final class PartnerCell: UICollectionViewCell {
         let label = UILabel()
         label.textColor = UIColor.white
         label.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 15)
-        label.isRecursiveSkeletonable = true
-        label.isSkeletonAnimatable = false
         return label
     }()
  
     override init(frame: CGRect) {
         super.init(frame: frame)
         configureLayout()
-        self.isRecursiveSkeletonable = true
-        self.isSkeletonAnimatable = false
     }
     
     required init?(coder: NSCoder) {
@@ -137,11 +121,9 @@ final class PartnerCell: UICollectionViewCell {
         super.layoutSublayers(of: layer)
         gradientLayer.frame = partnerSubview.bounds
         
-        if isRecursiveSkeletonable {
-            skeletonLayoutSubviews()
-        }
+        
     }
-    
+
     func activateSkeleton() {
         self.showSkeleton()
     }
@@ -187,7 +169,7 @@ private extension PartnerCell {
     }
     
     func configureUpperLabelStackViewLayout() {
-        let upperLabelStackView = UIStackView(frame: .zero)
+        let upperLabelStackView = SkeletonableStackView(animation: .gradient)
         upperLabelStackView.axis = .horizontal
         upperLabelStackView.alignment = .leading
         upperLabelStackView.distribution = .equalSpacing
@@ -203,14 +185,12 @@ private extension PartnerCell {
             $0.bottom.equalToSuperview().inset(50)
             $0.width.lessThanOrEqualTo(300)
         }
-        
-        upperLabelStackView.isRecursiveSkeletonable = true
-        upperLabelStackView.isSkeletonAnimatable = true
-        upperLabelStackView.skeletonAnimationType = .gradient
+
     }
     
     func configureLowerLabelStackViewLayout() {
-        let lowerLabelStackView = UIStackView(frame: .zero)
+        let lowerLabelStackView = SkeletonableStackView(animation: .gradient)
+        
         lowerLabelStackView.axis = .horizontal
         lowerLabelStackView.alignment = .leading
         lowerLabelStackView.distribution = .equalSpacing
@@ -233,9 +213,6 @@ private extension PartnerCell {
             $0.bottom.equalToSuperview().inset(24)
             $0.width.lessThanOrEqualTo(300)
         }
-        
-        lowerLabelStackView.isRecursiveSkeletonable = true
-        lowerLabelStackView.isSkeletonAnimatable = true
-        lowerLabelStackView.skeletonAnimationType = .gradient
     }
 }
+

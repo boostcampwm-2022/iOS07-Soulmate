@@ -6,7 +6,6 @@
 //
 import UIKit
 
-// TODO: 그냥 config 구조체로 만들어도 될거같다
 enum AnimationType {
     case gradient
     case flash

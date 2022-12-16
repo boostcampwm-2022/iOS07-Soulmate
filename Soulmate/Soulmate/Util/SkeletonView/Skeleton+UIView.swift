@@ -56,167 +56,46 @@ extension UIView {
     }
 }
 
-
-// MARK: skeletonLayer 생성 및 추가 (layoutSubview에서 실행)
+// 스켈레톤 탐색 관련
 extension UIView {
-    
-    func addSkeletonLayer() {
-        let skeletonLayer = SkeletonLayer(animationType: self.skeletonAnimationType, skeletonHolder: self)
-        self.skeletonLayer = skeletonLayer
-
-        layer.insertSkeletonLayer(
-            skeletonLayer,
-            atIndex: 0
-        ) { [weak self] in
-            guard let self = self else { return }
-            (self as? UITextView)?.setContentOffset(.zero, animated: false)
-            self.startSkeletonAnimation()
+    func recursiveSearchSubviews(toDo: (UIView) -> Void) {
+        subviews.forEach { subview in
+            subview.recursiveSearchSubviews(toDo: toDo)
         }
-    }
-    
-    func removeSkeletonLayer() {
-        skeletonLayer?.stopAnimation()
-        skeletonLayer?.removeLayer { [weak self] in
-            self?.skeletonLayer = nil
-        }
-    }
-    
-    func skeletonLayoutSubviews() {
-        guard Thread.isMainThread else { return }
-        layoutSkeletonIfNeeded()
-    }
-    
-    func layoutSkeletonIfNeeded() {
-        recursiveLayoutSkeletonIfNeeded(root: self)
-    }
-    
-    func recursiveLayoutSkeletonIfNeeded(root: UIView? = nil) {
-        skeletonLayer?.layoutIfNeeded()
-        startSkeletonAnimation()
-        subviewsSkeletonables.forEach {
-            $0.recursiveLayoutSkeletonIfNeeded()
-        }
+        toDo(self)
     }
 }
 
 extension UIView {
-    
-    // 제일 최상단 뷰에서 실행
-    func showSkeleton() {
-        guard !isRootSkeletonActive else { return }
-        recursiveShowSkeleton(root: self)
-        isRootSkeletonActive = true
-    }
-    
-    func recursiveShowSkeleton(root: UIView? = nil) {
-        if isSkeletonAnimatable {
-            showSkeletonIfNotActive()
-        }
-        subviewsSkeletonables.forEach { subViews in
-            subViews.recursiveShowSkeleton()
-        }
-    }
-    
-    func showSkeletonIfNotActive(root: UIView? = nil) {
-        prepareViewForSkeleton()
-        addSkeletonLayer()
-    }
-    
-    func prepareViewForSkeleton() {
-        UIView.transition(
-            with: self,
-            duration: 1,
-            options: .transitionCrossDissolve,
-            animations: { [weak self] in
-                self?.backgroundColor = .clear
-            },
-            completion: nil
-        )
-    }
-    func hideSkeleton() {
-        guard isRootSkeletonActive else { return }
-        recursiveHideSkeleton()
-        isRootSkeletonActive = false
-    }
-    
-    func recursiveHideSkeleton(root: UIView? = nil) {
-        subviewsSkeletonables.forEach {
-            $0.recursiveHideSkeleton()
-        }
-        
-        removeSkeletonLayer()
-    }
-}
 
-// MARK: Animation Start
-extension UIView {
-    func startSkeletonAnimation() {
-        subviewsSkeletonables.forEach {
-            $0.startSkeletonAnimation()
-        }
-        guard let layer = self.skeletonLayer else { return }
-        layer.start()
-    }
-}
-
-// MARK: ext Properties
-extension UIView {
-    
-    var subviewsSkeletonables: [UIView] {
-        subviews.filter { $0.isRecursiveSkeletonable }
-    }
-    
     private struct KeyHolder {
-        static var isRecursiveSkeletonable: UInt8 = 0
-        static var skeletonLayer: UInt8 = 1
-        static var isSkeletonAnimatable: UInt8 = 2
-        static var skeletonAnimationType: UInt8 = 3
-        static var isRootSkeletonActive: UInt8 = 4
-    }
-    
-    var isRecursiveSkeletonable: Bool {
-        get {
-            (objc_getAssociatedObject(self, &KeyHolder.isRecursiveSkeletonable) as? Bool) ?? false
-        }
-        set {
-            objc_setAssociatedObject(self, &KeyHolder.isRecursiveSkeletonable, newValue, .OBJC_ASSOCIATION_COPY)
-        }
-    }
-    
-    var skeletonLayer: SkeletonLayer? {
-        get {
-            (objc_getAssociatedObject(self, &KeyHolder.skeletonLayer) as? SkeletonLayer)
-        }
-        set {
-            objc_setAssociatedObject(self, &KeyHolder.skeletonLayer, newValue, .OBJC_ASSOCIATION_COPY)
-        }
-    }
-    
-    var isSkeletonAnimatable: Bool {
-        get {
-            (objc_getAssociatedObject(self, &KeyHolder.isSkeletonAnimatable) as? Bool) ?? false
-        }
-        set {
-            objc_setAssociatedObject(self, &KeyHolder.isSkeletonAnimatable, newValue, .OBJC_ASSOCIATION_COPY)
-        }
-    }
-    
-    var skeletonAnimationType: AnimationType {
-        get {
-            (objc_getAssociatedObject(self, &KeyHolder.skeletonAnimationType) as? AnimationType) ?? .flash
-        }
-        set {
-            objc_setAssociatedObject(self, &KeyHolder.skeletonAnimationType, newValue, .OBJC_ASSOCIATION_COPY)
-        }
+        static var isRootSkeletonActive: UInt8 = 0
     }
     
     var isRootSkeletonActive: Bool {
-        get {
-            (objc_getAssociatedObject(self, &KeyHolder.isRootSkeletonActive) as? Bool) ?? false
+        get { (objc_getAssociatedObject(self, &KeyHolder.isRootSkeletonActive) as? Bool) ?? false }
+        set { objc_setAssociatedObject(self, &KeyHolder.isRootSkeletonActive, newValue, .OBJC_ASSOCIATION_COPY) }
+    }
+}
+
+extension UIView {
+    func showSkeleton() {
+        guard !isRootSkeletonActive else { return }
+        recursiveSearchSubviews { view in
+            if let skeleton = view as? Skeletonable {
+                skeleton.showSkeletonIfNotActive()
+            }
         }
-        
-        set {
-            objc_setAssociatedObject(self, &KeyHolder.isRootSkeletonActive, newValue, .OBJC_ASSOCIATION_COPY)
+        isRootSkeletonActive = true
+    }
+    
+    func hideSkeleton() {
+        guard isRootSkeletonActive else { return }
+        recursiveSearchSubviews { view in
+            if let skeleton = view as? Skeletonable {
+                skeleton.removeSkeletonLayer()
+            }
         }
+        isRootSkeletonActive = false
     }
 }
