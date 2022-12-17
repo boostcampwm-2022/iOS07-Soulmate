@@ -27,7 +27,7 @@ final class DefaultListenOthersChattingUseCase: ListenOthersChattingUseCase {
     }
 
     func removeListen() {
-        chattingRepository.removeListen()
+        chattingRepository.removeChattingListen()
     }
     
     func listenOthersChattings() {

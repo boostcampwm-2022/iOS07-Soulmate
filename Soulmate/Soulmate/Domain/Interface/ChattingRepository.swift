@@ -17,7 +17,7 @@ protocol ChattingRepository {
     func setStartDocument(_ doc: QueryDocumentSnapshot?)
     func setLastDocument(_ doc: QueryDocumentSnapshot?)
     
-    func removeListen()
+    func removeChattingListen()
     
     func loadReadChattings(from chatRoomId: String) async -> [MessageInfoDTO]
     func loadUnReadChattings(from chatRoomId: String) async -> [MessageInfoDTO]
@@ -26,6 +26,5 @@ protocol ChattingRepository {
     func updateUnreadCountToZero(of chatRoomId: String, othersId: String)
     func increaseUnreadCount(of id: String, in chatRoomId: String) async
     func addMessage(_ message: MessageToSendDTO, to chatRoomId: String) async -> Bool
-    func listenOthersChattings(from chatRoomId: String, uid: String)
-    func listenOtherIsReading(from chatRoomId: String, userId: String) -> Query
+    func listenOthersChattings(from chatRoomId: String, uid: String)    
 }

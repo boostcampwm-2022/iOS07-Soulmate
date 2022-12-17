@@ -17,16 +17,16 @@ final class DefaultChattingRepository: ChattingRepository {
     var lastDocument: QueryDocumentSnapshot?
     var othersMessages = PassthroughSubject<[Chat], Never>()
     
-    private var listenerRegistration: ListenerRegistration?
+    private var chattinListenerRegistration: ListenerRegistration?    
     
     init(authRepository: AuthRepository, networkDatabaseApi: NetworkDatabaseApi) {
         self.authRepository = authRepository
         self.networkDatabaseApi = networkDatabaseApi
     }
     
-    func removeListen() {
-        listenerRegistration?.remove()
-        listenerRegistration = nil
+    func removeChattingListen() {
+        chattinListenerRegistration?.remove()
+        chattinListenerRegistration = nil
     }
     
     func setStartDocument(_ doc: QueryDocumentSnapshot?) {
@@ -197,7 +197,7 @@ final class DefaultChattingRepository: ChattingRepository {
         
         let query = networkDatabaseApi.query(path: path, constraints: constraints)
         
-        listenerRegistration = query
+        chattinListenerRegistration = query
             .addSnapshotListener { [weak self] snapshot, err in
                 guard let snapshot, err == nil, !snapshot.documentChanges.isEmpty else {
                     return
@@ -233,20 +233,8 @@ final class DefaultChattingRepository: ChattingRepository {
                 self?.addMeToReadUsers(of: snapshot)
                 self?.othersMessages.send(chats)
                 self?.setLastDocument(snapshot.documents.last)
-                self?.listenerRegistration?.remove()
-                self?.listenerRegistration = nil
+                self?.removeChattingListen()
                 self?.listenOthersChattings(from: chatRoomId, uid: uid)
             }
-    }
-    
-    func listenOtherIsReading(from chatRoomId: String, userId: String) -> Query {
-        let path = "ChatRooms/\(chatRoomId)/LastRead"
-        var constraints = [
-            QueryEntity(field: "userId", value: userId, comparator: .isEqualTo)
-        ]
-        
-        let query = networkDatabaseApi.query(path: path, constraints: constraints)
-        
-        return query
     }
 }
