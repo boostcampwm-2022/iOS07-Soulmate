@@ -10,7 +10,7 @@ import FirebaseFirestore
 
 protocol ListenOthersChattingUseCase {
     var othersMessages: PassthroughSubject<[Chat], Never> { get }
-        
+
     func removeListen()
     func listenOthersChattings()
 }
