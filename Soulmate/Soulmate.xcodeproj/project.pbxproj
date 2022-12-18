@@ -182,6 +182,13 @@
 		6A9453012938FAF80041B71D /* DefaultAuthUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A9453002938FAF80041B71D /* DefaultAuthUseCase.swift */; };
 		6A945304293DDEBA0041B71D /* Swinject in Frameworks */ = {isa = PBXBuildFile; productRef = 6A945303293DDEBA0041B71D /* Swinject */; };
 		6A945306293DDF030041B71D /* DIContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A945305293DDF030041B71D /* DIContainer.swift */; };
+		6A978EF0294F84FE00A99974 /* UserDefaults+Publisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A978EEF294F84FE00A99974 /* UserDefaults+Publisher.swift */; };
+		6A978EF3294F87B600A99974 /* CLLocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A978EF2294F87B600A99974 /* CLLocationService.swift */; };
+		6A978EF7294F895900A99974 /* UploadLocationUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A978EF6294F895900A99974 /* UploadLocationUseCase.swift */; };
+		6A978EF9294F8A8C00A99974 /* DefaultLocalLocationRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A978EF8294F8A8C00A99974 /* DefaultLocalLocationRepository.swift */; };
+		6A978EFB294F8B3100A99974 /* LocalLocationRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A978EFA294F8B3100A99974 /* LocalLocationRepository.swift */; };
+		6A978EFD294F8B6300A99974 /* DefaultGetLocalLocationUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A978EFC294F8B6300A99974 /* DefaultGetLocalLocationUseCase.swift */; };
+		6A978EFF294F8BE400A99974 /* GetLocalLocationUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A978EFE294F8BE400A99974 /* GetLocalLocationUseCase.swift */; };
 		6A97FE63291CE0C2006F6DD9 /* UIImage+shadow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A97FE62291CE0C2006F6DD9 /* UIImage+shadow.swift */; };
 		6A97FE66291CE29E006F6DD9 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A97FE65291CE29E006F6DD9 /* LoginViewModel.swift */; };
 		6AB6B946292AAD7600A029BD /* RegisterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB6B945292AAD7600A029BD /* RegisterViewModel.swift */; };
@@ -227,7 +234,7 @@
 		6AB6B9E2292F2DB900A029BD /* UpLoadPreviewUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB6B9E1292F2DB900A029BD /* UpLoadPreviewUseCase.swift */; };
 		6AB6B9E4292F336F00A029BD /* DefaultUpLoadLocationUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB6B9E3292F336F00A029BD /* DefaultUpLoadLocationUseCase.swift */; };
 		6AB6B9E6292F3D9C00A029BD /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB6B9E5292F3D9C00A029BD /* Location.swift */; };
-		6AB6B9E9292F3F6400A029BD /* CLLocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB6B9E8292F3F6400A029BD /* CLLocationService.swift */; };
+		6AB6B9E9292F3F6400A029BD /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB6B9E8292F3F6400A029BD /* LocationService.swift */; };
 		6ADEE4E72922198200AD328B /* UIControl+Publisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ADEE4E62922198200AD328B /* UIControl+Publisher.swift */; };
 		6ADEE4EA29221CB800AD328B /* UIButton+Publisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ADEE4E929221CB800AD328B /* UIButton+Publisher.swift */; };
 		6ADEE4EC29221CD900AD328B /* UITextField+Publisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ADEE4EB29221CD900AD328B /* UITextField+Publisher.swift */; };
@@ -444,6 +451,13 @@
 		6A9452FE29382F360041B71D /* ModificationImageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ModificationImageViewModel.swift; path = Soulmate/Presentation/MyPageScene/View/ModificationImageViewModel.swift; sourceTree = SOURCE_ROOT; };
 		6A9453002938FAF80041B71D /* DefaultAuthUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultAuthUseCase.swift; sourceTree = "<group>"; };
 		6A945305293DDF030041B71D /* DIContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DIContainer.swift; sourceTree = "<group>"; };
+		6A978EEF294F84FE00A99974 /* UserDefaults+Publisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+Publisher.swift"; sourceTree = "<group>"; };
+		6A978EF2294F87B600A99974 /* CLLocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLLocationService.swift; sourceTree = "<group>"; };
+		6A978EF6294F895900A99974 /* UploadLocationUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadLocationUseCase.swift; sourceTree = "<group>"; };
+		6A978EF8294F8A8C00A99974 /* DefaultLocalLocationRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultLocalLocationRepository.swift; sourceTree = "<group>"; };
+		6A978EFA294F8B3100A99974 /* LocalLocationRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalLocationRepository.swift; sourceTree = "<group>"; };
+		6A978EFC294F8B6300A99974 /* DefaultGetLocalLocationUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultGetLocalLocationUseCase.swift; sourceTree = "<group>"; };
+		6A978EFE294F8BE400A99974 /* GetLocalLocationUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetLocalLocationUseCase.swift; sourceTree = "<group>"; };
 		6A97FE62291CE0C2006F6DD9 /* UIImage+shadow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+shadow.swift"; sourceTree = "<group>"; };
 		6A97FE65291CE29E006F6DD9 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		6AB6B945292AAD7600A029BD /* RegisterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewModel.swift; sourceTree = "<group>"; };
@@ -488,7 +502,7 @@
 		6AB6B9E1292F2DB900A029BD /* UpLoadPreviewUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpLoadPreviewUseCase.swift; sourceTree = "<group>"; };
 		6AB6B9E3292F336F00A029BD /* DefaultUpLoadLocationUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultUpLoadLocationUseCase.swift; sourceTree = "<group>"; };
 		6AB6B9E5292F3D9C00A029BD /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
-		6AB6B9E8292F3F6400A029BD /* CLLocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLLocationService.swift; sourceTree = "<group>"; };
+		6AB6B9E8292F3F6400A029BD /* LocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationService.swift; sourceTree = "<group>"; };
 		6ADEE4E62922198200AD328B /* UIControl+Publisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIControl+Publisher.swift"; sourceTree = "<group>"; };
 		6ADEE4E929221CB800AD328B /* UIButton+Publisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Publisher.swift"; sourceTree = "<group>"; };
 		6ADEE4EB29221CD900AD328B /* UITextField+Publisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Publisher.swift"; sourceTree = "<group>"; };
@@ -776,6 +790,7 @@
 				6A5ED8742947664800AD9E82 /* DefaultUpdateFCMTokenUseCase.swift */,
 				6A5ED8862948A74400AD9E82 /* DefaultDeleteChatRoomUseCase.swift */,
 				6A4A00CB2948DF6D0016ED58 /* DefaultDeleteMateRequestUseCase.swift */,
+				6A978EFC294F8B6300A99974 /* DefaultGetLocalLocationUseCase.swift */,
 			);
 			path = UseCase;
 			sourceTree = "<group>";
@@ -812,6 +827,8 @@
 				6A5ED8722947661E00AD9E82 /* UpdateFCMTokenUseCase.swift */,
 				6A5ED8842948A72200AD9E82 /* DeleteChatRoomUseCase.swift */,
 				6A4A00CD2948E0210016ED58 /* DeleteMateRequestUseCase.swift */,
+				6A978EF6294F895900A99974 /* UploadLocationUseCase.swift */,
+				6A978EFE294F8BE400A99974 /* GetLocalLocationUseCase.swift */,
 			);
 			path = Interface;
 			sourceTree = "<group>";
@@ -881,6 +898,7 @@
 		6A444531291EA22D009AE2E5 /* Extension */ = {
 			isa = PBXGroup;
 			children = (
+				6A978EEE294F84E700A99974 /* UserDefaults */,
 				6ADEE4E829221C6600AD328B /* Combine */,
 				6A97FE62291CE0C2006F6DD9 /* UIImage+shadow.swift */,
 				6A444532291EA23F009AE2E5 /* UIColor.swift */,
@@ -1052,6 +1070,23 @@
 			path = NSCacheStorage;
 			sourceTree = "<group>";
 		};
+		6A978EEE294F84E700A99974 /* UserDefaults */ = {
+			isa = PBXGroup;
+			children = (
+				6A978EEF294F84FE00A99974 /* UserDefaults+Publisher.swift */,
+			);
+			path = UserDefaults;
+			sourceTree = "<group>";
+		};
+		6A978EF1294F87A500A99974 /* LocationService */ = {
+			isa = PBXGroup;
+			children = (
+				6AB6B9E8292F3F6400A029BD /* LocationService.swift */,
+				6A978EF2294F87B600A99974 /* CLLocationService.swift */,
+			);
+			path = LocationService;
+			sourceTree = "<group>";
+		};
 		6A97FE61291CE0A4006F6DD9 /* Util */ = {
 			isa = PBXGroup;
 			children = (
@@ -1101,6 +1136,7 @@
 				6A5ED83C2941C2D800AD9E82 /* DefaultEnterStateRepository.swift */,
 				6A4A007B2941F7300016ED58 /* DefaultMateRquestRepository.swift */,
 				6A5ED86B2947134200AD9E82 /* DefaultFCMRepository.swift */,
+				6A978EF8294F8A8C00A99974 /* DefaultLocalLocationRepository.swift */,
 			);
 			path = Repository;
 			sourceTree = "<group>";
@@ -1136,6 +1172,7 @@
 				6A5ED83E2941C70B00AD9E82 /* EnterStateRepository.swift */,
 				6A5ED84C2942255000AD9E82 /* ChatRoomRepository.swift */,
 				6A5ED86D2947135400AD9E82 /* FCMRepository.swift */,
+				6A978EFA294F8B3100A99974 /* LocalLocationRepository.swift */,
 			);
 			path = Interface;
 			sourceTree = "<group>";
@@ -1178,7 +1215,7 @@
 		6AB6B9E7292F3F4000A029BD /* Service */ = {
 			isa = PBXGroup;
 			children = (
-				6AB6B9E8292F3F6400A029BD /* CLLocationService.swift */,
+				6A978EF1294F87A500A99974 /* LocationService */,
 				6A34C2412931096E00A3E57F /* KeyboardMonitor.swift */,
 				07344C892944A0B50000EF76 /* NetworkManager.swift */,
 			);
@@ -1436,7 +1473,7 @@
 				6AB6B99F292D718500A029BD /* RegisterUserInfoDTO.swift in Sources */,
 				6AE21021291DE06600A32280 /* SelectableCell.swift in Sources */,
 				6A0041DB2919E9420042E02F /* AppCoordinator.swift in Sources */,
-				6AB6B9E9292F3F6400A029BD /* CLLocationService.swift in Sources */,
+				6AB6B9E9292F3F6400A029BD /* LocationService.swift in Sources */,
 				07EE0F1C292CEEDC00E761C4 /* HomeViewModel.swift in Sources */,
 				6A03B6EC2923BD8C00AC15A6 /* PhoneNumberViewModel.swift in Sources */,
 				6A9452C929349CE90041B71D /* DefaultImageCacheRepository.swift in Sources */,
@@ -1466,6 +1503,7 @@
 				6A34C1E0292B220500A3E57F /* PaddingLabel.swift in Sources */,
 				07EAD6F92925EBB0001AE220 /* RegisterPhotoView.swift in Sources */,
 				6A5ED8552943358200AD9E82 /* Date+compare.swift in Sources */,
+				6A978EF0294F84FE00A99974 /* UserDefaults+Publisher.swift in Sources */,
 				6A4A00D5294BE3150016ED58 /* SkeletonableStackView.swift in Sources */,
 				6A34C240292FAE8100A3E57F /* PageNavigationView.swift in Sources */,
 				B301025529322FB500481C6C /* HeartShopViewController.swift in Sources */,
@@ -1474,6 +1512,7 @@
 				07DDDF292924B2D500CB398C /* RegisterHeightView.swift in Sources */,
 				6A5ED8852948A72300AD9E82 /* DeleteChatRoomUseCase.swift in Sources */,
 				6A8C88942919031A009EDBBB /* ViewController.swift in Sources */,
+				6A978EFD294F8B6300A99974 /* DefaultGetLocalLocationUseCase.swift in Sources */,
 				6A34C1ED292B3A3A00A3E57F /* ChattingRoomViewModel.swift in Sources */,
 				6AECA1D8293B8C390035A9AE /* ChatListView.swift in Sources */,
 				B301025D293DE90F00481C6C /* DefaultHeartUpdateUseCase.swift in Sources */,
@@ -1545,6 +1584,7 @@
 				6AB6B9B3292D7D9300A029BD /* LocalKeyValueStorage.swift in Sources */,
 				6A0041EB2919ED5F0042E02F /* HomeViewController.swift in Sources */,
 				077F73252935E41800FD86D6 /* LaunchViewController.swift in Sources */,
+				6A978EFB294F8B3100A99974 /* LocalLocationRepository.swift in Sources */,
 				6A34C205292C98D300A3E57F /* ChatRoomInfo.swift in Sources */,
 				6AB6B9D2292EC24100A029BD /* DefaultUserPreviewRepository.swift in Sources */,
 				6A34C23C292F40B000A3E57F /* ReceivedRequestDTO.swift in Sources */,
@@ -1557,6 +1597,7 @@
 				6A03B7242923DE7200AC15A6 /* DefaultPhoneSignInUseCase.swift in Sources */,
 				B311F4A82925E82400806E86 /* MbtiSegmentView.swift in Sources */,
 				6A0042062919EF220042E02F /* MyPageCoordinator.swift in Sources */,
+				6A978EF9294F8A8C00A99974 /* DefaultLocalLocationRepository.swift in Sources */,
 				6A25C644293F31BC00CDC1BC /* DefaultSetDistanceUseCase.swift in Sources */,
 				6AB6B96A292BEEC200A029BD /* RegisterStateValidateUseCase.swift in Sources */,
 				B30A8F0F291CB4AC00ED4906 /* PhoneNumberViewController.swift in Sources */,
@@ -1568,6 +1609,7 @@
 				6AB6B9C1292DCBE800A029BD /* PhoneLoginCoorinator.swift in Sources */,
 				6A34C26B2934691900A3E57F /* DefaultLoadPrevChattingsUseCase.swift in Sources */,
 				B303D651292367CF00414293 /* ProgressBar.swift in Sources */,
+				6A978EF3294F87B600A99974 /* CLLocationService.swift in Sources */,
 				6A0041FB2919EE600042E02F /* MyPageViewController.swift in Sources */,
 				B30A8F11291CB4F100ED4906 /* CertificationNumberViewController.swift in Sources */,
 				6AB6B961292BDEEB00A029BD /* DefaultDownLoadDetailInfoUseCase.swift in Sources */,
@@ -1584,6 +1626,7 @@
 				B331CED0292B854500F17AED /* UIImage.swift in Sources */,
 				6A0041DD2919EADC0042E02F /* HomeCoordinator.swift in Sources */,
 				6A5ED87929476DD300AD9E82 /* Bundle+serverKey.swift in Sources */,
+				6A978EF7294F895900A99974 /* UploadLocationUseCase.swift in Sources */,
 				07EE0F15292C870400E761C4 /* GreetingCell.swift in Sources */,
 				07497021292E7B26002F607D /* Date+toAge.swift in Sources */,
 				6A0041FF2919EE920042E02F /* ModificationViewController.swift in Sources */,
@@ -1611,6 +1654,7 @@
 				6A5ED86C2947134200AD9E82 /* DefaultFCMRepository.swift in Sources */,
 				6A4A00C82948A6E10016ED58 /* SkeletonLayer.swift in Sources */,
 				6A45AA5F292794B500F85D2C /* ReigsterViewController.swift in Sources */,
+				6A978EFF294F8BE400A99974 /* GetLocalLocationUseCase.swift in Sources */,
 				6A9452CB29349EB40041B71D /* ImageCacheRepository.swift in Sources */,
 				6A5ED8432941C8BE00AD9E82 /* EnterChatRoomUseCase.swift in Sources */,
 				07DDDF272924A7C600CB398C /* RegisterBirthView.swift in Sources */,

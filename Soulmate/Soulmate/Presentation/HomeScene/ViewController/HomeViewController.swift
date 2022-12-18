@@ -13,7 +13,6 @@ final class HomeViewController: UIViewController {
     
     var cancellables = Set<AnyCancellable>()
 
-    var locationManager: CLLocationManager?
     private var viewModel: HomeViewModel?
     
     enum SectionKind: Int, CaseIterable {
@@ -98,9 +97,6 @@ final class HomeViewController: UIViewController {
         configureLayout()
         
         bind()
-        
-        configureLocationService()
-
         configureDataSource()
         
         updateToken()
@@ -136,22 +132,6 @@ private extension HomeViewController {
                 self?.tokenUpdateSubject.send(token)
             }
             .store(in: &cancellables)
-    }
-}
-
-// MARK: - CLLocation
-private extension HomeViewController {
-    func configureLocationService() {
-        locationManager = CLLocationManager()
-        
-        locationManager?.desiredAccuracy = kCLLocationAccuracyKilometer
-        locationManager?.distanceFilter = 2000
-        locationManager?.allowsBackgroundLocationUpdates = true
-                
-        locationManager?.delegate = self
-        
-        locationManager?.startUpdatingLocation()
-        locationManager?.startMonitoringSignificantLocationChanges()
     }
 }
 
@@ -381,32 +361,6 @@ extension HomeViewController: UICollectionViewDelegate {
             collectionViewSelectSubject.send(indexPath.row)
         default:
             fatalError("indexPath.section")
-        }
-    }
-}
-
-// MARK: - CL Delegate
-extension HomeViewController: CLLocationManagerDelegate {
-    
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        Task {
-            guard let location = locations.last else { return }
-            var locationInstance = Location(
-                latitude: location.coordinate.latitude,
-                longitude: location.coordinate.longitude
-            )
-            viewModel?.updateLocation(location: locationInstance)
-        }
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-        switch status {
-        case .authorizedAlways, .authorizedWhenInUse:
-            manager.startUpdatingLocation()
-        case .notDetermined:
-            manager.requestAlwaysAuthorization()
-        case .restricted, .notDetermined, .denied:
-            manager.requestAlwaysAuthorization()
         }
     }
 }

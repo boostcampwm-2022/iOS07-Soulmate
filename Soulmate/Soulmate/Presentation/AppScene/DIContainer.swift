@@ -15,6 +15,7 @@ final class DIContainer {
     
     private init() {
         registerInfraStructure()
+        registerService()
         registerRepository()
         registerUseCase()
         registerViewModel()
@@ -29,6 +30,10 @@ final class DIContainer {
         registerNetworkDatabaseApi()
         
         registerURLSessionAPI()
+    }
+    
+    func registerService() {
+        registerLocationService()
     }
     
     func registerRepository() {
@@ -50,6 +55,8 @@ final class DIContainer {
         registerUserHeartInfoRepository()
         
         registerFCMRepository()
+        
+        registerLocalLocationRepository()
     }
     
     func registerUseCase() {
@@ -91,6 +98,8 @@ final class DIContainer {
         registerListenHeartUpdateUseCase()
         
         registerUpdateFCMTokenUseCase()
+        
+        registerGetLocalLocationPublisherUseCase()
     }
     
     func registerViewModel() {
@@ -152,6 +161,15 @@ extension DIContainer {
 }
 
 extension DIContainer {
+    func registerLocationService() {
+        container.register(LocationService.self) { r in
+            return CLLocationService()
+        }
+        .inObjectScope(.container)
+    }
+}
+
+extension DIContainer {
     // MARK: Register DataLayer Repository
     
     func registerProfilePhotoRepository() {
@@ -197,6 +215,7 @@ extension DIContainer {
         container.register(AuthRepository.self) { _ in
             return DefaultAuthRepository()
         }
+        .inObjectScope(.container)
     }
     
     func registerMateRequestRepository() {
@@ -205,12 +224,14 @@ extension DIContainer {
                 networkDatabaseApi: r.resolve(NetworkDatabaseApi.self)!
             )
         }
+        .inObjectScope(.container)
     }
     
     func registerUserHeartInfoRepository() {
         container.register(UserHeartInfoRepository.self) { r in
             return DefaultUserHeartInfoRepository(networkDatabaseApi: r.resolve(NetworkDatabaseApi.self)!)
         }
+        .inObjectScope(.container)
     }
     
     func registerFCMRepository() {
@@ -219,6 +240,13 @@ extension DIContainer {
                 urlSessionAPI: r.resolve(URLSessionAPI.self)!,
                 networkDatabaseApi: r.resolve(NetworkDatabaseApi.self)!
             )
+        }
+        .inObjectScope(.container)
+    }
+    
+    func registerLocalLocationRepository() {
+        container.register(LocalLocationRepository.self) { r in
+            return DefaultLocalLocationRepository(locationService: r.resolve(LocationService.self)!)
         }
         .inObjectScope(.container)
     }
@@ -325,7 +353,6 @@ extension DIContainer {
         container.register(UpLoadLocationUseCase.self) { r in
             return DefaultUpLoadLocationUseCase(
                 userPreviewRepository: r.resolve(UserPreviewRepository.self)!,
-                userDefaultsRepository: r.resolve(UserDefaultsRepository.self)!,
                 authRepository: r.resolve(AuthRepository.self)!
             )
         }
@@ -408,6 +435,13 @@ extension DIContainer {
         }
         .inObjectScope(.container)
     }
+    
+    func registerGetLocalLocationPublisherUseCase() {
+        container.register(GetLocalLocationPublisherUseCase.self) { r in
+            return DefaultGetLocalLocationPublisherUseCase(localLocationRepository: r.resolve(LocalLocationRepository.self)!)
+        }
+        .inObjectScope(.container)
+    }
 }
 
 extension DIContainer {
@@ -461,6 +495,7 @@ extension DIContainer {
                 mateRecommendationUseCase: r.resolve(MateRecommendationUseCase.self)!,
                 downloadPictureUseCase: r.resolve(DownLoadPictureUseCase.self)!,
                 uploadLocationUseCase: r.resolve(UpLoadLocationUseCase.self)!,
+                getLocalLocationPublisherUseCase: r.resolve(GetLocalLocationPublisherUseCase.self)!,
                 getDistanceUseCase: r.resolve(GetDistanceUseCase.self)!,
                 listenHeartUpdateUseCase: r.resolve(ListenHeartUpdateUseCase.self)!,
                 updateFCMTokenUseCase: r.resolve(UpdateFCMTokenUseCase.self)!,
