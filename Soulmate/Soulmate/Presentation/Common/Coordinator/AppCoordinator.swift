@@ -89,7 +89,7 @@ final class AppCoordinator: Coordinator {
         window.makeKeyAndVisible()
     }
     
-    private func showAuthRegisterFlow(registerUserInfo: RegisterUserInfo? = nil) {
+    private func showAuthRegisterFlow(registerUserInfo: UserDetailInfo? = nil) {
         let navigation = UINavigationController()
         window.rootViewController = navigation
         

@@ -7,7 +7,7 @@
 
 import UIKit
 
-class SkeletonableStackView: UIStackView, Skeletonable {
+final class SkeletonableStackView: UIStackView, Skeletonable {
     var skeletonLayer: SkeletonLayer?
     var animationType: AnimationType
     

@@ -105,7 +105,7 @@
 		6A45AA212925595700F85D2C /* RegisterCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A45AA202925595700F85D2C /* RegisterCoordinator.swift */; };
 		6A45AA3D2925701200F85D2C /* UIDatePicker+Publisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A45AA3C2925701200F85D2C /* UIDatePicker+Publisher.swift */; };
 		6A45AA4629257E1E00F85D2C /* RegisterHeaderStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A45AA4529257E1E00F85D2C /* RegisterHeaderStackView.swift */; };
-		6A45AA4B2925C68300F85D2C /* RegisterUserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A45AA4A2925C68300F85D2C /* RegisterUserInfo.swift */; };
+		6A45AA4B2925C68300F85D2C /* UserDetailInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A45AA4A2925C68300F85D2C /* UserDetailInfo.swift */; };
 		6A45AA5F292794B500F85D2C /* ReigsterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A45AA5E292794B500F85D2C /* ReigsterViewController.swift */; };
 		6A4A007C2941F7300016ED58 /* DefaultMateRquestRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A4A007B2941F7300016ED58 /* DefaultMateRquestRepository.swift */; };
 		6A4A007E2941FB970016ED58 /* DefaultListenMateRequestUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A4A007D2941FB970016ED58 /* DefaultListenMateRequestUseCase.swift */; };
@@ -194,6 +194,14 @@
 		6A978F05294F9C7800A99974 /* AuthUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A978F04294F9C7800A99974 /* AuthUseCase.swift */; };
 		6A978F07294FA60100A99974 /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A978F06294FA60100A99974 /* RegisterView.swift */; };
 		6A978F0A294FABE900A99974 /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A978F09294FABE900A99974 /* DetailView.swift */; };
+		6A978F0C294FAF0100A99974 /* MateRequestRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A978F0B294FAF0100A99974 /* MateRequestRepository.swift */; };
+		6A978F0E294FAF1C00A99974 /* SendMateRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A978F0D294FAF1C00A99974 /* SendMateRequestDTO.swift */; };
+		6A978F10294FAF4A00A99974 /* ReceivedMateRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A978F0F294FAF4A00A99974 /* ReceivedMateRequestDTO.swift */; };
+		6A978F12294FAFBC00A99974 /* SendMateRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A978F11294FAFBC00A99974 /* SendMateRequest.swift */; };
+		6A978F14294FAFD500A99974 /* ReceivedMateRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A978F13294FAFD500A99974 /* ReceivedMateRequest.swift */; };
+		6A978F16294FB26D00A99974 /* UITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A978F15294FB26D00A99974 /* UITextField.swift */; };
+		6A978F18294FB31B00A99974 /* NationCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A978F17294FB31B00A99974 /* NationCode.swift */; };
+		6A978F1A294FB35400A99974 /* PhoneNumberView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A978F19294FB35400A99974 /* PhoneNumberView.swift */; };
 		6A97FE63291CE0C2006F6DD9 /* UIImage+shadow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A97FE62291CE0C2006F6DD9 /* UIImage+shadow.swift */; };
 		6A97FE66291CE29E006F6DD9 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A97FE65291CE29E006F6DD9 /* LoginViewModel.swift */; };
 		6AB6B946292AAD7600A029BD /* RegisterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB6B945292AAD7600A029BD /* RegisterViewModel.swift */; };
@@ -214,7 +222,7 @@
 		6AB6B977292C3DD500A029BD /* DefaultProfilePhotoRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB6B976292C3DD500A029BD /* DefaultProfilePhotoRepository.swift */; };
 		6AB6B97A292C3E5800A029BD /* ProfilePhotoRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB6B979292C3E5800A029BD /* ProfilePhotoRepository.swift */; };
 		6AB6B97C292D380A00A029BD /* Mbti.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB6B97B292D380A00A029BD /* Mbti.swift */; };
-		6AB6B99F292D718500A029BD /* RegisterUserInfoDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB6B99E292D718500A029BD /* RegisterUserInfoDTO.swift */; };
+		6AB6B99F292D718500A029BD /* UserDetailInfoDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB6B99E292D718500A029BD /* UserDetailInfoDTO.swift */; };
 		6AB6B9A1292D71EC00A029BD /* DefaultUserDetailInfoRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB6B9A0292D71EC00A029BD /* DefaultUserDetailInfoRepository.swift */; };
 		6AB6B9A4292D733700A029BD /* UserDetailInfoRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB6B9A3292D733700A029BD /* UserDetailInfoRepository.swift */; };
 		6AB6B9AE292D7B0300A029BD /* NetworkKeyValueStorageApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB6B9AD292D7B0300A029BD /* NetworkKeyValueStorageApi.swift */; };
@@ -378,7 +386,7 @@
 		6A45AA202925595700F85D2C /* RegisterCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterCoordinator.swift; sourceTree = "<group>"; };
 		6A45AA3C2925701200F85D2C /* UIDatePicker+Publisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIDatePicker+Publisher.swift"; sourceTree = "<group>"; };
 		6A45AA4529257E1E00F85D2C /* RegisterHeaderStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterHeaderStackView.swift; sourceTree = "<group>"; };
-		6A45AA4A2925C68300F85D2C /* RegisterUserInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = RegisterUserInfo.swift; path = Soulmate/Domain/Entity/RegisterUserInfo.swift; sourceTree = SOURCE_ROOT; };
+		6A45AA4A2925C68300F85D2C /* UserDetailInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UserDetailInfo.swift; path = Soulmate/Domain/Entity/UserDetailInfo.swift; sourceTree = SOURCE_ROOT; };
 		6A45AA5E292794B500F85D2C /* ReigsterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReigsterViewController.swift; sourceTree = "<group>"; };
 		6A4A007B2941F7300016ED58 /* DefaultMateRquestRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultMateRquestRepository.swift; sourceTree = "<group>"; };
 		6A4A007D2941FB970016ED58 /* DefaultListenMateRequestUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultListenMateRequestUseCase.swift; sourceTree = "<group>"; };
@@ -468,6 +476,14 @@
 		6A978F04294F9C7800A99974 /* AuthUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthUseCase.swift; sourceTree = "<group>"; };
 		6A978F06294FA60100A99974 /* RegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
 		6A978F09294FABE900A99974 /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
+		6A978F0B294FAF0100A99974 /* MateRequestRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MateRequestRepository.swift; sourceTree = "<group>"; };
+		6A978F0D294FAF1C00A99974 /* SendMateRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendMateRequestDTO.swift; sourceTree = "<group>"; };
+		6A978F0F294FAF4A00A99974 /* ReceivedMateRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceivedMateRequestDTO.swift; sourceTree = "<group>"; };
+		6A978F11294FAFBC00A99974 /* SendMateRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendMateRequest.swift; sourceTree = "<group>"; };
+		6A978F13294FAFD500A99974 /* ReceivedMateRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceivedMateRequest.swift; sourceTree = "<group>"; };
+		6A978F15294FB26D00A99974 /* UITextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextField.swift; sourceTree = "<group>"; };
+		6A978F17294FB31B00A99974 /* NationCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NationCode.swift; sourceTree = "<group>"; };
+		6A978F19294FB35400A99974 /* PhoneNumberView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneNumberView.swift; sourceTree = "<group>"; };
 		6A97FE62291CE0C2006F6DD9 /* UIImage+shadow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+shadow.swift"; sourceTree = "<group>"; };
 		6A97FE65291CE29E006F6DD9 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		6AB6B945292AAD7600A029BD /* RegisterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewModel.swift; sourceTree = "<group>"; };
@@ -487,7 +503,7 @@
 		6AB6B976292C3DD500A029BD /* DefaultProfilePhotoRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultProfilePhotoRepository.swift; sourceTree = "<group>"; };
 		6AB6B979292C3E5800A029BD /* ProfilePhotoRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePhotoRepository.swift; sourceTree = "<group>"; };
 		6AB6B97B292D380A00A029BD /* Mbti.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mbti.swift; sourceTree = "<group>"; };
-		6AB6B99E292D718500A029BD /* RegisterUserInfoDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterUserInfoDTO.swift; sourceTree = "<group>"; };
+		6AB6B99E292D718500A029BD /* UserDetailInfoDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailInfoDTO.swift; sourceTree = "<group>"; };
 		6AB6B9A0292D71EC00A029BD /* DefaultUserDetailInfoRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultUserDetailInfoRepository.swift; sourceTree = "<group>"; };
 		6AB6B9A3292D733700A029BD /* UserDetailInfoRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailInfoRepository.swift; sourceTree = "<group>"; };
 		6AB6B9AD292D7B0300A029BD /* NetworkKeyValueStorageApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkKeyValueStorageApi.swift; sourceTree = "<group>"; };
@@ -860,7 +876,7 @@
 		6A34C1D5292B20FB00A3E57F /* Entity */ = {
 			isa = PBXGroup;
 			children = (
-				6A45AA4A2925C68300F85D2C /* RegisterUserInfo.swift */,
+				6A45AA4A2925C68300F85D2C /* UserDetailInfo.swift */,
 				6A34C1D7292B211700A3E57F /* Chat.swift */,
 				6A34C204292C98D300A3E57F /* ChatRoomInfo.swift */,
 				6A34C220292E55EA00A3E57F /* MessageInfo.swift */,
@@ -869,6 +885,8 @@
 				6AB6B9E5292F3D9C00A029BD /* Location.swift */,
 				6A34C23D292F415700A3E57F /* ReceivedRequest.swift */,
 				B3412457294220B500580F45 /* UserHeartInfo.swift */,
+				6A978F11294FAFBC00A99974 /* SendMateRequest.swift */,
+				6A978F13294FAFD500A99974 /* ReceivedMateRequest.swift */,
 			);
 			path = Entity;
 			sourceTree = "<group>";
@@ -922,6 +940,7 @@
 				07497020292E7B26002F607D /* Date+toAge.swift */,
 				6A5ED8542943358200AD9E82 /* Date+compare.swift */,
 				6A5ED87829476DD300AD9E82 /* Bundle+serverKey.swift */,
+				6A978F15294FB26D00A99974 /* UITextField.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -1116,6 +1135,7 @@
 				6A4A00BE2948A6510016ED58 /* SkeletonView */,
 				6A5ED871294764EB00AD9E82 /* Constant */,
 				6A444531291EA22D009AE2E5 /* Extension */,
+				6A978F17294FB31B00A99974 /* NationCode.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -1196,6 +1216,7 @@
 				6A5ED84C2942255000AD9E82 /* ChatRoomRepository.swift */,
 				6A5ED86D2947135400AD9E82 /* FCMRepository.swift */,
 				6A978EFA294F8B3100A99974 /* LocalLocationRepository.swift */,
+				6A978F0B294FAF0100A99974 /* MateRequestRepository.swift */,
 			);
 			path = Interface;
 			sourceTree = "<group>";
@@ -1203,7 +1224,7 @@
 		6AB6B99D292D716200A029BD /* DataTransferObject */ = {
 			isa = PBXGroup;
 			children = (
-				6AB6B99E292D718500A029BD /* RegisterUserInfoDTO.swift */,
+				6AB6B99E292D718500A029BD /* UserDetailInfoDTO.swift */,
 				6AB6B9C9292E28BA00A029BD /* ChatRoomInfoDTO.swift */,
 				6AB6B9DB292F23C500A029BD /* UserPreviewDTO.swift */,
 				6A34C21E292E559B00A3E57F /* MessageInfoDTO.swift */,
@@ -1213,6 +1234,8 @@
 				6A5ED882294840E300AD9E82 /* FCMNotification.swift */,
 				6A5ED86929470F0300AD9E82 /* FCMDTO.swift */,
 				6A5ED87A29477EC000AD9E82 /* UserTokenDTO.swift */,
+				6A978F0D294FAF1C00A99974 /* SendMateRequestDTO.swift */,
+				6A978F0F294FAF4A00A99974 /* ReceivedMateRequestDTO.swift */,
 			);
 			path = DataTransferObject;
 			sourceTree = "<group>";
@@ -1306,6 +1329,7 @@
 			isa = PBXGroup;
 			children = (
 				B303D650292367CF00414293 /* ProgressBar.swift */,
+				6A978F19294FB35400A99974 /* PhoneNumberView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1440,6 +1464,7 @@
 			files = (
 				6A9453012938FAF80041B71D /* DefaultAuthUseCase.swift in Sources */,
 				6A4A007E2941FB970016ED58 /* DefaultListenMateRequestUseCase.swift in Sources */,
+				6A978F10294FAF4A00A99974 /* ReceivedMateRequestDTO.swift in Sources */,
 				6A5ED8732947661E00AD9E82 /* UpdateFCMTokenUseCase.swift in Sources */,
 				6A34C1F7292B501500A3E57F /* DefaultLoadChattingsUseCase.swift in Sources */,
 				6A34C27B2935E5C200A3E57F /* DefaultFetchImageUseCase.swift in Sources */,
@@ -1447,6 +1472,7 @@
 				6A34C2812936513200A3E57F /* LoadUnreadChattingsUseCase.swift in Sources */,
 				6A5ED853294318E000AD9E82 /* ChatDateHeaderView.swift in Sources */,
 				6A97FE66291CE29E006F6DD9 /* LoginViewModel.swift in Sources */,
+				6A978F1A294FB35400A99974 /* PhoneNumberView.swift in Sources */,
 				6A978F03294F9C2800A99974 /* HeartUpdateUseCase.swift in Sources */,
 				6AB6B9E0292F2D3700A029BD /* DefaultUpLoadPreviewCase.swift in Sources */,
 				6AB6B95F292BDE7A00A029BD /* FireStoreNetworkDatabaseApi.swift in Sources */,
@@ -1468,6 +1494,7 @@
 				6AB6B9CE292EC15300A029BD /* DefaultMateRecommendationUseCase.swift in Sources */,
 				6A4A0082294244520016ED58 /* DefaultListenHeartUpdateUseCase.swift in Sources */,
 				6A5ED8472941CAC900AD9E82 /* ListenOthersEnterStateUseCase.swift in Sources */,
+				6A978F16294FB26D00A99974 /* UITextField.swift in Sources */,
 				6AFFB5772940AFFA00266E61 /* HomePreviewViewModel.swift in Sources */,
 				6A34C221292E55EA00A3E57F /* MessageInfo.swift in Sources */,
 				6A4A0080294201FC0016ED58 /* DefaultSendMateRequestUseCase.swift in Sources */,
@@ -1485,6 +1512,7 @@
 				6AB6B9A1292D71EC00A029BD /* DefaultUserDetailInfoRepository.swift in Sources */,
 				6A03B6EE2923BF2300AC15A6 /* CertificationViewModel.swift in Sources */,
 				6A34C1E8292B279000A3E57F /* ComposeBar.swift in Sources */,
+				6A978F12294FAFBC00A99974 /* SendMateRequest.swift in Sources */,
 				6AB6B946292AAD7600A029BD /* RegisterViewModel.swift in Sources */,
 				B311F4A72925E82400806E86 /* MbtiPreview.swift in Sources */,
 				6AB6B9D0292EC1E700A029BD /* UserPreviewRepository.swift in Sources */,
@@ -1495,7 +1523,7 @@
 				6AECA1D6293B88000035A9AE /* ChatListLayout.swift in Sources */,
 				6A978F07294FA60100A99974 /* RegisterView.swift in Sources */,
 				6A34C1E4292B233800A3E57F /* MyChatView.swift in Sources */,
-				6AB6B99F292D718500A029BD /* RegisterUserInfoDTO.swift in Sources */,
+				6AB6B99F292D718500A029BD /* UserDetailInfoDTO.swift in Sources */,
 				6AE21021291DE06600A32280 /* SelectableCell.swift in Sources */,
 				6A0041DB2919E9420042E02F /* AppCoordinator.swift in Sources */,
 				6AB6B9E9292F3F6400A029BD /* LocationService.swift in Sources */,
@@ -1508,12 +1536,14 @@
 				B301025F293E0C7C00481C6C /* HeartShopViewModel.swift in Sources */,
 				6A5ED86E2947135400AD9E82 /* FCMRepository.swift in Sources */,
 				6AB6B9B5292D7DA100A029BD /* UserDefaultsLocalKeyValueStorage.swift in Sources */,
+				6A978F0C294FAF0100A99974 /* MateRequestRepository.swift in Sources */,
 				6A0041EE2919ED7F0042E02F /* DetailViewController.swift in Sources */,
 				6A34C1F3292B48C700A3E57F /* DefaultSendMessageUseCase.swift in Sources */,
 				6A34C1F5292B4FE500A3E57F /* LoadChattingsUseCase.swift in Sources */,
 				B3B03B48292CB877000AF283 /* MyPageMenuCollectionViewCell.swift in Sources */,
 				6A34C207292C99BB00A3E57F /* DefaultLoadChattingRoomListUseCase.swift in Sources */,
 				6A25C640293E671400CDC1BC /* DefaultAuthRepository.swift in Sources */,
+				6A978F18294FB31B00A99974 /* NationCode.swift in Sources */,
 				6AB6B9B0292D7B8A00A029BD /* FirebaseNetworkKeyValueStorageApi.swift in Sources */,
 				6A45AA212925595700F85D2C /* RegisterCoordinator.swift in Sources */,
 				6A5ED8682946FF6D00AD9E82 /* DefaultURLSessionAPI.swift in Sources */,
@@ -1521,6 +1551,7 @@
 				0788A3C029349965003ADB7D /* LoadingIndicator.swift in Sources */,
 				6AB6B9DE292F259500A029BD /* UserPreview.swift in Sources */,
 				6A444533291EA23F009AE2E5 /* UIColor.swift in Sources */,
+				6A978F0E294FAF1C00A99974 /* SendMateRequestDTO.swift in Sources */,
 				B311F4AA2925EC7100806E86 /* RegisterMbtiView.swift in Sources */,
 				6A4A00C02948A66D0016ED58 /* AnimationType.swift in Sources */,
 				6A5ED83D2941C2D800AD9E82 /* DefaultEnterStateRepository.swift in Sources */,
@@ -1614,7 +1645,7 @@
 				6A34C205292C98D300A3E57F /* ChatRoomInfo.swift in Sources */,
 				6AB6B9D2292EC24100A029BD /* DefaultUserPreviewRepository.swift in Sources */,
 				6A34C23C292F40B000A3E57F /* ReceivedRequestDTO.swift in Sources */,
-				6A45AA4B2925C68300F85D2C /* RegisterUserInfo.swift in Sources */,
+				6A45AA4B2925C68300F85D2C /* UserDetailInfo.swift in Sources */,
 				6A34C1F1292B48AE00A3E57F /* SendMessageUseCase.swift in Sources */,
 				6A25C64C2940692200CDC1BC /* DetailPreviewViewModel.swift in Sources */,
 				6A34C223292E654F00A3E57F /* MessageToSendDTO.swift in Sources */,
@@ -1651,6 +1682,7 @@
 				07EE0F11292C86EC00E761C4 /* ProfileCell.swift in Sources */,
 				6A4A008429465E310016ED58 /* RegisterImageItemViewModel.swift in Sources */,
 				B331CED0292B854500F17AED /* UIImage.swift in Sources */,
+				6A978F14294FAFD500A99974 /* ReceivedMateRequest.swift in Sources */,
 				6A0041DD2919EADC0042E02F /* HomeCoordinator.swift in Sources */,
 				6A5ED87929476DD300AD9E82 /* Bundle+serverKey.swift in Sources */,
 				6A978EF7294F895900A99974 /* UploadLocationUseCase.swift in Sources */,

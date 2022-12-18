@@ -21,12 +21,12 @@ final class DefaultDownLoadDetailInfoUseCase: DownLoadDetailInfoUseCase {
         self.authRepository = authRepository
     }
     
-    func downloadMyDetailInfo() async throws -> RegisterUserInfo {
+    func downloadMyDetailInfo() async throws -> UserDetailInfo {
         let uid = try authRepository.currentUid()
         return try await userDetailInfoRepository.downloadDetailInfo(userUid: uid)
     }
     
-    func downloadDetailInfo(userUid: String) async throws -> RegisterUserInfo {
+    func downloadDetailInfo(userUid: String) async throws -> UserDetailInfo {
         return try await userDetailInfoRepository.downloadDetailInfo(userUid: userUid)
     }
 }

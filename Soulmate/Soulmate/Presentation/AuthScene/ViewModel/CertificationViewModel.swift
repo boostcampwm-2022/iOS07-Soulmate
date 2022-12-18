@@ -10,7 +10,7 @@ import Combine
 import FirebaseAuth
 
 struct CertificationViewModelActions {
-    var showRegisterFlow: ((RegisterUserInfo?) -> Void)?
+    var showRegisterFlow: ((UserDetailInfo?) -> Void)?
     var showMainTabFlow: (() -> Void)?
 }
 

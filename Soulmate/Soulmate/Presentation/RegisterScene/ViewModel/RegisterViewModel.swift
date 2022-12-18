@@ -80,7 +80,7 @@ class RegisterViewModel: ViewModelable {
         self.heartUpdateUseCase = heartUpdateUseCase
     }
     
-    func setPrevRegisterInfo(registerUserInfo: RegisterUserInfo?) {
+    func setPrevRegisterInfo(registerUserInfo: UserDetailInfo?) {
         guard let registerUserInfo = registerUserInfo else { return }
         
         self.genderType = registerUserInfo.gender
@@ -224,7 +224,7 @@ class RegisterViewModel: ViewModelable {
             )
             try await uploadPreviewUseCase.registerPreview(userPreview: userPreview)
 
-            let userInfo = RegisterUserInfo(
+            let userInfo = UserDetailInfo(
                 gender: self?.genderType,
                 nickName: self?.nickName,
                 birthDay: self?.birth,
@@ -248,7 +248,7 @@ class RegisterViewModel: ViewModelable {
     func register() {
         Task { [weak self] in
                         
-            let userInfo = RegisterUserInfo(
+            let userInfo = UserDetailInfo(
                 gender: self?.genderType,
                 nickName: self?.nickName,
                 birthDay: self?.birth,

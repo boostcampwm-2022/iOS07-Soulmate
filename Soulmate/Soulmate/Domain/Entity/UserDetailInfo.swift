@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct RegisterUserInfo {
+struct UserDetailInfo {
     var uid: String?
     var gender: GenderType?
     var nickName: String?
@@ -20,9 +20,9 @@ struct RegisterUserInfo {
     var imageList: [String]?
 }
 
-extension RegisterUserInfo {
-    func toDTO() -> RegisterUserInfoDTO {
-        RegisterUserInfoDTO(
+extension UserDetailInfo {
+    func toDTO() -> UserDetailInfoDTO {
+        UserDetailInfoDTO(
             uid: self.uid,
             gender: self.gender?.rawValue,
             nickName: self.nickName,

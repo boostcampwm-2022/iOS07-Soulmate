@@ -9,7 +9,7 @@ import Foundation
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 
-class FireStoreNetworkDatabaseApi: NetworkDatabaseApi {
+final class FireStoreNetworkDatabaseApi: NetworkDatabaseApi {
     
     let db = Firestore.firestore()
 

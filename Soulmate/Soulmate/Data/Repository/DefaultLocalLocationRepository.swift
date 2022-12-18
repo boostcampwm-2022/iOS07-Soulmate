@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-class DefaultLocalLocationRepository: LocalLocationRepository {
+final class DefaultLocalLocationRepository: LocalLocationRepository {
     let locationService: LocationService
     init(locationService: LocationService) {
         self.locationService = locationService

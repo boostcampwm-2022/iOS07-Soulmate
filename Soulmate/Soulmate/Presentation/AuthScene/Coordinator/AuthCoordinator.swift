@@ -12,7 +12,7 @@ class AuthCoordinator: Coordinator {
     
     enum AuthInitType {
         case login
-        case register(RegisterUserInfo?)
+        case register(UserDetailInfo?)
     }
     
     weak var finishDelegate: CoordinatorFinishDelegate?
@@ -63,7 +63,7 @@ class AuthCoordinator: Coordinator {
         coordinator.start()
     }
     
-    lazy var showRegisterFlow: (RegisterUserInfo?) -> Void = { [weak self] registerUserInfo in
+    lazy var showRegisterFlow: (UserDetailInfo?) -> Void = { [weak self] registerUserInfo in
         let coordinator = RegisterCoordinator(navigationController: self?.navigationController ?? UINavigationController())
         coordinator.finishDelegate = self
         self?.childCoordinators.append(coordinator)

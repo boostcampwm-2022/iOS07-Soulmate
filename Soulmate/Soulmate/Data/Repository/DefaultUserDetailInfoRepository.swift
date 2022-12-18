@@ -7,7 +7,7 @@
 
 import Foundation
 
-class DefaultUserDetailInfoRepository: UserDetailInfoRepository {
+final class DefaultUserDetailInfoRepository: UserDetailInfoRepository {
     
     let collectionTitle = "UserDetailInfo"
     
@@ -17,15 +17,15 @@ class DefaultUserDetailInfoRepository: UserDetailInfoRepository {
         self.networkDatabaseApi = networkDatabaseApi
     }
     
-    func uploadDetailInfo(userUid: String, registerUserInfo: RegisterUserInfo) async throws {
+    func uploadDetailInfo(userUid: String, registerUserInfo: UserDetailInfo) async throws {
         try await networkDatabaseApi.create(table: collectionTitle, documentID: userUid, data: registerUserInfo.toDTO())
     }
     
-    func downloadDetailInfo(userUid: String) async throws -> RegisterUserInfo {
+    func downloadDetailInfo(userUid: String) async throws -> UserDetailInfo {
         return try await networkDatabaseApi.read(
             table: collectionTitle,
             documentID: userUid,
-            type: RegisterUserInfoDTO.self
+            type: UserDetailInfoDTO.self
         )
         .toDomain()
     }

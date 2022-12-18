@@ -21,7 +21,7 @@ final class DefaultUploadMyDetailInfoUseCase: UploadMyDetailInfoUseCase {
         self.authRepository = authRepository
     }
     
-    func uploadDetailInfo(registerUserInfo: RegisterUserInfo) async throws {
+    func uploadDetailInfo(registerUserInfo: UserDetailInfo) async throws {
         try await userDetailInfoRepository.uploadDetailInfo(
             userUid: authRepository.currentUid(),
             registerUserInfo: registerUserInfo

@@ -8,6 +8,6 @@
 import Foundation
 
 protocol UserDetailInfoRepository {
-    func uploadDetailInfo(userUid: String, registerUserInfo: RegisterUserInfo) async throws
-    func downloadDetailInfo(userUid: String) async throws -> RegisterUserInfo
+    func uploadDetailInfo(userUid: String, registerUserInfo: UserDetailInfo) async throws
+    func downloadDetailInfo(userUid: String) async throws -> UserDetailInfo
 }

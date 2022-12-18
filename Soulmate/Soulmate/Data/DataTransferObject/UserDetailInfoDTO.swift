@@ -8,7 +8,7 @@
 import Foundation
 import FirebaseFirestoreSwift
 
-struct RegisterUserInfoDTO: Codable {
+struct UserDetailInfoDTO: Codable {
     @DocumentID var uid: String?
     var gender: String?
     var nickName: String?
@@ -21,8 +21,8 @@ struct RegisterUserInfoDTO: Codable {
     var imageList: [String]?
 }
 
-extension RegisterUserInfoDTO {
-    func toDomain() -> RegisterUserInfo {
+extension UserDetailInfoDTO {
+    func toDomain() -> UserDetailInfo {
         
         var genderInstance: GenderType? = nil
         if let gender = self.gender {
@@ -39,7 +39,7 @@ extension RegisterUserInfoDTO {
             drinkingInstance = DrinkingType(rawValue: drinking)
         }
         
-        return RegisterUserInfo(
+        return UserDetailInfo(
             uid: self.uid,
             gender: genderInstance,
             nickName: self.nickName,
