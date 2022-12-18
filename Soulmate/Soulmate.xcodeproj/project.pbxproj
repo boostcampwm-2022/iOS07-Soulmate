@@ -193,6 +193,7 @@
 		6A978F03294F9C2800A99974 /* HeartUpdateUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A978F02294F9C2800A99974 /* HeartUpdateUseCase.swift */; };
 		6A978F05294F9C7800A99974 /* AuthUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A978F04294F9C7800A99974 /* AuthUseCase.swift */; };
 		6A978F07294FA60100A99974 /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A978F06294FA60100A99974 /* RegisterView.swift */; };
+		6A978F0A294FABE900A99974 /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A978F09294FABE900A99974 /* DetailView.swift */; };
 		6A97FE63291CE0C2006F6DD9 /* UIImage+shadow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A97FE62291CE0C2006F6DD9 /* UIImage+shadow.swift */; };
 		6A97FE66291CE29E006F6DD9 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A97FE65291CE29E006F6DD9 /* LoginViewModel.swift */; };
 		6AB6B946292AAD7600A029BD /* RegisterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB6B945292AAD7600A029BD /* RegisterViewModel.swift */; };
@@ -466,6 +467,7 @@
 		6A978F02294F9C2800A99974 /* HeartUpdateUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartUpdateUseCase.swift; sourceTree = "<group>"; };
 		6A978F04294F9C7800A99974 /* AuthUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthUseCase.swift; sourceTree = "<group>"; };
 		6A978F06294FA60100A99974 /* RegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
+		6A978F09294FABE900A99974 /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
 		6A97FE62291CE0C2006F6DD9 /* UIImage+shadow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+shadow.swift"; sourceTree = "<group>"; };
 		6A97FE65291CE29E006F6DD9 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		6AB6B945292AAD7600A029BD /* RegisterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewModel.swift; sourceTree = "<group>"; };
@@ -575,6 +577,7 @@
 				07EE0F17292C893D00E761C4 /* PhotoFooterView.swift */,
 				07F4729F2939063B001DA4D0 /* RecommendView.swift */,
 				6A978F00294F99ED00A99974 /* HomeView.swift */,
+				6A978F09294FABE900A99974 /* DetailView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1584,6 +1587,7 @@
 				6AB6B9E6292F3D9C00A029BD /* Location.swift in Sources */,
 				6A9452EF293584410041B71D /* UISlider+Publisher.swift in Sources */,
 				6A34C27529349B7A00A3E57F /* ListenOthersChattingUseCase.swift in Sources */,
+				6A978F0A294FABE900A99974 /* DetailView.swift in Sources */,
 				6A34C21F292E559C00A3E57F /* MessageInfoDTO.swift in Sources */,
 				B3B03B4A292DECFF000AF283 /* MyPageViewModel.swift in Sources */,
 				6A5ED8412941C7A100AD9E82 /* DefaultEnterChatRoomUseCase.swift in Sources */,

@@ -8,15 +8,21 @@
 import UIKit
 import Combine
 
-import SnapKit
-
 final class DetailViewController: UIViewController {
+    
+    // MARK: - Properties
+    
     private var viewModel: DetailViewModel?
     private var cancellables = Set<AnyCancellable>()
+    private var detailView: DetailView?
     
-    private let currentImagePageSubject = PassthroughSubject<Int, Never>()
+    // MARK: - Subject
+    
     private let totalImagePageSubject = PassthroughSubject<Int, Never>()
+    private let currentImagePageSubject = PassthroughSubject<Int, Never>()
     private let sendMateRequestSubject = PassthroughSubject<Void, Never>()
+    
+    // MARK: - Diffable DataSource
     
     enum SectionKind: Int, CaseIterable {
         case photo
@@ -33,24 +39,8 @@ final class DetailViewController: UIViewController {
     }
     
     private var dataSource: UICollectionViewDiffableDataSource<SectionKind, ItemKind>?
-
-    private lazy var collectionView: UICollectionView = {
-        let layout = createCompositionalLayout()
-        let collection = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collection.backgroundColor = .systemBackground
-        collection.bounces = true
-        collection.showsVerticalScrollIndicator = false
-        collection.showsHorizontalScrollIndicator = false
-        self.view.addSubview(collection)
-        return collection
-    }()
     
-    private lazy var applyButton: GradientButton = {
-        let button = HeartConsumeGradientButton(title: "대화친구 신청하기")
-        button.configureButtonHandler(handler: sendMateRequestEvent)
-        self.view.addSubview(button)
-        return button
-    }()
+    // MARK: - Init
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nil, bundle: nil)
@@ -66,14 +56,21 @@ final class DetailViewController: UIViewController {
         hidesBottomBarWhenPushed = true
     }
     
-    // MARK: - 초기화
+    // MARK: - LifeCycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        configureView()
-        configureLayout()
         configureDataSource()
         bind()
+    }
+    
+    override func loadView() {
+        super.loadView()
+        
+        let view = DetailView(frame: self.view.frame)
+        self.detailView = view
+        self.view = view
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -94,16 +91,15 @@ final class DetailViewController: UIViewController {
     }
 }
 
-// MARK: - Private Functions
-private extension DetailViewController {
-    func sendMateRequestEvent() {
-        sendMateRequestSubject.send(())
-    }
-}
-
 // MARK: - configure
+
 private extension DetailViewController {
-    private func bind() {
+    
+    func configure() {
+        detailView?.applyButton.configureButtonHandler(handler: sendMateRequestEvent)
+    }
+    
+    func bind() {
         guard let viewModel = viewModel else { return }
         
         let output = viewModel.transform(
@@ -175,27 +171,28 @@ private extension DetailViewController {
                 self?.dismiss(animated: true)
             }
             .store(in: &cancellables)
-    }
-    
-    private func configureView() {
-        self.view.backgroundColor = .systemBackground
         
+        detailView?.$currentImagePage
+            .sink { [weak self] page in
+                self?.currentImagePageSubject.send(page)
+            }
+            .store(in: &cancellables)
     }
-    
-    private func configureLayout() {
-        collectionView.snp.makeConstraints {
-            $0.leading.trailing.top.equalTo(self.view.safeAreaLayoutGuide)
-            $0.bottom.equalTo(applyButton.snp.top)
-        }
-        
-        applyButton.snp.makeConstraints {
-            $0.leading.trailing.equalTo(self.view.safeAreaLayoutGuide).inset(20)
-            $0.bottom.equalTo(self.view.snp.bottom).inset(46)
-            $0.height.equalTo(54)
-        }
+}
+
+// MARK: - Private Functions
+
+private extension DetailViewController {
+    func sendMateRequestEvent() {
+        sendMateRequestSubject.send(())
     }
-    
+}
+
+// MARK: - Configure CollectionView
+
+private extension DetailViewController {
     func configureDataSource() {
+        guard let detailView = detailView else { return }
         
         // MARK: Cell Registration
         
@@ -232,7 +229,7 @@ private extension DetailViewController {
         
         // MARK: DataSource Configuration
         
-        self.dataSource = UICollectionViewDiffableDataSource<SectionKind, ItemKind>(collectionView: self.collectionView) { (collectionView, indexPath, item) -> UICollectionViewCell? in
+        self.dataSource = UICollectionViewDiffableDataSource<SectionKind, ItemKind>(collectionView: detailView.collectionView) { (collectionView, indexPath, item) -> UICollectionViewCell? in
             switch item {
             case .photo(let imageKey):
                 return collectionView.dequeueConfiguredReusableCell(using: photoCellRegistration, for: indexPath, item: imageKey)
@@ -252,83 +249,5 @@ private extension DetailViewController {
         var snapshot = NSDiffableDataSourceSnapshot<SectionKind, ItemKind>()
         snapshot.appendSections(SectionKind.allCases)
         self.dataSource?.apply(snapshot, animatingDifferences: false)
-    }
-}
-
-extension DetailViewController {
-
-    private func createCompositionalLayout() -> UICollectionViewCompositionalLayout {
-        return UICollectionViewCompositionalLayout { sectionNumber, _ -> NSCollectionLayoutSection? in
-            switch sectionNumber {
-            case 0: return self.photoLayoutSection()
-            case 1: return self.profileLayoutSection()
-            case 2: return self.greetingLayoutSection()
-            case 3: return self.basicInfoLayoutSection()
-            default: return self.basicInfoLayoutSection()
-            }
-        }
-    }
-    
-    private func photoLayoutSection() -> NSCollectionLayoutSection {
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1))
-        let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalWidth(1))
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
-        group.contentInsets = .init(top: 0, leading: 0, bottom: 0, trailing: 0)
-        
-        let section = NSCollectionLayoutSection(group: group)
-        section.orthogonalScrollingBehavior = .groupPaging
-        
-        let footerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(40))
-        let footer = NSCollectionLayoutBoundarySupplementaryItem(
-            layoutSize: footerSize,
-            elementKind: PhotoFooterView.footerKind,
-            alignment: .bottom
-        )
-    
-        section.boundarySupplementaryItems = [footer]
-        section.visibleItemsInvalidationHandler = { [weak self] _, offset, _ -> Void in
-            guard let width = self?.view.bounds.width else { return }
-            let page = round(offset.x / width)
-            self?.currentImagePageSubject.send(Int(page))
-        }
-        return section
-    }
-    
-    private func profileLayoutSection() -> NSCollectionLayoutSection {
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalWidth(0.3))
-        let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        item.contentInsets = .init(top: 0, leading: 0, bottom: 0, trailing: 0)
-        
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalWidth(0.3))
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
-        
-        let section = NSCollectionLayoutSection(group: group)
-        return section
-    }
-    
-    private func greetingLayoutSection() -> NSCollectionLayoutSection {
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(100))
-        let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        item.contentInsets = .init(top: 0, leading: 0, bottom: 0, trailing: 0)
-        
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(100))
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
-        
-        let section = NSCollectionLayoutSection(group: group)
-        return section
-    }
-    
-    private func basicInfoLayoutSection() -> NSCollectionLayoutSection {
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalWidth(0.5))
-        let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        item.contentInsets = .init(top: 0, leading: 0, bottom: 0, trailing: 0)
-        
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalWidth(0.5))
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
-        
-        let section = NSCollectionLayoutSection(group: group)
-        return section
     }
 }
