@@ -100,6 +100,12 @@ final class DIContainer {
         registerUpdateFCMTokenUseCase()
         
         registerGetLocalLocationPublisherUseCase()
+        
+        registerGenerateRandomNonceUseCase()
+        
+        registerConvertToSha256UseCase()
+        
+        registerAppleSignInUseCase()
     }
     
     func registerViewModel() {
@@ -165,7 +171,7 @@ extension DIContainer {
         container.register(LocationService.self) { r in
             return CLLocationService()
         }
-        .inObjectScope(.container)
+        .inObjectScope(.graph)
     }
 }
 
@@ -442,6 +448,26 @@ extension DIContainer {
         }
         .inObjectScope(.container)
     }
+    
+    func registerGenerateRandomNonceUseCase() {
+        container.register(GenerateRandomNonceUseCase.self) { _ in
+            return DefaultGenerateRandomNonceUseCase()
+        }
+        .inObjectScope(.container)
+    }
+    
+    func registerConvertToSha256UseCase() {
+        container.register(ConvertToSha256UseCase.self) { _ in
+            return DefaultConvertToSha256UseCase()
+        }
+        .inObjectScope(.container)
+    }
+    
+    func registerAppleSignInUseCase() {
+        container.register(AppleSignInUseCase.self) { r in
+            return DefaultAppleSignInUseCase(authRepository: r.resolve(AuthRepository.self)!)
+        }
+    }
 }
 
 extension DIContainer {
@@ -451,7 +477,10 @@ extension DIContainer {
         container.register(LoginViewModel.self) { r in
             return LoginViewModel(
                 downLoadDetailInfoUseCase: r.resolve(DownLoadDetailInfoUseCase.self)!,
-                registerStateValidateUseCase: r.resolve(RegisterStateValidateUseCase.self)!
+                registerStateValidateUseCase: r.resolve(RegisterStateValidateUseCase.self)!,
+                generateRandomNonceUseCase: r.resolve(GenerateRandomNonceUseCase.self)!,
+                convertToSha256UseCase: r.resolve(ConvertToSha256UseCase.self)!,
+                appleSignInUseCase: r.resolve(AppleSignInUseCase.self)!
             )
         }
         .inObjectScope(.graph)

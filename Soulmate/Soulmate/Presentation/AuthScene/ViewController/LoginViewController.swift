@@ -7,20 +7,11 @@
 
 import AuthenticationServices
 import Combine
-import CryptoKit
 import FirebaseAuth
 import SnapKit
 import UIKit
 
-final class LoginViewController: UIViewController, ASAuthorizationControllerPresentationContextProviding {
-    func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
-        return self.view.window!
-    }
-    
-    
-    private var viewModel: LoginViewModel?
-    private var currentNonce: String?
-    
+final class LoginView: UIView {
     private lazy var titleLogoImageView: UIImageView = {
         let imageView = UIImageView(frame: .zero)
         imageView.image = UIImage(named: "logo")?.withShadow(
@@ -29,7 +20,7 @@ final class LoginViewController: UIViewController, ASAuthorizationControllerPres
             color: .black
         )
         imageView.contentMode = .scaleAspectFit
-        self.view.addSubview(imageView)
+        self.addSubview(imageView)
         return imageView
     }()
     
@@ -37,7 +28,7 @@ final class LoginViewController: UIViewController, ASAuthorizationControllerPres
         let imageView = UIImageView(frame: .zero)
         imageView.image = UIImage(named: "emoji")
         imageView.contentMode = .scaleAspectFit
-        self.view.addSubview(imageView)
+        self.addSubview(imageView)
         return imageView
     }()
     
@@ -56,11 +47,11 @@ final class LoginViewController: UIViewController, ASAuthorizationControllerPres
             string: "소울메이트에 오신것을 환영합니다!\n아래 버튼을 눌러 시작해주세요.", attributes: [NSAttributedString.Key.paragraphStyle: paragraphStyle]
         )
         
-        self.view.addSubview(label)
+        self.addSubview(label)
         return label
     }()
     
-    private lazy var appleLoginButton: UIButton = {
+    lazy var appleLoginButton: UIButton = {
         let button = UIButton(frame: .zero)
         button.layer.borderColor = UIColor.black.cgColor
         button.backgroundColor = .black
@@ -73,15 +64,11 @@ final class LoginViewController: UIViewController, ASAuthorizationControllerPres
         button.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 150)
         button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 20)
         
-        button.addAction(UIAction { [weak self] _ in
-            self?.startSignInWithAppleFlow()
-        }, for: .touchUpInside)
-        
-        self.view.addSubview(button)
+        self.addSubview(button)
         return button
     }()
     
-    private lazy var phoneLoginButton: UIButton = {
+    lazy var phoneLoginButton: UIButton = {
         let button = UIButton(frame: .zero)
         button.layer.borderWidth = 1
         button.layer.borderColor = UIColor.borderPurple?.cgColor ?? UIColor.black.cgColor
@@ -94,61 +81,43 @@ final class LoginViewController: UIViewController, ASAuthorizationControllerPres
         button.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 135)
         button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 24)
         
-        self.view.addSubview(button)
+        self.addSubview(button)
         return button
     }()
     
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        configureView()
+        configureLayout()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-        
-    convenience init(viewModel: LoginViewModel) {
-        self.init(nibName: nil, bundle: nil)
-        self.viewModel = viewModel
-    }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        bind()
-        configureView()
-        configureLayout()
-    }
 }
 
-// MARK: - View Generators
+// MARK: - Configure
 
-private extension LoginViewController {
-    
-    func bind() {
-        let _ = viewModel?.transform(
-            input: LoginViewModel.Input(
-                didTappedPhoneLoginButton: phoneLoginButton.tapPublisher()
-            )
-        )
-    }
-    
+private extension LoginView {
     func configureView() {
-        self.view.backgroundColor = .systemBackground
+        self.backgroundColor = .systemBackground
     }
     
     func configureLayout() {
 
         titleLogoImageView.snp.makeConstraints {
             $0.centerX.equalToSuperview()
-            $0.top.equalTo(self.view.safeAreaLayoutGuide.snp.top).offset(117)
+            $0.top.equalTo(self.safeAreaLayoutGuide.snp.top).offset(117)
         }
         
         emojiImageView.snp.makeConstraints {
-            $0.center.equalTo(self.view.safeAreaLayoutGuide.snp.center)
+            $0.center.equalTo(self.safeAreaLayoutGuide.snp.center)
         }
         
         phoneLoginButton.snp.makeConstraints {
-            $0.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom).offset(-30)
+            $0.bottom.equalTo(self.safeAreaLayoutGuide.snp.bottom).offset(-30)
             $0.leading.equalToSuperview().offset(30)
             $0.trailing.equalToSuperview().offset(-30)
             $0.height.equalTo(50)
@@ -169,60 +138,75 @@ private extension LoginViewController {
     }
 }
 
+
+
+
+final class LoginViewController: UIViewController {
+    private var viewModel: LoginViewModel?
+    private var loginView: LoginView?
+    private var cancellables = Set<AnyCancellable>()
+    private var currentNonce: String?
+    
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    convenience init(viewModel: LoginViewModel) {
+        self.init(nibName: nil, bundle: nil)
+        self.viewModel = viewModel
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        bind()
+    }
+    
+    override func loadView() {
+        super.loadView()
+        
+        let view = LoginView(frame: self.view.frame)
+        self.loginView = view
+        self.view = view
+    }
+}
+
+// MARK: - View Generators
+
 private extension LoginViewController {
     
-    func randomNonceString(length: Int = 32) -> String {
-        precondition(length > 0)
-        let charset: [Character] =
-        Array("0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._")
-        var result = ""
-        var remainingLength = length
+    func bind() {
+        guard let loginView = loginView else { return }
+        let output = viewModel?.transform(
+            input: LoginViewModel.Input(
+                didTappedAppleLoginButton: loginView.appleLoginButton.tapPublisher(),
+                didTappedPhoneLoginButton: loginView.phoneLoginButton.tapPublisher()
+            )
+        )
         
-        while remainingLength > 0 {
-            let randoms: [UInt8] = (0 ..< 16).map { _ in
-                var random: UInt8 = 0
-                let errorCode = SecRandomCopyBytes(kSecRandomDefault, 1, &random)
-                if errorCode != errSecSuccess {
-                    fatalError(
-                        "Unable to generate nonce. SecRandomCopyBytes failed with OSStatus \(errorCode)"
-                    )
-                }
-                return random
+        output?.didReadyForAppleLogin
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] request in
+                self?.showAppleLogin(request: request)
             }
-            
-            randoms.forEach { random in
-                if remainingLength == 0 {
-                    return
-                }
-                
-                if random < charset.count {
-                    result.append(charset[Int(random)])
-                    remainingLength -= 1
-                }
-            }
-        }
+            .store(in: &cancellables)
         
-        return result
+        output?.didChangedCurrentNonce
+            .sink { [weak self] value in
+                self?.currentNonce = value
+            }
+            .store(in: &cancellables)
     }
     
-    @available(iOS 13, *)
-    private func sha256(_ input: String) -> String {
-        let inputData = Data(input.utf8)
-        let hashedData = SHA256.hash(data: inputData)
-        let hashString = hashedData.compactMap { String(format: "%02x", $0) }.joined()
-        
-        return hashString
-    }
+}
+
+private extension LoginViewController {
     
-    @available(iOS 13, *)
-    func startSignInWithAppleFlow() {
-        let nonce = randomNonceString()
-        currentNonce = nonce
-        let appleIDProvider = ASAuthorizationAppleIDProvider()
-        let request = appleIDProvider.createRequest()
-        request.requestedScopes = [.fullName, .email]
-        request.nonce = sha256(nonce)
-        
+    func showAppleLogin(request: ASAuthorizationRequest) {
         let authorizationController = ASAuthorizationController(authorizationRequests: [request])
         authorizationController.delegate = self
         authorizationController.presentationContextProvider = self
@@ -230,7 +214,10 @@ private extension LoginViewController {
     }
 }
 
-extension LoginViewController: ASAuthorizationControllerDelegate {
+extension LoginViewController: ASAuthorizationControllerDelegate, ASAuthorizationControllerPresentationContextProviding {
+    func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
+        return self.view.window!
+    }
     
     func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
         if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
@@ -245,23 +232,8 @@ extension LoginViewController: ASAuthorizationControllerDelegate {
                 print("Unable to serialize token string from data: \(appleIDToken.debugDescription)")
                 return
             }
-            // Initialize a Firebase credential.
-            let credential = OAuthProvider.credential(
-                withProviderID: "apple.com",
-                idToken: idTokenString,
-                rawNonce: nonce
-            )
-            // Sign in with Firebase.
-            Auth.auth().signIn(with: credential) { [weak self] _, error in
-                if let error {
-                    // Error. If error.code == .MissingOrInvalidNonce, make sure
-                    // you're sending the SHA256-hashed nonce as a hex string with
-                    // your request to Apple.
-                    print(error.localizedDescription)
-                    return
-                }
-                self?.viewModel?.doneAppleLogin()
-            }
+            
+            viewModel?.tryAppleLogin(idToken: idTokenString, nonce: nonce)
         }
     }
     

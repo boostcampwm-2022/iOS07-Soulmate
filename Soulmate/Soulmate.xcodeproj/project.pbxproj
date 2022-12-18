@@ -203,6 +203,12 @@
 		6A978F18294FB31B00A99974 /* NationCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A978F17294FB31B00A99974 /* NationCode.swift */; };
 		6A978F1A294FB35400A99974 /* PhoneNumberView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A978F19294FB35400A99974 /* PhoneNumberView.swift */; };
 		6A978F1C294FB9E500A99974 /* CertificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A978F1B294FB9E500A99974 /* CertificationView.swift */; };
+		6A978F1E294FBBDB00A99974 /* DefaultGenerateRandomNonceUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A978F1D294FBBDB00A99974 /* DefaultGenerateRandomNonceUseCase.swift */; };
+		6A978F20294FC3ED00A99974 /* DefaultConvertToSha256UseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A978F1F294FC3ED00A99974 /* DefaultConvertToSha256UseCase.swift */; };
+		6A978F22294FC41D00A99974 /* DefaultAppleSignInUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A978F21294FC41D00A99974 /* DefaultAppleSignInUseCase.swift */; };
+		6A978F24294FC44E00A99974 /* GenerateRandomNonceUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A978F23294FC44E00A99974 /* GenerateRandomNonceUseCase.swift */; };
+		6A978F26294FC46300A99974 /* AppleSignInUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A978F25294FC46300A99974 /* AppleSignInUseCase.swift */; };
+		6A978F29294FC48E00A99974 /* ConvertToSha256UseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A978F28294FC48E00A99974 /* ConvertToSha256UseCase.swift */; };
 		6A97FE63291CE0C2006F6DD9 /* UIImage+shadow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A97FE62291CE0C2006F6DD9 /* UIImage+shadow.swift */; };
 		6A97FE66291CE29E006F6DD9 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A97FE65291CE29E006F6DD9 /* LoginViewModel.swift */; };
 		6AB6B946292AAD7600A029BD /* RegisterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB6B945292AAD7600A029BD /* RegisterViewModel.swift */; };
@@ -486,6 +492,12 @@
 		6A978F17294FB31B00A99974 /* NationCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NationCode.swift; sourceTree = "<group>"; };
 		6A978F19294FB35400A99974 /* PhoneNumberView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneNumberView.swift; sourceTree = "<group>"; };
 		6A978F1B294FB9E500A99974 /* CertificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CertificationView.swift; sourceTree = "<group>"; };
+		6A978F1D294FBBDB00A99974 /* DefaultGenerateRandomNonceUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultGenerateRandomNonceUseCase.swift; sourceTree = "<group>"; };
+		6A978F1F294FC3ED00A99974 /* DefaultConvertToSha256UseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultConvertToSha256UseCase.swift; sourceTree = "<group>"; };
+		6A978F21294FC41D00A99974 /* DefaultAppleSignInUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultAppleSignInUseCase.swift; sourceTree = "<group>"; };
+		6A978F23294FC44E00A99974 /* GenerateRandomNonceUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateRandomNonceUseCase.swift; sourceTree = "<group>"; };
+		6A978F25294FC46300A99974 /* AppleSignInUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleSignInUseCase.swift; sourceTree = "<group>"; };
+		6A978F28294FC48E00A99974 /* ConvertToSha256UseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConvertToSha256UseCase.swift; sourceTree = "<group>"; };
 		6A97FE62291CE0C2006F6DD9 /* UIImage+shadow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+shadow.swift"; sourceTree = "<group>"; };
 		6A97FE65291CE29E006F6DD9 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		6AB6B945292AAD7600A029BD /* RegisterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewModel.swift; sourceTree = "<group>"; };
@@ -638,7 +650,6 @@
 				6A0041DF2919EB230042E02F /* LoginViewController.swift */,
 				B30A8F0E291CB4AC00ED4906 /* PhoneNumberViewController.swift */,
 				B30A8F10291CB4F100ED4906 /* CertificationNumberViewController.swift */,
-				6A03B6EF2923BF8900AC15A6 /* CertificationTextField.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -821,6 +832,9 @@
 				6A5ED8862948A74400AD9E82 /* DefaultDeleteChatRoomUseCase.swift */,
 				6A4A00CB2948DF6D0016ED58 /* DefaultDeleteMateRequestUseCase.swift */,
 				6A978EFC294F8B6300A99974 /* DefaultGetLocalLocationUseCase.swift */,
+				6A978F1D294FBBDB00A99974 /* DefaultGenerateRandomNonceUseCase.swift */,
+				6A978F1F294FC3ED00A99974 /* DefaultConvertToSha256UseCase.swift */,
+				6A978F21294FC41D00A99974 /* DefaultAppleSignInUseCase.swift */,
 			);
 			path = UseCase;
 			sourceTree = "<group>";
@@ -861,6 +875,9 @@
 				6A978EFE294F8BE400A99974 /* GetLocalLocationUseCase.swift */,
 				6A978F02294F9C2800A99974 /* HeartUpdateUseCase.swift */,
 				6A978F04294F9C7800A99974 /* AuthUseCase.swift */,
+				6A978F23294FC44E00A99974 /* GenerateRandomNonceUseCase.swift */,
+				6A978F25294FC46300A99974 /* AppleSignInUseCase.swift */,
+				6A978F28294FC48E00A99974 /* ConvertToSha256UseCase.swift */,
 			);
 			path = Interface;
 			sourceTree = "<group>";
@@ -1333,6 +1350,7 @@
 				B303D650292367CF00414293 /* ProgressBar.swift */,
 				6A978F19294FB35400A99974 /* PhoneNumberView.swift */,
 				6A978F1B294FB9E500A99974 /* CertificationView.swift */,
+				6A03B6EF2923BF8900AC15A6 /* CertificationTextField.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1551,9 +1569,11 @@
 				6A45AA212925595700F85D2C /* RegisterCoordinator.swift in Sources */,
 				6A5ED8682946FF6D00AD9E82 /* DefaultURLSessionAPI.swift in Sources */,
 				6A9452F52937D3050041B71D /* DefaultDownLoadMyPreviewUseCase.swift in Sources */,
+				6A978F24294FC44E00A99974 /* GenerateRandomNonceUseCase.swift in Sources */,
 				0788A3C029349965003ADB7D /* LoadingIndicator.swift in Sources */,
 				6AB6B9DE292F259500A029BD /* UserPreview.swift in Sources */,
 				6A444533291EA23F009AE2E5 /* UIColor.swift in Sources */,
+				6A978F26294FC46300A99974 /* AppleSignInUseCase.swift in Sources */,
 				6A978F0E294FAF1C00A99974 /* SendMateRequestDTO.swift in Sources */,
 				B311F4AA2925EC7100806E86 /* RegisterMbtiView.swift in Sources */,
 				6A4A00C02948A66D0016ED58 /* AnimationType.swift in Sources */,
@@ -1563,6 +1583,7 @@
 				07EAD6F92925EBB0001AE220 /* RegisterPhotoView.swift in Sources */,
 				6A5ED8552943358200AD9E82 /* Date+compare.swift in Sources */,
 				6A978EF0294F84FE00A99974 /* UserDefaults+Publisher.swift in Sources */,
+				6A978F22294FC41D00A99974 /* DefaultAppleSignInUseCase.swift in Sources */,
 				6A4A00D5294BE3150016ED58 /* SkeletonableStackView.swift in Sources */,
 				6A34C240292FAE8100A3E57F /* PageNavigationView.swift in Sources */,
 				B301025529322FB500481C6C /* HeartShopViewController.swift in Sources */,
@@ -1696,6 +1717,8 @@
 				6AB6B9B7292D807B00A029BD /* DefaultUserDefaultsRepository.swift in Sources */,
 				6A978F1C294FB9E500A99974 /* CertificationView.swift in Sources */,
 				6A5ED918293EEE6000A284F7 /* ChattingRepository.swift in Sources */,
+				6A978F29294FC48E00A99974 /* ConvertToSha256UseCase.swift in Sources */,
+				6A978F20294FC3ED00A99974 /* DefaultConvertToSha256UseCase.swift in Sources */,
 				6A9452FD29382F0D0041B71D /* ModificationInfoViewModel.swift in Sources */,
 				B3010251292F1A2000481C6C /* MyPageView.swift in Sources */,
 				6A03B7272923E5E300AC15A6 /* PhoneSignInUseCase.swift in Sources */,
@@ -1712,6 +1735,7 @@
 				07344C8A2944A0B50000EF76 /* NetworkManager.swift in Sources */,
 				0755652A294057AB002A8F10 /* DetailBasicInfoViewModel.swift in Sources */,
 				6A4A007C2941F7300016ED58 /* DefaultMateRquestRepository.swift in Sources */,
+				6A978F1E294FBBDB00A99974 /* DefaultGenerateRandomNonceUseCase.swift in Sources */,
 				074F3B0B292261EA00D36C89 /* PartnerCell.swift in Sources */,
 				6A5ED8452941C8FE00AD9E82 /* DefaultListenOthersEnterStateUseCase.swift in Sources */,
 				6A5ED86C2947134200AD9E82 /* DefaultFCMRepository.swift in Sources */,
