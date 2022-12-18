@@ -30,16 +30,3 @@ final class LoadingIndicator: UIActivityIndicatorView {
     }
     
 }
-
-#if canImport(SwiftUI) && DEBUG
-import SwiftUI
-
-struct LoadingIndicatorPreview: PreviewProvider {
-    static var previews: some View {
-        UIViewPreview {
-            let preview = LoadingIndicator()
-            return preview
-        }.previewLayout(.device)
-    }
-}
-#endif

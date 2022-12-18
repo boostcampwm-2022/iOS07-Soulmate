@@ -15,7 +15,7 @@ final class DefaultGetLocalLocationPublisherUseCase: GetLocalLocationPublisherUs
         self.localLocationRepository = localLocationRepository
     }
     
-    func execute() -> AnyPublisher<Location, Never> {
+    func execute() -> AnyPublisher<Location?, Never> {
         return localLocationRepository.locationPublisher()
     }
 }

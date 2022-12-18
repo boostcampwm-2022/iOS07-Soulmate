@@ -113,6 +113,7 @@ final class HomeViewModel: ViewModelable {
         
         getLocalLocationPublisherUseCase
             .execute()
+            .compactMap { $0 }
             .sink { [weak self] location in
                 print(location)
                 self?.updateLocation(location: location)

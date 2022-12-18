@@ -9,6 +9,6 @@ import Foundation
 import Combine
 
 protocol LocationService {
-    var locationSubject: PassthroughSubject<Location, Never> { get }
+    var locationSubject: CurrentValueSubject<Location?, Never> { get }
     var authSubject: PassthroughSubject<Bool, Never> { get }
 }

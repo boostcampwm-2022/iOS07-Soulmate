@@ -70,19 +70,3 @@ class HeartShopCell: SelectableCell {
     }
     
 }
-
-#if canImport(SwiftUI) && DEBUG
-import SwiftUI
-
-struct HeartShopCellPreview: PreviewProvider {
-    static var previews: some View {
-        UIViewPreview {
-            let cell = HeartShopCell(
-                quantityLabel: "50개",
-                priceLabel: "30,000원"
-            )
-            return cell
-        }.previewLayout(.fixed(width: 350, height: 72))
-    }
-}
-#endif

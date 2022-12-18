@@ -18,7 +18,7 @@ final class DefaultLocalLocationRepository: LocalLocationRepository {
         return locationService.authSubject.eraseToAnyPublisher()
     }
     
-    func locationPublisher() -> AnyPublisher<Location, Never> {
+    func locationPublisher() -> AnyPublisher<Location?, Never> {
         return locationService.locationSubject.eraseToAnyPublisher()
     }
 }

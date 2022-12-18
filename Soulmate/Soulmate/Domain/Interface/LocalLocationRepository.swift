@@ -10,5 +10,5 @@ import Combine
 
 protocol LocalLocationRepository {
     func authorizationPublisher() -> AnyPublisher<Bool, Never>
-    func locationPublisher() -> AnyPublisher<Location, Never>
+    func locationPublisher() -> AnyPublisher<Location?, Never>
 }

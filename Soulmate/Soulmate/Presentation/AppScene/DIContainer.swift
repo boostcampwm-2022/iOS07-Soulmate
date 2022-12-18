@@ -254,7 +254,7 @@ extension DIContainer {
         container.register(LocalLocationRepository.self) { r in
             return DefaultLocalLocationRepository(locationService: r.resolve(LocationService.self)!)
         }
-        .inObjectScope(.container)
+        .inObjectScope(.graph)
     }
     
 }
@@ -446,7 +446,7 @@ extension DIContainer {
         container.register(GetLocalLocationPublisherUseCase.self) { r in
             return DefaultGetLocalLocationPublisherUseCase(localLocationRepository: r.resolve(LocalLocationRepository.self)!)
         }
-        .inObjectScope(.container)
+        .inObjectScope(.graph)
     }
     
     func registerGenerateRandomNonceUseCase() {

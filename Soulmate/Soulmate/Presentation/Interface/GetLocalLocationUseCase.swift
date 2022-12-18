@@ -9,5 +9,5 @@ import Foundation
 import Combine
 
 protocol GetLocalLocationPublisherUseCase {
-    func execute() -> AnyPublisher<Location, Never>
+    func execute() -> AnyPublisher<Location?, Never>
 }

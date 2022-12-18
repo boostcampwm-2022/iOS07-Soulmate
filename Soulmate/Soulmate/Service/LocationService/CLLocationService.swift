@@ -12,7 +12,7 @@ import CoreLocation
 class CLLocationService: NSObject, LocationService {
 
     var locationManager: CLLocationManager
-    var locationSubject = PassthroughSubject<Location, Never>()
+    var locationSubject = CurrentValueSubject<Location?, Never>(nil)
     var authSubject = PassthroughSubject<Bool, Never>()
     
     override init() {
@@ -45,6 +45,7 @@ extension CLLocationService: CLLocationManagerDelegate {
                 latitude: location.coordinate.latitude,
                 longitude: location.coordinate.longitude
             )
+            print(locationInstance)
             locationSubject.send(locationInstance)
         }
     }
