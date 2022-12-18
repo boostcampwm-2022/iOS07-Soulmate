@@ -202,6 +202,7 @@
 		6A978F16294FB26D00A99974 /* UITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A978F15294FB26D00A99974 /* UITextField.swift */; };
 		6A978F18294FB31B00A99974 /* NationCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A978F17294FB31B00A99974 /* NationCode.swift */; };
 		6A978F1A294FB35400A99974 /* PhoneNumberView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A978F19294FB35400A99974 /* PhoneNumberView.swift */; };
+		6A978F1C294FB9E500A99974 /* CertificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A978F1B294FB9E500A99974 /* CertificationView.swift */; };
 		6A97FE63291CE0C2006F6DD9 /* UIImage+shadow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A97FE62291CE0C2006F6DD9 /* UIImage+shadow.swift */; };
 		6A97FE66291CE29E006F6DD9 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A97FE65291CE29E006F6DD9 /* LoginViewModel.swift */; };
 		6AB6B946292AAD7600A029BD /* RegisterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB6B945292AAD7600A029BD /* RegisterViewModel.swift */; };
@@ -484,6 +485,7 @@
 		6A978F15294FB26D00A99974 /* UITextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextField.swift; sourceTree = "<group>"; };
 		6A978F17294FB31B00A99974 /* NationCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NationCode.swift; sourceTree = "<group>"; };
 		6A978F19294FB35400A99974 /* PhoneNumberView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneNumberView.swift; sourceTree = "<group>"; };
+		6A978F1B294FB9E500A99974 /* CertificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CertificationView.swift; sourceTree = "<group>"; };
 		6A97FE62291CE0C2006F6DD9 /* UIImage+shadow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+shadow.swift"; sourceTree = "<group>"; };
 		6A97FE65291CE29E006F6DD9 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		6AB6B945292AAD7600A029BD /* RegisterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewModel.swift; sourceTree = "<group>"; };
@@ -1330,6 +1332,7 @@
 			children = (
 				B303D650292367CF00414293 /* ProgressBar.swift */,
 				6A978F19294FB35400A99974 /* PhoneNumberView.swift */,
+				6A978F1B294FB9E500A99974 /* CertificationView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1691,6 +1694,7 @@
 				6A0041FF2919EE920042E02F /* ModificationViewController.swift in Sources */,
 				6A25C63E293E667E00CDC1BC /* AuthRepository.swift in Sources */,
 				6AB6B9B7292D807B00A029BD /* DefaultUserDefaultsRepository.swift in Sources */,
+				6A978F1C294FB9E500A99974 /* CertificationView.swift in Sources */,
 				6A5ED918293EEE6000A284F7 /* ChattingRepository.swift in Sources */,
 				6A9452FD29382F0D0041B71D /* ModificationInfoViewModel.swift in Sources */,
 				B3010251292F1A2000481C6C /* MyPageView.swift in Sources */,
