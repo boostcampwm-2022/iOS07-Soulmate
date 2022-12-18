@@ -7,7 +7,7 @@
 
 import Foundation
 
-class DefaultDownLoadMyPreviewUseCase: DownLoadMyPreviewUseCase {
+final class DefaultDownLoadMyPreviewUseCase: DownLoadMyPreviewUseCase {
         
     let userPreviewRepository: UserPreviewRepository
     let authRepository: AuthRepository

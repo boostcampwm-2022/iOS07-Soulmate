@@ -7,7 +7,8 @@
 
 import Foundation
 import Combine
-class DefaultGetLocalLocationPublisherUseCase: GetLocalLocationPublisherUseCase {
+
+final class DefaultGetLocalLocationPublisherUseCase: GetLocalLocationPublisherUseCase {
     let localLocationRepository: LocalLocationRepository
     
     init(localLocationRepository: LocalLocationRepository) {

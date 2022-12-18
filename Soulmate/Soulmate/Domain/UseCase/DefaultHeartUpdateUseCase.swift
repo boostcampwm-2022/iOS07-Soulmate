@@ -8,12 +8,7 @@
 import Foundation
 import FirebaseAuth
 
-protocol HeartUpdateUseCase {
-    func registerHeart(heart: Int) async throws
-    func updateHeart(heart: Int) async throws
-}
-
-class DefaultHeartUpdateUseCase: HeartUpdateUseCase {
+final class DefaultHeartUpdateUseCase: HeartUpdateUseCase {
     
     let userHeartInfoRepository: UserHeartInfoRepository
     let authRepository: AuthRepository

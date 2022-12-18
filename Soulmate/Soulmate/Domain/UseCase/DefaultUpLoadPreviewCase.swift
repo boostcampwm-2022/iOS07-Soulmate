@@ -8,7 +8,7 @@
 import Foundation
 import FirebaseAuth
 
-class DefaultUploadMyPreviewUseCase: UploadMyPreviewUseCase {
+final class DefaultUploadMyPreviewUseCase: UploadMyPreviewUseCase {
 
     let userPreviewRepository: UserPreviewRepository
     let authRepository: AuthRepository

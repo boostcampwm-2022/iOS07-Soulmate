@@ -8,7 +8,7 @@
 import Foundation
 import FirebaseAuth
 
-class DefaultSignOutUseCase: SignOutUseCase {
+final class DefaultSignOutUseCase: SignOutUseCase {
     
     let authRepository: AuthRepository
     

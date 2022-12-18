@@ -8,7 +8,7 @@
 import Foundation
 import FirebaseAuth
 
-class DefaultUploadMyDetailInfoUseCase: UploadMyDetailInfoUseCase {
+final class DefaultUploadMyDetailInfoUseCase: UploadMyDetailInfoUseCase {
         
     let userDetailInfoRepository: UserDetailInfoRepository
     let authRepository: AuthRepository

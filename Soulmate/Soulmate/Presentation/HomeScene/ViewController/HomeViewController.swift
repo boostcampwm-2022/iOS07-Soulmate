@@ -11,13 +11,10 @@ import CoreLocation
 
 final class HomeViewController: UIViewController {
     
-    var cancellables = Set<AnyCancellable>()
+    // MARK: - Properties
 
-    // MARK: - ViewModel
+    private var cancellables = Set<AnyCancellable>()
     private var viewModel: HomeViewModel?
-    
-    // MARK: - UI
-    private var homeView: HomeView?
     
     // MARK: - DIffable DataSource
     enum SectionKind: Int, CaseIterable {
@@ -35,6 +32,9 @@ final class HomeViewController: UIViewController {
     var refreshButtonTapSubject = PassthroughSubject<Void, Never>()
     var collectionViewSelectSubject = PassthroughSubject<Int, Never>()
     var tokenUpdateSubject = PassthroughSubject<String, Never>()
+    
+    // MARK: - UI
+    private var homeView: HomeView?
     
     // MARK: Init
     

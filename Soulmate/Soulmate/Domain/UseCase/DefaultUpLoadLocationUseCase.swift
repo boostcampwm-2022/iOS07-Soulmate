@@ -8,7 +8,7 @@
 import Foundation
 import FirebaseAuth
 
-class DefaultUpLoadLocationUseCase: UpLoadLocationUseCase {
+final class DefaultUpLoadLocationUseCase: UpLoadLocationUseCase {
     let userPreviewRepository: UserPreviewRepository
     let authRepository: AuthRepository
     

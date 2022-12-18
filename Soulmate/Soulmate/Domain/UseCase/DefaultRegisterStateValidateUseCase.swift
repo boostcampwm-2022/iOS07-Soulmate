@@ -7,7 +7,7 @@
 
 import Foundation
 
-class DefaultRegisterStateValidateUseCase: RegisterStateValidateUseCase {
+final class DefaultRegisterStateValidateUseCase: RegisterStateValidateUseCase {
     func validateRegisterState(registerUserInfo: RegisterUserInfo) -> RegisterState {
         guard let _ = registerUserInfo.gender,
               let _ = registerUserInfo.nickName,

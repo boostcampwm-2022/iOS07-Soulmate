@@ -8,7 +8,7 @@
 import Foundation
 import FirebaseAuth
 
-class DefaultDownLoadDetailInfoUseCase: DownLoadDetailInfoUseCase {
+final class DefaultDownLoadDetailInfoUseCase: DownLoadDetailInfoUseCase {
 
     let userDetailInfoRepository: UserDetailInfoRepository
     let authRepository: AuthRepository

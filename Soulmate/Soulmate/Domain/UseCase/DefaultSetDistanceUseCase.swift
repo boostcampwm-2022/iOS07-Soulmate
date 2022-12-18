@@ -7,7 +7,7 @@
 
 import Foundation
 
-class DefaultSetDistanceUseCase: SetDistanceUseCase {
+final class DefaultSetDistanceUseCase: SetDistanceUseCase {
     let userDefaultRepository: UserDefaultsRepository
     
     init(userDefaultRepository: UserDefaultsRepository) {
