@@ -189,6 +189,7 @@
 		6A978EFB294F8B3100A99974 /* LocalLocationRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A978EFA294F8B3100A99974 /* LocalLocationRepository.swift */; };
 		6A978EFD294F8B6300A99974 /* DefaultGetLocalLocationUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A978EFC294F8B6300A99974 /* DefaultGetLocalLocationUseCase.swift */; };
 		6A978EFF294F8BE400A99974 /* GetLocalLocationUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A978EFE294F8BE400A99974 /* GetLocalLocationUseCase.swift */; };
+		6A978F01294F99ED00A99974 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A978F00294F99ED00A99974 /* HomeView.swift */; };
 		6A97FE63291CE0C2006F6DD9 /* UIImage+shadow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A97FE62291CE0C2006F6DD9 /* UIImage+shadow.swift */; };
 		6A97FE66291CE29E006F6DD9 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A97FE65291CE29E006F6DD9 /* LoginViewModel.swift */; };
 		6AB6B946292AAD7600A029BD /* RegisterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB6B945292AAD7600A029BD /* RegisterViewModel.swift */; };
@@ -458,6 +459,7 @@
 		6A978EFA294F8B3100A99974 /* LocalLocationRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalLocationRepository.swift; sourceTree = "<group>"; };
 		6A978EFC294F8B6300A99974 /* DefaultGetLocalLocationUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultGetLocalLocationUseCase.swift; sourceTree = "<group>"; };
 		6A978EFE294F8BE400A99974 /* GetLocalLocationUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetLocalLocationUseCase.swift; sourceTree = "<group>"; };
+		6A978F00294F99ED00A99974 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		6A97FE62291CE0C2006F6DD9 /* UIImage+shadow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+shadow.swift"; sourceTree = "<group>"; };
 		6A97FE65291CE29E006F6DD9 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		6AB6B945292AAD7600A029BD /* RegisterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewModel.swift; sourceTree = "<group>"; };
@@ -566,6 +568,7 @@
 				07EE0F12292C86FA00E761C4 /* BasicInfoCell.swift */,
 				07EE0F17292C893D00E761C4 /* PhotoFooterView.swift */,
 				07F4729F2939063B001DA4D0 /* RecommendView.swift */,
+				6A978F00294F99ED00A99974 /* HomeView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1618,6 +1621,7 @@
 				6AB6B950292B155A00A029BD /* UILabel+Publisher.swift in Sources */,
 				6AECA1D2293B865C0035A9AE /* ChatDataSource.swift in Sources */,
 				6AB6B96E292BF2F400A029BD /* DefaultUploadMyDetailInfoUseCase.swift in Sources */,
+				6A978F01294F99ED00A99974 /* HomeView.swift in Sources */,
 				6A8377AD2924BCB400BC7112 /* RegisterCongraturationsView.swift in Sources */,
 				07C3D1AF29420045008DFF09 /* CustomAlert.swift in Sources */,
 				6AB6B9A4292D733700A029BD /* UserDetailInfoRepository.swift in Sources */,
