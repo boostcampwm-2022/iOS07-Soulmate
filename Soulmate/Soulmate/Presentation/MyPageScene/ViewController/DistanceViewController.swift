@@ -7,7 +7,6 @@
 
 import UIKit
 import Combine
-
 import SnapKit
 
 class DistanceViewController: UIViewController {
@@ -133,7 +132,6 @@ private extension DistanceViewController {
         
         customSlider.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview().inset(40)
-            //$0.top.equalTo(registerHeaderStackView.snp.bottom).offset(30)
             $0.centerY.equalToSuperview().offset(-20)
             $0.height.equalTo(10)
         }

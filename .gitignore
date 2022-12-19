@@ -92,3 +92,6 @@ fastlane/test_output
 # https://github.com/johnno1962/injectionforxcode
 
 iOSInjectionProject/
+temp_auto_push.bat
+temp_interactive_push.bat
+branch_structure.json
