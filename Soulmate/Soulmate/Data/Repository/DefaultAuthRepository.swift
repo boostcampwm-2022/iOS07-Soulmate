@@ -8,7 +8,7 @@
 import Foundation
 import FirebaseAuth
 
-class DefaultAuthRepository: AuthRepository {
+final class DefaultAuthRepository: AuthRepository {
 
     let auth = Auth.auth()
     

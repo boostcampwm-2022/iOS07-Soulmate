@@ -7,6 +7,7 @@
 import UIKit
 
 struct SkeletonLayer {
+    
     var maskLayer: CAGradientLayer
     var animation: CAAnimation?
     var animationKey: String

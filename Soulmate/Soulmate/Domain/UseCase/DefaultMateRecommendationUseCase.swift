@@ -10,7 +10,7 @@ import FirebaseAuth
 import FirebaseFirestore
 import CoreLocation
 
-class DefaultMateRecommendationUseCase: MateRecommendationUseCase {
+final class DefaultMateRecommendationUseCase: MateRecommendationUseCase {
     
     let userPreviewRepository: UserPreviewRepository
     let userDefaultsRepository: UserDefaultsRepository

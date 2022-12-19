@@ -8,7 +8,7 @@
 import Foundation
 import FirebaseAuth
 
-class DefaultUpLoadPictureUseCase: UploadPictureUseCase {
+final class DefaultUpLoadPictureUseCase: UploadPictureUseCase {
 
     let profilePhotoRepository: ProfilePhotoRepository
     let authRepository: AuthRepository

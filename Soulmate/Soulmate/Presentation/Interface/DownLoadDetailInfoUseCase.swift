@@ -8,6 +8,6 @@
 import Foundation
 
 protocol DownLoadDetailInfoUseCase {
-    func downloadMyDetailInfo() async throws -> RegisterUserInfo
-    func downloadDetailInfo(userUid: String) async throws -> RegisterUserInfo
+    func downloadMyDetailInfo() async throws -> UserDetailInfo
+    func downloadDetailInfo(userUid: String) async throws -> UserDetailInfo
 }

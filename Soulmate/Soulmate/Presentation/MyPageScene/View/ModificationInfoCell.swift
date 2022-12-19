@@ -64,18 +64,3 @@ class ModificationInfoCell: UICollectionViewCell {
     }
     
 }
-
-
-
-#if canImport(SwiftUI) && DEBUG
-import SwiftUI
-
-struct ModificationInfoCellPreview: PreviewProvider{
-    static var previews: some View {
-        UIViewPreview {
-            let cell = ModificationInfoCell(frame: .zero)
-            return cell
-        }.previewLayout(.fixed(width: 350, height: 50))
-    }
-}
-#endif

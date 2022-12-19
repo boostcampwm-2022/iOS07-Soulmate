@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-class DefaultUserDefaultsRepository: UserDefaultsRepository {
+final class DefaultUserDefaultsRepository: UserDefaultsRepository {
     
     let localKeyValueStorage: LocalKeyValueStorage
     

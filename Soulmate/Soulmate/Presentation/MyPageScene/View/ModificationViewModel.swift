@@ -24,7 +24,7 @@ class ModificationViewModel: ViewModelable {
     }
     
     struct Output {
-        var didChangedDetailInfo: AnyPublisher<RegisterUserInfo?, Never>
+        var didChangedDetailInfo: AnyPublisher<UserDetailInfo?, Never>
         var didChangedImageData: AnyPublisher<[Data?], Never>
         var didUploadAllInfo: AnyPublisher<Void, Never>
     }
@@ -46,7 +46,7 @@ class ModificationViewModel: ViewModelable {
     
     var userChatImageData: Data?
     
-    @Published var userDetailInfo: RegisterUserInfo?
+    @Published var userDetailInfo: UserDetailInfo?
     @Published var userDetailImageData: [Data?] = [nil, nil, nil, nil, nil]
     var didUploadAllInfo = PassthroughSubject<Void, Never>()
     

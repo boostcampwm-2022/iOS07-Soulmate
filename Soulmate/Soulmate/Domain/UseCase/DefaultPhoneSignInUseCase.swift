@@ -8,7 +8,7 @@
 import Foundation
 import FirebaseAuth
 
-class DefaultPhoneSignInUseCase: PhoneSignInUseCase {
+final class DefaultPhoneSignInUseCase: PhoneSignInUseCase {
     
     let userDefaultsRepository: UserDefaultsRepository
     let authRepository: AuthRepository

@@ -8,5 +8,5 @@
 import Foundation
 
 protocol RegisterStateValidateUseCase {
-    func validateRegisterState(registerUserInfo: RegisterUserInfo) -> RegisterState
+    func validateRegisterState(registerUserInfo: UserDetailInfo) -> RegisterState
 }

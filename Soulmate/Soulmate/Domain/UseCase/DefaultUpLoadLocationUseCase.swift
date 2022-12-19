@@ -7,24 +7,16 @@
 
 import Foundation
 import FirebaseAuth
-import CoreLocation
 
-protocol UpLoadLocationUseCase {
-    func updateLocation(location: Location) async throws
-}
-
-class DefaultUpLoadLocationUseCase: UpLoadLocationUseCase {
+final class DefaultUpLoadLocationUseCase: UpLoadLocationUseCase {
     let userPreviewRepository: UserPreviewRepository
-    let userDefaultsRepository: UserDefaultsRepository
     let authRepository: AuthRepository
     
     init(
         userPreviewRepository: UserPreviewRepository,
-        userDefaultsRepository: UserDefaultsRepository,
         authRepository: AuthRepository
     ) {
         self.userPreviewRepository = userPreviewRepository
-        self.userDefaultsRepository = userDefaultsRepository
         self.authRepository = authRepository
     }
     
@@ -32,7 +24,6 @@ class DefaultUpLoadLocationUseCase: UpLoadLocationUseCase {
         let uid = try authRepository.currentUid()
         
         let encodedLocation = try JSONEncoder().encode(location)
-        userDefaultsRepository.set(key: "latestLocation", value: encodedLocation)
         try await userPreviewRepository.updateLocation(userUid: uid, location: location)
     }
 }

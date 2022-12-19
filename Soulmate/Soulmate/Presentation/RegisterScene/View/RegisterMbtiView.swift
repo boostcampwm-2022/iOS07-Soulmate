@@ -174,15 +174,3 @@ private extension RegisterMbtiView {
     }
     
 }
-
-#if canImport(SwiftUI) && DEBUG
-import SwiftUI
-
-struct MBTIPreview: PreviewProvider{
-    static var previews: some View {
-        UIViewPreview {
-            return RegisterMbtiView(frame: .zero)
-        }.previewLayout(.device)
-    }
-}
-#endif

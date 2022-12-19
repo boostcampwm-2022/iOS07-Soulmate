@@ -6,11 +6,8 @@
 //
 
 import Foundation
-import CoreLocation
-import FirebaseFirestore
-import FirebaseAuth
 
-class DefaultUserPreviewRepository: UserPreviewRepository {
+final class DefaultUserPreviewRepository: UserPreviewRepository {
     
     let networkDatabaseApi: NetworkDatabaseApi
     let collectionTitle = "UserPreview"

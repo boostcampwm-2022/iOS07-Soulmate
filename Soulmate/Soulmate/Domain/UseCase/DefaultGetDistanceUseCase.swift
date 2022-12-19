@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-class DefaultGetDistanceUseCase: GetDistanceUseCase {
+final class DefaultGetDistanceUseCase: GetDistanceUseCase {
     let userDefaultRepository: UserDefaultsRepository
     
     init(userDefaultRepository: UserDefaultsRepository) {

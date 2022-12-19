@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-class UserDefaulsLocalKeyValueStorage: LocalKeyValueStorage {
+final class UserDefaulsLocalKeyValueStorage: LocalKeyValueStorage {
     
     func set(key: String, value: Any?) {
         UserDefaults.standard.set(value, forKey: key)

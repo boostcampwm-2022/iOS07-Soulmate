@@ -2,20 +2,21 @@
 //  CLLocationService.swift
 //  Soulmate
 //
-//  Created by Sangmin Lee on 2022/11/24.
+//  Created by Sangmin Lee on 2022/12/19.
 //
 
 import Foundation
+import Combine
 import CoreLocation
 
-class CLLocationService: NSObject {
+class CLLocationService: NSObject, LocationService {
 
     var locationManager: CLLocationManager
-    let upLoadLocationUseCase: UpLoadLocationUseCase
+    var locationSubject = CurrentValueSubject<Location?, Never>(nil)
+    var authSubject = PassthroughSubject<Bool, Never>()
     
-    init(upLoadLocationUseCase: UpLoadLocationUseCase) {
+    override init() {
         self.locationManager = CLLocationManager()
-        self.upLoadLocationUseCase = upLoadLocationUseCase
         super.init()
 
         self.configureService()
@@ -44,20 +45,18 @@ extension CLLocationService: CLLocationManagerDelegate {
                 latitude: location.coordinate.latitude,
                 longitude: location.coordinate.longitude
             )
-            try await upLoadLocationUseCase.updateLocation(location: locationInstance)
+            print(locationInstance)
+            locationSubject.send(locationInstance)
         }
     }
     
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         switch status {
         case .authorizedAlways, .authorizedWhenInUse:
-            UserDefaults.standard.set("yes", forKey: "isLocationAuthorized")
             locationManager.startUpdatingLocation()
         case .notDetermined:
-            UserDefaults.standard.set("yet", forKey: "isLocationAuthorized")
             locationManager.requestAlwaysAuthorization()
         case .restricted, .notDetermined, .denied:
-            UserDefaults.standard.set("no", forKey: "isLocationAuthorized")
             locationManager.requestAlwaysAuthorization()
         }
     }

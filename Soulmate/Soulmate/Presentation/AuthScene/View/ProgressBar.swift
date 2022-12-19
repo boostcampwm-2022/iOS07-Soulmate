@@ -78,16 +78,3 @@ private extension ProgressBar {
     }
     
 }
-
-#if canImport(SwiftUI) && DEBUG
-import SwiftUI
-
-struct ProgressBarPreview: PreviewProvider {
-    static var previews: some View {
-        UIViewPreview {
-            let bar = ProgressBar(frame: .zero)
-            return bar
-        }.previewLayout(.fixed(width: 300, height: 6))
-    }
-}
-#endif

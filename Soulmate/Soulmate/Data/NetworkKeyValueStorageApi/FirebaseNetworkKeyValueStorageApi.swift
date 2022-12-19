@@ -8,7 +8,7 @@
 import Foundation
 import FirebaseStorage
 
-class FirebaseNetworkKeyValueStorageApi: NetworkKeyValueStorageApi {
+final class FirebaseNetworkKeyValueStorageApi: NetworkKeyValueStorageApi {
     
     let storage = Storage.storage()
     

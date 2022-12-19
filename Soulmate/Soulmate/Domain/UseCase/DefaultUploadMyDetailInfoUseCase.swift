@@ -8,7 +8,7 @@
 import Foundation
 import FirebaseAuth
 
-class DefaultUploadMyDetailInfoUseCase: UploadMyDetailInfoUseCase {
+final class DefaultUploadMyDetailInfoUseCase: UploadMyDetailInfoUseCase {
         
     let userDetailInfoRepository: UserDetailInfoRepository
     let authRepository: AuthRepository
@@ -21,7 +21,7 @@ class DefaultUploadMyDetailInfoUseCase: UploadMyDetailInfoUseCase {
         self.authRepository = authRepository
     }
     
-    func uploadDetailInfo(registerUserInfo: RegisterUserInfo) async throws {
+    func uploadDetailInfo(registerUserInfo: UserDetailInfo) async throws {
         try await userDetailInfoRepository.uploadDetailInfo(
             userUid: authRepository.currentUid(),
             registerUserInfo: registerUserInfo

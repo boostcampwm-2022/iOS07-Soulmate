@@ -8,11 +8,7 @@
 import Foundation
 import FirebaseAuth
 
-protocol AuthUseCase {
-    func userUid() -> String?
-}
-
-class DefaultAuthUseCase: AuthUseCase {
+final class DefaultAuthUseCase: AuthUseCase {
     let auth = Auth.auth()
     
     func userUid() -> String? {

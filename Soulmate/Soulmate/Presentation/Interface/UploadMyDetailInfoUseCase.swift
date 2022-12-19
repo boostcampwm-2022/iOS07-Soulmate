@@ -8,5 +8,5 @@
 import Foundation
 
 protocol UploadMyDetailInfoUseCase {
-    func uploadDetailInfo(registerUserInfo: RegisterUserInfo) async throws
+    func uploadDetailInfo(registerUserInfo: UserDetailInfo) async throws
 }

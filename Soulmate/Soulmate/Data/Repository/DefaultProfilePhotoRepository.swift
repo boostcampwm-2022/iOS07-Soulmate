@@ -6,9 +6,8 @@
 //
 
 import Foundation
-import FirebaseStorage
 
-class DefaultProfilePhotoRepository: ProfilePhotoRepository {
+final class DefaultProfilePhotoRepository: ProfilePhotoRepository {
     
     let networkKeyValueStorageApi: NetworkKeyValueStorageApi
     

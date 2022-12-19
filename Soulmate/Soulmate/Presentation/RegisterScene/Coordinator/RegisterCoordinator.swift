@@ -23,7 +23,7 @@ class RegisterCoordinator: Coordinator {
         self.navigationController = navigationController
     }
     
-    func start(with registerUserInfo: RegisterUserInfo? = nil) {
+    func start(with registerUserInfo: UserDetailInfo? = nil) {
         let container = DIContainer.shared.container
         guard let vm = container.resolve(RegisterViewModel.self) else { return }
         

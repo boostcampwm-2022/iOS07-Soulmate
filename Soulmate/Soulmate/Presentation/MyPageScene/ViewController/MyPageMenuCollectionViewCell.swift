@@ -66,16 +66,3 @@ class MyPageMenuCollectionViewCell: UICollectionViewCell {
     }
     
 }
-
-#if canImport(SwiftUI) && DEBUG
-import SwiftUI
-
-struct MyPageMenuCellPreview: PreviewProvider {
-    static var previews: some View {
-        UIViewPreview {
-            let preview = MyPageMenuCollectionViewCell()
-            return preview
-        }.previewLayout(.fixed(width: 350, height: 50))
-    }
-}
-#endif
