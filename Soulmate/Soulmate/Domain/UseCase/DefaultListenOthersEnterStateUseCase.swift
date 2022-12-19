@@ -6,19 +6,14 @@
 //
 
 import Combine
-import FirebaseAuth
-import FirebaseFirestore
-import FirebaseFirestoreSwift
-
 
 final class DefaultListenOthersEnterStateUseCase: ListenOthersEnterStateUseCase {
+    
     private let info: ChatRoomInfo
     private var enterStateRepository: EnterStateRepository
     private let authRepository: AuthRepository
-    private var listenerRegistration: ListenerRegistration?
     
-    var otherIsEntered = PassthroughSubject<String, Never>()    
-    var othersEnterState = false
+    var otherIsEntered: PassthroughSubject<String, Never>
     
     init(
         with info: ChatRoomInfo,
@@ -28,11 +23,12 @@ final class DefaultListenOthersEnterStateUseCase: ListenOthersEnterStateUseCase 
             self.info = info
             self.enterStateRepository = enterStateRepository
             self.authRepository = authRepository
+            
+            self.otherIsEntered = enterStateRepository.otherIsEntered
     }
     
     func removeListen() {
-        listenerRegistration?.remove()
-        listenerRegistration = nil
+        enterStateRepository.removeListen()
     }
     
     func listenOthersEnterState() {
@@ -40,20 +36,9 @@ final class DefaultListenOthersEnterStateUseCase: ListenOthersEnterStateUseCase 
               let uid = try? authRepository.currentUid(),
               let othersId = info.userIds.first(where: { $0 != uid }) else { return }
         
-        let docRef = enterStateRepository.listenOtherEnterStateDocRef(
+        enterStateRepository.listenOtherEnterState(
             in: chatRoomId,
             othersId: othersId
         )
-        
-        listenerRegistration = docRef.addSnapshotListener { [weak self] snapshot, err in
-            guard let document = snapshot, err == nil else { return }
-            
-            if let state = document.data()?["state"] as? Bool {
-                self?.enterStateRepository.othersEnterState = state
-                if state {
-                    self?.otherIsEntered.send(othersId)
-                }
-            }
-        }
     }
 }

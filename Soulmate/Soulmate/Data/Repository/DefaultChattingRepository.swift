@@ -15,11 +15,18 @@ final class DefaultChattingRepository: ChattingRepository {
     
     var startDocument: QueryDocumentSnapshot?
     var lastDocument: QueryDocumentSnapshot?
-    var newMessages = PassthroughSubject<[Chat], Never>()
+    var othersMessages = PassthroughSubject<[Chat], Never>()
+    
+    private var chattinListenerRegistration: ListenerRegistration?    
     
     init(authRepository: AuthRepository, networkDatabaseApi: NetworkDatabaseApi) {
         self.authRepository = authRepository
         self.networkDatabaseApi = networkDatabaseApi
+    }
+    
+    func removeChattingListen() {
+        chattinListenerRegistration?.remove()
+        chattinListenerRegistration = nil
     }
     
     func setStartDocument(_ doc: QueryDocumentSnapshot?) {
@@ -177,7 +184,8 @@ final class DefaultChattingRepository: ChattingRepository {
         return false
     }
     
-    func listenOthersChattingQuery(from chatRoomId: String) -> Query {
+    func listenOthersChattings(from chatRoomId: String, uid: String) {
+        
         let path = "ChatRooms/\(chatRoomId)/Messages"
         var constraints = [
             QueryEntity(field: "date", value: "", comparator: .order)
@@ -189,17 +197,44 @@ final class DefaultChattingRepository: ChattingRepository {
         
         let query = networkDatabaseApi.query(path: path, constraints: constraints)
         
-        return query
-    }
-    
-    func listenOtherIsReading(from chatRoomId: String, userId: String) -> Query {
-        let path = "ChatRooms/\(chatRoomId)/LastRead"
-        var constraints = [
-            QueryEntity(field: "userId", value: userId, comparator: .isEqualTo)
-        ]
-        
-        let query = networkDatabaseApi.query(path: path, constraints: constraints)
-        
-        return query
+        chattinListenerRegistration = query
+            .addSnapshotListener { [weak self] snapshot, err in
+                guard let snapshot, err == nil, !snapshot.documentChanges.isEmpty else {
+                    return
+                }
+                
+                let addChange = snapshot.documentChanges.filter { change in
+                    change.type == .added
+                }
+                
+                let addedDocs = addChange.map { $0.document }
+                
+                guard !addedDocs.isEmpty else {
+                    return
+                }
+                
+                let dtos = addedDocs.compactMap { try? $0.data(as: MessageInfoDTO.self) }
+                let infos = dtos.map { $0.toModel() }.reversed()
+                let others = infos.filter { $0.userId != uid }
+                let chats = others.map { info in
+                    let date = info.date
+                    let isMe = info.userId == uid
+                    let text = info.text
+                    
+                    var readUsers = Set(info.readUsers)
+                    readUsers.insert(uid)
+                    let arrReadUsers = readUsers.map { $0 }
+                    
+                    return Chat(isMe: isMe, userId: info.userId, readUsers: arrReadUsers, text: text, date: date, state: .validated)
+                }
+                
+                guard !chats.isEmpty else { return }
+                
+                self?.addMeToReadUsers(of: snapshot)
+                self?.othersMessages.send(chats)
+                self?.setLastDocument(snapshot.documents.last)
+                self?.removeChattingListen()
+                self?.listenOthersChattings(from: chatRoomId, uid: uid)
+            }
     }
 }

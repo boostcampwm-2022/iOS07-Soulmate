@@ -20,9 +20,9 @@ class DefaultChatCoordinator: ChatCoordinator {
     }
     
     func start() {
-        let loadChattingRoomListUseCase = DefaultLoadChattingRoomListUseCase()
-        
+        let networkDatabaseApi = FireStoreNetworkDatabaseApi()
         let networkKeyValueStorageApi = FirebaseNetworkKeyValueStorageApi()
+        
         let profilePhotoRepository = DefaultProfilePhotoRepository(networkKeyValueStorageApi: networkKeyValueStorageApi)
         let imageCacheRepository = DefaultImageCacheRepository(imageCacheStorage: NSCacheImageCacheStorage.shared)
         let fetchImageUseCase = DefaultFetchImageUseCase(
@@ -30,7 +30,7 @@ class DefaultChatCoordinator: ChatCoordinator {
             imageCacheRepository: imageCacheRepository
         )
         
-        let networkDatabaseApi = FireStoreNetworkDatabaseApi()
+        
         let mateRequestRepository = DefaultMateRquestRepository(networkDatabaseApi: networkDatabaseApi)
         let authRepository = DefaultAuthRepository()
         let listenMateRequestUseCase = DefaultListenMateRequestUseCase(
@@ -47,6 +47,11 @@ class DefaultChatCoordinator: ChatCoordinator {
             userPreviewRepository: userPreviewRepository,
             chatRoomRepository: chatRoomRepository,
             mateRequestRepository: mateRequestRepository
+        )
+        
+        let loadChattingRoomListUseCase = DefaultLoadChattingRoomListUseCase(
+            chatRoomRepository: chatRoomRepository,
+            authRepository: authRepository
         )
         
         let chatRoomListViewModel = ChatRoomListViewModel(

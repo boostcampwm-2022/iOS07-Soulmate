@@ -12,11 +12,19 @@ final class DefaultEnterStateRepository: EnterStateRepository {
         
     private let networkDatabaseApi: NetworkDatabaseApi
     
+    private var enterStateListenerRegistration: ListenerRegistration?
+    
     init(authRepository: AuthRepository, networkDatabaseApi: NetworkDatabaseApi) {
         self.networkDatabaseApi = networkDatabaseApi
     }
     
     var othersEnterState: Bool = false
+    var otherIsEntered = PassthroughSubject<String, Never>()
+    
+    func removeListen() {
+        enterStateListenerRegistration?.remove()
+        enterStateListenerRegistration = nil
+    }
 
     func set(state: Bool, in chatRoomId: String, uid: String) {
         let path = "ChatRooms/\(chatRoomId)/EnterState"
@@ -24,11 +32,20 @@ final class DefaultEnterStateRepository: EnterStateRepository {
         networkDatabaseApi.update(path: path, documentId: uid, with: ["state": state])
     }
     
-    func listenOtherEnterStateDocRef(in chatRoomId: String, othersId: String) -> DocumentReference {
+    func listenOtherEnterState(in chatRoomId: String, othersId: String) {
         let path = "ChatRooms/\(chatRoomId)/EnterState"
         
         let docRef = networkDatabaseApi.documentRef(path: path, documentId: othersId)
         
-        return docRef
+        enterStateListenerRegistration = docRef.addSnapshotListener { [weak self] snapshot, err in
+            guard let document = snapshot, err == nil else { return }
+            
+            if let state = document.data()?["state"] as? Bool {
+                self?.othersEnterState = state
+                if state {
+                    self?.otherIsEntered.send(othersId)
+                }
+            }
+        }
     }
 }
